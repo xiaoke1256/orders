@@ -2,4 +2,5 @@
 .classpath
 .project
 /.settings/
+.tomcatplugin
 /src/main/webapp/WEB-INF/classes/*
