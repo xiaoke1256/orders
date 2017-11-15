@@ -97,7 +97,7 @@
 	<!-- 配置事务（给那些没有添加@Service注解的service使用,但是引用了其他service的,对数据库有操作） -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<context:component-scan base-package="com.tj.order">
+	<context:component-scan base-package="com.xiaoke1256.orders">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 		

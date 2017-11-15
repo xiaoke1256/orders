@@ -59,7 +59,7 @@ public class RestFullClientTest {
 					request.setPayerNo(payerNo);
 					request.setCarriageAmt(carriageAmt);
 					request.setProductMap(productMap);
-					restTemplate.postForObject("http://localhost:8080/order_trans_test/orders/", request, PayOrder.class);
+					restTemplate.postForObject("http://localhost:8080/orders/orders/", request, PayOrder.class);
 				}catch(Exception ex){
 					ex.printStackTrace();
 					ressult.isError=true;
