@@ -8,8 +8,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -17,6 +20,10 @@ import javax.persistence.Table;
 @Table( name = "PAY_ORDER")
 public class PayOrder {
 	@Id
+	@Column(name = "PAY_ORDER_ID", nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="payorder_seq")  
+	@SequenceGenerator(name="payorder_seq", sequenceName="seq_payoder")  
+	private Long payOrderId;
 	@Column(name = "PAY_ORDER_NO", nullable = false)
 	private String payOrderNo;
 	@Column(name = "TOTAL_AMT")
@@ -31,6 +38,12 @@ public class PayOrder {
 	private Timestamp insertTime;
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
+	public Long getPayOrderId() {
+		return payOrderId;
+	}
+	public void setPayOrderId(Long payOrderId) {
+		this.payOrderId = payOrderId;
+	}
 	public String getPayOrderNo() {
 		return payOrderNo;
 	}
