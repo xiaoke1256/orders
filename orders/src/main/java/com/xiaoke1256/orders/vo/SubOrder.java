@@ -18,7 +18,7 @@ public class SubOrder {
 
 	private String storeNo;
 
-	private String productId;
+	private String productCode;
 
 	private Integer productNum;
 
@@ -38,11 +38,11 @@ public class SubOrder {
 		this.storeNo = storeNo;
 	}
 	
-	public String getProductId() {
-		return productId;
+	public String getProductCode() {
+		return productCode;
 	}
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 	public Integer getProductNum() {
 		return productNum;

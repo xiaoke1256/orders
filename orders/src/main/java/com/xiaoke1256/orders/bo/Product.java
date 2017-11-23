@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @Table( name = "PRODUCT")
 public class Product {
 	@Id
-	@Column(name = "PRODUCT_ID", nullable = false)
-	private String productId;
+	@Column(name = "PRODUCT_CODE", nullable = false)
+	private String productCode;
 	@Column(name = "STORE_NO")
 	private String storeNo;
 	@Column(name = "PRODUCT_PRICE", precision= 19 ,scale = 2)
@@ -24,11 +24,12 @@ public class Product {
 	private Timestamp insertTime;
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
-	public String getProductId() {
-		return productId;
+	
+	public String getProductCode() {
+		return productCode;
 	}
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 	public String getStoreNo() {
 		return storeNo;
