@@ -50,14 +50,14 @@ alter table SUB_ORDER
 create sequence SEQ_PAYODER
 minvalue 1000
 maxvalue 999999999999999999999999999
-start with 1
+start with 1000
 increment by 1
 cache 100;
 
 create sequence SEQ_SUBODER
 minvalue 1000
 maxvalue 999999999999999999999999999
-start with 1
+start with 1000
 increment by 1
 cache 100;
   
