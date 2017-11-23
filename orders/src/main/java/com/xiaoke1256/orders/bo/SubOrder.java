@@ -26,7 +26,7 @@ public class SubOrder {
 	@Column(name = "STORE_NO", nullable = false)
 	private String storeNo;
 	@ManyToOne
-	@JoinColumn(name="PRODUCT_ID")
+	@JoinColumn(name="PRODUCT_CODE")
 	private Product product;
 	@Column(name = "PRODUCT_NUM")
 	private Integer productNum;
