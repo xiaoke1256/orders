@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class InitProduct {
 		//10000件商品
 		for(int i=0;i<10000;i++){
 			 Product p = new Product();
-			 p.setProductId(String.valueOf(i));
+			 p.setProductCode(StringUtils.leftPad(String.valueOf(i), 10, '0'));
 			 p.setProductPrice(BigDecimal.valueOf(Math.round(r.nextInt(100*100))).divide(BigDecimal.valueOf(100)));
 			 Long stockNum = Long.valueOf(r.nextInt(1000));
 			 while(stockNum==0)
