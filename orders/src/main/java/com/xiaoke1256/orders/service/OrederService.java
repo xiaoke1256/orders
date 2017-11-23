@@ -72,7 +72,7 @@ public class OrederService {
 		PayOrder payOrder = new PayOrder();
 		payOrder.setPayerNo(payerNo);
 		payOrder.setCarriageAmt(carriageAmt);
-		payOrder.setPayOrderNo(UUID.randomUUID().toString());
+		payOrder.setPayOrderNo(UUID.randomUUID().toString().substring(0, 22));
 		payOrder.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		Set<SubOrder> suborderSet = new HashSet<SubOrder>();

@@ -49,11 +49,11 @@ public class RestFullClientTest {
 				String payerNo = StringUtils.leftPad(String.valueOf(r.nextInt(1000000)),24,"0");
 				BigDecimal carriageAmt = BigDecimal.valueOf(4.0);
 				Map<String, Integer> productMap = new HashMap<String, Integer>();
-				String productId = String.valueOf(r.nextInt(1000));
+				String productCode = StringUtils.leftPad(String.valueOf(r.nextInt(1000)), 10, '0');
 				Integer num = r.nextInt(5);
 				if(num==0)
 					num = 1;
-				productMap.put(productId, num);
+				productMap.put(productCode, num);
 				try{
 					OrderPlaceRequest request = new OrderPlaceRequest();
 					request.setPayerNo(payerNo);

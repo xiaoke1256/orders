@@ -14,7 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 public class SubOrder {
 
-	private String subOrderId;
+	private Long subOrderId;
 
 	private String storeNo;
 
@@ -24,10 +24,10 @@ public class SubOrder {
 
 	private BigDecimal productPrice;
 	
-	public String getSubOrderId() {
+	public Long getSubOrderId() {
 		return subOrderId;
 	}
-	public void setSubOrderId(String subOrderId) {
+	public void setSubOrderId(Long subOrderId) {
 		this.subOrderId = subOrderId;
 	}
 

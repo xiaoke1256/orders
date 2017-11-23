@@ -19,9 +19,9 @@ public class SubOrder {
 	@Column(name = "SUB_ORDER_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="suborder_seq")  
 	@SequenceGenerator(name="suborder_seq", sequenceName="seq_suboder")  
-	private String subOrderId;
+	private Long subOrderId;
 	@ManyToOne
-	@JoinColumn(name="PAY_ORDER_NO")
+	@JoinColumn(name="PAY_ORDER_ID")
 	private PayOrder payOrder;
 	@Column(name = "STORE_NO", nullable = false)
 	private String storeNo;
@@ -33,10 +33,10 @@ public class SubOrder {
 	@Column(name = "PRODUCT_PRICE")
 	private BigDecimal productPrice;
 	
-	public String getSubOrderId() {
+	public Long getSubOrderId() {
 		return subOrderId;
 	}
-	public void setSubOrderId(String subOrderId) {
+	public void setSubOrderId(Long subOrderId) {
 		this.subOrderId = subOrderId;
 	}
 	public PayOrder getPayOrder() {

@@ -40,7 +40,7 @@ create table SUB_ORDER
   product_price NUMBER(19),
   store_no      VARCHAR2(32) not null,
   pay_order_id  NUMBER(10),
-  product_code    CHAR(6)
+  product_code    CHAR(10)
 );
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table SUB_ORDER
