@@ -61,7 +61,7 @@ public class NoTransOrederService {
 	}
 	
 	public boolean modiyProductStoreWithTrans(String productId,Integer num){
-		return (entityManager.createQuery(" update Product set stockNum = (stockNum- ?) where productId = ? and stockNum>= ? ")
+		return (entityManager.createQuery(" update Product set stockNum = (stockNum- ?) where productCode = ? and stockNum>= ? ")
 			.setParameter(1, num.longValue())
 			.setParameter(2, productId)
 			.setParameter(3, num.longValue())
