@@ -34,7 +34,7 @@ public class NoTransOrederService {
 			SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 			conn = session.connection();
 			conn.setAutoCommit(true);
-			ps = conn.prepareStatement(" update PRODUCT set STOCK_NUM = (STOCK_NUM- ?) where PRODUCT_ID = ? and STOCK_NUM>= ?");
+			ps = conn.prepareStatement(" update PRODUCT set STOCK_NUM = (STOCK_NUM- ?) where PRODUCT_CODE = ? and STOCK_NUM>= ?");
 			ps.setLong(1, num.longValue());
 			ps.setString(2, productId);
 			ps.setLong(3, num.longValue());
