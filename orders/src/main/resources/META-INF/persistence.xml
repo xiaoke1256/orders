@@ -17,7 +17,7 @@
 	    <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
 	    <property name="hibernate.connection.username" value="trans_test" />  
         <property name="hibernate.connection.password" value="oracle" />  
-        <property name="hibernate.connection.url" value="jdbc:oracle:thin:@CN-20170216CTDG:1521:orcl" />  
+        <property name="hibernate.connection.url" value="jdbc:oracle:thin:@DESKTOP-F43FV78:1521:orcl" />  
 	    <property name="hibernate.max_fetch_depth" value="3" />  
 	    <property name="hibernate.show_sql" value="true" />  
 	   </properties>  
