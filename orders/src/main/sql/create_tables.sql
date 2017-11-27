@@ -14,8 +14,8 @@ create table PRODUCT
 );
 
 alter table PRODUCT
-  add primary key (product_code);
-  
+  add pk_tmp primary key (product_code);
+
 
 create table PAY_ORDER
 (
@@ -29,7 +29,7 @@ create table PAY_ORDER
 );
 
 alter table PAY_ORDER
-  add primary key (pay_order_id);
+  add constraint PK_PAY_ORDER primary key (pay_order_id);
   
 
 
@@ -44,7 +44,7 @@ create table SUB_ORDER
 );
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table SUB_ORDER
-  add primary key (SUB_ORDER_ID);
+  add constraint PK_SUB_ORDER primary key (SUB_ORDER_ID);
   
 --create sequense
 create sequence SEQ_PAYODER
