@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">  
   
 	<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">  
-	 
+	 	 
 	   <jta-data-source> java:/comp/env/jdbc/orders</jta-data-source>  
 	   <properties>  
 	    <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" /> 
@@ -15,12 +15,12 @@
 	   <properties>  
 	    <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />  
 	    <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
-	    <property name="hibernate.connection.username" value="trans_test" />  
+	    <property name="hibernate.connection.username" value="orders" />  
         <property name="hibernate.connection.password" value="oracle" />  
-        <property name="hibernate.connection.url" value="jdbc:oracle:thin:@DESKTOP-F43FV78:1521:orcl" />  
+        <property name="hibernate.connection.url" value="jdbc:oracle:thin:@DESKTOP-F43FV78:1521:orclfrk" />  
 	    <property name="hibernate.max_fetch_depth" value="3" />  
 	    <property name="hibernate.show_sql" value="true" />  
 	   </properties>  
-	  -->
+	    -->
 	</persistence-unit>
 </persistence>
