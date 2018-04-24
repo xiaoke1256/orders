@@ -8,5 +8,17 @@
 </head>
 <body>
 	欢迎访问 orders。
+	<br>
+	<tt>orders 将来可实现的计划如下：</tt>
+	<dl>
+		<dt>1</dt>
+		<dd>引入Maven</dd>
+		<dt>2</dt>
+		<dd>用Redis处理秒杀业务。</dd>
+		<dt>3</dt>
+		<dd>后台定时任务将用zookeeper协调。</dd>
+	</dl>
+	
+	
 </body>
 </html>
