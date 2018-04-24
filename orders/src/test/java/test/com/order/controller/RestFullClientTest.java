@@ -42,31 +42,29 @@ public class RestFullClientTest {
 		final List<StatResult> ressults = new Vector<StatResult>();
 //		List<Thread> taskList = new ArrayList<Thread>();
 		
-		Runnable runnable = new Runnable(){
-			public void run(){
-				StatResult ressult = new StatResult();
-				ressult.startTime = System.currentTimeMillis();
-				String payerNo = StringUtils.leftPad(String.valueOf(r.nextInt(1000000)),24,"0");
-				BigDecimal carriageAmt = BigDecimal.valueOf(4.0);
-				Map<String, Integer> productMap = new HashMap<String, Integer>();
-				String productCode = StringUtils.leftPad(String.valueOf(r.nextInt(1000)), 10, '0');
-				Integer num = r.nextInt(5);
-				if(num==0)
-					num = 1;
-				productMap.put(productCode, num);
-				try{
-					OrderPlaceRequest request = new OrderPlaceRequest();
-					request.setPayerNo(payerNo);
-					request.setCarriageAmt(carriageAmt);
-					request.setProductMap(productMap);
-					restTemplate.postForObject("http://localhost:8080/orders/orders/", request, PayOrder.class);
-				}catch(Exception ex){
-					ex.printStackTrace();
-					ressult.isError=true;
-				}
-				ressult.endTime = System.currentTimeMillis();
-				ressults.add(ressult);
+		Runnable runnable = ()->{
+			StatResult ressult = new StatResult();
+			ressult.startTime = System.currentTimeMillis();
+			String payerNo = StringUtils.leftPad(String.valueOf(r.nextInt(1000000)),24,"0");
+			BigDecimal carriageAmt = BigDecimal.valueOf(4.0);
+			Map<String, Integer> productMap = new HashMap<String, Integer>();
+			String productCode = StringUtils.leftPad(String.valueOf(r.nextInt(1000)), 10, '0');
+			Integer num = r.nextInt(5);
+			if(num==0)
+				num = 1;
+			productMap.put(productCode, num);
+			try{
+				OrderPlaceRequest request = new OrderPlaceRequest();
+				request.setPayerNo(payerNo);
+				request.setCarriageAmt(carriageAmt);
+				request.setProductMap(productMap);
+				restTemplate.postForObject("http://localhost:8080/orders/orders/", request, PayOrder.class);
+			}catch(Exception ex){
+				ex.printStackTrace();
+				ressult.isError=true;
 			}
+			ressult.endTime = System.currentTimeMillis();
+			ressults.add(ressult);
 		};
 		long totalStart = System.currentTimeMillis();
 		for(int i=0;i<1000;i++){
