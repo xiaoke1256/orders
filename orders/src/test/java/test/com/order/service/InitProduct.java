@@ -5,10 +5,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Before;
@@ -22,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.bo.Product;
 import com.xiaoke1256.orders.dao.BaseDao;
-import com.xiaoke1256.orders.service.OrederService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
@@ -32,7 +27,7 @@ public class InitProduct {
 	
 	@Before
 	public void init(){
-		//log4j初始化
+		//log4j鍒濆鍖�
         String basePath  = Class.class.getResource("/").getPath();
         basePath = basePath.substring(0,basePath.indexOf("/classes"));
         String log4jPath = basePath+"/classes/"+"log4j-test.properties";
@@ -50,7 +45,7 @@ public class InitProduct {
 		
 		System.out.print("start time:"+System.currentTimeMillis());
 		
-		//10000件商品
+		//10000浠跺晢鍝�
 		for(int i=0;i<10000;i++){
 			 Product p = new Product();
 			 p.setProductCode(StringUtils.leftPad(String.valueOf(i), 10, '0'));
@@ -69,13 +64,14 @@ public class InitProduct {
 	}
 	
 	/**
-	 * 补货
+	 * 琛ヨ揣
 	 */
 	@Test
 	@Rollback(false)
 	@Transactional
 	public void restoreProduct(){
 		Random r = new Random();
+		@SuppressWarnings("unchecked")
 		List<Product> products = (List<Product>) baseDao.queryByHql("from Product where stockNum <= 200 ");
 		for(Product product:products){
 			Long stockNum = Long.valueOf(r.nextInt(1000));
