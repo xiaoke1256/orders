@@ -90,7 +90,8 @@ public class BlockingQueueTest {
 		//再停掉生产者
 		isProductStoped = true;
 		
-		//pool.awaitTermination(10, TimeUnit.MINUTES);
+		//
 		pool.shutdown();
+		pool.awaitTermination(10, TimeUnit.MINUTES);
 	}
 }
