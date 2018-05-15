@@ -1,4 +1,4 @@
-package test.concurrent;
+package test.utils.concurrent;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;

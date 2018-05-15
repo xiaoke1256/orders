@@ -1,4 +1,4 @@
-package test.concurrent;
+package test.utils.concurrent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
