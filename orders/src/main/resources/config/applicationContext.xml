@@ -82,7 +82,7 @@
 			</props>
 		</property>
 		<!-- 指定需要扫描的存在@Entity实体的包,并将扫描到的实体 添加到持久化单元 -->
-		<property name="packagesToScan" value="com.tj.order" />
+		<property name="packagesToScan" value="com.xiaoke1256.orders" />
 		 
 	</bean>
 	
