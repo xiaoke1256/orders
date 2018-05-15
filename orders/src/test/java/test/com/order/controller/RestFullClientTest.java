@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import com.xiaoke1256.orders.controller.OrderPlaceRequest;
+import com.xiaoke1256.orders.controller.OrderPlaceResponse;
 import com.xiaoke1256.orders.vo.PayOrder;
 
 public class RestFullClientTest {
@@ -58,8 +59,12 @@ public class RestFullClientTest {
 				request.setPayerNo(payerNo);
 				request.setCarriageAmt(carriageAmt);
 				request.setProductMap(productMap);
-				PayOrder payOrder = restTemplate.postForObject("http://localhost:8080/orders/orders/", request, PayOrder.class);
-				System.out.println("order no :"+payOrder.getPayOrderNo());
+				OrderPlaceResponse response = restTemplate.postForObject("http://localhost:8080/orders/orders/", request, OrderPlaceResponse.class);
+				//System.out.println("order no :"+response.getPayOrderNo());
+				if(response.getErrMsg()!=null) {
+					System.out.println("excpetion :"+response.getErrMsg().getErrMsg());
+					ressult.isError=true;
+				}
 			}catch(Exception ex){
 				ex.printStackTrace();
 				ressult.isError=true;

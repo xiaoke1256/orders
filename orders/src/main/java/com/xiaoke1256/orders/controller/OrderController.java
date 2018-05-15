@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xiaoke1256.orders.bo.PayOrder;
 import com.xiaoke1256.orders.bo.SubOrder;
+import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.service.OrederService;
 
 
@@ -40,9 +41,18 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value="/",method={RequestMethod.POST})
-	public @ResponseBody com.xiaoke1256.orders.vo.PayOrder placeOrder(@RequestBody OrderPlaceRequest request){
-		PayOrder order = orederService.place(request.getPayerNo(), request.getCarriageAmt(), request.getProductMap());
-		return covertToVo(order);
+	public @ResponseBody OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request){
+		try {
+			PayOrder order = orederService.place(request.getPayerNo(), request.getCarriageAmt(), request.getProductMap());
+			OrderPlaceResponse response = new OrderPlaceResponse();
+			PropertyUtils.copyProperties(response, order);
+			return response ;
+		}catch(Exception ex){
+			ErrMsg error = new ErrMsg("code",ex.getMessage());
+			OrderPlaceResponse response = new OrderPlaceResponse();
+			response.setErrMsg(error);
+			return response;
+		}
 	}
 	
 	private com.xiaoke1256.orders.vo.PayOrder covertToVo(PayOrder order){
