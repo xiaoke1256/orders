@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>trans_test welcome</title>
 </head>
 <body>
-	欢迎访问 orders。
+	<header>
+		<h1>欢迎访问 orders</h1>
+	</header>
 	<br>
-	<tt>orders 将来可实现的计划如下：</tt>
+	<section>
+		orders 将来可实现的计划如下：
+	</section>
 	<dl>
 		<dt>1</dt>
 		<dd>引入Maven</dd>
