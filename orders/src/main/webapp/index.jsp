@@ -22,7 +22,7 @@
 		<dt>3</dt>
 		<dd>后台定时任务将用zookeeper协调。</dd>
 		<dt>4</dt>
-		<dd>引入Spring-cloud</dd>
+		<dd>引入Spring-boot/Spring-cloud</dd>
 		<dt>5</dt>
 		<dd>探讨高并发时线程死锁的情况（结合jvm）。</dd>
 	</dl>
