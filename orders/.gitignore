@@ -5,3 +5,4 @@
 /work/
 .tomcatplugin
 /src/main/webapp/WEB-INF/classes/*
+/target/
