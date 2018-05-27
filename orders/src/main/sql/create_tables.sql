@@ -5,65 +5,42 @@ drop table PRODUCT;
 -- Create table
 create table PRODUCT
 (
-  product_code    CHAR(10) not null,
-  product_price NUMBER(19,2),
-  stock_num     NUMBER(19),
-  store_no      VARCHAR2(32),
-  insert_time date not null,
-  update_time date not null
+  product_code    CHAR(10) primary key not null,
+  product_price DECIMAL(19,2),
+  stock_num     DECIMAL(19),
+  store_no      VARCHAR(32),
+  insert_time TIMESTAMP not null  DEFAULT NOW(),
+  update_time TIMESTAMP not null  DEFAULT NOW()
 );
-
-alter table PRODUCT
-  add pk_tmp primary key (product_code);
-
 
 create table PAY_ORDER
 (
-  pay_order_id NUMBER(10) not null,
-  pay_order_no VARCHAR2(22) not null,
-  carriage_amt NUMBER(19,2),
-  payer_no     VARCHAR2(24),
-  total_amt    NUMBER(19,2),
-  insert_time date not null,
-  update_time date not null
+  pay_order_id INT(10) primary key not null auto_increment,
+  pay_order_no VARCHAR(22) not null,
+  carriage_amt DECIMAL(19,2),
+  payer_no     VARCHAR(24),
+  total_amt    DECIMAL(19,2),
+  insert_time TIMESTAMP not null DEFAULT NOW(),
+  update_time TIMESTAMP not null DEFAULT NOW()
 );
 
-alter table PAY_ORDER
-  add constraint PK_PAY_ORDER primary key (pay_order_id);
   
 
 
 create table SUB_ORDER
 (
-  sub_order_id  NUMBER(10) not null,
-  product_num   NUMBER(10),
-  product_price NUMBER(19),
-  store_no      VARCHAR2(32) not null,
-  pay_order_id  NUMBER(10),
+  sub_order_id  INT(10) primary key not null auto_increment,
+  product_num   DECIMAL(10),
+  product_price DECIMAL(19),
+  store_no      VARCHAR(32) not null,
+  pay_order_id  DECIMAL(10),
   product_code    CHAR(10)
 );
 -- Create/Recreate primary, unique and foreign key constraints 
-alter table SUB_ORDER
-  add constraint PK_SUB_ORDER primary key (SUB_ORDER_ID);
-  
---create sequense
-create sequence SEQ_PAYODER
-minvalue 1000
-maxvalue 999999999999999999999999999
-start with 1000
-increment by 1
-cache 100;
 
-create sequence SEQ_SUBODER
-minvalue 1000
-maxvalue 999999999999999999999999999
-start with 1000
-increment by 1
-cache 100;
-  
 --create index
-CREATE INDEX IDX_PRODUCT_STORE_NO ON PRODUCT(STORE_NO);
-CREATE INDEX IDX_PAY_ORDER_PAYER_NO ON PAY_ORDER(PAYER_NO);
-CREATE INDEX IDX_SUB_ORDER_ORDER_ID ON SUB_ORDER (PAY_ORDER_ID);
+CREATE KEY IDX_PRODUCT_STORE_NO ON PRODUCT(STORE_NO);
+CREATE KEY IDX_PAY_ORDER_PAYER_NO ON PAY_ORDER(PAYER_NO);
+CREATE KEY IDX_SUB_ORDER_ORDER_ID ON SUB_ORDER (PAY_ORDER_ID);
 --CREATE INDEX IDX_SUB_ORDER_STORE_NO ON SUB_ORDER (STORE_NO);
 --CREATE INDEX IDX_SUB_ORDER_PRODUCT_ID ON SUB_ORDER(PRODUCT_ID);
