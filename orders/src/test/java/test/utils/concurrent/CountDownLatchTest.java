@@ -20,7 +20,8 @@ public class CountDownLatchTest {
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
-		}};
+		}
+	};
 	
 	public static void main(String[] args) throws InterruptedException{
 		ExecutorService exec = Executors.newFixedThreadPool(10);

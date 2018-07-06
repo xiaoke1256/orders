@@ -27,7 +27,7 @@ public class InitProduct {
 	
 	@Before
 	public void init(){
-		//log4j鍒濆鍖�
+		//log4j初始化
         String basePath  = Class.class.getResource("/").getPath();
         basePath = basePath.substring(0,basePath.indexOf("/classes"));
         String log4jPath = basePath+"/classes/"+"log4j-test.properties";
@@ -45,7 +45,7 @@ public class InitProduct {
 		
 		System.out.print("start time:"+System.currentTimeMillis());
 		
-		//10000浠跺晢鍝�
+		//10000个商品
 		for(int i=0;i<10000;i++){
 			 Product p = new Product();
 			 p.setProductCode(StringUtils.leftPad(String.valueOf(i), 10, '0'));
@@ -64,7 +64,7 @@ public class InitProduct {
 	}
 	
 	/**
-	 * 琛ヨ揣
+	 * 补货
 	 */
 	@Test
 	@Rollback(false)
