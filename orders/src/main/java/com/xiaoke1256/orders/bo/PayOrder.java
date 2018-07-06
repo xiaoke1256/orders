@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -21,8 +20,7 @@ import javax.persistence.Table;
 public class PayOrder {
 	@Id
 	@Column(name = "PAY_ORDER_ID", nullable = false)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="payorder_seq")  
-	@SequenceGenerator(name="payorder_seq", sequenceName="seq_payoder")  
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  
 	private Long payOrderId;
 	@Column(name = "PAY_ORDER_NO", nullable = false)
 	private String payOrderNo;

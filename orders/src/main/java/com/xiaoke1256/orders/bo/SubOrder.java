@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -17,8 +16,7 @@ import javax.persistence.Table;
 public class SubOrder {
 	@Id
 	@Column(name = "SUB_ORDER_ID", nullable = false)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="suborder_seq")  
-	@SequenceGenerator(name="suborder_seq", sequenceName="seq_suboder")  
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long subOrderId;
 	@ManyToOne
 	@JoinColumn(name="PAY_ORDER_ID")
