@@ -13,11 +13,11 @@
 	       -->
 	   
 	   <properties>  
-	    <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />  
-	    <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
-	    <property name="hibernate.connection.username" value="orders" />  
-        <property name="hibernate.connection.password" value="oracle" />  
-        <property name="hibernate.connection.url" value="jdbc:oracle:thin:@DESKTOP-F43FV78:1521:orclfrk" />  
+	    <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />  
+	    <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+	    <property name="hibernate.connection.username" value="ordersUser" />  
+        <property name="hibernate.connection.password" value="xiaoke_1256" />  
+        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/orders?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />  
 	    <property name="hibernate.max_fetch_depth" value="3" />  
 	    <property name="hibernate.show_sql" value="true" />  
 	   </properties>  
