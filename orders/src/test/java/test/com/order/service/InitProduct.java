@@ -29,8 +29,14 @@ public class InitProduct {
 	public void init(){
 		//log4j初始化
         String basePath  = Class.class.getResource("/").getPath();
-        basePath = basePath.substring(0,basePath.indexOf("/classes"));
-        String log4jPath = basePath+"/classes/"+"log4j-test.properties";
+        String log4jPath = "";
+        if(basePath.indexOf("test-classes")>0) {
+	        basePath = basePath.substring(0,basePath.indexOf("/test-classes"));
+	        log4jPath = basePath+"/test-classes/"+"log4j-test.properties";
+        }else {
+        	basePath = basePath.substring(0,basePath.indexOf("/classes"));
+        	log4jPath = basePath+"/test-classes/"+"log4j-test.properties";
+        }
         //BasicConfigurator.configure ();
         PropertyConfigurator.configure (log4jPath) ;
 	}
