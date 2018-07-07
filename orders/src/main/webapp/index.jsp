@@ -3,18 +3,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>trans_test welcome</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>trans_test welcome</title>
+  <style>
+  dl dt {float:left}
+  </style>
 </head>
 <body>
 	<header>
-		<h1>欢迎访问 orders</h1>
+		<h1 style="text-align:center">欢迎访问 orders</h1>
 	</header>
 	<br>
-	<section>
+	<section style="margin:10px auto;width:80%">
 		orders 将来可实现的计划如下：
 	</section>
-	<dl>
+	<div id="content" style="margin:10px auto;width:80%">
+	  <dl>
 		<dt>1</dt>
 		<dd>引入Maven</dd>
 		<dt>2</dt>
@@ -25,7 +29,8 @@
 		<dd>引入Spring-boot/Spring-cloud</dd>
 		<dt>5</dt>
 		<dd>探讨高并发时线程死锁的情况（结合jvm）。</dd>
-	</dl>
+	  </dl>
+	</div>
 	
 	
 </body>
