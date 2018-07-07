@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base href="<%=request.getContextPath()+"/" %>">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>trans_test welcome</title>
   <style>
@@ -30,7 +31,7 @@
 		<dt>5</dt>
 		<dd>探讨高并发时线程死锁的情况（结合jvm）。</dd>
 		<dt>6</dt>
-		<dd>探讨内存泄漏的情况（结合jvm）。</dd>
+		<dd>探讨内存泄漏的情况（结合jvm）。<a href="oom/">GO</a></dd>
 	  </dl>
 	</div>
 	
