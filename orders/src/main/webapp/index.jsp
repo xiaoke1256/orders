@@ -20,7 +20,7 @@
 	<div id="content" style="margin:10px auto;width:80%">
 	  <dl>
 		<dt>1</dt>
-		<dd>引入Maven</dd>
+		<dd>引入Maven（OK）</dd>
 		<dt>2</dt>
 		<dd>用Redis处理秒杀业务。</dd>
 		<dt>3</dt>
@@ -29,6 +29,8 @@
 		<dd>引入Spring-boot/Spring-cloud</dd>
 		<dt>5</dt>
 		<dd>探讨高并发时线程死锁的情况（结合jvm）。</dd>
+		<dt>6</dt>
+		<dd>探讨内存泄漏的情况（结合jvm）。</dd>
 	  </dl>
 	</div>
 	
