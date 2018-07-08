@@ -16,7 +16,9 @@ import com.xiaoke1256.jvmtest.bo.SomeBo;
 @Controller
 @RequestMapping("/oom")
 public class OoMController {
-	private Map<SomeBo,String> cacheMap = new HashMap<SomeBo,String>();
+	private final Map<SomeBo,String> cacheMap = new HashMap<SomeBo,String>();
+	
+	private final Map<Integer,byte[]> map2 = new HashMap<Integer,byte[]>();
 	
 	@RequestMapping(value="/")
 	public String toIndex(){
@@ -32,16 +34,13 @@ public class OoMController {
 	public void someBussiness(HttpServletResponse response) {
 		for(int i=1;i<=100;i++) {
 			SomeBo s = new SomeBo();
-			s.setId(1);
-			s.setBy(new byte[1024*1024]);
-			
-			@SuppressWarnings("unused")
-			byte[] temp1 = new byte[1024*1024];
-			@SuppressWarnings("unused")
-			byte[] temp2 = new byte[1024*1024];
-			
 			Random r = new Random();
+			int id = r.nextInt(100);
+			s.setId(id);
+			s.setBy(new byte[1024*1024]);
+
 			cacheMap.put(s, "sswe"+r.nextInt(100*100) );
+			map2.put(id, new byte[1024*1024]);
 			System.out.println("added "+i+".");
 		}
 		try {
