@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>trans_test welcome</title>
+<title>orders</title>
 </head>
 <body>
 	这是订单模块的首页。
