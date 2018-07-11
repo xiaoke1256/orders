@@ -1,0 +1,1 @@
+alter table PRODUCT add IN_SECKILL CHAR(1) not null default '0' comment '是否正在进行秒杀活动。（是:1;否:0）';
