@@ -26,10 +26,7 @@ public class ProductService {
 		Product product = entityManager.find(Product.class, productCode);
 		if(!"1".equals(product.getInSeckill())) {
 			//has open?
-			String key = "SecKill_P_"+product.getProductCode();
-			String inStore = RedisUtils.get(conn, key);
-			if(inStore!=null)
-				return;
+			return;
 		}
 		
 		if(product.getStockNum()<100) {

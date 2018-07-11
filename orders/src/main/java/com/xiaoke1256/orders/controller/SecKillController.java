@@ -60,7 +60,12 @@ public class SecKillController {
 				String key = "SecKill_P_"+productCode;
 				String inStore = RedisUtils.get(conn, key);
 				if(inStore==null) {
-					 productService.openSecKill(productCode);
+					Product p = productService.getProduct(productCode);
+					if("1".equals(p.getInSeckill())) {
+						RedisUtils.set(conn, key, String.valueOf(p.getStockNum()));
+					}else {
+						throw new RuntimeException("This product is not in seckill!");
+					}
 				}
 				keys.add(key);
 			}
