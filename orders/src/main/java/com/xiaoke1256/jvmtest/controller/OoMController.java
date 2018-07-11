@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.jvmtest.bo.SomeBo;
 
 @Controller
@@ -43,19 +44,6 @@ public class OoMController {
 			map2.put(id, new byte[1024*1024]);
 			System.out.println("added "+i+".");
 		}
-		try {
-	        //设置页面不缓存
-	        response.setContentType("application/json");
-	        response.setHeader("Pragma", "No-cache");
-	        response.setHeader("Cache-Control", "no-cache");
-	        response.setCharacterEncoding("UTF-8");
-	        PrintWriter out= null;
-	        out = response.getWriter();
-	        out.print("success!");
-	        out.flush();
-	        out.close();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+		ResponseUtils.writeToResponse(response, "success!");
 	}
 }

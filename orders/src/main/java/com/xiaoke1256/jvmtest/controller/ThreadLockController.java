@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.xiaoke1256.common.utils.ResponseUtils;
+
 @Controller
 @RequestMapping("/deadLock")
 public class ThreadLockController {
@@ -62,19 +64,6 @@ public class ThreadLockController {
 	}
 	
 	private void writeToResponse(HttpServletResponse response,String s) {
-		try {
-	        //设置页面不缓存
-	        response.setContentType("application/json");
-	        response.setHeader("Pragma", "No-cache");
-	        response.setHeader("Cache-Control", "no-cache");
-	        response.setCharacterEncoding("UTF-8");
-	        PrintWriter out= null;
-	        out = response.getWriter();
-	        out.print(s);
-	        out.flush();
-	        out.close();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+		ResponseUtils.writeToResponse(response, s);
 	}
 }

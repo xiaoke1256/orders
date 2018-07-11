@@ -104,6 +104,14 @@ public class RedisUtils {
 		}
 	}
 	
+	public static void unwatch(Jedis jedis) {
+		String result = jedis.unwatch();
+		if(!"OK".equals(result)) {
+			throw new RuntimeException(String.format("Redis has something wrong. Reply is : %s", result));
+		}
+	}
+	
+	
 	public static void incr(Jedis jedis,String key) {
 		Long result = jedis.incr(key);
 		if(result<=0) {

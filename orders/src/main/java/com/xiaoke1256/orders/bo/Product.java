@@ -24,6 +24,8 @@ public class Product {
 	private Timestamp insertTime;
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
+	@Column(name = "IN_SECKILL")
+	private String inSeckill;
 	
 	public String getProductCode() {
 		return productCode;
@@ -61,5 +63,12 @@ public class Product {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
+	public String getInSeckill() {
+		return inSeckill;
+	}
+	public void setInSeckill(String inSeckill) {
+		this.inSeckill = inSeckill;
+	}
+	
 
 }
