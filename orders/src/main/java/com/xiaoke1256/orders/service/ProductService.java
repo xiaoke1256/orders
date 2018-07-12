@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -21,10 +23,15 @@ public class ProductService {
 		return entityManager.find(Product.class, productCode);
 	}
 	
+	@Transactional(readOnly=true)
+	public List<Product> queryProductsWithLimit(int limit) {
+		return entityManager.createQuery("from Product").setMaxResults(limit).getResultList();
+	}
+	
 	public void openSecKill(String productCode) {
 		Jedis conn = RedisUtils.connect();
 		Product product = entityManager.find(Product.class, productCode);
-		if(!"1".equals(product.getInSeckill())) {
+		if("1".equals(product.getInSeckill())) {
 			//has open?
 			return;
 		}
@@ -37,7 +44,7 @@ public class ProductService {
 		RedisUtils.set(conn, "SecKill_P_"+product.getProductCode(), String.valueOf(product.getStockNum()));
 		
 		product.setInSeckill("1");
-		entityManager.persist(product);
+		entityManager.merge(product);
 		conn.close();
 	}
 	
@@ -48,6 +55,6 @@ public class ProductService {
 		RedisUtils.del(conn, "SecKill_P_"+product.getProductCode());
 		
 		product.setInSeckill("0");
-		entityManager.persist(product);
+		entityManager.merge(product);
 	}
 }

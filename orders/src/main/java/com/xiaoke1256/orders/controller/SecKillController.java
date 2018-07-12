@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.orders.bo.PayOrder;
@@ -42,6 +43,15 @@ public class SecKillController {
 	
 	@Autowired
 	private OrederService orederService;
+	
+	@RequestMapping(value="/",method={RequestMethod.GET})
+	public ModelAndView toIndex() {
+		List<Product> products = productService.queryProductsWithLimit(10);
+		ModelAndView view = new ModelAndView();
+		view.setViewName("secKill/index");
+		view.addObject("products", products);
+		return view;
+	}
 	
 	/**
 	 * 下订单（利用redis缓存）
@@ -133,7 +143,7 @@ public class SecKillController {
 	 * @param productCodes
 	 */
 	@RequestMapping("/close/{productCode}")
-	public void closeSecKill(HttpServletResponse response,String productCode) {
+	public void closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
 		productService.closeSecKill(productCode);
 		ResponseUtils.writeToResponse(response, "success!");
 	}

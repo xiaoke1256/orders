@@ -23,7 +23,7 @@
 		<dt>1</dt>
 		<dd>引入Maven（OK）</dd>
 		<dt>2</dt>
-		<dd>用Redis处理秒杀业务。</dd>
+		<dd>用Redis处理秒杀业务。<a href="secKill/">GO</a></dd>
 		<dt>3</dt>
 		<dd>后台定时任务将用zookeeper协调。</dd>
 		<dt>4</dt>
