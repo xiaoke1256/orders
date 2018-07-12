@@ -12,6 +12,12 @@
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript">
   var intervalCode = "";
+  var taskCount = 0;
+  var completedCount = 0;
+  var successCount = 0;
+  var costTime = 0;
+  var startTimeAll = 0;
+  var endTimeAll = 0;
   $(function(){
 	  //开启或关闭秒杀业务
 	  $('.openBtn,.closeBtn').click(
@@ -43,12 +49,13 @@
 	  
 	  //秒杀
 	  $("#doSecKill").click(function(){
+		  startTimeAll = new Date().getTime();
 		  var curNum = $("[name=curNum]").val();
+		  taskCount = parseInt(curNum);
 		  intervalCode = setInterval(function(){submitSomeOrder(curNum/1000)},1);
 		  //submitOrder();
 	  });//
   });
-  
   
   var times = 1000;
   function submitSomeOrder(num){
@@ -59,6 +66,7 @@
 	  if(times==0)
 		  clearInterval(intervalCode);
   }
+  
   
   function submitOrder(){
 	  var productCode = $("[name=productCode]").val();
@@ -74,6 +82,9 @@
 	        }  
 	    },"json");
 	  */
+
+	  var startTime=new Date().getTime();
+	  var endTime=new Date().getTime();
 	  $.ajax({  
 		    url:"secKill/place",
 		    type:"post",  
@@ -84,12 +95,33 @@
 		    success: function (ret) {    
 		        if (ret.payOrderNo) {      
 		        	 $("#console").append("<font color=\"green\">A order has created! OrderNo : "+ret.payOrderNo+"</font><br>")
+		        	 successCount++;
 		        } else {      
 		        	 $("#console").append("<font color=\"red\">"+ret.errMsg.errCode+":"+ret.errMsg.errMsg+"</font><br>");    
-		        }  
+		        }
+		        endTime=new Date().getTime();
+		        costTime += (endTime-startTime);
+		        taskCount--;
+		        completedCount++;
+		        if(taskCount==0){
+		        	endTimeAll = new Date().getTime();
+		        	var avgTime = Math.round(costTime/completedCount);
+		        	var epandTime = endTimeAll-startTimeAll;
+		        	var tps = completedCount/epandTime*1000
+		        	$("#console").append("<font color=\"blue\"> 统计:</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 总任务数:"+completedCount+"</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 成功数:"+successCount+"</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 总耗时:"+costTime+" ms</font><br>")
+		        	$("#console").append("<font color=\"blue\"> epandTime:"+epandTime+" ms</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 平均耗时:"+avgTime+" ms</font><br>")
+		        	$("#console").append("<font color=\"blue\"> tps:"+tps+"</font><br>")
+		        	taskCount=0;
+		        	successCount=0
+		        	completedCount=0;
+		        }
 		    }
 		});
-	  
+
 	  $("#console").append("Submit a order!<br>")
   }
   
