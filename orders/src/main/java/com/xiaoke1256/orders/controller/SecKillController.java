@@ -56,7 +56,7 @@ public class SecKillController {
 	/**
 	 * 下订单（利用redis缓存）
 	 */
-	@RequestMapping(value="/",method={RequestMethod.POST})
+	@RequestMapping(value="/place",method={RequestMethod.POST})
 	public @ResponseBody OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
 			throw new RuntimeException("空订单！");
@@ -91,17 +91,18 @@ public class SecKillController {
 					Long inStore = Long.parseLong(RedisUtils.get(conn, key));
 					if(inStore<request.getProductMap().get(productCode)) {//库存不够了
 						RedisUtils.unwatch(conn);
-						throw new RuntimeException("秒杀失败！");
+						throw new RuntimeException("秒杀失败！（被抢完了）");
 					}
 				}
-				Transaction t = RedisUtils.multi(conn);
 				
+				Transaction t = RedisUtils.multi(conn);
 				for(Iterator<String> iter=request.getProductMap().keySet().iterator();iter.hasNext();) {
 					String productCode = iter.next();
 					String key = "SecKill_P_"+productCode;
-					Long inStore = Long.parseLong(RedisUtils.get(conn, key));
-					t.incrBy( key, -inStore);
+					t.incrBy( key, -request.getProductMap().get(productCode));
+					
 				}
+				
 				try {
 					RedisUtils.exec(t);
 					success = true;
@@ -113,6 +114,9 @@ public class SecKillController {
 				
 			}
 			
+			if(!success)
+				throw new RuntimeException("秒杀失败！");
+			
 			//调用数据库完成订单业务
 			PayOrder order = orederService.place(request.getPayerNo(), request.getCarriageAmt(), request.getProductMap());
 			OrderPlaceResponse response = new OrderPlaceResponse();
@@ -120,6 +124,7 @@ public class SecKillController {
 			return response ;
 			
 		}catch(Exception ex){
+			logger.error(ex, ex);
 			ErrMsg error = new ErrMsg("code",ex.getMessage());
 			OrderPlaceResponse response = new OrderPlaceResponse();
 			response.setErrMsg(error);
