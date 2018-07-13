@@ -76,6 +76,7 @@ public class RedisUtils {
         return pool.getResource();
 	}
 	
+	
 	public static void set(Jedis jedis,String key,String value) {
 		String result = jedis.set(key, value);
 		if(!"OK".equals(result)) {

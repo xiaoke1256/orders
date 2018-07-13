@@ -116,7 +116,7 @@ public class SecKillController {
 			
 			if(!success)
 				throw new RuntimeException("秒杀失败！");
-			
+
 			//调用数据库完成订单业务
 			PayOrder order = orederService.place(request.getPayerNo(), request.getCarriageAmt(), request.getProductMap());
 			OrderPlaceResponse response = new OrderPlaceResponse();

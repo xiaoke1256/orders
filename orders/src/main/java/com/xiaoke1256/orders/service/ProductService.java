@@ -56,5 +56,6 @@ public class ProductService {
 		
 		product.setInSeckill("0");
 		entityManager.merge(product);
+		conn.close();
 	}
 }

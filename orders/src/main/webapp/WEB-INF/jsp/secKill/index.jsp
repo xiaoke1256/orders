@@ -70,9 +70,11 @@
   
   function submitOrder(){
 	  var productCode = $("[name=productCode]").val();
+	  var carriageAmt = Math.ceil(Math.random()*10);
+	  var payerNo = "QE"+Math.floor(Math.random()*10000);
 	  var productMap = {};
 	  productMap[productCode]=1;
-	  var data = {"payerNo":"QE31223","carriageAmt":10,"productMap":productMap};
+	  var data = {"payerNo":payerNo,"carriageAmt":carriageAmt,"productMap":productMap};
 	  /*
 	  $.post("secKill/place",data,function (ret) {    
 	        if (ret.status == 1) {      
@@ -103,6 +105,7 @@
 		        costTime += (endTime-startTime);
 		        taskCount--;
 		        completedCount++;
+		        $("#console").append("taskCount:"+taskCount+"<br>");    
 		        if(taskCount==0){
 		        	endTimeAll = new Date().getTime();
 		        	var avgTime = Math.round(costTime/completedCount);
