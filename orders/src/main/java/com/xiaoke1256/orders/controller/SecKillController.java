@@ -7,7 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ import redis.clients.jedis.Transaction;
 @Controller
 @RequestMapping("/secKill")
 public class SecKillController {
-	private static  final Logger logger = Logger.getLogger(SecKillController.class);
+	private static  final Logger logger = LogManager.getLogger(SecKillController.class);
 	
 	@Autowired
 	private ProductService productService;
