@@ -2,9 +2,7 @@ package test.utils.lambda;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.stream.Collector;
+
 import static java.util.stream.Collectors.*;
 
 public class CollectorsTest {
@@ -13,12 +11,12 @@ public class CollectorsTest {
 		System.out.println(list);
 		
 		//reduce 
-		StringBuilder s = Arrays.asList("a","d","c").stream().reduce(new StringBuilder(), ( BiFunction<StringBuilder,String,StringBuilder>)(builder,name)->{
+		StringBuilder s = Arrays.asList("a","d","c").stream().reduce(new StringBuilder(), (builder,name)->{
 																					if(builder.length()>0) {
 																						builder.append(",");
 																					}
 																					return builder.append(name);
-																				}, (BinaryOperator<StringBuilder>)(l,r)->{
+																				}, (l,r)->{
 																					return l.append(r);
 																				});
 		System.out.println(s);
