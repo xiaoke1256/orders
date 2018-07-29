@@ -13,7 +13,8 @@ public class FunctionalTest {
 		
 		Checker c = new Checker();
 		//以下编译不通过
-		//c.check(x = > x>5);
+		//c.check(x -> x>5);
+		c.check((IntPred)x -> x>5);
 	}
 	
 	public static JButton createButton() {
