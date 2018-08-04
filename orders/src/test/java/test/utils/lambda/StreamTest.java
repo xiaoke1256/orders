@@ -24,17 +24,41 @@ public class StreamTest {
 	@Test
 	public void testGetMostLowCharsString() {
 		Optional<String> op = getMostLowCharsString(Arrays.asList("ADSWEWEW","DDDDDwDD"));
-		System.out.println("The longest String is :"+op.get());
+		if(op.isPresent())
+			System.out.println("The longest String is :"+op.get());
+		else
+			System.out.println("The longest String is empty.");
+		
+		op = getMostLowCharsString(Arrays.asList(new String[0]));
+		if(op.isPresent())
+			System.out.println("The longest String is :"+op.get());
+		else
+			System.out.println("The longest String is empty.");
 	}
 	
+	/**
+	 * 总和
+	 * @param s
+	 * @return
+	 */
 	private int addUp(Stream<Integer> s) {
 		return s.reduce(0, (x,y)-> x+y).intValue();
 	}
 	
+	/**
+	 * 求小写字符的数量
+	 * @param s
+	 * @return
+	 */
 	private long lowCharCout(String s) {
 		return s.chars().filter(c -> c>='a'&&c<='z' ).count();
 	}
 	
+	/**
+	 * 获取小写字符最多的字符串
+	 * @param list
+	 * @return
+	 */
 	private Optional<String> getMostLowCharsString(List<String> list){
 		return list.stream().max(Comparator.comparing(s -> lowCharCout(s)));
 	}
