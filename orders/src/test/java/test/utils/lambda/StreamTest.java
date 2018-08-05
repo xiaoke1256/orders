@@ -3,7 +3,9 @@ package test.utils.lambda;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -34,6 +36,20 @@ public class StreamTest {
 			System.out.println("The longest String is :"+op.get());
 		else
 			System.out.println("The longest String is empty.");
+	}
+	
+	/**
+	 * 分组
+	 */
+	@Test
+	public void testGroupBy() {
+		 Map<Object, Long> result = Arrays.asList("A","B","C","DD","A","D","C","CC","DD").stream()
+				.collect(Collectors.groupingBy(s->s,Collectors.counting()));
+		 for(Map.Entry<Object, Long> entry:result.entrySet()) {
+			  String key = entry.getKey().toString();
+			  Long value  = entry.getValue();
+			  System.out.println(key +" -> "+ value);
+		 }
 	}
 	
 	/**
