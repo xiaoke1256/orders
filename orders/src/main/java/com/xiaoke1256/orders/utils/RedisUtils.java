@@ -2,6 +2,8 @@ package com.xiaoke1256.orders.utils;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -9,6 +11,8 @@ import redis.clients.jedis.Transaction;
 import redis.clients.jedis.exceptions.JedisException;
 
 public class RedisUtils {
+	private static  final Logger logger = Logger.getLogger(RedisUtils.class);
+	
 	private static JedisPool pool;
 	 
 	private static void createPool() {
@@ -121,9 +125,9 @@ public class RedisUtils {
 		}
 		if(results!=null) {
 			for(Object obj:results) {
-				System.out.println("exec result:"+obj);
+				logger.debug("exec result:"+obj);
 				if(obj != null) {
-					System.out.println("exec result class:"+obj.getClass());
+					logger.debug("exec result class:"+obj.getClass());
 					if(obj instanceof JedisException) {
 						throw (JedisException)obj;
 					}else if(obj instanceof Exception) {
