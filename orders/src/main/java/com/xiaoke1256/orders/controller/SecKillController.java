@@ -107,7 +107,7 @@ public class SecKillController {
 					RedisUtils.exec(t);
 					success = true;
 				}catch(RuntimeException e) {
-					logger.warn("秒杀失败，可能是并发量大照成的。",e);
+					logger.warn("秒杀失败，可能是并发量大造成的。",e);
 					retryTimes--;
 					success=false;
 				}
