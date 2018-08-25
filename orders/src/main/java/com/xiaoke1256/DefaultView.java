@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders;
+package com.xiaoke1256;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

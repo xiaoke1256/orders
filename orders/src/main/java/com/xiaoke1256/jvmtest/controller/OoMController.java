@@ -1,7 +1,5 @@
 package com.xiaoke1256.jvmtest.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -10,21 +8,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.jvmtest.bo.SomeBo;
 
-@Controller
+@RestController
 @RequestMapping("/oom")
 public class OoMController {
 	private final Map<SomeBo,String> cacheMap = new HashMap<SomeBo,String>();
 	
 	private final Map<Integer,byte[]> map2 = new HashMap<Integer,byte[]>();
 	
-	@RequestMapping(value="/")
-	public String toIndex(){
-		return "jvmtest/index";
-	}
 	
 	/**
 	 * 有内存泄漏漏洞的方法

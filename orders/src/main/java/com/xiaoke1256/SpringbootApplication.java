@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders;
+package com.xiaoke1256;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
