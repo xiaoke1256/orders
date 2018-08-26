@@ -1,27 +1,22 @@
 package com.xiaoke1256.jvmtest.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.common.utils.ResponseUtils;
 
-@Controller
+@RestController
 @RequestMapping("/deadLock")
 public class ThreadLockController {
 	private final ReentrantLock lock1 = new ReentrantLock();
 	
 	private final ReentrantLock lock2 = new ReentrantLock();
 	
-	@RequestMapping(value="/")
-	public String toIndex(){
-		return "threadLock/index";
-	}
 	
 	@RequestMapping(value="/bussieness1")
 	public void bussieness1(HttpServletResponse response) {

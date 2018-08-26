@@ -15,7 +15,7 @@ create table PRODUCT
 
 create table PAY_ORDER
 (
-  pay_order_id INT(10) primary key not null auto_increment,
+  pay_order_id BIGINT primary key not null auto_increment,
   pay_order_no VARCHAR(22) not null,
   carriage_amt DECIMAL(19,2),
   payer_no     VARCHAR(24),
@@ -29,18 +29,18 @@ create table PAY_ORDER
 
 create table SUB_ORDER
 (
-  sub_order_id  INT(10) primary key not null auto_increment,
+  sub_order_id  BIGINT primary key not null auto_increment,
   product_num   DECIMAL(10),
   product_price DECIMAL(19),
   store_no      VARCHAR(32) not null,
-  pay_order_id  DECIMAL(10),
+  pay_order_id  BIGINT,
   product_code    CHAR(10)
 );
 -- Create/Recreate primary, unique and foreign key constraints 
 
 --create index
-CREATE KEY IDX_PRODUCT_STORE_NO ON PRODUCT(STORE_NO);
-CREATE KEY IDX_PAY_ORDER_PAYER_NO ON PAY_ORDER(PAYER_NO);
-CREATE KEY IDX_SUB_ORDER_ORDER_ID ON SUB_ORDER (PAY_ORDER_ID);
+CREATE INDEX IDX_PRODUCT_STORE_NO ON PRODUCT(STORE_NO);
+CREATE INDEX IDX_PAY_ORDER_PAYER_NO ON PAY_ORDER(PAYER_NO);
+CREATE INDEX IDX_SUB_ORDER_ORDER_ID ON SUB_ORDER (PAY_ORDER_ID);
 --CREATE INDEX IDX_SUB_ORDER_STORE_NO ON SUB_ORDER (STORE_NO);
 --CREATE INDEX IDX_SUB_ORDER_PRODUCT_ID ON SUB_ORDER(PRODUCT_ID);

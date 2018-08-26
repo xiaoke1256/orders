@@ -12,7 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import com.xiaoke1256.orders.bo.SubOrder;
 @Service
 @Transactional
 public class OrederService {
-	private static  final Logger logger = Logger.getLogger(OrederService.class);
+	private static  final Logger logger = LogManager.getLogger(OrederService.class);
 //	@Autowired
 //	private BaseDao baseDao;
 	@PersistenceContext(unitName="default")

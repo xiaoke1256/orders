@@ -2,7 +2,8 @@ package com.xiaoke1256.orders.utils;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -11,7 +12,7 @@ import redis.clients.jedis.Transaction;
 import redis.clients.jedis.exceptions.JedisException;
 
 public class RedisUtils {
-	private static  final Logger logger = Logger.getLogger(RedisUtils.class);
+	private static  final Logger logger = LogManager.getLogger(RedisUtils.class);
 	
 	private static JedisPool pool;
 	 

@@ -7,15 +7,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.orders.bo.PayOrder;
@@ -33,10 +34,10 @@ import redis.clients.jedis.Transaction;
  * @author Administrator
  *
  */
-@Controller
+@RestController
 @RequestMapping("/secKill")
 public class SecKillController {
-	private static  final Logger logger = Logger.getLogger(SecKillController.class);
+	private static  final Logger logger = LogManager.getLogger(SecKillController.class);
 	
 	@Autowired
 	private ProductService productService;
@@ -44,15 +45,25 @@ public class SecKillController {
 	@Autowired
 	private OrederService orederService;
 	
-	@RequestMapping(value="/",method={RequestMethod.GET})
-	public ModelAndView toIndex() {
-		List<Product> products = productService.queryProductsWithLimit(10);
-		ModelAndView view = new ModelAndView();
-		view.setViewName("secKill/index");
-		view.addObject("products", products);
-		return view;
-	}
+//	@RequestMapping(value="/",method={RequestMethod.GET})
+//	public ModelAndView toIndex() {
+//		List<Product> products = productService.queryProductsWithLimit(10);
+//		ModelAndView view = new ModelAndView();
+//		view.setViewName("secKill/index");
+//		view.addObject("products", products);
+//		return view;
+//	}
+//	
 	
+	/**
+	 * 查询商品
+	 * @return
+	 */
+	@RequestMapping(value="/products",method={RequestMethod.GET})
+	public List<Product> queryProduct() {
+		List<Product> products = productService.queryProductsWithLimit(10);
+		return products;
+	}
 	/**
 	 * 下订单（利用redis缓存）
 	 */
@@ -139,6 +150,8 @@ public class SecKillController {
 	 */
 	@RequestMapping("/open/{productCode}")
 	public void openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
+		if(StringUtils.isBlank(productCode))
+			ResponseUtils.writeToResponse(response, "error:ProductCode can not be null.");
 		productService.openSecKill(productCode);
 		ResponseUtils.writeToResponse(response, "success!");
 	}

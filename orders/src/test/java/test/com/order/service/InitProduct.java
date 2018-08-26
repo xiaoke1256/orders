@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.PropertyConfigurator;
+//import org.apache.logging.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,17 +28,17 @@ public class InitProduct {
 	@Before
 	public void init(){
 		//log4j初始化
-        String basePath  = Class.class.getResource("/").getPath();
-        String log4jPath = "";
-        if(basePath.indexOf("test-classes")>0) {
-	        basePath = basePath.substring(0,basePath.indexOf("/test-classes"));
-	        log4jPath = basePath+"/test-classes/"+"log4j-test.properties";
-        }else {
-        	basePath = basePath.substring(0,basePath.indexOf("/classes"));
-        	log4jPath = basePath+"/test-classes/"+"log4j-test.properties";
-        }
-        //BasicConfigurator.configure ();
-        PropertyConfigurator.configure (log4jPath) ;
+//        String basePath  = Class.class.getResource("/").getPath();
+//        String log4jPath = "";
+//        if(basePath.indexOf("test-classes")>0) {
+//	        basePath = basePath.substring(0,basePath.indexOf("/test-classes"));
+//	        log4jPath = basePath+"/test-classes/"+"log4j-test.properties";
+//        }else {
+//        	basePath = basePath.substring(0,basePath.indexOf("/classes"));
+//        	log4jPath = basePath+"/test-classes/"+"log4j-test.properties";
+//        }
+//        //BasicConfigurator.configure ();
+//        PropertyConfigurator.configure (log4jPath) ;
 	}
 	
 	@Autowired
