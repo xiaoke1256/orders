@@ -17,15 +17,15 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.xiaoke1256.SpringbootApplication;
 import com.xiaoke1256.orders.service.OrederService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={
-		"/config/applicationContext.xml"
-		})
+@SpringBootTest(classes=SpringbootApplication.class)
 public class OrederServiceTest {
 	private ExecutorService pool = Executors.newFixedThreadPool(100);
 	
