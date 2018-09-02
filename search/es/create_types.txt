@@ -1,0 +1,9 @@
+#创建用户，其中test是索引名
+PUT http://localhost:9200/test/_mapping/user
+{
+   "properties":{
+       "title":{"type":"text"},
+       "name":{"type":"text"},
+       "age":{"type":"integer"}
+    }
+}
