@@ -7,3 +7,11 @@ PUT http://localhost:9200/test/_mapping/user
        "age":{"type":"integer"}
     }
 }
+
+#添加字段
+POST http://localhost:9200/test/_mapping/user
+{
+	"properties":{
+	   "work_no":{"type":"keyword","index":"true"}
+	}
+}

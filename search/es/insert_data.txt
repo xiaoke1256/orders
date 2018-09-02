@@ -22,3 +22,31 @@ POST localhost:9200/test/user
   "name": "王莉莉" 
   ,"age":45
   }
+  
+#修改数据
+POST localhost:9200/test/user/LigMmGUBjpup4oI69Abt/_update
+{
+ "doc":{"title":"总经理",
+  "name": "王莉莉" 
+  ,"age":45
+  ,"work_no":"001"
+  }
+}
+
+#删除数据
+DELETE localhost:9200/test/user/LigMmGUBjpup4oI69Abt
+
+
+POST localhost:9200/test/user
+{"title":"经理",
+  "name": "koko" 
+  ,"age":37
+  ,"work_no":"002"
+  }
+  
+POST localhost:9200/test/user
+{"title":"员工",
+  "name": "xximas" 
+  ,"age":25
+  ,"work_no":"003"
+  }

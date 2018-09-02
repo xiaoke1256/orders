@@ -1,0 +1,19 @@
+#排序
+POST localhost:9200/test/_search
+{
+	"query": {
+	"bool": {
+	"must": [
+		{
+			"match_all": { }
+		}
+	],
+	"must_not": [ ],
+	"should": [ ]
+	}
+	},
+	"from": 0,
+	"size": 10,
+	"sort": [{"work_no":{ "order": "asc"}}],
+	"aggs": { }
+}
