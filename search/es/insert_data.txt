@@ -1,0 +1,24 @@
+POST localhost:9200/test/user
+{"title":"经理",
+  "name": "Jane Doe" 
+  ,"age":40
+  }
+  
+POST localhost:9200/test/user
+{"title":"员工",
+  "name": "老李" 
+  ,"age":51
+  }
+  
+POST localhost:9200/test/user
+{"title":"员工",
+  "name": "小张" 
+  ,"age":29
+  }
+  
+  
+POST localhost:9200/test/user
+{"title":"总经理",
+  "name": "王莉莉" 
+  ,"age":45
+  }
