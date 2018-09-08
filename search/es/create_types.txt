@@ -1,17 +1,22 @@
-#创建用户，其中test是索引名
-PUT http://localhost:9200/test/_mapping/user
+#创建产品，其中orders是索引名
+#code（代码）,name（产品名称）,price（单价）,store_no（店铺号）,
+#store_name（店铺名）,upd_time（修改时间）,
+PUT http://localhost:9200/orders/_mapping/product
 {
    "properties":{
-       "title":{"type":"text"},
-       "name":{"type":"text"},
-       "age":{"type":"integer"}
+       "code":{"type":"keyword"},
+       "name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+       "price":{"type":"double"},
+       "store_no":{"type":"keyword"},
+       "store_name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+       "upd_time":{"type": "date","format": "strict_date_optional_time"}
     }
 }
 
 #添加字段
-POST http://localhost:9200/test/_mapping/user
-{
-	"properties":{
-	   "work_no":{"type":"keyword","index":"true"}
-	}
-}
+#POST http://localhost:9200/test/_mapping/user
+#{
+#	"properties":{
+#	   "work_no":{"type":"keyword","index":"true"}
+#	}
+#}
