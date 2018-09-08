@@ -22,6 +22,20 @@ POST http://localhost:9200/orders/_mapping/product
 	}
 }
 
+#添加字段#嵌套数组（参数）
+POST http://localhost:9200/orders/_mapping/product
+{
+	"properties":{
+	   "params":{
+	   		"type":"nested",
+	   		"properties":{
+	   			"param_name":{"type":"keyword"},
+	   			"param_value":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
+	   		}
+	   }
+	}
+}
+
 #品牌
 #评分
 #销量
