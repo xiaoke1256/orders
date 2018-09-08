@@ -24,4 +24,5 @@ POST http://localhost:9200/orders/_mapping/product
 
 #品牌
 #评分
-#销量等
+#销量
+#产地
