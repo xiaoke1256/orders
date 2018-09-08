@@ -13,10 +13,11 @@ PUT http://localhost:9200/orders/_mapping/product
     }
 }
 
-#添加字段
-#POST http://localhost:9200/test/_mapping/user
-#{
-#	"properties":{
-#	   "work_no":{"type":"keyword","index":"true"}
-#	}
-#}
+#添加字段#产品分类
+POST http://localhost:9200/orders/_mapping/product
+{
+	"properties":{
+	   "type_id":{"type":"keyword"},
+	   "type_name":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
+	}
+}
