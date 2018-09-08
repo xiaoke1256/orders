@@ -1,5 +1,5 @@
 #排序
-POST localhost:9200/test/_search
+POST localhost:9200/orders/_search
 {
 	"query": {
 	"bool": {
@@ -14,6 +14,6 @@ POST localhost:9200/test/_search
 	},
 	"from": 0,
 	"size": 10,
-	"sort": [{"work_no":{ "order": "asc"}}],
+	"sort": [{"upd_time":{ "order": "asc"}}],
 	"aggs": { }
 }
