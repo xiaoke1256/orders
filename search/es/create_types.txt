@@ -21,3 +21,7 @@ POST http://localhost:9200/orders/_mapping/product
 	   "type_name":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
 	}
 }
+
+#品牌
+#评分
+#销量等
