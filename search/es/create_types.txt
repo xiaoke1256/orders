@@ -9,7 +9,7 @@ PUT http://localhost:9200/orders/_mapping/product
        "price":{"type":"double"},
        "store_no":{"type":"keyword"},
        "store_name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
-       "upd_time":{"type": "date","format": "strict_date_optional_time"}
+       "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}
     }
 }
 
