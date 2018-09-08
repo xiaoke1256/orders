@@ -1,52 +1,83 @@
-POST localhost:9200/test/user
-{"title":"经理",
-  "name": "Jane Doe" 
-  ,"age":40
+#造几条数据
+POST localhost:9200/orders/product/0001
+{"code":"0001",
+  "name": "华硕鼠标",
+   "price":45.8,
+   "store_no":"0001",
+   "store_name":"华硕旗舰店",
+   "upd_time":"2018-09-8 12:23:44"
   }
   
-POST localhost:9200/test/user
-{"title":"员工",
-  "name": "老李" 
-  ,"age":51
+POST localhost:9200/orders/product/0002
+{"code":"0002",
+  "name": "弘基鼠标" ,
+  "price":60,
+   "store_no":"0002",
+   "store_name":"弘基专卖店",
+   "upd_time":"2018-09-08 16:49:01",
+   "type_id":"003",
+   "type_name":"电子产品"
   }
   
-POST localhost:9200/test/user
-{"title":"员工",
-  "name": "小张" 
-  ,"age":29
+POST localhost:9200/orders/product/0003
+{"code":"0003",
+  "name": "联想笔记本" ,
+  "price":6500,
+  "store_no":"0006",
+  "store_name":"风华电子商城",
+  "upd_time":"2018-09-08 17:00:01",
+  "type_id":"003",
+  "type_name":"电子产品"
   }
   
   
-POST localhost:9200/test/user
-{"title":"总经理",
-  "name": "王莉莉" 
-  ,"age":45
+POST localhost:9200/orders/product/0004
+{"code":"0004",
+  "name": "戴尔笔记本" ,
+  "price":5500,
+  "store_no":"0006",
+  "store_name":"风华电子商城",
+  "upd_time":"2018-09-08 17:04:07",
+  "type_id":"003",
+  "type_name":"电子产品"
   }
   
 #修改数据
-POST localhost:9200/test/user/LigMmGUBjpup4oI69Abt/_update
+POST localhost:9200/orders/product/0004/_update
 {
- "doc":{"title":"总经理",
-  "name": "王莉莉" 
-  ,"age":45
-  ,"work_no":"001"
+ "doc":{"code":"0001",
+  "name": "华硕鼠标",
+   "price":45.8,
+   "store_no":"0001",
+   "store_name":"华硕旗舰店",
+   "upd_time":"2018-09-8 17:08:27",
+   "type_id":"003",
+    "type_name":"电子产品"
   }
 }
 
 #删除数据
-DELETE localhost:9200/test/user/LigMmGUBjpup4oI69Abt
+DELETE localhost:9200/orders/product/0004
 
 
-POST localhost:9200/test/user
-{"title":"经理",
-  "name": "koko" 
-  ,"age":37
-  ,"work_no":"002"
-  }
+POST localhost:9200/orders/product/0006
+{"code":"0006",
+  "name": "儿童益智恐龙模型" ,
+  "price":145,
+  "store_no":"0008",
+  "store_name":"酷儿玩具店",
+  "upd_time":"2018-09-8 17:15:25",
+  "type_id":"008",
+  "type_name":"儿童玩具"
+}
   
-POST localhost:9200/test/user
-{"title":"员工",
-  "name": "xximas" 
-  ,"age":25
-  ,"work_no":"003"
+POST localhost:9200/orders/product/0007
+{"code":"0007",
+  "name": "乐高积木巨龙战车" ,
+  "price":68,
+  "store_no":"0008",
+  "store_name":"酷儿玩具店",
+  "upd_time":"2018-09-8 17:19:38",
+  "type_id":"008",
+  "type_name":"儿童玩具"
   }
