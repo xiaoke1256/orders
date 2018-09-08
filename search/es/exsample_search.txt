@@ -17,3 +17,16 @@ POST localhost:9200/orders/_search
 	"sort": [{"upd_time":{ "order": "asc"}}],
 	"aggs": { }
 }
+
+#按nested字段查询
+POST localhost:9200/orders/_search
+{"query": {
+	"nested":{
+	    "path":"params",
+	    "score_mode":"max",
+	    "query":{
+	    	"match":{"params.param_value":"蓝"}
+	    }
+	}
+    }
+}
