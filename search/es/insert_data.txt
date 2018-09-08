@@ -81,3 +81,42 @@ POST localhost:9200/orders/product/0007
   "type_id":"008",
   "type_name":"儿童玩具"
   }
+  
+#修改数据
+POST localhost:9200/orders/product/0006/_update
+{
+ "doc":{"code":"0006",
+  "name": "儿童益智恐龙模型",
+   "price":145,
+   "store_no":"0008",
+   "store_name":"酷儿玩具店",
+   "upd_time":"2018-09-8 17:58:25",
+   "type_id":"008",
+    "type_name":"儿童玩具",
+    "params":[
+    	{"param_name":"适用年龄","param_value":"5-7岁"},
+    	{"param_name":"产品材质","param_value":"塑料/胶制"},
+    	{"param_name":"型号","param_value":"幻影忍者"},
+    	{"param_name":"颜色","param_value":"黄"}
+    ]
+  }
+}
+
+#修改数据
+POST localhost:9200/orders/product/0007/_update
+{
+ "doc":{"code":"0007",
+  "name": "乐高积木巨龙战车",
+   "price":68,
+   "store_no":"0008",
+   "store_name":"酷儿玩具店",
+   "upd_time":"2018-09-8 20:55:45",
+   "type_id":"008",
+    "type_name":"儿童玩具",
+    "params":[
+    	{"param_name":"适用年龄","param_value":"3-4岁"},
+    	{"param_name":"产品材质","param_value":"木材"},
+    	{"param_name":"颜色","param_value":"蓝、绿"}
+    ]
+  }
+}
