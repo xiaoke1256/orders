@@ -19,7 +19,7 @@ POST localhost:9200/orders/_search
 }
 
 #按nested字段查询
-POST localhost:9200/orders/_search
+POST localhost:9200/orders/product/_search
 {"query": {
 	"nested":{
 	    "path":"params",
@@ -29,4 +29,33 @@ POST localhost:9200/orders/_search
 	    }
 	}
     }
+}
+
+#按子文档聚合后排序查询
+POST localhost:9200/orders/product/_search
+{
+	"size" : 0,
+	"aggs":{
+		"product_code":{
+			"terms":{
+				"field":"code",
+				"size":3,
+				"order":{"to_user>max_score":"desc"}
+			},
+			"aggs":{
+				"to_user":{
+					"children":{
+						"type":"product_user_map"
+					},
+					"aggs":{
+						"max_score":{	
+							"max":{
+					            "field":"score"
+					        }
+						}
+					}
+				}
+			}
+		}
+	}
 }
