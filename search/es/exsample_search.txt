@@ -59,3 +59,33 @@ POST localhost:9200/orders/product/_search
 		}
 	}
 }
+
+#从另外一个角度查推荐索引
+#POST localhost:9200/prod_to_user/product_user_map/_search
+{
+	"query":{
+		"bool":{
+			"must":[
+				{"match": { "user_id": "2" }},
+				{"range": { "upd_time":{"from":"now-1M"}} }
+			]
+		}
+	},
+	"size" : 0,
+	"aggs":{
+		"product_code":{
+			"terms":{
+				"field":"product_code",
+				"size":3,
+				"order":{"max_score":"desc"}
+			},
+			"aggs":{
+				"max_score":{	
+					"max":{
+			            "field":"score"
+			        }
+				}
+			}
+		}
+	}
+}

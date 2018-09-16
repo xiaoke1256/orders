@@ -83,6 +83,22 @@ PUT  http://localhost:9200/orders
   }
 }
 
+#product_user_map放在另外一个索引中
+PUT http://localhost:9200/prod_to_user/_mapping/product_user_map
+{
+	"properties":{
+	   "product_code":{"type":"keyword"},
+	   "user_id":{"type":"keyword"},
+	   "score":{"type":"double"},
+	   "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}
+	},
+	"_parent": {
+       "type": "product"
+    }
+}
+
+
+
 #品牌
 #评分
 #销量

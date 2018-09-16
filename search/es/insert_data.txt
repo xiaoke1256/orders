@@ -122,71 +122,81 @@ POST localhost:9200/orders/product/0007/_update
 }
 
 #一号用户喜欢鼠标，向他推荐鼠标
-POST localhost:9200/orders/product_user_map/1_0001?parent=0001
+POST localhost:9200/prod_to_user/product_user_map/1_0001?parent=0001
 {
+	"product_code":"0001",
 	"user_id":"1",
 	"score":99,
 	"upd_time":"2018-09-15 10:55:45"
 }
 #鼠标推荐了两次，一次分值特别低
-POST localhost:9200/orders/product_user_map/1_0001_0?parent=0001
+POST localhost:9200/prod_to_user/product_user_map/1_0001_0?parent=0001
 {
+	"product_code":"0001",
 	"user_id":"1",
 	"score":3,
 	"upd_time":"2018-09-14 23:55:45"
 }
 
-POST localhost:9200/orders/product_user_map/1_0002?parent=0002
+POST localhost:9200/prod_to_user/product_user_map/1_0002?parent=0002
 {
+	"product_code":"0002",
 	"user_id":"1",
 	"score":97,
 	"upd_time":"2018-09-15 11:03:45"
 }
 
 
-POST localhost:9200/orders/product_user_map/1_0006?parent=0006
+POST localhost:9200/prod_to_user/product_user_map/1_0006?parent=0006
 {
+	"product_code":"0006",
 	"user_id":"1",
 	"score":12,
 	"upd_time":"2018-09-15 11:11:01"
 }
-POST localhost:9200/orders/product_user_map/1_0007?parent=0007
+POST localhost:9200/prod_to_user/product_user_map/1_0007?parent=0007
 {
+	"product_code":"0007",
 	"user_id":"1",
 	"score":16,
 	"upd_time":"2018-09-15 11:15:43"
 }
 
 #二号用户喜欢玩具，向他推荐玩具
-POST localhost:9200/orders/product_user_map/2_0001?parent=0001
+POST localhost:9200/prod_to_user/product_user_map/2_0001?parent=0001
 {
+	"product_code":"0001",
 	"user_id":"2",
 	"score":10,
 	"upd_time":"2018-09-15 11:18:45"
 }
 #鼠标推荐了两次，一次特别久远
-POST localhost:9200/orders/product_user_map/2_0001_0?parent=0001
+POST localhost:9200/prod_to_user/product_user_map/2_0001_0?parent=0001
 {
+	"product_code":"0001",
 	"user_id":"2",
 	"score":97,
 	"upd_time":"2017-08-15 13:18:45"
 }
-POST localhost:9200/orders/product_user_map/2_0002?parent=0002
+POST localhost:9200/prod_to_user/product_user_map/2_0002?parent=0002
 {
+	"product_code":"0002",
 	"user_id":"2",
 	"score":19,
 	"upd_time":"2018-09-15 11:17:45"
 }
 
 
-POST localhost:9200/orders/product_user_map/2_0006?parent=0006
+POST localhost:9200/prod_to_user/product_user_map/2_0006?parent=0006
 {
+	"product_code":"0006",
 	"user_id":"2",
 	"score":98,
 	"upd_time":"2018-09-15 11:16:01"
 }
-POST localhost:9200/orders/product_user_map/2_0007?parent=0007
+POST localhost:9200/prod_to_user/product_user_map/2_0007?parent=0007
 {
+	"product_code":"0007",
 	"user_id":"2",
 	"score":95,
 	"upd_time":"2018-09-15 11:16:43"
