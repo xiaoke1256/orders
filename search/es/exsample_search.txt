@@ -61,7 +61,7 @@ POST localhost:9200/orders/product/_search
 }
 
 #从另外一个角度查推荐索引
-#POST localhost:9200/prod_to_user/product_user_map/_search
+POST localhost:9200/prod_to_user/product_user_map/_search
 {
 	"query":{
 		"bool":{
@@ -88,4 +88,26 @@ POST localhost:9200/orders/product/_search
 			}
 		}
 	}
+}
+
+#利用分值影响查询结果的排序
+POST localhost:9200/orders/product/_search
+{
+  "query": {
+    "has_parent": {
+      "type": "product_user_map", 
+      "query": {
+        "function_score": { 
+	      "query": { 
+	        "match": {
+	          "user_id": "2"
+	        }
+	      },
+	      "field_value_factor": { 
+	        "field": "score" 
+	      }
+	    }
+      }
+    }
+  }
 }
