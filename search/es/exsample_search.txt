@@ -102,7 +102,7 @@ POST localhost:9200/orders/product/_search
 	      "query": { 
 	        "bool": {
 	        	"must":[
-	        		{"match":{"user_id": "2"}},
+	        		{"term":{"user_id": "2"}},
 	        		{"range":{"upd_time": {"from":"now-1M"}}}
 	        	]
 	        }
