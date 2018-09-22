@@ -2,15 +2,15 @@
 POST localhost:9200/orders/_search
 {
 	"query": {
-	"bool": {
-	"must": [
-		{
-			"match_all": { }
+		"bool": {
+			"must": [
+				{
+					"match_all": { }
+				}
+			],
+			"must_not": [ ],
+			"should": [ ]
 		}
-	],
-	"must_not": [ ],
-	"should": [ ]
-	}
 	},
 	"from": 0,
 	"size": 10,
@@ -94,13 +94,17 @@ POST localhost:9200/prod_to_user/product_user_map/_search
 POST localhost:9200/orders/product/_search
 {
   "query": {
-    "has_parent": {
+    "has_child": {
       "type": "product_user_map", 
+      "score_mode": "max",
       "query": {
         "function_score": { 
 	      "query": { 
-	        "match": {
-	          "user_id": "2"
+	        "bool": {
+	        	"must":[
+	        		{"match":{"user_id": "2"}},
+	        		{"range":{"upd_time": {"from":"now-1M"}}}
+	        	]
 	        }
 	      },
 	      "field_value_factor": { 
