@@ -142,8 +142,10 @@ POST localhost:9200/orders/product/_search
 					        }
 					      },
 					      "field_value_factor": { 
-					        "field": "score" 
-					      }
+					        "field": "score",
+					       	"modifier": "ln1p"
+					      },
+					      "boost_mode":"replace"
 					    }
 				      }
 				    }
