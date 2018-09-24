@@ -6,5 +6,7 @@ package com.xiaoke1256.orders.search.controller;
  *
  */
 public class IndexController {
-
+	public void toIndex() {
+		
+	}
 }
