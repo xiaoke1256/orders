@@ -124,7 +124,7 @@ POST localhost:9200/orders/product/_search
 		"bool": {
 			"must": [
 				{
-					"match": {"_all":"战车" }
+					"match": {"_all":{"query":"战车","boost":2} }
 				}
 			],
 			"should": [ {
