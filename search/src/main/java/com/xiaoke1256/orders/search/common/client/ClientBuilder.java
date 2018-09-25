@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.search.comon.client;
+package com.xiaoke1256.orders.search.common.client;
 
 import org.elasticsearch.client.Client;
 

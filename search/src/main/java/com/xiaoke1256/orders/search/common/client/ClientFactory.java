@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.search.comon.client;
+package com.xiaoke1256.orders.search.common.client;
 
 import java.io.InputStream;
 import java.net.InetAddress;
