@@ -15,6 +15,10 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 @ComponentScan(basePackages= {"com.xiaoke1256.orders.search"})
 @EnableWebMvc
 public class SpringApplication {
+	/**
+	 * properties
+	 * @return
+	 */
 	@Bean
 	public PropertiesFactoryBean prop() {
 		PropertiesFactoryBean prop = new PropertiesFactoryBean();
