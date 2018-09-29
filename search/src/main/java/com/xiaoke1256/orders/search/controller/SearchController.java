@@ -5,10 +5,13 @@ import javax.annotation.PreDestroy;
 import org.elasticsearch.client.Client;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.xiaoke1256.orders.search.vo.SearchCondition;
+import com.xiaoke1256.orders.search.vo.SearchResult;
+
+@RestController
 @RequestMapping("/")
 public class SearchController {
 
@@ -16,8 +19,8 @@ public class SearchController {
 	private Client client;
 
 	@RequestMapping("/search")
-	public void search(){
-		
+	public SearchResult search(SearchCondition condition){
+		return null;
 	}
 	
 	@PreDestroy

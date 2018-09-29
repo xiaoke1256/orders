@@ -3,12 +3,16 @@ package com.xiaoke1256.orders.search.vo;
 import java.io.Serializable;
 import java.util.List;
 
+import com.xiaoke1256.orders.search.common.ErrMsg;
+
 public class SearchResult implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private ErrMsg error;
 	
 	private int pageNo;
 	
@@ -68,6 +72,14 @@ public class SearchResult implements Serializable {
 
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+	}
+
+	public ErrMsg getError() {
+		return error;
+	}
+
+	public void setError(ErrMsg error) {
+		this.error = error;
 	}
 	
 	
