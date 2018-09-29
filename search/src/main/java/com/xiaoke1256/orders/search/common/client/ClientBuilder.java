@@ -1,13 +1,17 @@
 package com.xiaoke1256.orders.search.common.client;
 
 import org.elasticsearch.client.Client;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class ClientBuilder {
-	private static class StaticHolder{
-		static final Client INSTANCE = ClientFactory.create();
-	}
+	@Autowired
+	private ClientFactory clientFactory;
 	
-	public static Client getSingleton() {
-		return StaticHolder.INSTANCE;
+	@Bean
+	public Client esClient() {
+		return clientFactory.create();
 	}
 }

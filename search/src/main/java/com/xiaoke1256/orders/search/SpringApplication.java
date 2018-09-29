@@ -19,7 +19,7 @@ public class SpringApplication {
 	public PropertiesFactoryBean prop() {
 		PropertiesFactoryBean prop = new PropertiesFactoryBean();
 		Properties properties = new Properties();
-		properties.put("locations", new String[]{"classpath:config/elasticsearch-config.properties"});
+		properties.put("locations", new String[]{"classpath*:config/elasticsearch-config.properties"});
 		prop.setProperties(properties );
 		return prop;
 	}

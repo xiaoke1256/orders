@@ -53,6 +53,12 @@
      	<version>4.3.10.RELEASE</version>
      	<scope>test</scope>
     </dependency>
+    
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-lang3</artifactId>
+	    <version>3.4</version>
+	</dependency>
 	 
 	<dependency>
     	<groupId>org.elasticsearch.client</groupId>
