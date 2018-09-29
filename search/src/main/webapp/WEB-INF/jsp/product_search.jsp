@@ -4,7 +4,7 @@
 <head>
   <base href="<%=request.getContextPath()+"/" %>">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>trans_test welcome</title>
+  <title>orders_search welcome</title>
   <style>
   dl dt {float:left}
   </style>
