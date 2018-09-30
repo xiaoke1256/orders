@@ -12,6 +12,11 @@ public class SearchCondition implements Serializable {
 	
 	private String SearchName;
 	
+	private String userId;
+	
+	/**
+	 * key is propertyName ; value is asc(True) or desc;
+	 */
 	private Map<String,Boolean> orderBy;
 	
 	private int pageNo;
@@ -49,6 +54,15 @@ public class SearchCondition implements Serializable {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
 	
 	
 

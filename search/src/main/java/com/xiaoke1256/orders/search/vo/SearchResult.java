@@ -20,11 +20,21 @@ public class SearchResult implements Serializable {
 	
 	private int totalCount;
 	
-	private boolean hasNext;
-	
-	private boolean hasPrev;
+	private int totalPages;
 	
 	private List<Product> resultList;
+	
+
+	public SearchResult(int pageNo, int pageSize, int totalCount, List<Product> resultList) {
+		super();
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+		this.totalCount = totalCount;
+		this.resultList = resultList;
+		this.totalPages=totalCount/pageSize+(totalCount%pageSize>0?1:0);
+		if(pageNo>totalPages)
+			throw new RuntimeException("Out of page bound.");
+	}
 
 	public int getPageNo() {
 		return pageNo;
@@ -42,21 +52,15 @@ public class SearchResult implements Serializable {
 		this.pageSize = pageSize;
 	}
 
-	public boolean isHasNext() {
-		return hasNext;
+	public boolean hasNext() {
+		return pageNo<totalPages;
 	}
 
-	public void setHasNext(boolean hasNext) {
-		this.hasNext = hasNext;
+
+	public boolean hasPrev() {
+		return pageNo>0;
 	}
 
-	public boolean isHasPrev() {
-		return hasPrev;
-	}
-
-	public void setHasPrev(boolean hasPrev) {
-		this.hasPrev = hasPrev;
-	}
 
 	public List<Product> getResultList() {
 		return resultList;

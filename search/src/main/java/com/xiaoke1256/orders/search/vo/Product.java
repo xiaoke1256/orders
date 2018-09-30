@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.search.vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class Product implements Serializable {
 
@@ -15,13 +16,13 @@ public class Product implements Serializable {
 	
 	private String name;
 	
-	private BigDecimal price;
+	private Double price;
 	
 	private String storeNo;
 	
 	private String storeName;
 	
-	private Timestamp updTime;
+	private Date updTime;
 	
 	private String typeId;
 	
@@ -43,11 +44,11 @@ public class Product implements Serializable {
 		this.name = name;
 	}
 
-	public BigDecimal getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -66,12 +67,12 @@ public class Product implements Serializable {
 	public void setStoreName(String storeName) {
 		this.storeName = storeName;
 	}
-
-	public Timestamp getUpdTime() {
+	
+	public Date getUpdTime() {
 		return updTime;
 	}
 
-	public void setUpdTime(Timestamp updTime) {
+	public void setUpdTime(Date updTime) {
 		this.updTime = updTime;
 	}
 
