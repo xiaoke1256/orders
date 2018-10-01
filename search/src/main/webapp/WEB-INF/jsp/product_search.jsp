@@ -1,13 +1,38 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
   <base href="<%=request.getContextPath()+"/" %>">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>orders_search welcome</title>
+  <script type="text/javascript" src="js/jquery.min.js" ></script>
   <style>
   dl dt {float:left}
   </style>
+  <script type="text/javascript">
+  $(function (){
+	  $('#searchBtn').click(function(){
+		  var data = JSON.stringify({"searchName":$('#searchName').val(),"pageNo":1,"pageSize":10});
+		  $.ajax({  
+			    url:"search",
+			    type:"POST",  
+			    dataType:"json",  
+			    data:data,  
+			    contentType: "application/json;charset=utf-8",
+			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
+			    success: function (ret) {  
+			    	alert(ret);
+			    },
+			    error:function(err){
+			    	//alert("网络异常："+err.responseText);
+			    	alert("网络异常："+err.status);
+			    }
+		  });
+		  
+	  });
+	  
+  });
+  </script>
 </head>
 <body>
 	<header>
@@ -15,12 +40,15 @@
 	</header>
 	<br>
 	<section style="margin:10px auto;width:80%">
-		
+		<input id="searchName" type="text" value="" > 
+		<button id="searchBtn" >搜索</button>
 	</section>
 	<div id="content" style="margin:10px auto;width:80%">
 	 
 	</div>
-	
+	<div id="pageFoot">
+		
+	</div>
 	
 </body>
 </html>

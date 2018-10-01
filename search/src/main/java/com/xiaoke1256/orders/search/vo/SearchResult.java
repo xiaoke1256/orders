@@ -36,6 +36,9 @@ public class SearchResult implements Serializable {
 			throw new RuntimeException("Out of page bound.");
 	}
 
+	public SearchResult() {
+	}
+
 	public int getPageNo() {
 		return pageNo;
 	}

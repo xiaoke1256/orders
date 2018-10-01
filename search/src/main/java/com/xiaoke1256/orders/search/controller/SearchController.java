@@ -26,8 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xiaoke1256.orders.search.common.ErrMsg;
 import com.xiaoke1256.orders.search.vo.Product;
 import com.xiaoke1256.orders.search.vo.SearchCondition;
 import com.xiaoke1256.orders.search.vo.SearchResult;
@@ -40,18 +42,27 @@ public class SearchController {
 	private Client client;
 
 	@RequestMapping(value="/search",method= {RequestMethod.POST})
+	@ResponseBody
 	public SearchResult search(@RequestBody SearchCondition condition){
-		validate(condition);
-		
-		BoolQueryBuilder qb = new BoolQueryBuilder();
-		if(!StringUtils.isEmpty(condition.getSearchName()))
-			qb.must(QueryBuilders.matchQuery("_all", condition.getSearchName()).boost(2.0f));
-		
-		qb.should(toUserScore(condition.getUserId()));
-		
-		//TODO order by.
-		
-		return searchFunction(qb,condition.getPageNo(),condition.getPageSize());
+		try {
+			validate(condition);
+			
+			BoolQueryBuilder qb = new BoolQueryBuilder();
+			if(!StringUtils.isEmpty(condition.getSearchName()))
+				qb.must(QueryBuilders.matchQuery("_all", condition.getSearchName()).boost(2.0f));
+			
+			qb.should(toUserScore(condition.getUserId()));
+			
+			//TODO order by.
+			
+			return searchFunction(qb,condition.getPageNo(),condition.getPageSize());
+		}catch(Exception e) {
+			e.printStackTrace();
+			SearchResult result = new SearchResult();
+			ErrMsg error = new ErrMsg("error",e.getMessage());
+			result.setError(error );
+			return result;
+		}
 	}
 	
 	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) {
@@ -117,11 +128,11 @@ public class SearchController {
 		int pageNo = condition.getPageNo();
 		int pageSize = condition.getPageSize();
 		Map<String, Boolean> orderbys = condition.getOrderBy();
-		if(pageNo<0) {
-			throw new RuntimeException("PageNo can not be negative.");
+		if(pageNo<=0) {
+			pageNo = 1;
 		}
 		if(!Arrays.asList(10,20,50,100).contains(Integer.valueOf(pageSize)) ) {
-			throw new RuntimeException("PageSize invalid.");
+			pageSize = 10;
 		}
 		if(orderbys!=null&&orderbys.size()>1) {//目前只支持一个排序条件
 			throw new RuntimeException("Only one collumn can be sorted.");

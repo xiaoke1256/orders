@@ -10,7 +10,7 @@ public class SearchCondition implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String SearchName;
+	private String searchName;
 	
 	private String userId;
 	
@@ -24,11 +24,11 @@ public class SearchCondition implements Serializable {
 	private int pageSize;
 
 	public String getSearchName() {
-		return SearchName;
+		return searchName;
 	}
 
 	public void setSearchName(String searchName) {
-		SearchName = searchName;
+		searchName = searchName;
 	}
 
 	public Map<String, Boolean> getOrderBy() {
