@@ -72,8 +72,8 @@ public class SearchController {
 	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) throws Exception {
 		 
 		 HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false);
-		 highlightBuilder.preTags("<span style=\"color:red\">");
-		 highlightBuilder.postTags("</span>");
+		 highlightBuilder.preTags("<em>");
+		 highlightBuilder.postTags("</em>");
 		 
          SearchResponse response = client.prepareSearch("orders")
         		.setTypes("product")
@@ -115,7 +115,7 @@ public class SearchController {
         	if(hightlingFields!=null&&hightlingFields.get("type_name")!=null&&hightlingFields.get("type_name").fragments()!=null&&hightlingFields.get("type_name").fragments().length>0)
         		typeName = hightlingFields.get("type_name").fragments()[0].string();//(String)values.get("name");
         	else
-        		typeName = (String)values.get("name");
+        		typeName = (String)values.get("type_name");
         	double score = hit.getScore();
         	Product product = new Product();
         	product.setCode(code);
