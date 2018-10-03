@@ -21,6 +21,8 @@ public class ClientFactory {
 	private String networkHost;
 	@Value("${orders-search.es.port}")
 	private String networkPort;
+	@Value("${orders-search.es.client.transport.sniff}")
+	private String transportSniff;
 	
 	public Client create() {
 		try {
@@ -30,7 +32,9 @@ public class ClientFactory {
 				throw new NullPointerException("NetworkHost can not be empty");
 			if(StringUtils.isEmpty(networkPort))
 				throw new NullPointerException("networkPort can not be empty");
-			Settings settings = Settings.builder().put("cluster.name",clusterName).build();
+			Settings settings = Settings.builder().put("cluster.name",clusterName)
+					.put("client.transport.sniff", StringUtils.isNotEmpty(transportSniff)?Boolean.getBoolean(transportSniff):false)
+					.build();
 			@SuppressWarnings("resource")
 			TransportClient client = new PreBuiltTransportClient(settings)
 					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(networkHost),Integer.valueOf(networkPort)));

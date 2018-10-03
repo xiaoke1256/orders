@@ -28,7 +28,7 @@ public class SearchCondition implements Serializable {
 	}
 
 	public void setSearchName(String searchName) {
-		searchName = searchName;
+		this.searchName = searchName;
 	}
 
 	public Map<String, Boolean> getOrderBy() {

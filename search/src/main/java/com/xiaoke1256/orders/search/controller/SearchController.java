@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -50,6 +51,8 @@ public class SearchController {
 			BoolQueryBuilder qb = new BoolQueryBuilder();
 			if(!StringUtils.isEmpty(condition.getSearchName()))
 				qb.must(QueryBuilders.matchQuery("_all", condition.getSearchName()).boost(2.0f));
+			else
+				qb.must(QueryBuilders.matchAllQuery());
 			
 			qb.should(toUserScore(condition.getUserId()));
 			
@@ -68,27 +71,25 @@ public class SearchController {
 	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) {
         SearchResponse response = client.prepareSearch("orders")
         		.setTypes("product")
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+        		.setFetchSource(new String[] {"code","name","price","store_no","store_name","upd_time","type_id","type_name" }, null)
+                .setSearchType(SearchType.QUERY_THEN_FETCH)
                 .setScroll(new TimeValue(60000))
                 .setQuery(queryBuilder)
                 .setFrom((pageNo-1)*pageSize)
                 .setSize(pageSize).execute().actionGet();
         
-        response = client.prepareSearchScroll(response.getScrollId())
-            .setScroll(new TimeValue(60000)).execute().actionGet();
-        
         int totalCount = (int) response.getHits().getTotalHits();
         List<Product> rsultList = new ArrayList<Product>();
         for (SearchHit hit : response.getHits()) {
-        	Map<String, SearchHitField> fieldMaps = hit.getFields();
-        	String code = fieldMaps.get("code").getValue();
-        	String name = fieldMaps.get("name").getValue();
-        	Double price = fieldMaps.get("price").getValue();
-        	String storeNo = fieldMaps.get("storeNo").getValue();
-        	String storeName = fieldMaps.get("storeName").getValue();
-        	Date updTime = fieldMaps.get("updTime").getValue();
-        	String typeId = fieldMaps.get("typeId").getValue();
-        	String typeName = fieldMaps.get("typeName").getValue();
+        	Map<String,Object> values = hit.getSource();
+        	String code = (String)values.get("code");
+        	String name = (String)values.get("name");
+        	Double price = ((Number)values.get("price")).doubleValue();
+        	String storeNo = (String)values.get("store_no");
+        	String storeName = (String)values.get("store_name");
+        	Date updTime = null;//(String)values.get("upd_time");
+        	String typeId = (String)values.get("type_id");
+        	String typeName = (String)values.get("type_name");
         	Product product = new Product();
         	product.setCode(code);
         	product.setName(name);
@@ -114,13 +115,13 @@ public class SearchController {
 		QueryBuilder hasChind = QueryBuilders.hasChildQuery("product_user_map", 
 				QueryBuilders.functionScoreQuery(
 						new BoolQueryBuilder()
-							.must(QueryBuilders.termsQuery("userId", userIds))
+							.must(QueryBuilders.termsQuery("user_id", userIds))
 							.must(QueryBuilders.rangeQuery("upd_time").from("now-1M")),
 						ScoreFunctionBuilders
 							.fieldValueFactorFunction("score")
 							.modifier(Modifier.LN1P))
-				.boostMode(CombineFunction.REPLACE), 
-			ScoreMode.Max);
+					.boostMode(CombineFunction.REPLACE), 
+				ScoreMode.Max);
 		return hasChind;
 	}
 
