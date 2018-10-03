@@ -124,7 +124,11 @@ POST localhost:9200/orders/product/_search
 		"bool": {
 			"must": [
 				{
-					"match": {"_all":{"query":"战车","boost":2} }
+					"multi_match": {
+						"query":"战车",
+						"fields": ["name","store_name","type_name"],
+						"boost":2
+					}
 				}
 			],
 			"should": [ {

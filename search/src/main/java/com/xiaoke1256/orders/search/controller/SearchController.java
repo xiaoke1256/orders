@@ -22,6 +22,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +51,7 @@ public class SearchController {
 			
 			BoolQueryBuilder qb = new BoolQueryBuilder();
 			if(!StringUtils.isEmpty(condition.getSearchName()))
-				qb.must(QueryBuilders.matchQuery("_all", condition.getSearchName()).boost(2.0f));
+				qb.must(QueryBuilders.multiMatchQuery(condition.getSearchName(), "name","store_name","type_name").boost(2.0f));
 			else
 				qb.must(QueryBuilders.matchAllQuery());
 			
@@ -68,24 +70,39 @@ public class SearchController {
 	}
 	
 	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) throws Exception {
-        SearchResponse response = client.prepareSearch("orders")
+		 
+		 HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false);
+		 highlightBuilder.preTags("<span style=\"color:red\">");
+		 highlightBuilder.postTags("</span>");
+		 
+         SearchResponse response = client.prepareSearch("orders")
         		.setTypes("product")
         		.setFetchSource(new String[] {"code","name","price","store_no","store_name","upd_time","type_id","type_name" }, null)
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
                 .setScroll(new TimeValue(60000))
                 .setQuery(queryBuilder)
+                .highlighter(highlightBuilder)
                 .setFrom((pageNo-1)*pageSize+1)
-                .setSize(pageSize).execute().actionGet();
+                .setSize(pageSize).get();
         
         int totalCount = (int) response.getHits().getTotalHits();
         List<Product> rsultList = new ArrayList<Product>();
-        for (SearchHit hit : response.getHits()) {
+        for (SearchHit hit : response.getHits().getHits()) {
         	Map<String,Object> values = hit.getSource();
+        	Map<String, HighlightField> hightlingFields = hit.highlightFields();
         	String code = (String)values.get("code");
-        	String name = (String)values.get("name");
+        	String name = null;
+        	if(hightlingFields!=null&&hightlingFields.get("name")!=null&&hightlingFields.get("name").fragments()!=null&&hightlingFields.get("name").fragments().length>0)
+        		name = hightlingFields.get("name").fragments()[0].string();//(String)values.get("name");
+        	else
+        		name = (String)values.get("name");
         	Double price = ((Number)values.get("price")).doubleValue();
         	String storeNo = (String)values.get("store_no");
-        	String storeName = (String)values.get("store_name");
+        	String storeName = null;
+        	if(hightlingFields!=null&&hightlingFields.get("store_name")!=null&&hightlingFields.get("store_name").fragments()!=null&&hightlingFields.get("store_name").fragments().length>0)
+        		storeName = hightlingFields.get("store_name").fragments()[0].string();//
+        	else
+        		storeName = (String)values.get("store_name");
         	Date updTime = null;
         	if(values.get("upd_time") instanceof String)
         		updTime = DateUtils.parseDate((String)values.get("upd_time"), "yyyy-MM-dd HH:mm:ss");
@@ -94,7 +111,11 @@ public class SearchController {
         	if(values.get("upd_time") instanceof Date)
         		updTime = (Date)values.get("upd_time");
         	String typeId = (String)values.get("type_id");
-        	String typeName = (String)values.get("type_name");
+        	String typeName = null;
+        	if(hightlingFields!=null&&hightlingFields.get("type_name")!=null&&hightlingFields.get("type_name").fragments()!=null&&hightlingFields.get("type_name").fragments().length>0)
+        		typeName = hightlingFields.get("type_name").fragments()[0].string();//(String)values.get("name");
+        	else
+        		typeName = (String)values.get("name");
         	double score = hit.getScore();
         	Product product = new Product();
         	product.setCode(code);
