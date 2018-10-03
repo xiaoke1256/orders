@@ -22,7 +22,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHitField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,14 +67,14 @@ public class SearchController {
 		}
 	}
 	
-	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) {
+	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) throws Exception {
         SearchResponse response = client.prepareSearch("orders")
         		.setTypes("product")
         		.setFetchSource(new String[] {"code","name","price","store_no","store_name","upd_time","type_id","type_name" }, null)
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
                 .setScroll(new TimeValue(60000))
                 .setQuery(queryBuilder)
-                .setFrom((pageNo-1)*pageSize)
+                .setFrom((pageNo-1)*pageSize+1)
                 .setSize(pageSize).execute().actionGet();
         
         int totalCount = (int) response.getHits().getTotalHits();
@@ -87,9 +86,16 @@ public class SearchController {
         	Double price = ((Number)values.get("price")).doubleValue();
         	String storeNo = (String)values.get("store_no");
         	String storeName = (String)values.get("store_name");
-        	Date updTime = null;//(String)values.get("upd_time");
+        	Date updTime = null;
+        	if(values.get("upd_time") instanceof String)
+        		updTime = DateUtils.parseDate((String)values.get("upd_time"), "yyyy-MM-dd HH:mm:ss");
+        	if(values.get("upd_time") instanceof Long)
+        		updTime = new Date((Long)values.get("upd_time"));
+        	if(values.get("upd_time") instanceof Date)
+        		updTime = (Date)values.get("upd_time");
         	String typeId = (String)values.get("type_id");
         	String typeName = (String)values.get("type_name");
+        	double score = hit.getScore();
         	Product product = new Product();
         	product.setCode(code);
         	product.setName(name);
@@ -99,6 +105,7 @@ public class SearchController {
         	product.setUpdTime(updTime);
         	product.setTypeId(typeId);
         	product.setTypeName(typeName);
+        	product.setScore(score);
         	rsultList.add(product);
         }
         return new SearchResult(pageNo,pageSize,totalCount,rsultList);

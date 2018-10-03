@@ -1,8 +1,6 @@
 package com.xiaoke1256.orders.search.vo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class Product implements Serializable {
@@ -27,6 +25,8 @@ public class Product implements Serializable {
 	private String typeId;
 	
 	private String typeName;
+	
+	private Double score;
 
 	public String getCode() {
 		return code;
@@ -90,6 +90,14 @@ public class Product implements Serializable {
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
 	}
 	
 	

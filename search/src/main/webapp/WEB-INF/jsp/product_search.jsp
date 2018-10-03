@@ -10,6 +10,24 @@
   dl dt {float:left}
   </style>
   <script type="text/javascript">
+  function dateFtt(date,fmt){   
+    var o = {   
+      "M+" : date.getMonth()+1,                 //月份   
+      "d+" : date.getDate(),                    //日   
+      "H+" : date.getHours(),                   //小时   
+      "m+" : date.getMinutes(),                 //分   
+      "s+" : date.getSeconds(),                 //秒   
+      "q+" : Math.floor((date.getMonth()+3)/3), //季度   
+      "S"  : date.getMilliseconds()             //毫秒   
+    };   
+    if(/(y+)/.test(fmt))   
+      fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));   
+    for(var k in o)   
+      if(new RegExp("("+ k +")").test(fmt))   
+    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+    return fmt;   
+  } 
+  
   $(function (){
 	  $('#searchBtn').click(function(){
 		  var data = JSON.stringify({"searchName":$('#searchName').val(),"userId":$('#userId').val(),"pageNo":1,"pageSize":10});
@@ -31,7 +49,7 @@
 			    		var p = ret.resultList[i];
 			    		//alert("p:"+p);
 			    		$tr.append('<tr> <td>'+p.code+'</td><td>'+p.name+'</td><td>'+p.price+'</td><td>'
-			    				+p.storeName+'</td><td>'+p.typeName+'</td><td>'+p.updTime+'</td> </tr>');
+			    				+p.storeName+'</td><td>'+$.trim(p.typeName)+'</td><td>'+dateFtt(new Date(p.updTime),'yyyy-MM-dd HH:mm:ss.S')+'</td><td>'+p.score+'</td> </tr>');
 			    		
 			    	}
 			    },
@@ -70,6 +88,7 @@
 	 				<th>store name</th>
 	 				<th>type name</th>
 	 				<th>update time</th>
+	 				<th>score</th>
 	 			</tr>
 	 		</thead>
 	 		<tbody>
