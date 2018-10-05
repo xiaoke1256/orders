@@ -16,7 +16,9 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction.Modifier;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.util.CollectionUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -91,18 +93,10 @@ public class SearchController {
         	Map<String,Object> values = hit.getSource();
         	Map<String, HighlightField> hightlingFields = hit.highlightFields();
         	String code = (String)values.get("code");
-        	String name = null;
-        	if(hightlingFields!=null&&hightlingFields.get("name")!=null&&hightlingFields.get("name").fragments()!=null&&hightlingFields.get("name").fragments().length>0)
-        		name = hightlingFields.get("name").fragments()[0].string();//(String)values.get("name");
-        	else
-        		name = (String)values.get("name");
+        	String name = getValueWithHighlight("name", hightlingFields,values);
         	Double price = ((Number)values.get("price")).doubleValue();
         	String storeNo = (String)values.get("store_no");
-        	String storeName = null;
-        	if(hightlingFields!=null&&hightlingFields.get("store_name")!=null&&hightlingFields.get("store_name").fragments()!=null&&hightlingFields.get("store_name").fragments().length>0)
-        		storeName = hightlingFields.get("store_name").fragments()[0].string();//
-        	else
-        		storeName = (String)values.get("store_name");
+        	String storeName = getValueWithHighlight("store_name", hightlingFields,values);
         	Date updTime = null;
         	if(values.get("upd_time") instanceof String)
         		updTime = DateUtils.parseDate((String)values.get("upd_time"), "yyyy-MM-dd HH:mm:ss");
@@ -111,11 +105,7 @@ public class SearchController {
         	if(values.get("upd_time") instanceof Date)
         		updTime = (Date)values.get("upd_time");
         	String typeId = (String)values.get("type_id");
-        	String typeName = null;
-        	if(hightlingFields!=null&&hightlingFields.get("type_name")!=null&&hightlingFields.get("type_name").fragments()!=null&&hightlingFields.get("type_name").fragments().length>0)
-        		typeName = hightlingFields.get("type_name").fragments()[0].string();//(String)values.get("name");
-        	else
-        		typeName = (String)values.get("type_name");
+        	String typeName = getValueWithHighlight("type_name", hightlingFields,values);
         	double score = hit.getScore();
         	Product product = new Product();
         	product.setCode(code);
@@ -131,6 +121,19 @@ public class SearchController {
         }
         return new SearchResult(pageNo,pageSize,totalCount,rsultList);
     }
+
+	private String getValueWithHighlight(String queryName, Map<String, HighlightField> hightlingFields,Map<String, Object> values) {
+		String name;
+		if(hightlingFields!=null&&hightlingFields.get(queryName)!=null&&hightlingFields.get(queryName).fragments()!=null&&hightlingFields.get(queryName).fragments().length>0) {
+			StringBuilder sb = new StringBuilder();
+			for(Text fragment:hightlingFields.get(queryName).fragments()) {
+				sb.append(fragment.string());
+			}
+			name = sb.toString();
+		}else
+			name = (String)values.get(queryName);
+		return name;
+	}
 
 	private QueryBuilder toUserScore(String userId) {
 		String[] userIds = null;
