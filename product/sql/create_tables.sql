@@ -7,6 +7,7 @@ create table product
   product_status  CHAR(1) not null comment '状态：0=下架，1=上架',
   on_sale_time TIMESTAMP comment '上架时间，用于搜索引擎采集过滤',
   product_intro	VARCHAR(500) comment '简介',
+  brand VARCHAR(128) comment '品牌',
   insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 ) comment='商品表';

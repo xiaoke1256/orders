@@ -7,10 +7,6 @@ insert into store (store_no,store_name) values ('0006','风华电子商城');
 insert into store (store_no,store_name) values ('0008','酷儿玩具店');
 
 
-insert into product_type (type_id,type_name,show_order) values ('003','电子产品',1);
-
-insert into product_type (type_id,type_name,show_order) values ('008','儿童玩具',2);
-
 
 insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001','华硕鼠标',45.8,'0','0001'); 
 insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002','弘基鼠标',60,'0','0002'); 
