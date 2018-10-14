@@ -80,4 +80,28 @@ insert into product_param (product_code,param_name,param_value,show_order)values
 insert into product_param (product_code,param_name,param_value,show_order)values ('0007','产品材质','木质',2); 
 insert into product_param (product_code,param_name,param_value,show_order)values ('0007','颜色','蓝、绿',4);
 
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100405','火银狐V6',50,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040207','0006100405');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100406','罗技 LINE FRIENDS',145,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040207','0006100406');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100407','小米 便携鼠标',145,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040207','0006100407');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100408','SILVER LINK 蓝牙',169,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040207','0006100408');
 
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001100402','华硕（ASUS）游戏笔记本电脑',7199,'0','0001'); 
+insert into type_product_map (type_id,product_code) values ('040211','0001100402');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001100403','华硕（ASUS）飞行堡垒五代笔记本手提电脑',6999,'0','0001'); 
+insert into type_product_map (type_id,product_code) values ('040211','0001100403');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001100404','华硕(ASUS)顽石YX560UD游戏本',4999,'0','0001'); 
+insert into type_product_map (type_id,product_code) values ('040211','0001100404');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100403','Acer/宏碁 炫6 A615 笔记本电脑',3999,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040211','0002100403');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100404','Acer宏碁投影仪X118H',3099,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('0402','0002100404');
+insert into type_product_map (type_id,product_code) values ('09','0002100404');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100405','DLP主动快门式3D眼镜',69,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('0402','0002100405');
