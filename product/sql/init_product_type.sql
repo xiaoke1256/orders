@@ -77,6 +77,8 @@ insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
 	values ('040202','平板电脑','0402',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
+	values ('040211','笔记本','0402',null,2);
+insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
 	values ('040203','台式机','0402',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
 	values ('040204','相机/摄像','0402',null,4);

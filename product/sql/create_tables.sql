@@ -50,3 +50,9 @@ create table store
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 )comment = '商铺';
 
+create table type_product_map(
+	type_id VARCHAR(12) not null comment '类型编号，外键',
+	product_code CHAR(10) not null comment '商品编号，外键'
+)comment = '商品与类型的映射关系';
+
+CREATE UNIQUE INDEX idx_type_product_map ON type_product_map(type_id,product_code); 

@@ -54,22 +54,28 @@ insert into store (store_no,store_name,store_intro) values ('2018100054','辣么棒
 insert into store (store_no,store_name,store_intro) values ('2018100055','H2','西餐');
 insert into store (store_no,store_name,store_intro) values ('2018100056','义面屋',null);
 
+delete from type_product_map;
+delete from product_param;
+delete from product;
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001100401','华硕鼠标',45.8,'0','0001'); 
+insert into type_product_map (type_id,product_code) values ('040207','0001100401');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100402','弘基鼠标',60,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040207','0002100402');
 
-insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001','华硕鼠标',45.8,'0','0001'); 
-insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002','弘基鼠标',60,'0','0002'); 
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100403','联想笔记本',6500,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040211','0006100403');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100404','戴尔笔记本',5500,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040211','0006100404');
 
-insert into product (product_code,product_name,product_price,product_status,store_no)values ('0003','联想笔记本',6500,'0','0006'); 
-insert into product (product_code,product_name,product_price,product_status,store_no)values ('0004','戴尔笔记本',5500,'0','0006'); 
-
-insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006','儿童益智恐龙模型',145,'0','0008'); 
-
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100406','儿童益智恐龙模型',145,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('0303','0008100406');
 insert into product_param (product_code,param_name,param_value,show_order)values ('0006','适用年龄','5-7岁',1); 
 insert into product_param (product_code,param_name,param_value,show_order)values ('0006','产品材质','塑料/胶制',2); 
 insert into product_param (product_code,param_name,param_value,show_order)values ('0006','型号','幻影忍者',3); 
 insert into product_param (product_code,param_name,param_value,show_order)values ('0006','颜色','黄',4);
 
-insert into product (product_code,product_name,product_price,product_status,store_no)values ('0007','乐高积木巨龙战车',68,'0','0008'); 
-
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100407','乐高积木巨龙战车',68,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('030102','0008100407');
 insert into product_param (product_code,param_name,param_value,show_order)values ('0007','适用年龄','3-4岁',1); 
 insert into product_param (product_code,param_name,param_value,show_order)values ('0007','产品材质','木质',2); 
 insert into product_param (product_code,param_name,param_value,show_order)values ('0007','颜色','蓝、绿',4);
