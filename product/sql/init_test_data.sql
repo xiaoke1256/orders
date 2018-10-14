@@ -1,11 +1,58 @@
+--测试环境模拟数据
+delete from store;
 insert into store (store_no,store_name) values ('0001','华硕旗舰店');
-
 insert into store (store_no,store_name) values ('0002','弘基专卖店');
-
 insert into store (store_no,store_name) values ('0006','风华电子商城');
-
 insert into store (store_no,store_name) values ('0008','酷儿玩具店');
-
+insert into store (store_no,store_name) values ('2018100009','天天数码城');
+insert into store (store_no,store_name) values ('2018100010','青青家电城');
+insert into store (store_no,store_name) values ('2018100011','阳阳百货');
+insert into store (store_no,store_name) values ('2018100012','莉莉服装店');
+insert into store (store_no,store_name) values ('2018100013','羊族百货');
+insert into store (store_no,store_name) values ('2018100014','巧虎乐园');
+insert into store (store_no,store_name) values ('2018100015','老沪箱包馆');
+insert into store (store_no,store_name) values ('2018100016','亮亮服装城');
+insert into store (store_no,store_name) values ('2018100017','美至车模');
+insert into store (store_no,store_name) values ('2018100017','和丰家居城');
+insert into store (store_no,store_name,store_intro) values ('2018100018','林智生活商城','家电');
+insert into store (store_no,store_name,store_intro) values ('2018100019','世纪百城家电',null);
+insert into store (store_no,store_name,store_intro) values ('2018100020','美的专卖店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100021','小米专卖店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100022','创维数码广场',null);
+insert into store (store_no,store_name,store_intro) values ('2018100023','索尼数码专营店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100024','酷动城','运动');
+insert into store (store_no,store_name,store_intro) values ('2018100025','迪卡侬官方旗舰店','运动');
+insert into store (store_no,store_name,store_intro) values ('2018100026','北山狼旗舰店','户外');
+insert into store (store_no,store_name,store_intro) values ('2018100027','优衣库官方旗舰店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100028','李宁专卖店','运动');
+insert into store (store_no,store_name,store_intro) values ('2018100029','超士运动专营店','运动');
+insert into store (store_no,store_name,store_intro) values ('2018100030','9377页游大全','游戏点券');
+insert into store (store_no,store_name,store_intro) values ('2018100031','17173游戏王','游戏点券');
+insert into store (store_no,store_name,store_intro) values ('2018100032','意气书店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100033','博航丽鑫图书专营店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100034','北京联合出版社',null);
+insert into store (store_no,store_name,store_intro) values ('2018100035','首都文史书店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100036','九九图书专营店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100037','三只松鼠专卖店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100038','品味轩食品专卖店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100039','老生鲜旗舰店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100040','林南食品专营店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100041','一方食品旗舰店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100042','盛师傅旗舰店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100043','知味观糕点',null);
+insert into store (store_no,store_name,store_intro) values ('2018100044','静安寺素月饼',null);
+insert into store (store_no,store_name,store_intro) values ('2018100045','一杯香茗旗舰店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100046','花香四季旗舰店','茶叶');
+insert into store (store_no,store_name,store_intro) values ('2018100047','郑茗村旗舰店','茶叶');
+insert into store (store_no,store_name,store_intro) values ('2018100048','清轩茶叶店','茶叶');
+insert into store (store_no,store_name,store_intro) values ('2018100049','天宇奶茶',null);
+insert into store (store_no,store_name,store_intro) values ('2018100050','gurado果然豆旗舰店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100051','香飘飘奶香店',null);
+insert into store (store_no,store_name,store_intro) values ('2018100052','寻茶记1867',null);
+insert into store (store_no,store_name,store_intro) values ('2018100053','西贝餐饮',null);
+insert into store (store_no,store_name,store_intro) values ('2018100054','辣么棒',null);
+insert into store (store_no,store_name,store_intro) values ('2018100055','H2','西餐');
+insert into store (store_no,store_name,store_intro) values ('2018100056','义面屋',null);
 
 
 insert into product (product_code,product_name,product_price,product_status,store_no)values ('0001','华硕鼠标',45.8,'0','0001'); 

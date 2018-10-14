@@ -5,7 +5,7 @@ create table product
   product_price DECIMAL(19,2) comment '价格',
   store_no      VARCHAR(32) comment '店铺号',
   product_status  CHAR(1) not null comment '状态：0=下架，1=上架',
-  on_sale_time TIMESTAMP comment '上架时间，用于搜索引擎采集过滤',
+  on_sale_time TIMESTAMP comment '上架时间，用于搜索引擎采集过滤(废除，靠update_time字段判断)',
   product_intro	VARCHAR(500) comment '简介',
   brand VARCHAR(128) comment '品牌',
   insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
