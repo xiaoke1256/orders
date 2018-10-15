@@ -213,3 +213,6 @@ insert into product (product_code,product_name,product_price,product_status,stor
 insert into type_product_map (type_id,product_code) values ('040209','0022100510');
 insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100511','hpUÅÌ16G',69,'0','2018100022'); 
 insert into type_product_map (type_id,product_code) values ('040209','0022100511');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100507','¼«ÀÖ±´±´³ø·¿Ì××°',69,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('03','0057100507');
