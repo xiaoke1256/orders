@@ -53,6 +53,7 @@ insert into store (store_no,store_name,store_intro) values ('2018100053','西贝餐
 insert into store (store_no,store_name,store_intro) values ('2018100054','辣么棒',null);
 insert into store (store_no,store_name,store_intro) values ('2018100055','H2','西餐');
 insert into store (store_no,store_name,store_intro) values ('2018100056','义面屋',null);
+insert into store (store_no,store_name,store_intro) values ('2018100057','91加盟儿童玩具店',null);
 
 delete from type_product_map;
 delete from product_param;
@@ -105,3 +106,110 @@ insert into type_product_map (type_id,product_code) values ('09','0002100404');
 
 insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100405','DLP主动快门式3D眼镜',69,'0','0002'); 
 insert into type_product_map (type_id,product_code) values ('0402','0002100405');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100406','暗影骑士3枪神版游戏本',6999,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040211','0002100406');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100407','翼5 A515-51G',8199,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040211','0002100407');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100408','TMP2410商用笔记本',8199,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040211','0002100408');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100409','TMP2510商用笔记本',7199,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040211','0002100409');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100410','TMP238商用笔记本',6899,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('040211','0002100410');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0002100411','Veriton AP150 F3工作站',28199,'0','0002'); 
+insert into type_product_map (type_id,product_code) values ('0402','0002100411');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100501','华为(HUAWEI)平板电脑',2199,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040202','0009100501');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100502','苹果ipad9.7吋',6199,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040202','0009100502');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100503','小米(mi)平板电脑',2199,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040202','0009100503');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100504','华为手环',199,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040210','0009100504');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100505','小米手环',199,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040210','0009100505');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100506','苹果Watch',199,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040210','0009100506');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100507','TPB102充电棒',499,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('0402','0009100507');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100508','金士顿U盘16G',89,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040209','0009100508');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100509','金士顿U盘32G',189,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040209','0009100509');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100510','hpU盘32G',129,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040209','0009100510');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0009100511','hpU盘16G',69,'0','2018100009'); 
+insert into type_product_map (type_id,product_code) values ('040209','0009100511');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100501','金士顿U盘16G',89,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040209','0006100501');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0006100502','金士顿U盘32G',189,'0','0006'); 
+insert into type_product_map (type_id,product_code) values ('040209','0006100502');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100501','小微电动机器人',289,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('0304','0008100501');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100502','迪士尼草莓熊玩具',359,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('0302','0008100502');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100503','迪士尼草莓熊双肩包',159,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('0302','0008100503');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100504','愤怒的小鸟布绒玩具',29,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('0302','0008100504');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100505','小太阳童车',229,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('03','0008100505');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0008100506','千禧童车',219,'0','0008'); 
+insert into type_product_map (type_id,product_code) values ('03','0008100506');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100501','小微电动机器人',289,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('0304','0057100501');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100502','迪士尼草莓熊玩具',359,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('0302','0057100502');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100503','迪士尼草莓熊双肩包',159,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('0302','0057100503');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100504','愤怒的小鸟布绒玩具',29,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('0302','0057100504');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100505','小太阳童车',229,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('03','0057100505');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0057100506','千禧童车',219,'0','2018100057'); 
+insert into type_product_map (type_id,product_code) values ('03','0057100506');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100405','DLP主动快门式3D眼镜',69,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('0402','0010100405');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100406','暗影骑士3枪神版游戏本',6999,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('040211','0010100406');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100407','翼5 A515-51G',8199,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('040211','0010100407');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100408','TMP2410商用笔记本',8199,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('040211','0010100408');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100409','TMP2510商用笔记本',7199,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('040211','0010100409');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100410','TMP238商用笔记本',6899,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('040211','0010100410');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0010100411','Veriton AP150 F3工作站',28199,'0','2018100010'); 
+insert into type_product_map (type_id,product_code) values ('0402','0010100411');
+
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100501','华为(HUAWEI)平板电脑',2199,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040202','0022100501');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100502','苹果ipad9.7吋',6199,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040202','0022100502');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100503','小米(mi)平板电脑',2199,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040202','0022100503');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100504','华为手环',199,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040210','0022100504');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100505','小米手环',199,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040210','0022100505');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100506','苹果Watch',199,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040210','0022100506');
+
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100507','TPB102充电棒',499,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('0402','0022100507');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100508','金士顿U盘16G',89,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040209','0022100508');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100509','金士顿U盘32G',189,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040209','0022100509');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100510','hpU盘32G',129,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040209','0022100510');
+insert into product (product_code,product_name,product_price,product_status,store_no)values ('0022100511','hpU盘16G',69,'0','2018100022'); 
+insert into type_product_map (type_id,product_code) values ('040209','0022100511');
