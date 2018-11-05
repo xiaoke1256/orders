@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoke1256.orders.search.dao.ProductDao">
+   <select id="selectUser" resultType="com.xiaoke1256.orders.search.bo.Product">
+      select * from PRODUCT where id = #{id}
+   </select>
+</mapper>
