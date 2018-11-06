@@ -1,18 +1,19 @@
 package com.xiaoke1256.orders.search;
 
-import java.io.IOException;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
@@ -36,16 +37,30 @@ public class DatabaseConfig {
 	
 	//以下 Mybatis 配置 */
 	@Bean
-	public SqlSessionFactoryBean sqlSessionFactory() {
+	public SqlSessionFactory sqlSessionFactory() {
 		try {
 			ResourcePatternResolver resolver = (ResourcePatternResolver) new PathMatchingResourcePatternResolver();
-			SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-			sqlSessionFactory.setDataSource(dataSource());
-			sqlSessionFactory.setConfigLocation(new ClassPathResource("config/sqlMapConfig.xml"));
-			sqlSessionFactory.setMapperLocations(resolver.getResources("classpath:com/xiaoke1256/orders/search/dao/*Mapper.xml"));
-			return sqlSessionFactory;
-		} catch (IOException e) {
+			SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+			sqlSessionFactoryBean.setDataSource(dataSource());
+			sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("config/sqlMapConfig.xml"));
+			sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:com/xiaoke1256/orders/search/dao/*Mapper.xml"));
+			return sqlSessionFactoryBean.getObject();
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Bean
+	public SqlSessionTemplate sqlSessionTemplate() {
+		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate((SqlSessionFactory) sqlSessionFactory());
+		return sqlSessionTemplate;
+	}
+	
+	//事务管理器
+	@Bean
+	public DataSourceTransactionManager transactionManager() {
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+		transactionManager.setDataSource(dataSource());
+		return transactionManager;
 	}
 }
