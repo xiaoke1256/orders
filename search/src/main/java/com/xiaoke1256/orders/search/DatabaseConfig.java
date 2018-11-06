@@ -8,8 +8,10 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -18,10 +20,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @EnableAsync
+@PropertySource("classpath:config/db.properties")
 public class DatabaseConfig {
 	
-	//@Value("${db.jndi_name}")
-	private String jndiName="java:/comp/env/jdbc/product";
+	@Value("${db.jndi_name}")
+	private String jndiName;
 	//数据源
 	@Bean
 	public DataSource dataSource(){
