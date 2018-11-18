@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,27 +21,33 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.TestPropertySource;
 
 @Configuration
 @EnableAsync
 @PropertySource("classpath:config/db.properties")
+@TestPropertySource("classpath:config/db.properties")
 public class DatabaseConfig {
 	
 	@Value("${db.jndi_name}")
 	private String jndiName;
+	
 	@Value("${db.connection.driver_class}")
 	private String driverClassName;
+
 	@Value("${db.connection.url}")
 	private String url;
+
 	@Value("${db.connection.username}")
 	private String username;
+
 	@Value("${db.connection.password}")
 	private String password;
 	
 	//数据源
-	@Bean(name="dataSource")
+	@Bean
 	@Profile({"dev","prod"})
-	public DataSource jndiDataSource(){
+	public DataSource dataSource(){ 
 		try {
 			Context context = new InitialContext();
 			DataSource ds = (DataSource)context.lookup(jndiName);
@@ -50,13 +55,13 @@ public class DatabaseConfig {
 		} catch (NamingException e) {
 			throw new RuntimeException(e);
 		}
+		
 	}
 	
-	//数据源
-	@Bean(name="dataSource")
-	@Profile({"test"})
-	public DataSource dataSource(){
-		DriverManagerDataSource ds = new DriverManagerDataSource();
+	@Bean
+	@Profile("test")
+	public DataSource testDataSource(){
+		DriverManagerDataSource ds =new DriverManagerDataSource();
 		ds.setDriverClassName(driverClassName);
 		ds.setUrl(url);
 		ds.setUsername(username);
@@ -66,11 +71,11 @@ public class DatabaseConfig {
 	
 	//以下 Mybatis 配置 */
 	@Bean
-	public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource")DataSource dataSource) {
+	public SqlSessionFactory sqlSessionFactory(DataSource testDataSource) {
 		try {
 			ResourcePatternResolver resolver = (ResourcePatternResolver) new PathMatchingResourcePatternResolver();
 			SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-			sqlSessionFactoryBean.setDataSource(dataSource);
+			sqlSessionFactoryBean.setDataSource(testDataSource);
 			sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("config/sqlMapConfig.xml"));
 			sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:com/xiaoke1256/orders/search/dao/*Mapper.xml"));
 			return sqlSessionFactoryBean.getObject();
@@ -80,18 +85,19 @@ public class DatabaseConfig {
 	}
 	
 	@Bean
-	public SqlSessionTemplate sqlSessionTemplate(@Qualifier("dataSource")DataSource dataSource) {
-		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate((SqlSessionFactory) sqlSessionFactory(dataSource));
+	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
 		return sqlSessionTemplate;
 	}
 	
 	//事务管理器
 	@Bean
-	public DataSourceTransactionManager transactionManager(@Qualifier("dataSource")DataSource dataSource) {
+	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
 		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
 		transactionManager.setDataSource(dataSource);
-		return transactionManager;
+		return transactionManager; 
 	}
+	
 	
 	/**
 	 * 自动扫描配置
