@@ -8,4 +8,8 @@ public interface EsCollectLogsDao {
 	public EsCollectLogs getLogById(Long logId);
 	
 	public Timestamp getLastExeTime();
+	
+	public void save(EsCollectLogs logs);
+	
+	public void delete(Long logId);
 }

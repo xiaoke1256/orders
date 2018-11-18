@@ -24,4 +24,16 @@ public class EsCollectLogsDaoImpl extends BaseDaoImpl implements EsCollectLogsDa
 		return time;
 	}
 
+	@Override
+	public void save(EsCollectLogs logs) {
+		int result = sqlSessionTemplate.insert("com.xiaoke1256.orders.search.dao.EsCollectLogsDao.save", logs);
+		if(result==0)
+			throw new RuntimeException("Can not insert.");
+	}
+
+	@Override
+	public void delete(Long logId) {
+		sqlSessionTemplate.delete("com.xiaoke1256.orders.search.dao.EsCollectLogsDao.delete", logId);
+	}
+
 }

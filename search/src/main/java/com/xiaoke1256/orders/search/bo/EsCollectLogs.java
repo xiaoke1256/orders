@@ -11,6 +11,7 @@ public class EsCollectLogs implements Serializable {
 	private Long logId;
 	private Integer modifyCount;
 	private Integer newCount;
+	private Integer offlineCount;
 	private Timestamp exeTime;
 	private Timestamp insertTime;
 	public Long getLogId() {
@@ -30,6 +31,12 @@ public class EsCollectLogs implements Serializable {
 	}
 	public void setNewCount(Integer newCount) {
 		this.newCount = newCount;
+	}
+	public Integer getOfflineCount() {
+		return offlineCount;
+	}
+	public void setOfflineCount(Integer offlineCount) {
+		this.offlineCount = offlineCount;
 	}
 	public Timestamp getExeTime() {
 		return exeTime;

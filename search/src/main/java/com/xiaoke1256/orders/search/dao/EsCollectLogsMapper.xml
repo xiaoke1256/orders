@@ -3,13 +3,21 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaoke1256.orders.search.dao.EsCollectLogsDao">
-   <select parameterType="long" id="getLogById" resultType="com.xiaoke1256.orders.search.bo.EsCollectLogs">
+    <select parameterType="long" id="getLogById" resultType="com.xiaoke1256.orders.search.bo.EsCollectLogs">
       select *
        from ES_COLLECT_LOGS where log_id = #{id}
-   </select>
+    </select>
    
-   <select id="getLastExeTime" resultType="java.sql.Timestamp" >
+    <select id="getLastExeTime" resultType="java.sql.Timestamp" >
       select max(exe_time) from ES_COLLECT_LOGS 
-   </select>
+    </select>
+   
+    <insert id="save" useGeneratedKeys="true" keyProperty="logId" parameterType="com.xiaoke1256.orders.search.bo.EsCollectLogs" >
+   	  insert into ES_COLLECT_LOGS (modify_count,new_count,offline_count,exe_time,insert_time)
+   	  values (#{modifyCount},#{newCount},#{offlineCount},#{exeTime},#{insertTime})
+    </insert>
  
+    <delete id="delete" parameterType="long" >
+       delete from ES_COLLECT_LOGS where log_id = #{id}
+    </delete>
 </mapper>
