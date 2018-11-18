@@ -26,5 +26,8 @@ public class ProductDaoTest {
 	public void testGet() {
 		Product p = productDao.getProductByCode("0006100404");
 		System.out.println(p);
+		if(p != null) {
+			System.out.println("productName : "+ p.getProductName());
+		}
 	}
 }

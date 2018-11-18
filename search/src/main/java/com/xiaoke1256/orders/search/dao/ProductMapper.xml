@@ -3,7 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaoke1256.orders.search.dao.ProductDao">
-   <select id="getProductByCode" resultType="com.xiaoke1256.orders.search.bo.Product">
-      select * from PRODUCT where product_code = #{productCode}
+   <select parameterType="string" id="getProductByCode" resultType="com.xiaoke1256.orders.search.bo.Product">
+      select product_code, product_name, product_price, store_no, product_status, on_sale_time, product_intro, insert_time, update_time
+       from PRODUCT where product_code = #{id}
    </select>
 </mapper>
