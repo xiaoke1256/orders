@@ -2,9 +2,12 @@ package com.xiaoke1256.orders.search.dao.impl;
 
 import java.sql.Timestamp;
 
+import org.springframework.stereotype.Repository;
+
 import com.xiaoke1256.orders.search.bo.EsCollectLogs;
 import com.xiaoke1256.orders.search.dao.EsCollectLogsDao;
 
+@Repository
 public class EsCollectLogsDaoImpl extends BaseDaoImpl implements EsCollectLogsDao  {
 
 	@Override

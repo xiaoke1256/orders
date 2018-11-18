@@ -8,7 +8,7 @@
        from ES_COLLECT_LOGS where log_id = #{id}
    </select>
    
-   <select id="getLastExeTime" resultType="timestamp" >
+   <select id="getLastExeTime" resultType="java.sql.Timestamp" >
       select max(exe_time) from ES_COLLECT_LOGS 
    </select>
  

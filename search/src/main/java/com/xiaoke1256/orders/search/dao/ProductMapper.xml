@@ -4,7 +4,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaoke1256.orders.search.dao.ProductDao">
    <select parameterType="string" id="getProductByCode" resultType="com.xiaoke1256.orders.search.bo.Product">
-      select product_code, product_name, product_price, store_no, product_status, on_sale_time, product_intro, insert_time, update_time
+      select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT where product_code = #{id}
+   </select>
+   <!-- parameters:update_time,product_status  -->
+   <select parameterType="map" id="queryModifed" resultType="com.xiaoke1256.orders.search.bo.Product">
+      select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
+       from PRODUCT 
+       where product_status = #{productStatus}
+       <if test="lastTime != null">
+       		and update_time > #{lastTime}
+       </if>
    </select>
 </mapper>

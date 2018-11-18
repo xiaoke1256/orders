@@ -1,5 +1,9 @@
 package test.com.xiaoke1256.orders.search.dao;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -27,6 +31,22 @@ public class ProductDaoTest {
 		Product p = productDao.getProductByCode("0006100404");
 		System.out.println(p);
 		if(p != null) {
+			System.out.println("productName : "+ p.getProductName());
+		}
+	}
+	
+	@Test
+	public void testQueryModified() {
+		List<Product> l = productDao.queryModifed(null, "0");
+		for(Product p:l) {
+			System.out.println("productName : "+ p.getProductName());
+		}
+	}
+	
+	@Test
+	public void testQueryModifiedByTime() {
+		List<Product> l = productDao.queryModifed(new Timestamp(new Date(2018-1970,1,1).getTime()), "0");
+		for(Product p:l) {
 			System.out.println("productName : "+ p.getProductName());
 		}
 	}
