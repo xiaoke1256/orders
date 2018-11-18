@@ -70,8 +70,8 @@ public class DatabaseConfig {
 	}
 	
 	//以下 Mybatis 配置 */
-	@Bean
-	public SqlSessionFactory sqlSessionFactory(DataSource testDataSource) {
+	@Bean(name="sqlSessionFactoryBean")
+	public SqlSessionFactory sqlSessionFactoryBean(DataSource testDataSource) {
 		try {
 			ResourcePatternResolver resolver = (ResourcePatternResolver) new PathMatchingResourcePatternResolver();
 			SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
@@ -98,17 +98,16 @@ public class DatabaseConfig {
 		return transactionManager; 
 	}
 	
-	
-	/**
-	 * 自动扫描配置
-	 * @return
-	 */
-	@Bean 
-	public MapperScannerConfigurer mapperScannerConfigurer() {
-		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-		mapperScannerConfigurer.setBasePackage("com.xiaoke1256.orders.search.dao");
-		mapperScannerConfigurer.setSqlSessionTemplateBeanName("sqlSessionTemplate");
-		mapperScannerConfigurer.setAnnotationClass(Repository.class);
-		return mapperScannerConfigurer;
-	}
+//	/**
+//	 * 自动扫描配置
+//	 * @return
+//	 */
+//	@Bean 
+//	public MapperScannerConfigurer mapperScannerConfigurer() {
+//		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+//		mapperScannerConfigurer.setBasePackage("com.xiaoke1256.orders.search.dao");
+//		mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
+//		mapperScannerConfigurer.setAnnotationClass(Repository.class);
+//		return mapperScannerConfigurer;
+//	}
 }
