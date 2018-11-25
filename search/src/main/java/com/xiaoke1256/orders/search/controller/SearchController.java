@@ -77,7 +77,7 @@ public class SearchController {
 		 highlightBuilder.preTags("<em>");
 		 highlightBuilder.postTags("</em>");
 		 
-         SearchResponse response = client.prepareSearch("orders")
+         SearchResponse response = client.prepareSearch("prod")
         		.setTypes("product")
         		.setFetchSource(new String[] {"code","name","price","store_no","store_name","upd_time","type_id","type_name" }, null)
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
