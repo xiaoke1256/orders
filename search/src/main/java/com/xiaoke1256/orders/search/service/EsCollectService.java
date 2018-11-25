@@ -91,7 +91,7 @@ public class EsCollectService {
 			Map<String,Object> source = new HashMap<String,Object>();
 			source.put("code", product.getProductCode());
 			source.put("name", product.getProductName());
-			source.put("price", product.getProductPrice());
+			source.put("price", product.getProductPrice().doubleValue());
 			source.put("store_no", product.getStoreNo());
 			//jsonStr.put("store_name", value)
 			//jsonStr.put("type_id", product.get)
@@ -111,7 +111,7 @@ public class EsCollectService {
 			Map<String,Object> source = new HashMap<String,Object>();
 			source.put("code", product.getProductCode());
 			source.put("name", product.getProductName());
-			source.put("price", product.getProductPrice());
+			source.put("price", product.getProductPrice().doubleValue());
 			source.put("store_no", product.getStoreNo());
 			//jsonStr.put("store_name", value)
 			//jsonStr.put("type_id", product.get)
