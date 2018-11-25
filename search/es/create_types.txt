@@ -48,39 +48,63 @@
 #父子文档
 
 #产品和产品与用户的推荐关系
-PUT  http://localhost:9200/orders
+#PUT  http://localhost:9200/orders
+#{
+#  "mappings": {
+#    "product": {
+#    	"properties":{
+#	       "code":{"type":"keyword"},
+#	       "name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+#	       "intro":{"type":"keyword"},
+#	       "price":{"type":"double"},
+#	       "store_no":{"type":"keyword"},
+#	       "store_name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+#	       "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"},
+#	       "type_id":{"type":"keyword"},
+#		   "type_name":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+#		   "params":{
+#		   		"type":"nested",
+#		   		"properties":{
+#		   			"param_name":{"type":"keyword"},
+#		   			"param_value":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
+#		   		}
+#		   }
+#	    }
+#    },
+#    "product_user_map": {
+#      "properties":{
+#	     "user_id":{"type":"keyword"},
+#	     "score":{"type":"double"},
+#	     "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}
+#	  },
+#      "_parent": {
+#        "type": "product"
+#      }
+#    }
+#  }
+#}
+
+#产品独立放一个索引
+PUT  http://localhost:9200/prod/_mapping/product
 {
-  "mappings": {
-    "product": {
-    	"properties":{
-	       "code":{"type":"keyword"},
-	       "name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
-	       "price":{"type":"double"},
-	       "store_no":{"type":"keyword"},
-	       "store_name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
-	       "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"},
-	       "type_id":{"type":"keyword"},
-		   "type_name":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"},
-		   "params":{
-		   		"type":"nested",
-		   		"properties":{
-		   			"param_name":{"type":"keyword"},
-		   			"param_value":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
-		   		}
-		   }
-	    }
-    },
-    "product_user_map": {
-      "properties":{
-	     "user_id":{"type":"keyword"},
-	     "score":{"type":"double"},
-	     "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}
-	  },
-      "_parent": {
-        "type": "product"
-      }
+	"properties":{
+       "code":{"type":"keyword"},
+       "name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+       "intro":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+       "price":{"type":"double"},
+       "store_no":{"type":"keyword"},
+       "store_name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+       "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"},
+       "type_id":{"type":"keyword"},
+	   "type_name":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+	   "params":{
+	   		"type":"nested",
+	   		"properties":{
+	   			"param_name":{"type":"keyword"},
+	   			"param_value":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
+	   		}
+	   }
     }
-  }
 }
 
 #product_user_map放在另外一个索引中

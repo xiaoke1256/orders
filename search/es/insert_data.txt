@@ -1,5 +1,5 @@
 #造几条数据
-POST localhost:9200/orders/product/0001
+POST localhost:9200/prod/product/0001
 {"code":"0001",
   "name": "华硕鼠标",
    "price":45.8,
@@ -8,7 +8,7 @@ POST localhost:9200/orders/product/0001
    "upd_time":"2018-09-8 12:23:44"
   }
   
-POST localhost:9200/orders/product/0002
+POST localhost:9200/prod/product/0002
 {"code":"0002",
   "name": "弘基鼠标" ,
   "price":60,
@@ -19,7 +19,7 @@ POST localhost:9200/orders/product/0002
    "type_name":"电子产品"
   }
   
-POST localhost:9200/orders/product/0003
+POST localhost:9200/prod/product/0003
 {"code":"0003",
   "name": "联想笔记本" ,
   "price":6500,
@@ -31,7 +31,7 @@ POST localhost:9200/orders/product/0003
   }
   
   
-POST localhost:9200/orders/product/0004
+POST localhost:9200/prod/product/0004
 {"code":"0004",
   "name": "戴尔笔记本" ,
   "price":5500,
@@ -43,7 +43,7 @@ POST localhost:9200/orders/product/0004
   }
   
 #修改数据
-POST localhost:9200/orders/product/0004/_update
+POST localhost:9200/prod/product/0004/_update
 {
  "doc":{"code":"0001",
   "name": "华硕鼠标",
@@ -57,10 +57,10 @@ POST localhost:9200/orders/product/0004/_update
 }
 
 #删除数据
-DELETE localhost:9200/orders/product/0004
+DELETE localhost:9200/prod/product/0004
 
 
-POST localhost:9200/orders/product/0006
+POST localhost:9200/prod/product/0006
 {"code":"0006",
   "name": "儿童益智恐龙模型" ,
   "price":145,
@@ -71,7 +71,7 @@ POST localhost:9200/orders/product/0006
   "type_name":"儿童玩具"
 }
   
-POST localhost:9200/orders/product/0007
+POST localhost:9200/prod/product/0007
 {"code":"0007",
   "name": "乐高积木巨龙战车" ,
   "price":68,
@@ -83,7 +83,7 @@ POST localhost:9200/orders/product/0007
   }
   
 #修改数据
-POST localhost:9200/orders/product/0006/_update
+POST localhost:9200/prod/product/0006/_update
 {
  "doc":{"code":"0006",
   "name": "儿童益智恐龙模型",
@@ -103,7 +103,7 @@ POST localhost:9200/orders/product/0006/_update
 }
 
 #修改数据
-POST localhost:9200/orders/product/0007/_update
+POST localhost:9200/prod/product/0007/_update
 {
  "doc":{"code":"0007",
   "name": "乐高积木巨龙战车",

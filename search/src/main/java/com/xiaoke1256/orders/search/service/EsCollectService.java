@@ -77,7 +77,7 @@ public class EsCollectService {
 	
 	
 	public boolean isExist(String productCode) {
-		GetResponse resp = client.prepareGet("orders", "product", productCode)
+		GetResponse resp = client.prepareGet("prod", "product", productCode)
 			.setFetchSource(new String[]{"code"}, null).get();
 		return resp.isExists();
 	}
@@ -93,7 +93,7 @@ public class EsCollectService {
 			//jsonStr.put("type_id", product.get)
 			source.put("upd_time", product.getUpdateTime().getTime());
 			
-			IndexResponse resp = client.index(new IndexRequest("orders", "product",product.getProductCode()).source(source )).get();
+			IndexResponse resp = client.index(new IndexRequest("prod", "product",product.getProductCode()).source(source )).get();
 			if(resp.getId()==null)
 				throw new RuntimeException("Something is wrong!");
 		}catch (Exception e) {
@@ -112,7 +112,7 @@ public class EsCollectService {
 			//jsonStr.put("store_name", value)
 			//jsonStr.put("type_id", product.get)
 			source.put("upd_time", product.getUpdateTime().getTime());
-			UpdateResponse resp = client.update(new UpdateRequest("orders", "product",product.getProductCode()).doc(source )).get();
+			UpdateResponse resp = client.update(new UpdateRequest("prod", "product",product.getProductCode()).doc(source )).get();
 			if(!Result.UPDATED.equals(resp.getResult())) {
 				throw new RuntimeException("Something is wrong!Result is :"+resp.getResult());
 			}
@@ -123,7 +123,7 @@ public class EsCollectService {
 	
 	public void delete(String productCode) {
 		try {
-			DeleteResponse resp = client.delete(new DeleteRequest("orders", "product",productCode)).get();
+			DeleteResponse resp = client.delete(new DeleteRequest("prod", "product",productCode)).get();
 			if(!Result.DELETED.equals(resp.getResult())) {
 				throw new RuntimeException("Something is wrong!Result is :"+resp.getResult());
 			}
