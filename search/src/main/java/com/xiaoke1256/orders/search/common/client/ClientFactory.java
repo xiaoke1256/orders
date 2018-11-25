@@ -11,9 +11,11 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.TestPropertySource;
 
 @Component
 @PropertySource("classpath:config/elasticsearch-config.properties")
+@TestPropertySource("classpath:config/elasticsearch-config.properties")
 public class ClientFactory {
 	@Value("${orders-search.es.cluster.name}") 
 	private String clusterName;
