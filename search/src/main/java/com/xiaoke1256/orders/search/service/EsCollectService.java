@@ -69,14 +69,16 @@ public class EsCollectService {
 			}
 		}
 		//Save logs.
-		EsCollectLogs log = new EsCollectLogs();
-		log.setExeTime(new Timestamp(now.getTime()));
-		log.setInsertTime(new Timestamp(System.currentTimeMillis()));
-		log.setModifyCount(modifyCount);
-		log.setNewCount(onlineList.size()-modifyCount);
-		log.setOfflineCount(offlineList.size());
-		esCollectLogsDao.save(log);
-		System.out.println("log id:"+log.getLogId());
+		if(onlineList.size()>0 || onlineList.size()>0) {
+			EsCollectLogs log = new EsCollectLogs();
+			log.setExeTime(new Timestamp(now.getTime()));
+			log.setInsertTime(new Timestamp(System.currentTimeMillis()));
+			log.setModifyCount(modifyCount);
+			log.setNewCount(onlineList.size()-modifyCount);
+			log.setOfflineCount(offlineList.size());
+			esCollectLogsDao.save(log);
+			System.out.println("log id:"+log.getLogId());
+		}
 	}
 	
 	
