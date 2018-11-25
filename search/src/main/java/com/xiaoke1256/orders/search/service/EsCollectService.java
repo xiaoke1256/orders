@@ -49,27 +49,31 @@ public class EsCollectService {
 		List<Product> onlineList = productDao.queryModifed(lastExeTime, "1");//"1" 为已上线。 
 		
 		//Insert or update into Es.
+		int modifyCount = 0;
 		for(Product product:onlineList) {
 			if(!isExist(product.getProductCode())) {
 				index(product);
 			}else {
 				update(product);
+				modifyCount++;
 			}
 		}
 		
 		//Query disabled product after last execute time.
-		List<Product> offlineList = productDao.queryModifed(lastExeTime, "0");//"1" 为已下线。 
+		List<Product> offlineList = productDao.queryModifed(lastExeTime, "0");//"0" 为已下线。 
 		
 		//Delete from Es.
 		for(Product product:offlineList) {
-			delete(product.getProductCode());
+			if(isExist(product.getProductCode())) {
+				delete(product.getProductCode());
+			}
 		}
 		//Save logs.
 		EsCollectLogs log = new EsCollectLogs();
 		log.setExeTime(new Timestamp(now.getTime()));
 		log.setInsertTime(new Timestamp(System.currentTimeMillis()));
-		log.setModifyCount(0);
-		log.setNewCount(onlineList.size());
+		log.setModifyCount(modifyCount);
+		log.setNewCount(onlineList.size()-modifyCount);
 		log.setOfflineCount(offlineList.size());
 		esCollectLogsDao.save(log);
 		System.out.println("log id:"+log.getLogId());
@@ -124,6 +128,10 @@ public class EsCollectService {
 	public void delete(String productCode) {
 		try {
 			DeleteResponse resp = client.delete(new DeleteRequest("prod", "product",productCode)).get();
+			if(Result.NOT_FOUND.equals(resp.getResult())) {
+				//warning !!
+				return;
+			}
 			if(!Result.DELETED.equals(resp.getResult())) {
 				throw new RuntimeException("Something is wrong!Result is :"+resp.getResult());
 			}
