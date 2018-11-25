@@ -1,5 +1,5 @@
 #排序
-POST localhost:9200/orders/_search
+POST localhost:9200/prod/_search
 {
 	"query": {
 		"bool": {
@@ -19,7 +19,7 @@ POST localhost:9200/orders/_search
 }
 
 #按nested字段查询
-POST localhost:9200/orders/product/_search
+POST localhost:9200/prod/product/_search
 {"query": {
 	"nested":{
 	    "path":"params",
@@ -32,7 +32,7 @@ POST localhost:9200/orders/product/_search
 }
 
 #按子文档聚合后排序查询
-POST localhost:9200/orders/product/_search
+POST localhost:9200/prod/product/_search
 {
 	"size" : 0,
 	"aggs":{
@@ -61,7 +61,7 @@ POST localhost:9200/orders/product/_search
 }
 
 #从另外一个角度查推荐索引
-POST localhost:9200/prod_to_user/product_user_map/_search
+POST localhost:9200/prod/product_user_map/_search
 {
 	"query":{
 		"bool":{
@@ -91,7 +91,7 @@ POST localhost:9200/prod_to_user/product_user_map/_search
 }
 
 #利用分值影响查询结果的排序
-POST localhost:9200/orders/product/_search
+POST localhost:9200/prod/product/_search
 {
   "query": {
     "has_child": {
@@ -118,7 +118,7 @@ POST localhost:9200/orders/product/_search
 
 
 #利用分值影响查询结果的排序，且加上一定的搜索条件
-POST localhost:9200/orders/product/_search
+POST localhost:9200/prod/product/_search
 {
 "query": {
 		"bool": {
