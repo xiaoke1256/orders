@@ -1,10 +1,10 @@
 package test.com.xiaoke1256.orders.search.comon.client;
 
-import org.elasticsearch.client.Client;
-import org.junit.Assert;
+//import org.elasticsearch.client.Client;
+//import org.junit.Assert;
 import org.junit.Test;
 
-import com.xiaoke1256.orders.search.common.client.ClientBuilder;
+//import com.xiaoke1256.orders.search.common.client.ClientBuilder;
 
 public class ClientBuilderTest {
 	@Test

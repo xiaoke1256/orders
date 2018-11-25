@@ -2,17 +2,11 @@ package com.xiaoke1256.orders.search;
 
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

@@ -45,6 +45,7 @@ public class ProductDaoTest {
 	
 	@Test
 	public void testQueryModifiedByTime() {
+		@SuppressWarnings("deprecation")
 		List<Product> l = productDao.queryModifed(new Timestamp(new Date(2018-1970,1,1).getTime()), "0");
 		for(Product p:l) {
 			System.out.println("productName : "+ p.getProductName());
