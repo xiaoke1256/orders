@@ -16,7 +16,7 @@ public class Product implements Serializable {
 	
 	private BigDecimal productPrice;
 	
-	private String storeNo;
+	private Store store;
 	
 	private String productStatus;
 	
@@ -52,12 +52,12 @@ public class Product implements Serializable {
 		this.productPrice = productPrice;
 	}
 
-	public String getStoreNo() {
-		return storeNo;
+	public Store getStore() {
+		return store;
 	}
 
-	public void setStoreNo(String storeNo) {
-		this.storeNo = storeNo;
+	public void setStore(Store store) {
+		this.store = store;
 	}
 
 	public String getProductStatus() {

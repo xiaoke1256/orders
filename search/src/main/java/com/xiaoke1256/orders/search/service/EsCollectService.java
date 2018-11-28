@@ -94,8 +94,8 @@ public class EsCollectService {
 			source.put("code", product.getProductCode());
 			source.put("name", product.getProductName());
 			source.put("price", product.getProductPrice().doubleValue());
-			source.put("store_no", product.getStoreNo());
-			//jsonStr.put("store_name", value)
+			source.put("store_no", product.getStore().getStoreNo());
+			source.put("store_name", product.getStore().getStoreName());
 			//jsonStr.put("type_id", product.get)
 			source.put("upd_time", product.getUpdateTime().getTime());
 			
@@ -114,8 +114,8 @@ public class EsCollectService {
 			source.put("code", product.getProductCode());
 			source.put("name", product.getProductName());
 			source.put("price", product.getProductPrice().doubleValue());
-			source.put("store_no", product.getStoreNo());
-			//jsonStr.put("store_name", value)
+			source.put("store_no", product.getStore().getStoreNo());
+			source.put("store_name", product.getStore().getStoreName());
 			//jsonStr.put("type_id", product.get)
 			source.put("upd_time", product.getUpdateTime().getTime());
 			UpdateResponse resp = client.update(new UpdateRequest("prod", "product",product.getProductCode()).doc(source )).get();
