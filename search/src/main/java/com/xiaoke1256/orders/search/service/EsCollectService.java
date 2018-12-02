@@ -41,6 +41,9 @@ public class EsCollectService {
 	@Autowired
 	private ProductDao productDao;
 	
+	/**
+	 * select products then index it.
+	 */
 	public void collectProduct(){
 		//Search in log table(EsCollectLogs), get the latest execute time.
 		Timestamp lastExeTime = esCollectLogsDao.getLastExeTime();
@@ -90,15 +93,7 @@ public class EsCollectService {
 	
 	public void index(Product product) {
 		try {
-			Map<String,Object> source = new HashMap<String,Object>();
-			source.put("code", product.getProductCode());
-			source.put("name", product.getProductName());
-			source.put("price", product.getProductPrice().doubleValue());
-			source.put("store_no", product.getStore().getStoreNo());
-			source.put("store_name", product.getStore().getStoreName());
-			//jsonStr.put("type_id", product.get)
-			source.put("upd_time", product.getUpdateTime().getTime());
-			
+			Map<String, Object> source = jsonSource(product);
 			IndexResponse resp = client.index(new IndexRequest("prod", "product",product.getProductCode()).source(source )).get();
 			if(resp.getId()==null)
 				throw new RuntimeException("Something is wrong!");
@@ -110,14 +105,7 @@ public class EsCollectService {
 	
 	public void update(Product product) {
 		try {
-			Map<String,Object> source = new HashMap<String,Object>();
-			source.put("code", product.getProductCode());
-			source.put("name", product.getProductName());
-			source.put("price", product.getProductPrice().doubleValue());
-			source.put("store_no", product.getStore().getStoreNo());
-			source.put("store_name", product.getStore().getStoreName());
-			//jsonStr.put("type_id", product.get)
-			source.put("upd_time", product.getUpdateTime().getTime());
+			Map<String, Object> source = jsonSource(product);
 			UpdateResponse resp = client.update(new UpdateRequest("prod", "product",product.getProductCode()).doc(source )).get();
 			if(!Result.UPDATED.equals(resp.getResult())) {
 				throw new RuntimeException("Something is wrong!Result is :"+resp.getResult());
@@ -140,5 +128,18 @@ public class EsCollectService {
 		}catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private Map<String,Object> jsonSource(Product product) {
+		Map<String,Object> source = new HashMap<>();
+		source.put("code", product.getProductCode());
+		source.put("name", product.getProductName());
+		source.put("price", product.getProductPrice().doubleValue());
+		source.put("store_no", product.getStore().getStoreNo());
+		source.put("store_name", product.getStore().getStoreName());
+		source.put("type_id", product.getProductTypes().stream().map(t->t.getParentTypeId()).reduce((id1,id2)->id1+","+id2));
+		source.put("type_name", product.getProductTypes().stream().map(t->t.getTypeName()).reduce((name1,name2)->name1+","+name2));
+		source.put("upd_time", product.getUpdateTime().getTime());
+		return source;
 	}
 }

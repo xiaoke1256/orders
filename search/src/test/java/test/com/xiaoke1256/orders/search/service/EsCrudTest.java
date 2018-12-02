@@ -30,7 +30,7 @@ public class EsCrudTest {
 		product.setProductName("测试商品");
 		product.setProductIntro("商品简介");
 		product.setBrand("商标");
-		product.setStoreNo("000032");
+		//product.setStoreNo("000032");
 		product.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		product.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		if(!esCollectService.isExist(product.getProductCode())) {

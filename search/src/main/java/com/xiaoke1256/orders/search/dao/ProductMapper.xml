@@ -12,14 +12,17 @@
        <result property="productIntro" column="product_intro" />
        <result property="insertTime" column="insert_time" />
        <result property="updateTime" column="update_time" />
-       <association property="store" column="store_no" select="com.xiaoke1256.orders.search.dao.StoreDao.getStoreNo"  ></association>
+       <association property="store" column="store_no" select="com.xiaoke1256.orders.search.dao.StoreDao.getByStoreNo"  >
+       </association>
+       <collection property="productTypes" column="product_code" select="com.xiaoke1256.orders.search.dao.ProductTypeDao.getTypesByProductCode" >
+       </collection>
    </resultMap>
    <select parameterType="string" id="getProductByCode" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT where product_code = #{id}
    </select>
    <!-- parameters:update_time,product_status  -->
-   <select parameterType="map" id="queryModifed" resultType="com.xiaoke1256.orders.search.bo.Product">
+   <select parameterType="map" id="queryModifed" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT 
        where product_status = #{productStatus}

@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.search.bo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Product implements Serializable {
 	/**
@@ -13,6 +14,8 @@ public class Product implements Serializable {
 	private String productCode;
 	
 	private String productName;
+	
+	private List<ProductType> productTypes;
 	
 	private BigDecimal productPrice;
 	
@@ -42,6 +45,14 @@ public class Product implements Serializable {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+	
+	public List<ProductType> getProductTypes() {
+		return productTypes;
+	}
+
+	public void setProductTypes(List<ProductType> productTypes) {
+		this.productTypes = productTypes;
 	}
 
 	public BigDecimal getProductPrice() {
