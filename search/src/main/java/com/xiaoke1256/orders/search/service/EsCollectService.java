@@ -137,7 +137,7 @@ public class EsCollectService {
 		source.put("price", product.getProductPrice().doubleValue());
 		source.put("store_no", product.getStore().getStoreNo());
 		source.put("store_name", product.getStore().getStoreName());
-		source.put("type_id", product.getProductTypes().stream().map(t->t.getParentTypeId()).reduce((id1,id2)->id1+","+id2));
+		source.put("type_id", product.getProductTypes().stream().map(t->t.getTypeId()).reduce((id1,id2)->id1+","+id2));
 		source.put("type_name", product.getProductTypes().stream().map(t->t.getTypeName()).reduce((name1,name2)->name1+","+name2));
 		source.put("upd_time", product.getUpdateTime().getTime());
 		return source;

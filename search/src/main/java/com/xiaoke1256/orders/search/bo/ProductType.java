@@ -10,7 +10,7 @@ public class ProductType implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String typeId;
 	private String typeName;
-	private String parentTypeId;
+	private ProductType parentType;
 	private String typeDesc;
 	private Integer showOrder;
 	private Timestamp insertTime;
@@ -27,11 +27,11 @@ public class ProductType implements Serializable {
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
-	public String getParentTypeId() {
-		return parentTypeId;
+	public ProductType getParentType() {
+		return parentType;
 	}
-	public void setParentTypeId(String parentTypeId) {
-		this.parentTypeId = parentTypeId;
+	public void setParentType(ProductType parentType) {
+		this.parentType = parentType;
 	}
 	public String getTypeDesc() {
 		return typeDesc;
