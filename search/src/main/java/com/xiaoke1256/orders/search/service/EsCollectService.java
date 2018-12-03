@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.search.bo.EsCollectLogs;
 import com.xiaoke1256.orders.search.bo.Product;
+import com.xiaoke1256.orders.search.bo.ProductType;
 import com.xiaoke1256.orders.search.dao.EsCollectLogsDao;
 import com.xiaoke1256.orders.search.dao.ProductDao;
 
@@ -138,8 +139,17 @@ public class EsCollectService {
 		source.put("store_no", product.getStore().getStoreNo());
 		source.put("store_name", product.getStore().getStoreName());
 		source.put("type_id", product.getProductTypes().stream().map(t->t.getTypeId()).reduce((id1,id2)->id1+","+id2));
-		source.put("type_name", product.getProductTypes().stream().map(t->t.getTypeName()).reduce((name1,name2)->name1+","+name2));
+		source.put("type_name", product.getProductTypes().stream().map(t->getFullTypeName(t)).reduce((name1,name2)->name1+","+name2));
 		source.put("upd_time", product.getUpdateTime().getTime());
 		return source;
+	}
+	
+	private String getFullTypeName(ProductType productType) {
+		String typeName =productType.getTypeName();
+		ProductType parent = productType.getParentType();
+		if(parent!=null)
+			return getFullTypeName(parent)+" > "+typeName;
+		else
+			return typeName;
 	}
 }
