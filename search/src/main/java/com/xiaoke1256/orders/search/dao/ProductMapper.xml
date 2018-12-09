@@ -16,6 +16,8 @@
        </association>
        <collection property="productTypes" column="product_code" select="com.xiaoke1256.orders.search.dao.ProductTypeDao.getTypesByProductCode" >
        </collection>
+       <collection property="params" column="product_code" select="com.xiaoke1256.orders.search.dao.ProductParamDao.getByProductCode" >
+       </collection>
    </resultMap>
    <select parameterType="string" id="getProductByCode" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time

@@ -15,6 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.xiaoke1256.orders.search.SpringApplication;
 import com.xiaoke1256.orders.search.bo.Product;
+import com.xiaoke1256.orders.search.bo.ProductParam;
 import com.xiaoke1256.orders.search.bo.ProductType;
 import com.xiaoke1256.orders.search.dao.ProductDao;
 
@@ -29,10 +30,15 @@ public class ProductDaoTest {
 	
 	@Test
 	public void testGet() {
-		Product p = productDao.getProductByCode("0006100404");
+		Product p = productDao.getProductByCode("0008100407");
 		System.out.println(p);
 		if(p != null) {
 			System.out.println("productName : "+ p.getProductName());
+			if(p.getParams()!=null)
+				for(ProductParam param:p.getParams()) {
+					System.out.println("paramName : "+ param.getParamName());
+					System.out.println("paramValue : "+ param.getParamValue());
+				}
 		}
 	}
 	

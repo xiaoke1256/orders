@@ -30,6 +30,8 @@ public class Product implements Serializable {
 	private Timestamp insertTime;
 	
 	private Timestamp updateTime;
+	
+	private List<ProductParam> params;
 
 	public String getProductCode() {
 		return productCode;
@@ -109,6 +111,14 @@ public class Product implements Serializable {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public List<ProductParam> getParams() {
+		return params;
+	}
+
+	public void setParams(List<ProductParam> params) {
+		this.params = params;
 	}
 	
 }

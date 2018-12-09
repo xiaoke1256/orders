@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.search.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.search.bo.EsCollectLogs;
 import com.xiaoke1256.orders.search.bo.Product;
+import com.xiaoke1256.orders.search.bo.ProductParam;
 import com.xiaoke1256.orders.search.bo.ProductType;
 import com.xiaoke1256.orders.search.dao.EsCollectLogsDao;
 import com.xiaoke1256.orders.search.dao.ProductDao;
@@ -108,7 +110,7 @@ public class EsCollectService {
 		try {
 			Map<String, Object> source = jsonSource(product);
 			UpdateResponse resp = client.update(new UpdateRequest("prod", "product",product.getProductCode()).doc(source )).get();
-			if(!Result.UPDATED.equals(resp.getResult())) {
+			if(!Result.UPDATED.equals(resp.getResult()) && !Result.NOOP.equals(resp.getResult())) {
 				throw new RuntimeException("Something is wrong!Result is :"+resp.getResult());
 			}
 		}catch (Exception e) {
@@ -138,9 +140,19 @@ public class EsCollectService {
 		source.put("price", product.getProductPrice().doubleValue());
 		source.put("store_no", product.getStore().getStoreNo());
 		source.put("store_name", product.getStore().getStoreName());
-		source.put("type_id", product.getProductTypes().stream().map(t->t.getTypeId()).reduce((id1,id2)->id1+","+id2));
-		source.put("type_name", product.getProductTypes().stream().map(t->getFullTypeName(t)).reduce((name1,name2)->name1+","+name2));
+		source.put("type_id", product.getProductTypes().stream().map(t->t.getTypeId()).reduce((id1,id2)->id1+","+id2).orElse(null));
+		source.put("type_name", product.getProductTypes().stream().map(t->getFullTypeName(t)).reduce((name1,name2)->name1+","+name2).orElse(null));
 		source.put("upd_time", product.getUpdateTime().getTime());
+		if(product.getParams()!=null && product.getParams().size()>0) {
+			List<Map<String,String>> params = new ArrayList<Map<String,String>>();
+			for(ProductParam param:product.getParams()) {
+				Map<String,String> row = new HashMap<String,String>();
+				row.put("param_name", param.getParamName());
+				row.put("param_value", param.getParamValue());
+				params.add(row);
+			}
+			source.put("params", params);
+		}
 		return source;
 	}
 	
