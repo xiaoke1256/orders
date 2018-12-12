@@ -3,4 +3,4 @@
 <br>1、高并发环境下订单的受理。
 <br>2、商品搜索(ES)。
 <br>3、高吞吐量的订单流转。
-<br> This is a simple order system.Just for test a RDBMS in high concurrency.
+<br> This is a simple e-commerce platform.Just for test a RDBMS in high concurrency.
