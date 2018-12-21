@@ -5,5 +5,5 @@
 <br>3、高吞吐量的订单流转。
 <br> This is a simple e-commerce platform.We Discuss these topics:
 <br>1.Receiving orders in high concurrency environment.
-<br>2.Searching porducts.
+<br>2.Searching porducts(ES).
 <br>3.Order circulation in high throughput capacity.
