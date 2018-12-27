@@ -7,7 +7,7 @@
      <File name="log" fileName="logs/orders-search.log" append="false">
         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
      </File >
-     <RollingFile name="RollingFile" fileName="/logs/orders-search.log" filePattern="/logs/orders-search-%d{yyyy-MM-dd_HH-mm}-%i.log">
+     <RollingFile name="RollingFile" fileName="/logs/orders-search.log" filePattern="/logs/orders-search-%d{yyyy-MM-dd}-%i.log">
              <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
              <Policies>
                  <TimeBasedTriggeringPolicy/>
