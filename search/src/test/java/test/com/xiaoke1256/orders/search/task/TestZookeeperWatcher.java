@@ -23,7 +23,7 @@ public class TestZookeeperWatcher {
 	@Test
 	public void testToBeMaster() {
 		try {
-			zookeeperWatcher.toBeMast("/zookeeper/search/master");
+			zookeeperWatcher.toBeMast();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

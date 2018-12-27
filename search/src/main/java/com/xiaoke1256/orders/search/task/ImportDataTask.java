@@ -19,7 +19,7 @@ public class ImportDataTask {
 	
 	public void collectProduct() {
 		try {
-			if(zookeeperWatcher.toBeMast("/zookeeper/search/master")) {
+			if(zookeeperWatcher.toBeMast()) {
 				logger.info("I'm the master. start collect.");
 				esCollectService.collectProduct();
 				logger.info("end of collect.");

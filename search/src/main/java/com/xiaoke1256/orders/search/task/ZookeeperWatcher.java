@@ -16,21 +16,23 @@ public class ZookeeperWatcher extends BaseWatcher {
 	
 	private String serverId = Integer.toHexString(new Random().nextInt());
 	
-	public synchronized boolean toBeMast(String nodePath) throws InterruptedException {
+	private final String NODE_PATH = "/zookeeper/search/master";
+	
+	public synchronized boolean toBeMast() throws InterruptedException {
 		isMaster = null;
 		while(true) {
 			try {
-				this.zooKeeper.create(nodePath, serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+				this.zooKeeper.create(NODE_PATH, serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 				isMaster = true;
 				return isMaster;
 			} catch (KeeperException e) {
 				switch (e.code()) {
 				case NODEEXISTS:
-					if(checkMaster(nodePath))
+					if(checkMaster(NODE_PATH))
 						return isMaster;
 				default:
 					//其他异常（含ConnectLossException）
-					if(checkMaster(nodePath))
+					if(checkMaster(NODE_PATH))
 						return isMaster;
 				}
 			}
