@@ -16,6 +16,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import com.xiaoke1256.orders.search.bo.ProductParam;
 import com.xiaoke1256.orders.search.bo.ProductType;
 import com.xiaoke1256.orders.search.dao.EsCollectLogsDao;
 import com.xiaoke1256.orders.search.dao.ProductDao;
+import com.xiaoke1256.orders.search.task.ImportDataTask;
 
 /**
  * 搜索引擎， 收集商品的变化
@@ -35,6 +38,8 @@ import com.xiaoke1256.orders.search.dao.ProductDao;
 @Service
 @Transactional
 public class EsCollectService {
+	private static final Logger logger = LoggerFactory.getLogger(ImportDataTask.class);
+	
 	@Autowired
 	private Client client;
 	
@@ -83,7 +88,7 @@ public class EsCollectService {
 			log.setNewCount(onlineList.size()-modifyCount);
 			log.setOfflineCount(offlineList.size());
 			esCollectLogsDao.save(log);
-			System.out.println("log id:"+log.getLogId());
+			logger.debug("log id:{}",log.getLogId());
 		}
 	}
 	
