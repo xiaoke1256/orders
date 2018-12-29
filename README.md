@@ -8,3 +8,18 @@
 1. Receiving orders in high concurrency environment.
 2. Searching porducts(ES).
 3. Order circulation in high throughput capacity.
+
+```
+                          ┌-> 开启物流流程 -> 签收
+                          | 
+下订单 -> 支付 -> 备货 -> 出库 ┬(确认收货)--┬> 交易成功(结束) 
+   |      |       |       |  |            |
+ (取消) (取消)  (取消)     |  └-(时限到期)--┘
+    └---┬---┘     |    (取消) 
+        |         └---┬---┘
+        |             V 
+        |            退款
+        |             |
+        |             V
+        └---------->交易取消(结束)
+```
