@@ -13,12 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.TestPropertySource;
 
-import com.xiaoke1256.orders.search.task.ImportDataTask;
-
 @PropertySource("classpath:config/zookeeper.properties")
 @TestPropertySource("classpath:config/zookeeper.properties")
 public abstract class BaseWatcher implements Watcher {
-	private static final Logger logger = LoggerFactory.getLogger(ImportDataTask.class);
+	private static final Logger logger = LoggerFactory.getLogger(BaseWatcher.class);
 	
 	@Value("${zookeeper.url}") 
 	private String zookeeperUrl;
