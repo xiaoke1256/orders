@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0">
-  
 
     <servlet>
         <servlet-name>jsp</servlet-name>
@@ -20,6 +18,7 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
+    
 
     <!-- The mappings for the JSP servlet -->
     <servlet-mapping>
@@ -27,12 +26,19 @@
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
-    
-    <context-param>
+
+	<context-param> 
+		<!-- 日志配置文件路径 --> 
+		<param-name>log4jConfiguration</param-name> 
+		<param-value>classpath:log4j2.xml</param-value> 
+	</context-param>
+
+	<context-param>
     	<param-name>spring.profiles.default</param-name>
     	<param-value>dev</param-value>
     </context-param>
-    <!-- =================== Begin of spring4.3 config ===================== -->
+	
+	<!-- =================== Begin of spring4.3 config ===================== -->
     <context-param>
         <param-name>contextClass</param-name>
         <param-value>
@@ -69,7 +75,7 @@
 	</listener>
 	
 	<servlet>
-		<servlet-name>spring</servlet-name>
+		<servlet-name>spring-mvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextClass</param-name>
@@ -79,14 +85,10 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>spring</servlet-name>
+		<servlet-name>spring-mvc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-
-  <!-- ==================== Default Session Configuration ================= -->
-  <!-- You can set the default session timeout (in minutes) for all newly   -->
-  <!-- created sessions by modifying the value below.                       -->
 
     <session-config>
         <session-timeout>30</session-timeout>

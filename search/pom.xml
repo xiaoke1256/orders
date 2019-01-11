@@ -26,6 +26,12 @@
     <dependency>
     	<groupId>org.springframework</groupId>
      	<artifactId>spring-core</artifactId>
+     	<exclusions>
+            <exclusion>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+            </exclusion>
+        </exclusions>
      	<version>4.3.20.RELEASE</version>
     </dependency>
      
@@ -101,6 +107,23 @@
       <artifactId>slf4j-api</artifactId>
       <version>1.7.25</version>
     </dependency>
+    
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>1.7.25</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jul-to-slf4j</artifactId>
+        <version>1.7.25</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.7.25</version>
+    </dependency>
 
 <!-- 	<dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -166,7 +189,7 @@
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>3.0.1</version>
-        <scope>test</scope>
+        <scope>provided</scope>
     </dependency>
 	
     <dependency>
