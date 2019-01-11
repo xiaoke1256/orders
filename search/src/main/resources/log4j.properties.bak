@@ -1,5 +1,21 @@
 # Don't remove this file !Otherwise Spring's log can not be found.
 log4j.rootLogger=INFO,A1
+
+
+
 log4j.appender.A1=org.apache.log4j.ConsoleAppender
 log4j.appender.A1.layout=org.apache.log4j.PatternLayout
 log4j.appender.A1.layout.ConversionPattern=%-d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%c]-[%p] %m%n
+
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=/logs/orders-search-spring.log
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%-d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%c]-[%p] %m%n
+log4j.appender.file.MaxFileSize =4096KB
+
+# Keep one backup file
+log4j.appender.file.MaxBackupIndex=20
+
+log4j.org.springframework=ALL,file,A1
+
+log4j.com.xiaoke1256=DEBUG,file,A1
