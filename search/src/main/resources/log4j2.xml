@@ -21,17 +21,17 @@
      <Root level="INFO" additivity="false">
        <AppenderRef ref="Console"/>
      </Root>
-     <logger name="org.springframework" level="TRACE" additivity="false">
+     <logger name="org.springframework" level="INFO" additivity="false">
      	<AppenderRef ref="Console"/>
-     	<appender-ref ref="RollingFile"/>
+     	<AppenderRef ref="RollingFile"/>
      </logger>
      <logger name="org.mybatis" level="INFO" additivity="false">
      	<AppenderRef ref="Console"/>
-     	<appender-ref ref="RollingFile"/>
+     	<AppenderRef ref="RollingFile"/>
      </logger>
      <logger name="com.xiaoke1256.orders" level="DEBUG" additivity="false">
-     	<appender-ref ref="Console"/>
-        <appender-ref ref="RollingFile"/>
+     	<AppenderRef ref="Console"/>
+        <AppenderRef ref="RollingFile"/>
      </logger>
    </Loggers>
  </configuration>

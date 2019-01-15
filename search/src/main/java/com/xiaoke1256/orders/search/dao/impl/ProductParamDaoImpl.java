@@ -2,9 +2,12 @@ package com.xiaoke1256.orders.search.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.xiaoke1256.orders.search.bo.ProductParam;
 import com.xiaoke1256.orders.search.dao.ProductParamDao;
 
+@Repository
 public class ProductParamDaoImpl extends BaseDaoImpl implements ProductParamDao {
 
 	@Override
