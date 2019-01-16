@@ -31,7 +31,10 @@ public class SearchResult implements Serializable {
 		this.pageSize = pageSize;
 		this.totalCount = totalCount;
 		this.resultList = resultList;
-		this.totalPages=totalCount/pageSize+(totalCount%pageSize>0?1:0);
+		if(pageSize>0)
+			this.totalPages=totalCount/pageSize+(totalCount%pageSize>0?1:0);
+		else
+			this.totalPages=1;
 		if(totalPages>0 && pageNo>totalPages)
 			throw new RuntimeException("Out of page bound.");
 	}
