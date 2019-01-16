@@ -25,24 +25,26 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.search.common.ErrMsg;
 import com.xiaoke1256.orders.search.vo.Product;
 import com.xiaoke1256.orders.search.vo.SearchCondition;
 import com.xiaoke1256.orders.search.vo.SearchResult;
 
-@RestController
+@Controller
 @RequestMapping("/")
 public class SearchController {
-
+	
 	@Autowired
 	private Client client;
+	
 
 	@RequestMapping(value="/search",method= {RequestMethod.POST})
 	@ResponseBody
