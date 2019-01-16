@@ -9,21 +9,17 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.TestPropertySource;
 
 @Component
-@PropertySource("classpath:config/elasticsearch-config.properties")
-@TestPropertySource("classpath:config/elasticsearch-config.properties")
 public class ClientFactory {
-	@Value("${orders-search.es.cluster.name}") 
+	@Value("${search.es.cluster.name}") 
 	private String clusterName;
-	@Value("${orders-search.es.hostname}")
+	@Value("${search.es.hostname}")
 	private String networkHost;
-	@Value("${orders-search.es.port}")
+	@Value("${search.es.port}")
 	private String networkPort;
-	@Value("${orders-search.es.client.transport.sniff}")
+	@Value("${search.es.client.transport.sniff}")
 	private String transportSniff;
 	
 	public Client create() {

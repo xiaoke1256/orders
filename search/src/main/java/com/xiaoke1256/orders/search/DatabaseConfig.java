@@ -12,19 +12,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.test.context.TestPropertySource;
 
 @Configuration
 @EnableAsync
-@PropertySource("classpath:config/db.properties")
-@TestPropertySource("classpath:config/db.properties")
 public class DatabaseConfig {
 	
 	@Value("${db.jndi_name}")
