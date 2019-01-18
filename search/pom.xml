@@ -198,6 +198,13 @@
        <version>3.4.6</version>
     </dependency>
      
+    <dependency>
+       <groupId>com.xiaoke_1256.orders</groupId>
+       <artifactId>orders-common</artifactId>
+       <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+     
+     
   </dependencies>
   
   <build>

@@ -1,4 +1,5 @@
-package com.xiaoke1256.orders.search.common;
+package com.xiaoke1256.orders.common;
+
 
 public class ErrMsg implements java.io.Serializable{
 	/**
