@@ -1,15 +1,16 @@
 package com.xiaoke1256.orders.search.vo;
 
-import java.io.Serializable;
 import java.util.Map;
 
-public class SearchCondition implements Serializable {
+import com.xiaoke1256.orders.common.page.BaseCondition;
 
+public class SearchCondition extends BaseCondition {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String searchName;
 	
 	private String userId;
