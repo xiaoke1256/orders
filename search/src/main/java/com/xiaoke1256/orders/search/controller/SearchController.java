@@ -34,9 +34,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.search.vo.Product;
 import com.xiaoke1256.orders.search.vo.SearchCondition;
-import com.xiaoke1256.orders.search.vo.SearchResult;
 
 @Controller
 @RequestMapping("/")
@@ -48,7 +49,7 @@ public class SearchController {
 
 	@RequestMapping(value="/search",method= {RequestMethod.POST})
 	@ResponseBody
-	public SearchResult search(@RequestBody SearchCondition condition){
+	public RespMsg search(@RequestBody SearchCondition condition){
 		try {
 			validate(condition);
 			
@@ -62,17 +63,15 @@ public class SearchController {
 			
 			//TODO order by.
 			
-			return searchFunction(qb,condition.getPageNo(),condition.getPageSize());
+			return new RespMsg("0","success!",searchFunction(qb,condition.getPageNo(),condition.getPageSize()));
 		}catch(Exception e) {
 			e.printStackTrace();
-			SearchResult result = new SearchResult();
 			ErrMsg error = new ErrMsg("error",e.getMessage());
-			result.setError(error );
-			return result;
+			return error;
 		}
 	}
 	
-	 private SearchResult searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) throws Exception {
+	 private QueryResult<Product> searchFunction(QueryBuilder queryBuilder,int pageNo,int pageSize) throws Exception {
 		 
 		 HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false);
 		 highlightBuilder.preTags("<em>");
@@ -120,7 +119,7 @@ public class SearchController {
         	product.setScore(score);
         	rsultList.add(product);
         }
-        return new SearchResult(pageNo,pageSize,totalCount,rsultList);
+        return new QueryResult<Product>(pageNo,pageSize,totalCount,rsultList);
     }
 
 	private String getValueWithHighlight(String queryName, Map<String, HighlightField> hightlingFields,Map<String, Object> values) {
