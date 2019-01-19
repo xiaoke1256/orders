@@ -14,6 +14,13 @@ public class RespMsg implements java.io.Serializable {
 		this.code = code;
 		this.msg = msg;
 	}
+	public RespMsg(String code, String msg,Object respObj) {
+		super();
+		this.respObj = respObj;
+		this.code = code;
+		this.msg = msg;
+	}
+
 	/**
 	 * 
 	 */

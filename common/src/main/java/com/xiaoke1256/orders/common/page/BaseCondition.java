@@ -3,6 +3,11 @@ package com.xiaoke1256.orders.common.page;
 import java.io.Serializable;
 
 public abstract class BaseCondition implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int pageNo;
 	
 	private int pageSize;
