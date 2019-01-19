@@ -5,7 +5,6 @@
   <groupId>com.xiaoke_1256.orders</groupId>
   <artifactId>orders-common</artifactId>
   <name>orders</name>
-  <packaging>jar</packaging>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
