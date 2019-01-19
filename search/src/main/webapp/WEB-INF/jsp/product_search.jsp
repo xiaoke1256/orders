@@ -29,8 +29,12 @@
   } 
   
   $(function (){
-	  $('#searchBtn').click(function(){
-		  var data = JSON.stringify({"searchName":$('#searchName').val(),"userId":$('#userId').val(),"pageNo":1,"pageSize":10});
+	  $('body').on('click','#searchBtn,.page',function(){
+		  var pageNo = $(this).attr("pageNo");
+		  if(!pageNo || isNaN(pageNo) )
+			  pageNo=1;
+		  //alert(pageNo);
+		  var data = JSON.stringify({"searchName":$('#searchName').val(),"userId":$('#userId').val(),"pageNo":pageNo,"pageSize":10});
 		  $.ajax({  
 			    url:"search",
 			    type:"POST",  
@@ -52,6 +56,7 @@
 			    				+p.storeName+'</td><td>'+$.trim(p.typeName)+'</td><td>'+dateFtt(new Date(p.updTime),'yyyy-MM-dd HH:mm:ss.S')+'</td><td>'+p.score+'</td> </tr>');
 			    		
 			    	}
+			    	makePageInfo(ret.respObj);
 			    },
 			    error:function(err){
 			    	//alert("网络异常："+err.responseText);
@@ -60,6 +65,24 @@
 		  });
 		  
 	  });
+	  
+	  function makePageInfo(page){
+		  var pageNo = page.pageNo;
+		  var pageSize = page.pageSize;
+		  var totalCount = page.totalCount;
+		  var totalPages = page.totalPages;
+		  var pageContetxt = '';
+		  if(pageNo>1){
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
+		  }
+		  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
+		  if(pageNo<totalPages){
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalCount+'">尾页</a> ';
+		  }
+		  $('#pageTd').empty().append(pageContetxt);
+	  }
 	  
   });
   </script>
@@ -94,6 +117,11 @@
 	 		<tbody>
 	 			
 	 		</tbody>
+	 		<tfoot>
+	 			<tr>
+	 				<td colspan="7" id="pageTd" ></td>
+	 			</tr>
+	 		</tfoot>
 	 	</table>
 	</div>
 	<div id="pageFoot">

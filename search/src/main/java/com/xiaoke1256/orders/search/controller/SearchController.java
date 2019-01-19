@@ -81,10 +81,9 @@ public class SearchController {
         		.setTypes("product")
         		.setFetchSource(new String[] {"code","name","price","store_no","store_name","upd_time","type_id","type_name" }, null)
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
-                .setScroll(new TimeValue(60000))
                 .setQuery(queryBuilder)
                 .highlighter(highlightBuilder)
-                .setFrom((pageNo-1)*pageSize+1)
+                .setFrom((pageNo-1)*pageSize)
                 .setSize(pageSize).get();
         
         int totalCount = (int) response.getHits().getTotalHits();
