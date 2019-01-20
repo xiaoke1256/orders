@@ -54,19 +54,19 @@ PUT  http://localhost:9200/prod
     "product": {
     	"properties":{
 	       "code":{"type":"keyword"},
-	       "name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
-	       "intro":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+	       "name":{"type":"text","index":"true","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
+	       "intro":{"type":"text","index":"true","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
 	       "price":{"type":"double"},
 	       "store_no":{"type":"keyword"},
-	       "store_name":{"type":"text","index":"true","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+	       "store_name":{"type":"text","index":"true","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
 	       "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"},
 	       "type_id":{"type":"keyword"},
-		   "type_name":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"},
+		   "type_name":{"type":"text","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
 		   "params":{
 		   		"type":"nested",
 		   		"properties":{
 		   			"param_name":{"type":"keyword"},
-		   			"param_value":{"type":"text","analyzer":"ik_smart","search_analyzer":"ik_smart"}
+		   			"param_value":{"type":"text","analyzer":"ik_max_word","search_analyzer":"ik_max_word"}
 		   		}
 		   }
 	    }
