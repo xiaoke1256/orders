@@ -19,6 +19,7 @@ import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction.
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder.Type;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
@@ -54,7 +55,7 @@ public class SearchController {
 			
 			BoolQueryBuilder qb = new BoolQueryBuilder();
 			if(!StringUtils.isEmpty(condition.getSearchName()))
-				qb.must(QueryBuilders.multiMatchQuery(condition.getSearchName(), "name","store_name","type_name").boost(2.0f));
+				qb.must(QueryBuilders.multiMatchQuery(condition.getSearchName()).field("name", 2.0f).field("store_name").field("type_name").boost(1.0f));
 			else
 				qb.must(QueryBuilders.matchAllQuery());
 			
