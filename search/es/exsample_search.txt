@@ -126,8 +126,8 @@ POST localhost:9200/prod/product/_search
 				{
 					"multi_match": {
 						"query":"战车",
-						"fields": ["name","store_name","type_name"],
-						"boost":2
+						"fields": ["name^2","store_name","type_name"],
+						"boost":1
 					}
 				}
 			],
