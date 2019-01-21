@@ -29,8 +29,12 @@
   } 
   
   $(function (){
-	  $('#searchBtn').click(function(){
-		  var data = JSON.stringify({"searchName":$('#searchName').val(),"userId":$('#userId').val(),"pageNo":1,"pageSize":10});
+	  $('body').on('click','#searchBtn,.page',function(){
+		  var pageNo = $(this).attr("pageNo");
+		  if(!pageNo || isNaN(pageNo) )
+			  pageNo=1;
+		  //alert(pageNo);
+		  var data = JSON.stringify({"searchName":$('#searchName').val(),"userId":$('#userId').val(),"pageNo":pageNo,"pageSize":10});
 		  $.ajax({  
 			    url:"search",
 			    type:"POST",  
@@ -39,19 +43,20 @@
 			    contentType: "application/json;charset=utf-8",
 			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
 			    success: function (ret) {  
-			    	if(ret.error){
-			    		alert(ret.error.errCode+":"+ret.error.errMsg);
+			    	if(ret.code=='error'){
+			    		alert(ret.error.code+":"+ret.error.msg);
 			    		return;
 			    	}
 			    	//alert("共查出记录："+ret.totalCount);
 			    	var $tr = $('#listTable tbody').empty();
-			    	for(var i in ret.resultList){
-			    		var p = ret.resultList[i];
+			    	for(var i in ret.respObj.resultList){
+			    		var p = ret.respObj.resultList[i];
 			    		//alert("p:"+p);
 			    		$tr.append('<tr> <td>'+p.code+'</td><td>'+p.name+'</td><td>'+p.price+'</td><td>'
 			    				+p.storeName+'</td><td>'+$.trim(p.typeName)+'</td><td>'+dateFtt(new Date(p.updTime),'yyyy-MM-dd HH:mm:ss.S')+'</td><td>'+p.score+'</td> </tr>');
 			    		
 			    	}
+			    	makePageInfo(ret.respObj);
 			    },
 			    error:function(err){
 			    	//alert("网络异常："+err.responseText);
@@ -60,6 +65,24 @@
 		  });
 		  
 	  });
+	  
+	  function makePageInfo(page){
+		  var pageNo = page.pageNo;
+		  var pageSize = page.pageSize;
+		  var totalCount = page.totalCount;
+		  var totalPages = page.totalPages;
+		  var pageContetxt = '';
+		  if(pageNo>1){
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
+		  }
+		  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
+		  if(pageNo<totalPages){
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
+			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalCount+'">尾页</a> ';
+		  }
+		  $('#pageTd').empty().append(pageContetxt);
+	  }
 	  
   });
   </script>
@@ -94,6 +117,11 @@
 	 		<tbody>
 	 			
 	 		</tbody>
+	 		<tfoot>
+	 			<tr>
+	 				<td colspan="7" id="pageTd" ></td>
+	 			</tr>
+	 		</tfoot>
 	 	</table>
 	</div>
 	<div id="pageFoot">

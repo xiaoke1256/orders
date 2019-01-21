@@ -3,7 +3,7 @@ package com.xiaoke1256.orders.search.vo;
 import java.io.Serializable;
 import java.util.List;
 
-import com.xiaoke1256.orders.search.common.ErrMsg;
+import com.xiaoke1256.orders.common.ErrMsg;
 
 public class SearchResult implements Serializable {
 
