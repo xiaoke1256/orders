@@ -28,10 +28,6 @@
 		<dd>后台定时任务将用zookeeper协调。</dd>
 		<dt>4</dt>
 		<dd>引入Spring-boot/Spring-cloud</dd>
-		<dt>5</dt>
-		<dd>探讨高并发时线程死锁的情况（结合jvm）。<a href="deadLock/">GO</a></dd>
-		<dt>6</dt>
-		<dd>探讨内存泄漏的情况（结合jvm）。<a href="oom/">GO</a></dd>
 	  </dl>
 	</div>
 	
