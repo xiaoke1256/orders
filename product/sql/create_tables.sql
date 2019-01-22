@@ -2,7 +2,7 @@ create table product
 (
   product_code    CHAR(10) primary key not null comment '商品编号，主键',
   product_name    VARCHAR(256) comment '商品名称',
-  product_price DECIMAL(19,2) comment '价格',
+  product_price DECIMAL(20) comment '价格(厘)',
   store_no      VARCHAR(32) comment '店铺号',
   product_status  CHAR(1) not null comment '状态：0=下架，1=上架',
   on_sale_time TIMESTAMP comment '上架时间，用于搜索引擎采集过滤(废除，靠update_time字段判断)',
