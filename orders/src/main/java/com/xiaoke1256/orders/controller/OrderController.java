@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xiaoke1256.orders.bo.OrderItem;
 import com.xiaoke1256.orders.bo.PayOrder;
 import com.xiaoke1256.orders.bo.SubOrder;
 import com.xiaoke1256.orders.common.ErrMsg;
@@ -30,7 +31,7 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
-	public @ResponseBody com.xiaoke1256.orders.vo.PayOrder orderDetail(@PathVariable("orderNo") String orderNo){
+	public @ResponseBody com.xiaoke1256.orders.dto.PayOrder orderDetail(@PathVariable("orderNo") String orderNo){
 		System.out.println(orderNo);
 		PayOrder order = orederService.getPayOrder(orderNo);
 		if(order==null)
@@ -43,7 +44,7 @@ public class OrderController {
 	@RequestMapping(value="/",method={RequestMethod.POST})
 	public @ResponseBody OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request){
 		try {
-			PayOrder order = orederService.place(request.getPayerNo(), request.getCarriageAmt(), request.getProductMap());
+			PayOrder order = orederService.place(request.getPayerNo(), request.getProductMap());
 			OrderPlaceResponse response = new OrderPlaceResponse();
 			PropertyUtils.copyProperties(response, order);
 			return response ;
@@ -55,22 +56,27 @@ public class OrderController {
 		}
 	}
 	
-	private com.xiaoke1256.orders.vo.PayOrder covertToVo(PayOrder order){
+	private com.xiaoke1256.orders.dto.PayOrder covertToVo(PayOrder order){
 		try{
-			com.xiaoke1256.orders.vo.PayOrder orderVo = new com.xiaoke1256.orders.vo.PayOrder();
+			com.xiaoke1256.orders.dto.PayOrder orderVo = new com.xiaoke1256.orders.dto.PayOrder();
 			orderVo.setPayerNo(order.getPayerNo());
 			orderVo.setCarriageAmt(order.getCarriageAmt());
 			orderVo.setInsertTime(order.getInsertTime());
-			orderVo.setPayOrderNo(order.getPayOrderNo());
 			orderVo.setTotalAmt(order.getTotalAmt());
 			orderVo.setUpdateTime(order.getUpdateTime());
 			if(order.getSubOrders()!=null){
-				Set<com.xiaoke1256.orders.vo.SubOrder> subOrderSet = new LinkedHashSet<com.xiaoke1256.orders.vo.SubOrder>();
+				Set<com.xiaoke1256.orders.dto.SubOrder> subOrderSet = new LinkedHashSet<com.xiaoke1256.orders.dto.SubOrder>();
 				for(SubOrder subOrder:order.getSubOrders()){
-					com.xiaoke1256.orders.vo.SubOrder  subOrderVo = new com.xiaoke1256.orders.vo.SubOrder();
+					com.xiaoke1256.orders.dto.SubOrder  subOrderVo = new com.xiaoke1256.orders.dto.SubOrder();
 					PropertyUtils.copyProperties(subOrderVo, subOrder);
-					//subOrderVo.setProductCode(subOrder.getProduct().getProductCode());
 					subOrderSet.add(subOrderVo);
+					Set<com.xiaoke1256.orders.dto.OrderItem> orderItemSet = new LinkedHashSet<com.xiaoke1256.orders.dto.OrderItem>();
+					for(OrderItem orderItem:subOrder.getOrderItems()) {
+						com.xiaoke1256.orders.dto.OrderItem orderItemVo = new com.xiaoke1256.orders.dto.OrderItem();
+						PropertyUtils.copyProperties(orderItemVo, orderItem);
+						orderItemSet.add(orderItemVo);
+					}
+					subOrderVo.setOrderItems(orderItemSet);
 				}
 				orderVo.setSubOrders(subOrderSet);
 			}

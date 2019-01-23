@@ -1,16 +1,18 @@
-package com.xiaoke1256.orders.vo;
+package com.xiaoke1256.orders.dto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import com.xiaoke1256.orders.dto.SubOrder;
+
 public class PayOrder {
 
-	private String payOrderNo;
-
-	private BigDecimal totalAmt;
+	private Long payOrderId;
 
 	private BigDecimal  carriageAmt;
+	
+	private BigDecimal totalAmt;
 
 	private String payerNo;
 	
@@ -19,47 +21,63 @@ public class PayOrder {
 	private Timestamp insertTime;
 
 	private Timestamp updateTime;
-	public String getPayOrderNo() {
-		return payOrderNo;
+
+	public Long getPayOrderId() {
+		return payOrderId;
 	}
-	public void setPayOrderNo(String payOrderNo) {
-		this.payOrderNo = payOrderNo;
+
+	public void setPayOrderId(Long payOrderId) {
+		this.payOrderId = payOrderId;
 	}
-	public BigDecimal getTotalAmt() {
-		return totalAmt;
-	}
-	public void setTotalAmt(BigDecimal totalAmt) {
-		this.totalAmt = totalAmt;
-	}
+
 	public BigDecimal getCarriageAmt() {
 		return carriageAmt;
 	}
+
 	public void setCarriageAmt(BigDecimal carriageAmt) {
 		this.carriageAmt = carriageAmt;
 	}
+
+	public BigDecimal getTotalAmt() {
+		return totalAmt;
+	}
+
+	public void setTotalAmt(BigDecimal totalAmt) {
+		this.totalAmt = totalAmt;
+	}
+
 	public String getPayerNo() {
 		return payerNo;
 	}
+
 	public void setPayerNo(String payerNo) {
 		this.payerNo = payerNo;
 	}
+
 	public Set<SubOrder> getSubOrders() {
 		return subOrders;
 	}
+
 	public void setSubOrders(Set<SubOrder> subOrders) {
 		this.subOrders = subOrders;
 	}
+
 	public Timestamp getInsertTime() {
 		return insertTime;
 	}
+
 	public void setInsertTime(Timestamp insertTime) {
 		this.insertTime = insertTime;
 	}
+
 	public Timestamp getUpdateTime() {
 		return updateTime;
 	}
+
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
+	
+	
 	
 }

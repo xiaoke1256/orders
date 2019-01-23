@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,8 +19,9 @@ import javax.persistence.Table;
 @Table( name = "PAY_ORDER")
 public class PayOrder {
 	@Id
-	@Column(name = "PAY_ORDER_NO", nullable = false)
-	private String payOrderNo;
+	@Column(name = "pay_order_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long payOrderId;
 	@Column(name = "TOTAL_AMT")
 	private BigDecimal totalAmt;
 	@Column(name = "CARRIAGE_AMT")
@@ -38,7 +41,7 @@ public class PayOrder {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((payOrderNo == null) ? 0 : payOrderNo.hashCode());
+		result = prime * result + ((payOrderId == null) ? 0 : payOrderId.hashCode());
 		result = prime * result + ((payerNo == null) ? 0 : payerNo.hashCode());
 		return result;
 	}
@@ -51,10 +54,10 @@ public class PayOrder {
 		if (getClass() != obj.getClass())
 			return false;
 		PayOrder other = (PayOrder) obj;
-		if (payOrderNo == null) {
-			if (other.payOrderNo != null)
+		if (payOrderId == null) {
+			if (other.payOrderId != null)
 				return false;
-		} else if (!payOrderNo.equals(other.payOrderNo))
+		} else if (!payOrderId.equals(other.payOrderId))
 			return false;
 		if (payerNo == null) {
 			if (other.payerNo != null)
@@ -63,11 +66,12 @@ public class PayOrder {
 			return false;
 		return true;
 	}
-	public String getPayOrderNo() {
-		return payOrderNo;
+	
+	public Long getPayOrderId() {
+		return payOrderId;
 	}
-	public void setPayOrderNo(String payOrderNo) {
-		this.payOrderNo = payOrderNo;
+	public void setPayOrderId(Long payOrderId) {
+		this.payOrderId = payOrderId;
 	}
 	public BigDecimal getTotalAmt() {
 		return totalAmt;

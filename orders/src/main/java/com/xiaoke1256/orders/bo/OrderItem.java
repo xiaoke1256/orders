@@ -1,12 +1,16 @@
 package com.xiaoke1256.orders.bo;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table( name = "ORDER_ITEM")
 public class OrderItem {
 	@Id
 	@Column(name = "ITEM_ID", nullable = false)
@@ -14,11 +18,11 @@ public class OrderItem {
 	private Long itemId;
 	
 	@ManyToOne
-	@JoinColumn(name="SUB_ORDER_ID")
+	@JoinColumn(name="ORDER_NO")
 	private SubOrder subOrder;
 	
-	@Column(name = "PAY_ORDER_NO")
-	private String payOrderNo;
+	@Column(name = "PAY_ORDER_ID")
+	private Long payOrderId;
 	
 	@Column(name = "PRODUCT_CODE")
 	private String productCode;
@@ -35,7 +39,7 @@ public class OrderItem {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((itemId == null) ? 0 : itemId.hashCode());
-		result = prime * result + ((payOrderNo == null) ? 0 : payOrderNo.hashCode());
+		result = prime * result + ((payOrderId == null) ? 0 : payOrderId.hashCode());
 		result = prime * result + ((productCode == null) ? 0 : productCode.hashCode());
 		result = prime * result + ((subOrder == null) ? 0 : subOrder.hashCode());
 		return result;
@@ -55,10 +59,10 @@ public class OrderItem {
 				return false;
 		} else if (!itemId.equals(other.itemId))
 			return false;
-		if (payOrderNo == null) {
-			if (other.payOrderNo != null)
+		if (payOrderId == null) {
+			if (other.payOrderId != null)
 				return false;
-		} else if (!payOrderNo.equals(other.payOrderNo))
+		} else if (!payOrderId.equals(other.payOrderId))
 			return false;
 		if (productCode == null) {
 			if (other.productCode != null)
@@ -89,12 +93,12 @@ public class OrderItem {
 		this.subOrder = subOrder;
 	}
 
-	public String getPayOrderNo() {
-		return payOrderNo;
+	public Long getPayOrderId() {
+		return payOrderId;
 	}
 
-	public void setPayOrderNo(String payOrderNo) {
-		this.payOrderNo = payOrderNo;
+	public void setPayOrderId(Long payOrderId) {
+		this.payOrderId = payOrderId;
 	}
 
 	public String getProductCode() {

@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.orders.controller.OrderPlaceRequest;
 import com.xiaoke1256.orders.controller.OrderPlaceResponse;
-import com.xiaoke1256.orders.vo.PayOrder;
+import com.xiaoke1256.orders.dto.PayOrder;
 
 public class RestFullClientTest {
 	

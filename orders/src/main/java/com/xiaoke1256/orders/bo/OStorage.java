@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "PRODUCT")
+@Table( name = "O_STORAGE")
 public class OStorage {
 	@Id
 	@Column(name = "STORAGE_ID", nullable = false)

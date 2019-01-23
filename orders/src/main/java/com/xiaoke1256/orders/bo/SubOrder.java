@@ -1,25 +1,26 @@
 package com.xiaoke1256.orders.bo;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table( name = "SUB_ORDER")
 public class SubOrder {
 	@Id
-	@Column(name = "SUB_ORDER_ID", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private Long subOrderId;
+	@Column(name = "ORDER_NO", nullable = false)
+	private String orderNo;
 	@ManyToOne
-	@JoinColumn(name="PAY_ORDER_NO")
+	@JoinColumn(name="PAY_ORDER_ID")
 	private PayOrder payOrder;
 	@Column(name = "TOTAL_AMT")
 	private BigDecimal totalAmt;
@@ -28,6 +29,8 @@ public class SubOrder {
 	@Column(name = "STORE_NO", nullable = false)
 	private String storeNo;
 	
+	@OneToMany(mappedBy = "subOrder",cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	private Set<OrderItem> orderItems;
 	
 	
 	@Override
@@ -36,7 +39,7 @@ public class SubOrder {
 		int result = 1;
 		result = prime * result + ((payOrder == null) ? 0 : payOrder.hashCode());
 		result = prime * result + ((storeNo == null) ? 0 : storeNo.hashCode());
-		result = prime * result + ((subOrderId == null) ? 0 : subOrderId.hashCode());
+		result = prime * result + ((orderNo == null) ? 0 : orderNo.hashCode());
 		return result;
 	}
 	@Override
@@ -58,18 +61,19 @@ public class SubOrder {
 				return false;
 		} else if (!storeNo.equals(other.storeNo))
 			return false;
-		if (subOrderId == null) {
-			if (other.subOrderId != null)
+		if (orderNo == null) {
+			if (other.orderNo != null)
 				return false;
-		} else if (!subOrderId.equals(other.subOrderId))
+		} else if (!orderNo.equals(other.orderNo))
 			return false;
 		return true;
 	}
-	public Long getSubOrderId() {
-		return subOrderId;
+	
+	public String getOrderNo() {
+		return orderNo;
 	}
-	public void setSubOrderId(Long subOrderId) {
-		this.subOrderId = subOrderId;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 	public PayOrder getPayOrder() {
 		return payOrder;
@@ -94,6 +98,12 @@ public class SubOrder {
 	}
 	public void setCarriageAmt(BigDecimal carriageAmt) {
 		this.carriageAmt = carriageAmt;
+	}
+	public Set<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+	public void setOrderItems(Set<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 	
 }

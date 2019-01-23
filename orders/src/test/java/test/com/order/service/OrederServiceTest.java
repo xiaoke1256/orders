@@ -60,7 +60,7 @@ public class OrederServiceTest {
 		if(num==0)
 			num = 1;
 		productMap.put(productId, num);
-		orederService.place(payerNo , carriageAmt , productMap );
+		orederService.place(payerNo , productMap );
 	}
 	
 	//@Test
@@ -82,7 +82,7 @@ public class OrederServiceTest {
 					num = 1;
 				productMap.put(productId, num);
 				try{
-					orederService.place(payerNo , carriageAmt , productMap );
+					orederService.place(payerNo , productMap );
 				}catch(Exception ex){
 					ex.printStackTrace();
 					ressult.isError=true;

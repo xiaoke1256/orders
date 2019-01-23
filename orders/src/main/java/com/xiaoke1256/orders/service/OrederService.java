@@ -34,12 +34,16 @@ public class OrederService {
 	@Autowired
 	private NoTransOrederService noTransOrederService;
 	
-	public PayOrder place(String payerNo,BigDecimal carriageAmt,Map<String,Integer> productMap){
+	public PayOrder place(String payerNo,Map<String,Integer> productMap){
 		logger.info("start place a oreder.");
 		//productMap = new TreeMap<String,Integer>(productMap);
 		if(productMap.isEmpty())
 			throw new RuntimeException("empty sub order.");
 			
+		//先查各个商品的信息 ，判断是否是上线商品。
+		
+		//检查各个商品的运费定价。
+		
 		int index = 0;
 		for(Entry<String,Integer> enty:productMap.entrySet()){
 			String productId = enty.getKey();
@@ -60,7 +64,7 @@ public class OrederService {
 			index++;
 		}
 		entityManager.flush();
-		PayOrder payOrder = createPayOrder(payerNo, carriageAmt, productMap);
+		PayOrder payOrder = createPayOrder(payerNo, productMap);
 		entityManager.persist(payOrder);
 		entityManager.flush();
 		return payOrder;
@@ -69,11 +73,11 @@ public class OrederService {
 //		}
 	}
 	
-	private PayOrder createPayOrder(String payerNo,BigDecimal carriageAmt,Map<String,Integer> productMap){
+	private PayOrder createPayOrder(String payerNo,Map<String,Integer> productMap){
 		PayOrder payOrder = new PayOrder();
 		payOrder.setPayerNo(payerNo);
-		payOrder.setCarriageAmt(carriageAmt);
-		payOrder.setPayOrderNo(UUID.randomUUID().toString().substring(0, 22));
+		//payOrder.setCarriageAmt(carriageAmt);
+		//payOrder.setPayOrderNo(UUID.randomUUID().toString().substring(0, 22));
 		payOrder.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		Set<SubOrder> suborderSet = new HashSet<SubOrder>();
@@ -98,4 +102,5 @@ public class OrederService {
 			Hibernate.initialize(order.getSubOrders());
 		return order;
 	}
+	
 }
