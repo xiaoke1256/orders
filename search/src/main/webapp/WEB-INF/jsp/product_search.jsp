@@ -52,7 +52,7 @@
 			    	for(var i in ret.respObj.resultList){
 			    		var p = ret.respObj.resultList[i];
 			    		//alert("p:"+p);
-			    		$tr.append('<tr> <td>'+p.code+'</td><td>'+p.name+'</td><td>'+p.price+'</td><td>'
+			    		$tr.append('<tr> <td>'+p.code+'</td><td>'+p.name+'</td><td>'+(p.price/1000)+'</td><td>'
 			    				+p.storeName+'</td><td>'+$.trim(p.typeName)+'</td><td>'+dateFtt(new Date(p.updTime),'yyyy-MM-dd HH:mm:ss.S')+'</td><td>'+p.score+'</td> </tr>');
 			    		
 			    	}

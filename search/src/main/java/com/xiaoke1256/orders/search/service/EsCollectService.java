@@ -142,7 +142,7 @@ public class EsCollectService {
 		Map<String,Object> source = new HashMap<>();
 		source.put("code", product.getProductCode());
 		source.put("name", product.getProductName());
-		source.put("price", product.getProductPrice().doubleValue()/1000);//单位，由厘变成元。
+		source.put("price", product.getProductPrice().doubleValue());
 		source.put("store_no", product.getStore().getStoreNo());
 		source.put("store_name", product.getStore().getStoreName());
 		source.put("type_id", product.getProductTypes().stream().map(t->t.getTypeId()).reduce((id1,id2)->id1+","+id2).orElse(null));
