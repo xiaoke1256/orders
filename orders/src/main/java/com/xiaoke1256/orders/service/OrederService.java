@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.bo.PayOrder;
-import com.xiaoke1256.orders.bo.Product;
+import com.xiaoke1256.orders.bo.OStorage;
 import com.xiaoke1256.orders.bo.SubOrder;
 
 @Service
@@ -50,7 +50,7 @@ public class OrederService {
 				if(!success)
 					throw new RuntimeException("库存不足");
 			}else{
-				Product p = entityManager.find(Product.class, productId,LockModeType.PESSIMISTIC_WRITE);
+				OStorage p = entityManager.find(OStorage.class, productId,LockModeType.PESSIMISTIC_WRITE);
 				if(p.getStockNum()<num){
 					throw new RuntimeException("库存不足");
 				}
@@ -80,11 +80,11 @@ public class OrederService {
 		for(Entry<String,Integer> entry:productMap.entrySet()){
 			SubOrder subOrder = new SubOrder();
 			subOrder.setPayOrder(payOrder);
-			Product p = entityManager.find(Product.class,entry.getKey());
-			subOrder.setProduct(p);
-			subOrder.setProductNum(entry.getValue());
-			subOrder.setProductPrice(p.getProductPrice());
-			subOrder.setStoreNo(p.getStoreNo());
+			OStorage p = entityManager.find(OStorage.class,entry.getKey());
+			//subOrder.setProduct(p);
+			//subOrder.setProductNum(entry.getValue());
+			//subOrder.setProductPrice(p.getProductPrice());
+			//subOrder.setStoreNo(p.getStoreNo());
 			suborderSet.add(subOrder);
 		}
 		payOrder.setSubOrders(suborderSet);

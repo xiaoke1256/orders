@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.orders.bo.PayOrder;
-import com.xiaoke1256.orders.bo.Product;
+import com.xiaoke1256.orders.bo.OStorage;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.service.OrederService;
 import com.xiaoke1256.orders.service.ProductService;
@@ -60,8 +60,8 @@ public class SecKillController {
 	 * @return
 	 */
 	@RequestMapping(value="/products",method={RequestMethod.GET})
-	public List<Product> queryProduct() {
-		List<Product> products = productService.queryProductsWithLimit(10);
+	public List<OStorage> queryProduct() {
+		List<OStorage> products = productService.queryProductsWithLimit(10);
 		return products;
 	}
 	/**
@@ -81,8 +81,8 @@ public class SecKillController {
 				String key = "SecKill_P_"+productCode;
 				String inStore = RedisUtils.get(conn, key);
 				if(inStore==null) {
-					Product p = productService.getProduct(productCode);
-					if("1".equals(p.getInSeckill())) {
+					OStorage p = productService.getProduct(productCode);
+					if(productService.isInSecKill(productCode)) {
 						RedisUtils.set(conn, key, String.valueOf(p.getStockNum()));
 					}else {
 						throw new RuntimeException("This product is not in seckill!");

@@ -19,18 +19,52 @@ public class SubOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long subOrderId;
 	@ManyToOne
-	@JoinColumn(name="PAY_ORDER_ID")
+	@JoinColumn(name="PAY_ORDER_NO")
 	private PayOrder payOrder;
+	@Column(name = "TOTAL_AMT")
+	private BigDecimal totalAmt;
+	@Column(name = "CARRIAGE_AMT")
+	private BigDecimal  carriageAmt;
 	@Column(name = "STORE_NO", nullable = false)
 	private String storeNo;
-	@ManyToOne
-	@JoinColumn(name="PRODUCT_CODE")
-	private Product product;
-	@Column(name = "PRODUCT_NUM")
-	private Integer productNum;
-	@Column(name = "PRODUCT_PRICE")
-	private BigDecimal productPrice;
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((payOrder == null) ? 0 : payOrder.hashCode());
+		result = prime * result + ((storeNo == null) ? 0 : storeNo.hashCode());
+		result = prime * result + ((subOrderId == null) ? 0 : subOrderId.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SubOrder other = (SubOrder) obj;
+		if (payOrder == null) {
+			if (other.payOrder != null)
+				return false;
+		} else if (!payOrder.equals(other.payOrder))
+			return false;
+		if (storeNo == null) {
+			if (other.storeNo != null)
+				return false;
+		} else if (!storeNo.equals(other.storeNo))
+			return false;
+		if (subOrderId == null) {
+			if (other.subOrderId != null)
+				return false;
+		} else if (!subOrderId.equals(other.subOrderId))
+			return false;
+		return true;
+	}
 	public Long getSubOrderId() {
 		return subOrderId;
 	}
@@ -49,24 +83,17 @@ public class SubOrder {
 	public void setStoreNo(String storeNo) {
 		this.storeNo = storeNo;
 	}
-	public Product getProduct() {
-		return product;
+	public BigDecimal getTotalAmt() {
+		return totalAmt;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setTotalAmt(BigDecimal totalAmt) {
+		this.totalAmt = totalAmt;
 	}
-	public Integer getProductNum() {
-		return productNum;
+	public BigDecimal getCarriageAmt() {
+		return carriageAmt;
 	}
-	public void setProductNum(Integer productNum) {
-		this.productNum = productNum;
+	public void setCarriageAmt(BigDecimal carriageAmt) {
+		this.carriageAmt = carriageAmt;
 	}
-	public BigDecimal getProductPrice() {
-		return productPrice;
-	}
-	public void setProductPrice(BigDecimal productPrice) {
-		this.productPrice = productPrice;
-	}
-	
 	
 }

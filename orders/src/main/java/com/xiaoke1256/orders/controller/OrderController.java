@@ -69,7 +69,7 @@ public class OrderController {
 				for(SubOrder subOrder:order.getSubOrders()){
 					com.xiaoke1256.orders.vo.SubOrder  subOrderVo = new com.xiaoke1256.orders.vo.SubOrder();
 					PropertyUtils.copyProperties(subOrderVo, subOrder);
-					subOrderVo.setProductCode(subOrder.getProduct().getProductCode());
+					//subOrderVo.setProductCode(subOrder.getProduct().getProductCode());
 					subOrderSet.add(subOrderVo);
 				}
 				orderVo.setSubOrders(subOrderSet);
