@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoke1256.orders.product.dao.StoreDao">
+	<resultMap type="com.xiaoke1256.orders.product.bo.Store" id="storeMap">
+		<id property="storeNo" column="store_no"/>
+		<result property="storeName" column="store_name" />
+		<result property="storeIntro" column="store_intro" />
+		<result property="insertTime" column="insert_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+	<select id="getByStoreNo" parameterType="string" resultMap="storeMap" >
+		select store_no,store_name,store_intro,insert_time,update_time from store where store_no=#{id}
+	</select>
+</mapper>
