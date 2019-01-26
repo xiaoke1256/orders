@@ -9,7 +9,7 @@ import com.xiaoke1256.orders.product.vo.ProductCondition;
 @Service
 public class ProductService {
 	
-	public QueryResult<Product> findProductByCondition(ProductCondition condition){
+	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
 		return null;
 	}
 }
