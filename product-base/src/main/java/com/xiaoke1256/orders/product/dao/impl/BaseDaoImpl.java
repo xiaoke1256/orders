@@ -1,9 +1,15 @@
 package com.xiaoke1256.orders.product.dao.impl;
 
-import org.mybatis.spring.SqlSessionTemplate;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class BaseDaoImpl {
+public abstract class BaseDaoImpl extends SqlSessionDaoSupport {
+
 	@Autowired
-	protected SqlSessionTemplate sqlSessionTemplate; 
+	@Override
+	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+		super.setSqlSessionFactory(sqlSessionFactory);
+	}
+	
 }

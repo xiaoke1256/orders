@@ -16,7 +16,7 @@ public class ProductDaoImpl extends BaseDaoImpl implements ProductDao  {
 
 	@Override
 	public Product getProductByCode(String productCode) {
-		Product p = this.sqlSessionTemplate
+		Product p = this.getSqlSession()
 				.selectOne("com.xiaoke1256.orders.product.dao.ProductDao.getProductByCode", productCode);
 		return p;
 	}
@@ -26,7 +26,7 @@ public class ProductDaoImpl extends BaseDaoImpl implements ProductDao  {
 		Map<String, Object> params = new HashMap<>();
 		params.put("lastTime", lastTime);
 		params.put("productStatus", productStatus);
-		List<Product> list = this.sqlSessionTemplate
+		List<Product> list = this.getSqlSession()
 				.selectList("com.xiaoke1256.orders.product.dao.ProductDao.queryModifed", params);
 		return list;
 	}

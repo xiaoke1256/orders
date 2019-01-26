@@ -7,7 +7,7 @@ public class StoreDaoImpl extends BaseDaoImpl implements StoreDao {
 
 	@Override
 	public Store getByStoreNo(String storeNo) {
-		Store s = this.sqlSessionTemplate
+		Store s = this.getSqlSession()
 				.selectOne("com.xiaoke1256.orders.product.dao.StoreDao.getByStoreNo", storeNo);
 		return s;
 	}

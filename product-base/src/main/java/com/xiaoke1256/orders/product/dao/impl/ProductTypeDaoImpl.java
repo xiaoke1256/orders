@@ -13,7 +13,7 @@ public class ProductTypeDaoImpl extends BaseDaoImpl implements ProductTypeDao {
 
 	@Override
 	public List<ProductType> getTypesByProductCode(String productCode) {
-		 return this.sqlSessionTemplate
+		 return this.getSqlSession()
 			.selectList("com.xiaoke1256.orders.product.dao.ProductTypeDao.getTypesByProductCode", productCode);
 	}
 
