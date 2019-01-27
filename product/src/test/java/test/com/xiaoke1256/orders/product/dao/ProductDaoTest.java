@@ -10,16 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.xiaoke1256.orders.product.SpringbootApplication;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.bo.ProductParam;
 import com.xiaoke1256.orders.product.bo.ProductType;
 import com.xiaoke1256.orders.product.dao.ProductDao;
+import com.xiaoke1256.orders.product.vo.ProductCondition;
 
 
 @RunWith(SpringRunner.class)
@@ -70,5 +68,26 @@ public class ProductDaoTest {
 				}
 			System.out.println();
 		}
+	}
+	
+	@Test
+	public void testQueryByCondition() {
+		ProductCondition condition = new ProductCondition();
+		condition.setProductName("米");
+		List<Product> l = productDao.queryByCondition(condition );
+		for(Product p:l) {
+			System.out.println("productName : "+ p.getProductName());
+			if(p.getStore()!=null)
+				System.out.println("store :"+p.getStore().getStoreName());
+			else
+				System.out.println("store :"+null);
+			System.out.print("types :");
+			if(p.getProductTypes()!=null)
+				for(ProductType type:p.getProductTypes()) {
+					System.out.print(type.getTypeName()+",");
+				}
+			System.out.println();
+		}
+		
 	}
 }

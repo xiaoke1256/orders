@@ -3,29 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaoke1256.orders.product.dao.ProductDao">
-   <!-- 
-   <resultMap type="com.xiaoke1256.orders.product.bo.Product" id="productMap">
-       <id property="productCode" column="product_code" />
-       <result property="productName" column="product_name" />
-       <result property="productPrice" column="product_price" />
-       <result property="productStatus" column="product_status" />
-       <result property="productIntro" column="product_intro" />
-       <result property="insertTime" column="insert_time" />
-       <result property="updateTime" column="update_time" />
-       <association property="store" column="store_no" select="com.xiaoke1256.orders.product.dao.StoreDao.getByStoreNo"  >
-       </association>
-       <collection property="productTypes" column="product_code" select="com.xiaoke1256.orders.product.dao.ProductTypeDao.getTypesByProductCode" >
-       </collection>
-       <collection property="params" column="product_code" ofType="com.xiaoke1256.orders.product.bo.ProductParam" >
-       		<id property="productCode" column="product_code"/>
-       		<result property="paramId" column="param_id"/>
-       		<result property="paramName" column="param_name"/>
-       		<result property="paramValue" column="param_value"/>
-       		<result property="paramDesc" column="param_desc"/>
-       		<result property="showOrder" column="show_order"/>
-       </collection>
-   </resultMap>
-    -->
+
    <select parameterType="string" id="getProductByCode" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT where product_code = #{id}
@@ -38,5 +16,19 @@
        <if test="lastTime != null">
        		and update_time > #{lastTime}
        </if>
+   </select>
+   <select id="queryByCondition" parameterType="com.xiaoke1256.orders.product.vo.ProductCondition" resultMap="productMap">
+   	  select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
+       from PRODUCT 
+      where 1=1
+      <if test="productCode!=null and productCode!=''">
+      	<bind name="productCodeLike" value="productCode + '%'" />
+      	and product_code like #{productCodeLike}
+      </if>
+      <if test="productName!=null and productName!=''">
+      	<bind name="productNameLike" value="'%' + productName + '%'" />
+      	and product_name like #{productNameLike}
+      </if>
+      
    </select>
 </mapper>
