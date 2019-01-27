@@ -25,11 +25,11 @@
        		<result property="showOrder" column="show_order"/>
        </collection>
    </resultMap>
+   <!-- 
    <select parameterType="string" id="getProductByCode" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT where product_code = #{id}
    </select>
-   <!-- parameters:update_time,product_status  -->
    <select parameterType="map" id="queryModifed" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT 
@@ -38,4 +38,5 @@
        		and update_time > #{lastTime}
        </if>
    </select>
+    -->
 </mapper>
