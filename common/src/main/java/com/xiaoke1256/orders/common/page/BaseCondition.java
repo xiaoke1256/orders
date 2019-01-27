@@ -8,9 +8,9 @@ public abstract class BaseCondition implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private int pageNo;
+	private int pageNo=1;
 	
-	private int pageSize;
+	private int pageSize=10;
 
 	public int getPageNo() {
 		return pageNo;

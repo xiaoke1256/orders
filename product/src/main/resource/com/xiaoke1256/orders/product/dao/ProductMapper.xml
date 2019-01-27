@@ -29,6 +29,9 @@
       	<bind name="productNameLike" value="'%' + productName + '%'" />
       	and product_name like #{productNameLike}
       </if>
-      
+      <if test="pageSize!=null and pageNo!=null and pageSize &gt; 0 and pageNo &gt; 0 ">
+      	<bind name="fromIndex" value="(pageNo-1)*pageSize"/>
+      	limit #{fromIndex},#{pageSize}
+      </if>
    </select>
 </mapper>
