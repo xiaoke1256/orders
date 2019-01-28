@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.service;
+package com.xiaoke1256.orders.core.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -19,9 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoke1256.orders.bo.PayOrder;
-import com.xiaoke1256.orders.bo.OStorage;
-import com.xiaoke1256.orders.bo.SubOrder;
+import com.xiaoke1256.orders.core.bo.OStorage;
+import com.xiaoke1256.orders.core.bo.PayOrder;
+import com.xiaoke1256.orders.core.bo.SubOrder;
 
 @Service
 @Transactional

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.dto;
+package com.xiaoke1256.orders.core.dto;
 
 import java.math.BigDecimal;
 import java.util.Set;

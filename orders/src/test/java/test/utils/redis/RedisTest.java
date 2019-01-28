@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.xiaoke1256.orders.utils.RedisUtils;
+import com.xiaoke1256.common.utils.RedisUtils;
 
 import junit.framework.Assert.*;
 import redis.clients.jedis.Jedis;

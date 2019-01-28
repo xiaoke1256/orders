@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.controller;
+package com.xiaoke1256.orders.core.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.common.utils.ResponseUtils;
-import com.xiaoke1256.orders.bo.PayOrder;
-import com.xiaoke1256.orders.bo.OStorage;
 import com.xiaoke1256.orders.common.ErrMsg;
-import com.xiaoke1256.orders.service.OrederService;
-import com.xiaoke1256.orders.service.ProductService;
-import com.xiaoke1256.orders.utils.RedisUtils;
+import com.xiaoke1256.orders.core.bo.OStorage;
+import com.xiaoke1256.orders.core.bo.PayOrder;
+import com.xiaoke1256.orders.core.service.OrederService;
+import com.xiaoke1256.orders.core.service.ProductService;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;

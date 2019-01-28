@@ -1,10 +1,10 @@
-package com.xiaoke1256.orders.dto;
+package com.xiaoke1256.orders.core.dto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import com.xiaoke1256.orders.dto.SubOrder;
+import com.xiaoke1256.orders.core.dto.SubOrder;
 
 public class PayOrder {
 

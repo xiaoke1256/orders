@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.bo;
+package com.xiaoke1256.orders.core.bo;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

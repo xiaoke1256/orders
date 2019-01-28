@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.service;
+package com.xiaoke1256.orders.core.service;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoke1256.orders.bo.OStorage;
-import com.xiaoke1256.orders.utils.RedisUtils;
+import com.xiaoke1256.common.utils.RedisUtils;
+import com.xiaoke1256.orders.core.bo.OStorage;
 
 import redis.clients.jedis.Jedis;
 

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.dto;
+package com.xiaoke1256.orders.core.dto;
 
 public class OrderItem {
 

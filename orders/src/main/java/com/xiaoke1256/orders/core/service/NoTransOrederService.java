@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.service;
+package com.xiaoke1256.orders.core.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.controller;
+package com.xiaoke1256.orders.core.controller;
 
 import java.math.BigDecimal;
 

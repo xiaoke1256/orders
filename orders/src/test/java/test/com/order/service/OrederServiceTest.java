@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xiaoke1256.orders.SpringbootApplication;
-import com.xiaoke1256.orders.service.OrederService;
+import com.xiaoke1256.orders.core.service.OrederService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=SpringbootApplication.class)

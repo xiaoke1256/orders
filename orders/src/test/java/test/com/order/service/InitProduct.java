@@ -17,9 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoke1256.common.dao.BaseDao;
 import com.xiaoke1256.orders.SpringbootApplication;
-import com.xiaoke1256.orders.bo.OStorage;
-import com.xiaoke1256.orders.dao.BaseDao;
+import com.xiaoke1256.orders.core.bo.OStorage;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=SpringbootApplication.class)
