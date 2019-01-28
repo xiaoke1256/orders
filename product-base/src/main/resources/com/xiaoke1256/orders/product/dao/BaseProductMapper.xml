@@ -16,13 +16,7 @@
        </association>
        <collection property="productTypes" column="product_code" select="com.xiaoke1256.orders.product.dao.ProductTypeDao.getTypesByProductCode" >
        </collection>
-       <collection property="params" column="product_code" ofType="com.xiaoke1256.orders.product.bo.ProductParam" >
-       		<id property="productCode" column="product_code"/>
-       		<result property="paramId" column="param_id"/>
-       		<result property="paramName" column="param_name"/>
-       		<result property="paramValue" column="param_value"/>
-       		<result property="paramDesc" column="param_desc"/>
-       		<result property="showOrder" column="show_order"/>
+       <collection property="params" column="product_code" select="com.xiaoke1256.orders.product.dao.ProductParamDao.getByProductCode" >
        </collection>
    </resultMap>
    <!-- 
