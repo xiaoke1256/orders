@@ -1,58 +1,58 @@
 create table product
 (
-  product_code    CHAR(10) primary key not null comment 'ÉÌÆ·±àºÅ£¬Ö÷¼ü',
-  product_name    VARCHAR(256) comment 'ÉÌÆ·Ãû³Æ',
-  product_price DECIMAL(20) comment '¼Û¸ñ(Àå)',
-  store_no      VARCHAR(32) comment 'µêÆÌºÅ',
-  product_status  CHAR(1) not null comment '×´Ì¬£º0=ÏÂ¼Ü£¬1=ÉÏ¼Ü',
-  on_sale_time TIMESTAMP comment 'ÉÏ¼ÜÊ±¼ä£¬ÓÃÓÚËÑË÷ÒıÇæ²É¼¯¹ıÂË(·Ï³ı£¬¿¿update_time×Ö¶ÎÅĞ¶Ï)',
-  product_intro	VARCHAR(500) comment '¼ò½é',
-  brand VARCHAR(128) comment 'Æ·ÅÆ',
-  insert_time TIMESTAMP not null  DEFAULT NOW() comment '²åÈëÊ±¼ä',
-  update_time TIMESTAMP not null  DEFAULT NOW() comment 'ĞŞ¸ÄÊ±¼ä'
-) comment='ÉÌÆ·±í';
+  product_code    CHAR(10) primary key not null comment 'å•†å“ç¼–å·ï¼Œä¸»é”®',
+  product_name    VARCHAR(256) comment 'å•†å“åç§°',
+  product_price DECIMAL(20) comment 'ä»·æ ¼(å˜)',
+  store_no      VARCHAR(32) comment 'åº—é“ºå·',
+  product_status  CHAR(1) not null comment 'çŠ¶æ€ï¼š0=ä¸‹æ¶ï¼Œ1=ä¸Šæ¶',
+  on_sale_time TIMESTAMP comment 'ä¸Šæ¶æ—¶é—´ï¼Œç”¨äºæœç´¢å¼•æ“é‡‡é›†è¿‡æ»¤(åºŸé™¤ï¼Œé update_timeå­—æ®µåˆ¤æ–­)',
+  product_intro	VARCHAR(500) comment 'ç®€ä»‹',
+  brand VARCHAR(128) comment 'å“ç‰Œ',
+  insert_time TIMESTAMP not null  DEFAULT NOW() comment 'æ’å…¥æ—¶é—´',
+  update_time TIMESTAMP not null  DEFAULT NOW() comment 'ä¿®æ”¹æ—¶é—´'
+) comment='å•†å“è¡¨';
 
 create table product_type(
-	type_id VARCHAR(12) primary key not null comment 'ÀàĞÍ±àºÅ£¬Ö÷¼ü',
-	type_name VARCHAR(256) comment 'ÀàĞÍÃû³Æ',
-	parent_type_id VARCHAR(12) comment '¸¸ÀàĞÍ±àºÅ',
-	type_desc	VARCHAR(500) comment 'ÀàĞÍÃèÊö',
-	show_order INT comment 'ÏÔÊ¾Ë³Ğò',
-	insert_time TIMESTAMP not null  DEFAULT NOW() comment '²åÈëÊ±¼ä',
-    update_time TIMESTAMP not null  DEFAULT NOW() comment 'ĞŞ¸ÄÊ±¼ä'
-) comment = 'ÉÌÆ··ÖÀà';
+	type_id VARCHAR(12) primary key not null comment 'ç±»å‹ç¼–å·ï¼Œä¸»é”®',
+	type_name VARCHAR(256) comment 'ç±»å‹åç§°',
+	parent_type_id VARCHAR(12) comment 'çˆ¶ç±»å‹ç¼–å·',
+	type_desc	VARCHAR(500) comment 'ç±»å‹æè¿°',
+	show_order INT comment 'æ˜¾ç¤ºé¡ºåº',
+	insert_time TIMESTAMP not null  DEFAULT NOW() comment 'æ’å…¥æ—¶é—´',
+    update_time TIMESTAMP not null  DEFAULT NOW() comment 'ä¿®æ”¹æ—¶é—´'
+) comment = 'å•†å“åˆ†ç±»';
 
 create table product_param(
-	param_id	BIGINT primary key auto_increment comment 'Ö÷¼ü',
-	product_code    CHAR(10) not null comment 'ÉÌÆ·±àºÅ£¬Íâ¼ü',
-	param_name   VARCHAR(128) comment '²ÎÊıÃû',
-	param_value  VARCHAR(256) comment '²ÎÊıÖµ',
-	param_desc	VARCHAR(500) comment '²ÎÊıÃèÊö',
-	show_order INT comment 'ÏÔÊ¾Ë³Ğò'
-) comment = 'ÉÌÆ·²ÎÊı';
+	param_id	BIGINT primary key auto_increment comment 'ä¸»é”®',
+	product_code    CHAR(10) not null comment 'å•†å“ç¼–å·ï¼Œå¤–é”®',
+	param_name   VARCHAR(128) comment 'å‚æ•°å',
+	param_value  VARCHAR(256) comment 'å‚æ•°å€¼',
+	param_desc	VARCHAR(500) comment 'å‚æ•°æè¿°',
+	show_order INT comment 'æ˜¾ç¤ºé¡ºåº'
+) comment = 'å•†å“å‚æ•°';
 
 create table product_attached_option(
-  option_code CHAR(12) primary key comment 'Ñ¡Ïî±àÂë£¬Ö÷¼ü',
-  product_code    CHAR(10) not null comment 'ÉÌÆ·±àºÅ£¬Íâ¼ü',
-  option_type CHAR(1) not null  comment 'Ñ¡ÏîÀàĞÍ£º1=³ßÂë£¬2=ÑÕÉ«£¬3=Ì××°£¬4=ĞÍºÅ£¬9=ÆäËû',
-  option_name VARCHAR(128) comment 'Ñ¡ÏîÃû³Æ',
-  option_value VARCHAR(128) comment 'Ñ¡ÏîÖµ£¬ÀàĞÍÑ¡ÑÕÉ«Ê±£¬¿ÉÒÔ½«ÑÕÉ«µÄ±àÂëÖµ£¬±£´æÔÚ´Ë¡£',
-  price DECIMAL(19,2) comment '¼Û¸ñ£¬Ö¸¸½¼ÓÑ¡ÏîÒÔºóµÄ¼Û¸ñ',
-  show_order INT comment 'ÏÔÊ¾Ë³Ğò'
-) comment = 'ÉÌÆ·¸½¼ÓÑ¡Ïî';
+  option_code CHAR(12) primary key comment 'é€‰é¡¹ç¼–ç ï¼Œä¸»é”®',
+  product_code    CHAR(10) not null comment 'å•†å“ç¼–å·ï¼Œå¤–é”®',
+  option_type CHAR(1) not null  comment 'é€‰é¡¹ç±»å‹ï¼š1=å°ºç ï¼Œ2=é¢œè‰²ï¼Œ3=å¥—è£…ï¼Œ4=å‹å·ï¼Œ9=å…¶ä»–',
+  option_name VARCHAR(128) comment 'é€‰é¡¹åç§°',
+  option_value VARCHAR(128) comment 'é€‰é¡¹å€¼ï¼Œç±»å‹é€‰é¢œè‰²æ—¶ï¼Œå¯ä»¥å°†é¢œè‰²çš„ç¼–ç å€¼ï¼Œä¿å­˜åœ¨æ­¤ã€‚',
+  price DECIMAL(19,2) comment 'ä»·æ ¼ï¼ŒæŒ‡é™„åŠ é€‰é¡¹ä»¥åçš„ä»·æ ¼',
+  show_order INT comment 'æ˜¾ç¤ºé¡ºåº'
+) comment = 'å•†å“é™„åŠ é€‰é¡¹';
 
 create table store
 (
-  store_no      VARCHAR(32) primary key not null comment 'ÉÌÆÌ±àºÅ£¬Ö÷¼ü',
-  store_name	VARCHAR(256) comment 'ÉÌÆÌÃû³Æ',
-  store_intro	VARCHAR(500) comment 'ÉÌÆÌ¼ò½é',
-  insert_time TIMESTAMP not null  DEFAULT NOW() comment '²åÈëÊ±¼ä',
-  update_time TIMESTAMP not null  DEFAULT NOW() comment 'ĞŞ¸ÄÊ±¼ä'
-)comment = 'ÉÌÆÌ';
+  store_no      VARCHAR(32) primary key not null comment 'å•†é“ºç¼–å·ï¼Œä¸»é”®',
+  store_name	VARCHAR(256) comment 'å•†é“ºåç§°',
+  store_intro	VARCHAR(500) comment 'å•†é“ºç®€ä»‹',
+  insert_time TIMESTAMP not null  DEFAULT NOW() comment 'æ’å…¥æ—¶é—´',
+  update_time TIMESTAMP not null  DEFAULT NOW() comment 'ä¿®æ”¹æ—¶é—´'
+)comment = 'å•†é“º';
 
 create table type_product_map(
-	type_id VARCHAR(12) not null comment 'ÀàĞÍ±àºÅ£¬Íâ¼ü',
-	product_code CHAR(10) not null comment 'ÉÌÆ·±àºÅ£¬Íâ¼ü'
-)comment = 'ÉÌÆ·ÓëÀàĞÍµÄÓ³Éä¹ØÏµ';
+	type_id VARCHAR(12) not null comment 'ç±»å‹ç¼–å·ï¼Œå¤–é”®',
+	product_code CHAR(10) not null comment 'å•†å“ç¼–å·ï¼Œå¤–é”®'
+)comment = 'å•†å“ä¸ç±»å‹çš„æ˜ å°„å…³ç³»';
 
 CREATE UNIQUE INDEX idx_type_product_map ON type_product_map(type_id,product_code); 
