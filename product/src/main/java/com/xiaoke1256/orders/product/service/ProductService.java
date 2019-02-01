@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.product.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +17,20 @@ public class ProductService {
 	@Autowired
 	private ProductDao productDao;
 	
+	/**
+	 * 搜索商品
+	 * @param condition
+	 * @return
+	 */
 	@Transactional(readOnly=true)
 	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
-		return null;//productDao.queryByCondition(condition);
+		Integer count = productDao.countByCondition(condition);
+		if(count==null)
+			count=0;
+		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),count);
+		List<Product> pList = productDao.queryByCondition(condition);
+		result.setResultList(pList);
+		return result;
 	}
 	
 	@Transactional(readOnly=true)

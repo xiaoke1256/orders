@@ -14,4 +14,6 @@ public interface ProductDao {
 	public List<Product> queryModifed(@Param("lastTime")Timestamp lastTime,@Param("productStatus")String productStatus);
 	
 	public List<Product> queryByCondition(ProductCondition condition);
+	
+	public Integer countByCondition(ProductCondition condition);
 }

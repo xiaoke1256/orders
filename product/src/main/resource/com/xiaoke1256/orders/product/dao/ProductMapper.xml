@@ -17,6 +17,19 @@
        		and update_time > #{lastTime}
        </if>
    </select>
+   <select id="countByCondition" parameterType="com.xiaoke1256.orders.product.vo.ProductCondition" resultType="java.lang.Integer">
+   	  select count(*)
+       from PRODUCT 
+      where 1=1
+      <if test="productCode!=null and productCode!=''">
+      	<bind name="productCodeLike" value="productCode + '%'" />
+      	and product_code like #{productCodeLike}
+      </if>
+      <if test="productName!=null and productName!=''">
+      	<bind name="productNameLike" value="'%' + productName + '%'" />
+      	and product_name like #{productNameLike}
+      </if>
+   </select>
    <select id="queryByCondition" parameterType="com.xiaoke1256.orders.product.vo.ProductCondition" resultMap="productMap">
    	  select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT 
@@ -29,6 +42,7 @@
       	<bind name="productNameLike" value="'%' + productName + '%'" />
       	and product_name like #{productNameLike}
       </if>
+      order by update_time desc
       <if test="pageSize!=null and pageNo!=null and pageSize &gt; 0 and pageNo &gt; 0 ">
       	<bind name="fromIndex" value="(pageNo-1)*pageSize"/>
       	limit #{fromIndex},#{pageSize}

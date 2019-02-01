@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 //import org.apache.logging.log4j.PropertyConfigurator;
 import org.junit.Before;
@@ -16,6 +18,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.common.dao.BaseDao;
 import com.xiaoke1256.orders.SpringbootApplication;
@@ -43,6 +46,9 @@ public class InitProduct {
 	
 	@Autowired
 	private BaseDao baseDao;
+	
+	@Resource
+	private RestTemplate restTemplate;
 	
 	/**
 	 * 补货
