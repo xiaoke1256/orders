@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @deprecated 不考虑事务隔离这种做法了。
+ * @author Administrator
+ *
+ */
+@Deprecated
 @Service
 @Transactional
 public class NoTransOrederService {
