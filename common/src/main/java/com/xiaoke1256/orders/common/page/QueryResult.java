@@ -20,6 +20,10 @@ public class QueryResult<T> implements Serializable {
 	
 	private List<T> resultList;
 
+	public QueryResult() {
+		super();
+	}
+	
 	public QueryResult(int pageNo, int pageSize, int totalCount) {
 		super();
 		this.pageNo = pageNo;
