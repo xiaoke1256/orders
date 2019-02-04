@@ -1,4 +1,4 @@
-package test.com.order.controller;
+package test.com.orders.controller;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

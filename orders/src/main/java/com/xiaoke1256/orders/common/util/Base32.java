@@ -12,10 +12,12 @@ public class Base32 {
 	};
 	
 	public static String encode(int num) {
+		if(num<0)
+			num = Integer.MAX_VALUE+num;
 		String result = String.valueOf(BASE_NUMS[num%32]);
 		while(num>=32) {
 			num = num>>5;
-			result = String.valueOf(BASE_NUMS[num])+result;
+			result = String.valueOf(BASE_NUMS[num%32])+result;
 		}
 		return result;
 	}

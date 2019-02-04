@@ -43,7 +43,7 @@ create table SUB_ORDER
 create table ORDER_ITEM
 (
 	item_id BIGINT primary key not null auto_increment comment '订单项主键',
-	pay_order_id BIGINT  not null comment '支付单号',
+	pay_order_id BIGINT comment '支付单号',
 	order_no VARCHAR(22)  not null comment '订单单号',
 	product_code CHAR(10)  not null comment '商品编号',
 	option_code	VARCHAR(12) comment '附加选项编码',

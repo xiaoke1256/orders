@@ -1,4 +1,4 @@
-package test.com.order.service;
+package test.com.orders.service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -18,13 +18,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.xiaoke1256.orders.SpringbootApplication;
 import com.xiaoke1256.orders.core.service.OrederService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes=SpringbootApplication.class)
 public class OrederServiceTest {
 	private ExecutorService pool = Executors.newFixedThreadPool(100);
@@ -53,9 +52,8 @@ public class OrederServiceTest {
 		Random r = new Random();
 		
 		String payerNo = "test18";
-		BigDecimal carriageAmt = BigDecimal.valueOf(4.0);
 		Map<String, Integer> productMap = new HashMap<String, Integer>();
-		String productId = String.valueOf(r.nextInt(1000));
+		String productId = "0006101504";
 		Integer num = r.nextInt(5);
 		if(num==0)
 			num = 1;

@@ -91,7 +91,25 @@
 	    <version>2.9.0</version>
 	</dependency>
 	
+	<dependency>
+       <groupId>com.xiaoke_1256.orders</groupId>
+       <artifactId>orders-common</artifactId>
+       <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+	
   </dependencies>
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.soringframework.cloud</groupId>
+  			<artifactId>spring-cloud-dependencies</artifactId>
+  			<version>Camden.SR4</version>
+  			<!-- <type>pom</type> -->
+  			<scope>import</scope>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
    
   <build>
     <plugins>

@@ -1,13 +1,11 @@
-package test.com.order.service;
+package test.com.orders.service;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
 //import org.apache.logging.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +13,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.xiaoke1256.common.dao.BaseDao;
 import com.xiaoke1256.orders.SpringbootApplication;
+import com.xiaoke1256.orders.common.dao.BaseDao;
 import com.xiaoke1256.orders.core.bo.OStorage;
+import com.xiaoke1256.orders.product.dto.Product;
+import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes=SpringbootApplication.class)
+@ActiveProfiles("test")
 public class InitProduct {
 	
 	@Before
@@ -50,16 +51,37 @@ public class InitProduct {
 	@Resource
 	private RestTemplate restTemplate;
 	
+	@Test
+	@Transactional
+	@Rollback(false)
+	public void initOStorage() {
+		ProductQueryResult result = restTemplate.getForObject("http://127.0.0.1:8081/product/product/search?pageSize="+Integer.MAX_VALUE, ProductQueryResult.class);
+		for(Product product:result.getResultList()) {
+			String hql = "from OStorage o where o.productCode='"+product.getProductCode()+"'";
+			@SuppressWarnings("unchecked")
+			List<OStorage> oList = (List<OStorage>)baseDao.queryByHql(hql);
+			if(oList.size()>0)
+				continue;
+			OStorage storage = new OStorage();
+			storage.setProductCode(product.getProductCode());
+			storage.setStockNum(0l);
+			Timestamp now = new Timestamp(System.currentTimeMillis());
+			storage.setInsertTime(now);
+			storage.setUpdateTime(now);
+			baseDao.persist(storage);
+		}
+	}
+	
 	/**
 	 * 补货
 	 */
 	@Test
 	@Rollback(false)
 	@Transactional
-	public void restoreProduct(){
+	public void restoreOStorage(){
 		Random r = new Random();
 		@SuppressWarnings("unchecked")
-		List<OStorage> products = (List<OStorage>) baseDao.queryByHql("from Product where stockNum <= 200 ");
+		List<OStorage> products = (List<OStorage>) baseDao.queryByHql("from OStorage where stockNum <= 200 ");
 		for(OStorage product:products){
 			Long stockNum = Long.valueOf(r.nextInt(1000));
 			 while(stockNum<=500)

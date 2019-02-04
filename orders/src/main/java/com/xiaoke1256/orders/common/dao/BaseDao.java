@@ -1,4 +1,4 @@
-package com.xiaoke1256.common.dao;
+package com.xiaoke1256.orders.common.dao;
 
 import java.util.List;
 

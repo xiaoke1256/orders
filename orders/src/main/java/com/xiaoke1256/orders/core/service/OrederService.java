@@ -29,7 +29,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.orders.common.util.Base32;
 import com.xiaoke1256.orders.common.util.DateUtil;
-import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
@@ -63,7 +62,7 @@ public class OrederService {
 		List<Product> products = new ArrayList<Product>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			Product product = restTemplate.getForObject("http:127.0.0.1:8081/product/product/"+productCode, Product.class);
+			Product product = restTemplate.getForObject("http://127.0.0.1:8081/product/product/"+productCode, Product.class);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}
@@ -97,7 +96,8 @@ public class OrederService {
 				orderItem.setProductNum(orderMap.get(product.getProductCode()));
 				orderItem.setProductPrice(product.getProductPrice());
 				orderItem.setSubOrder(subOrder);
-				totalAmt.add(product.getProductPrice().multiply(BigDecimal.valueOf(orderMap.get(product.getProductCode()))));
+				totalAmt = totalAmt.add(product.getProductPrice().multiply(BigDecimal.valueOf(orderMap.get(product.getProductCode()))));
+				items.add(orderItem);
 			}
 			subOrder.setTotalAmt(totalAmt);
 			subOrder.setOrderItems(items);
@@ -121,6 +121,12 @@ public class OrederService {
 		//创建支付单
 		PayOrder payOrder = createPayOrder(payerNo, subOrders);
 		entityManager.persist(payOrder);
+		for( SubOrder subOrder:payOrder.getSubOrders()) {
+			for(OrderItem item:subOrder.getOrderItems()) {
+				item.setPayOrderId(payOrder.getPayOrderId());
+				entityManager.merge(item);
+			}
+		}
 		entityManager.flush();
 		return payOrder;
 //		for(SubOrder subOrder:payOrder.getSubOrders()){
@@ -204,7 +210,7 @@ public class OrederService {
 		
 		String storeNoCode =Base32.encode(subOrder.getStoreNo().hashCode());
 		if(storeNoCode.length()>2)
-			storeNoCode.substring(storeNoCode.length()-2);
+			storeNoCode = storeNoCode.substring(storeNoCode.length()-2);
 		else if(storeNoCode.length()==1)
 			storeNoCode = "0"+storeNoCode;
 		
@@ -227,7 +233,7 @@ public class OrederService {
 			.append(StringUtils.leftPad(String.valueOf(second), 2, '0'));
 		
 		long nanoSecode = System.nanoTime();//这是纳秒，需要转成微妙。
-		int microSecond = ((int)nanoSecode/1000)%1000;
+		int microSecond = ((int)(nanoSecode/1000))%1000;
 		orderNo.append(StringUtils.leftPad(String.valueOf(microSecond), 3, '0'));
 		
 		orderNo.append(StringUtils.leftPad(Base32.encode(RandomUtils.nextInt(32*32)),2,'0'));
@@ -242,6 +248,10 @@ public class OrederService {
 	private String genPayOrderNo(String payerNo) {
 		StringBuilder orderNo = new StringBuilder();
 		String payereNoCode =Base32.encode(payerNo.hashCode());
+		if(payereNoCode.length()>2)
+			payereNoCode=payereNoCode.substring(payereNoCode.length()-2);
+		else if(payereNoCode.length()==1)
+			payereNoCode = "0"+payereNoCode;
 		orderNo.append(payereNoCode);
 		
 		Date now = new Date();
