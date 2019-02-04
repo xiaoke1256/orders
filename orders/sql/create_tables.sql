@@ -17,7 +17,7 @@ create table O_STORAGE
 create table PAY_ORDER
 (
   pay_order_id BIGINT primary key not null auto_increment comment '支付单主键',
-  pay_order_no VARCHAR(18) comment '支付单订单号',
+  pay_order_no VARCHAR(18) not null unique comment '支付单订单号',
   carriage_amt DECIMAL(20) comment '运费',
   payer_no     VARCHAR(24) comment '付款人',
   total_amt    DECIMAL(22) comment '订单总额（含运费）',
@@ -54,9 +54,10 @@ create table ORDER_ITEM
 
 --create index
 CREATE INDEX IDX_STORE_PRODUCT_NO ON O_STORAGE(product_code);
+CREATE UNIQUE INDEX IDX_PAY_ORDER_PAYER_ORDER_NO ON PAY_ORDER(pay_order_no);
 CREATE INDEX IDX_PAY_ORDER_PAYER_NO ON PAY_ORDER(PAYER_NO);
 CREATE INDEX IDX_SUB_ORDER_ORDER_NO ON SUB_ORDER (PAY_ORDER_ID);
 CREATE INDEX IDX_ORDER_ITEM_SUB_ID ON ORDER_ITEM (ORDER_NO);
-CREATE INDEX IDX_ORDER_ITEM_ORDER_NO ON ORDER_ITEM (PAY_ORDER_ID);
+CREATE INDEX IDX_ORDER_ITEM_PAY_ORDER_ID ON ORDER_ITEM (PAY_ORDER_ID);
 --CREATE INDEX IDX_SUB_ORDER_STORE_NO ON SUB_ORDER (STORE_NO);
 --CREATE INDEX IDX_SUB_ORDER_PRODUCT_ID ON SUB_ORDER(PRODUCT_ID);
