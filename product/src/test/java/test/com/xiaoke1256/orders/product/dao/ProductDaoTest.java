@@ -30,7 +30,7 @@ public class ProductDaoTest {
 	
 	@Test
 	public void testGet() {
-		Product p = productDao.getProductByCode("0008100407");
+		Product p = productDao.getProductByCode("0006101504");
 		System.out.println(p);
 		if(p != null) {
 			System.out.println("productName : "+ p.getProductName());
