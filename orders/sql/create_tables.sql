@@ -17,6 +17,7 @@ create table O_STORAGE
 create table PAY_ORDER
 (
   pay_order_id BIGINT primary key not null auto_increment comment '支付单主键',
+  pay_order_no VARCHAR(18) comment '支付单订单号',
   carriage_amt DECIMAL(20) comment '运费',
   payer_no     VARCHAR(24) comment '付款人',
   total_amt    DECIMAL(22) comment '订单总额（含运费）',
@@ -46,7 +47,8 @@ create table ORDER_ITEM
 	order_no VARCHAR(22)  not null comment '订单单号',
 	product_code CHAR(10)  not null comment '商品编号',
 	option_code	VARCHAR(12) comment '附加选项编码',
-	product_num   DECIMAL(10) comment '商品数量'
+	product_price DECIMAL(22) not null comment '单价',
+	product_num   DECIMAL(10) not null comment '商品数量'
 	
 ) comment='订单项' ;
 

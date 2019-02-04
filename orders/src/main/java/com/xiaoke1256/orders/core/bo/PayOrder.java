@@ -22,6 +22,9 @@ public class PayOrder {
 	@Column(name = "pay_order_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long payOrderId;
+	
+	@Column(name = "PAY_ORDER_NO")
+	private String payOrderNo;
 	@Column(name = "TOTAL_AMT")
 	private BigDecimal totalAmt;
 	@Column(name = "CARRIAGE_AMT")
@@ -34,14 +37,14 @@ public class PayOrder {
 	private Timestamp insertTime;
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
-	
-	
+
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((payOrderId == null) ? 0 : payOrderId.hashCode());
+		result = prime * result + ((payOrderNo == null) ? 0 : payOrderNo.hashCode());
 		result = prime * result + ((payerNo == null) ? 0 : payerNo.hashCode());
 		return result;
 	}
@@ -59,6 +62,11 @@ public class PayOrder {
 				return false;
 		} else if (!payOrderId.equals(other.payOrderId))
 			return false;
+		if (payOrderNo == null) {
+			if (other.payOrderNo != null)
+				return false;
+		} else if (!payOrderNo.equals(other.payOrderNo))
+			return false;
 		if (payerNo == null) {
 			if (other.payerNo != null)
 				return false;
@@ -66,12 +74,17 @@ public class PayOrder {
 			return false;
 		return true;
 	}
-	
 	public Long getPayOrderId() {
 		return payOrderId;
 	}
 	public void setPayOrderId(Long payOrderId) {
 		this.payOrderId = payOrderId;
+	}
+	public String getPayOrderNo() {
+		return payOrderNo;
+	}
+	public void setPayOrderNo(String payOrderNo) {
+		this.payOrderNo = payOrderNo;
 	}
 	public BigDecimal getTotalAmt() {
 		return totalAmt;

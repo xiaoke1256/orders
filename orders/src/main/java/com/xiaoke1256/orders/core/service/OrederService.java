@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -16,6 +17,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -24,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.xiaoke1256.orders.common.util.Base32;
+import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
@@ -83,15 +88,18 @@ public class OrederService {
 			SubOrder subOrder = new SubOrder();
 			subOrder.setCarriageAmt(carriage);
 			subOrder.setStoreNo(storeNo);
+			BigDecimal totalAmt = BigDecimal.ZERO.add(carriage);
 			//构造订单项
 			Set<OrderItem> items = new HashSet<OrderItem>();
 			for(Product product:subProducts) {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setProductCode(product.getProductCode());
 				orderItem.setProductNum(orderMap.get(product.getProductCode()));
+				orderItem.setProductPrice(product.getProductPrice());
 				orderItem.setSubOrder(subOrder);
+				totalAmt.add(product.getProductPrice().multiply(BigDecimal.valueOf(orderMap.get(product.getProductCode()))));
 			}
-			//subOrder.setTotalAmt(totalAmt);
+			subOrder.setTotalAmt(totalAmt);
 			subOrder.setOrderItems(items);
 			subOrders.add(subOrder);
 		}
@@ -128,10 +136,14 @@ public class OrederService {
 		for(SubOrder subOrder:subOrders) {
 			totalAmt = totalAmt.add(subOrder.getTotalAmt());
 		}
+		//生成订单号
+		for(SubOrder subOrder:subOrders) {
+			subOrder.setOrderNo(genOrderNo(subOrder));
+		}
 		payOrder.setTotalAmt(totalAmt );
 		payOrder.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		
+		payOrder.setPayOrderNo(genPayOrderNo(payerNo));
 		payOrder.setSubOrders(new LinkedHashSet<SubOrder>(subOrders));
 		return payOrder;
 	}
@@ -178,6 +190,79 @@ public class OrederService {
 			return new BigDecimal(7000).multiply(BigDecimal.valueOf(productNum)).divide(BigDecimal.valueOf(5), 3, RoundingMode.HALF_UP);
 		}
 		
+	}
+	
+	/**
+	 * 生成订单号
+	 * 订单号规则:商铺号HashCode后转32进制数的后两位+年份后两位转成32进制数+16进制表示的月份+32进制表示的日
+	 * +32进制表示的时+两位十进制表示的分+两位十进制表示的秒+3位十进制表示的微秒+2位32进制随机数。共15位。
+	 * @param subOrder
+	 * @return
+	 */
+	private String genOrderNo(SubOrder subOrder) {
+		StringBuilder orderNo = new StringBuilder();
+		
+		String storeNoCode =Base32.encode(subOrder.getStoreNo().hashCode());
+		if(storeNoCode.length()>2)
+			storeNoCode.substring(storeNoCode.length()-2);
+		else if(storeNoCode.length()==1)
+			storeNoCode = "0"+storeNoCode;
+		
+		orderNo.append(storeNoCode);
+		
+		Date now = new Date();
+		int year = DateUtil.getYear(now);
+		year = year%100%32;
+		int month = DateUtil.getMonth(now);
+		int date = DateUtil.getDate(now);
+		int hour =DateUtil.getHour(now);
+		int minute = DateUtil.getMinute(now);
+		int second = DateUtil.getSecond(now);
+		
+		orderNo.append(Base32.encode(year))
+			.append(Base32.encode(month))
+			.append(Base32.encode(date))
+			.append(Base32.encode(hour))
+			.append(StringUtils.leftPad(String.valueOf(minute), 2, '0'))
+			.append(StringUtils.leftPad(String.valueOf(second), 2, '0'));
+		
+		long nanoSecode = System.nanoTime();//这是纳秒，需要转成微妙。
+		int microSecond = ((int)nanoSecode/1000)%1000;
+		orderNo.append(StringUtils.leftPad(String.valueOf(microSecond), 3, '0'));
+		
+		orderNo.append(StringUtils.leftPad(Base32.encode(RandomUtils.nextInt(32*32)),2,'0'));
+		return orderNo.toString();
+	}
+	
+	/**
+	 * 支付单号
+	 * @param payerNo
+	 * @return
+	 */
+	private String genPayOrderNo(String payerNo) {
+		StringBuilder orderNo = new StringBuilder();
+		String payereNoCode =Base32.encode(payerNo.hashCode());
+		orderNo.append(payereNoCode);
+		
+		Date now = new Date();
+		int year = DateUtil.getYear(now);
+		year = year%100;
+		int month = DateUtil.getMonth(now);
+		int date = DateUtil.getDate(now);
+		int hour =DateUtil.getHour(now);
+		int minute = DateUtil.getMinute(now);
+		int second = DateUtil.getSecond(now);
+		int millisecond = DateUtil.getMillisecond(now);
+		
+		orderNo.append(StringUtils.leftPad(String.valueOf(year),2,'0'))
+		.append(StringUtils.leftPad(String.valueOf(month),2,'0'))
+		.append(StringUtils.leftPad(String.valueOf(date),2,'0'))
+		.append(StringUtils.leftPad(String.valueOf(hour),2,'0'))
+		.append(StringUtils.leftPad(String.valueOf(minute), 2, '0'))
+		.append(StringUtils.leftPad(String.valueOf(second), 2, '0'))
+		.append(StringUtils.leftPad(String.valueOf(millisecond), 3, '0'))
+		.append(Base32.encode(RandomUtils.nextInt(32)));
+		return orderNo.toString();
 	}
 	
 }

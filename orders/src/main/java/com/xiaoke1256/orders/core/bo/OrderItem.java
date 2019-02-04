@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.core.bo;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +31,9 @@ public class OrderItem {
 	
 	@Column(name = "OPTION_CODE")
 	private String optionCode;
+	
+	@Column(name = "PRODUCT_PRICE")
+	private BigDecimal productPrice;
 	
 	@Column(name = "PRODUCT_NUM")
 	private Integer productNum;
@@ -115,6 +120,14 @@ public class OrderItem {
 
 	public void setOptionCode(String optionCode) {
 		this.optionCode = optionCode;
+	}
+
+	public BigDecimal getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(BigDecimal productPrice) {
+		this.productPrice = productPrice;
 	}
 
 	public Integer getProductNum() {
