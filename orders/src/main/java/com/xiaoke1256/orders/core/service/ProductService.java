@@ -21,6 +21,10 @@ public class ProductService {
 		return entityManager.find(OStorage.class, productCode);
 	}
 	
+	/**
+	 * @deprecated 是否支持秒杀要调用product 应用的东西。
+	 * @param productCode
+	 */
 	public void openSecKill(String productCode) {
 		Jedis conn = RedisUtils.connect();
 		OStorage product = entityManager.find(OStorage.class, productCode);
@@ -41,6 +45,10 @@ public class ProductService {
 		conn.close();
 	}
 	
+	/**
+	 * @deprecated 是否支持秒杀要调用product 应用的东西。
+	 * @param productCode
+	 */
 	public void closeSecKill(String productCode) {
 		OStorage product = entityManager.find(OStorage.class, productCode);
 		
@@ -53,6 +61,7 @@ public class ProductService {
 	}
 	
 	/**
+	 * @deprecated 是否支持秒杀要调用product 应用的东西。
 	 * 是否正在进行秒杀活动
 	 * @return
 	 */

@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.core.controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +11,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +26,13 @@ import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
+import com.xiaoke1256.orders.core.dto.ProductWithStorage;
+import com.xiaoke1256.orders.core.dto.ProductWithStorageQueryResult;
+import com.xiaoke1256.orders.core.service.OStorageService;
 import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.ProductService;
 import com.xiaoke1256.orders.product.dto.ProductQueryResult;
+import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 import redis.clients.jedis.Jedis;
@@ -49,6 +55,9 @@ public class SecKillController {
 	private OrederService orederService;
 	
 	@Autowired
+	private OStorageService oStorageService;
+	
+	@Autowired
 	private RestTemplate restTemplate;
 	
 //	@RequestMapping(value="/",method={RequestMethod.GET})
@@ -66,7 +75,7 @@ public class SecKillController {
 	 * @return
 	 */
 	@RequestMapping(value="/products",method={RequestMethod.GET})
-	public ProductQueryResult queryProduct(ProductCondition condition) {
+	public ProductWithStorageQueryResult queryProduct(ProductCondition condition) {
 		int pageNo = condition.getPageNo();
 		int pageSize = condition.getPageSize();
 		StringBuilder paramsSb = new StringBuilder();
@@ -78,7 +87,23 @@ public class SecKillController {
 		if(StringUtils.isNotBlank(condition.getProductName())) {
 			paramsSb.append("&").append("productName=").append(condition.getProductName());
 		}
-		return restTemplate.getForObject("http://127.0.0.1:8081/product/product/search?"+paramsSb.toString(), ProductQueryResult.class);
+		ProductQueryResult productResut = restTemplate.getForObject("http://127.0.0.1:8081/product/product/search?"+paramsSb.toString(), ProductQueryResult.class);
+		ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
+		List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
+		result.setResultList(resultList);
+		return result;
+	}
+	
+	private ProductWithStorage makeProductWithStorage(Product p) {
+		String productCode = p.getProductCode();
+		OStorage storage = oStorageService.getByProductCode(productCode);
+		storage.getStockNum();
+		ProductWithStorage productWithStorage = new ProductWithStorage();
+		BeanUtils.copyProperties(p, productWithStorage);
+		productWithStorage.setStockNum(storage.getStockNum());
+		productWithStorage.setStoreName(p.getStore().getStoreName());
+		//productWithStorage.setProductTypeNames(productTypeNames);TODO 暂不处理
+		return productWithStorage;
 	}
 	/**
 	 * 下订单（利用redis缓存）
