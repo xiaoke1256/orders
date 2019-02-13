@@ -52,13 +52,30 @@
 	  });//
 	  
 	  //初始化列表
-	  $.get("secKill/products",{},function(result){
-		  var $th = $('#content>table tr').first();
+	  refreshPage();
+	 
+	  //点击分页。
+	  $('body').on('click','a.page',function(){
+		  $('[name=pageNo]').val($(this).attr("pageNo"));
+		  refreshPage();
+	  });
+	  
+  });
+  
+  //刷新列表内容
+  function refreshPage(){
+	  var pageNo = $('[name=pageNo]').val();
+	  var pageSize = $('[name=pageSize]').val();
+
+	  $.get("secKill/products",{pageNo:pageNo,pageSize:pageSize},function(result){
+		  var $tbody = $('#content table tbody').empty();
 		  //列表
 		  for(var i in result.resultList){
 			  var p =result.resultList[i];
 			  var innerHtml = '<tr> ';
 			  innerHtml+='<td>'+p.productCode+'</td>';
+			  innerHtml+='<td>'+p.productName+'</td>';
+			  innerHtml+='<td>'+p.storeName+'</td>';
 			  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
 			  innerHtml+='<td>'+p.stockNum+'</td>';
 			  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
@@ -69,15 +86,36 @@
 				  innerHtml+='<a href="javascript:void(0);" class="closeBtn" pcode="'+p.productCode+'">OPEN</a>';
 			  innerHtml+='</td>';
 			  innerHtml+='</tr>';
-			  $th.parent().append(innerHtml);
+			  $tbody.append(innerHtml);
 		  }
+		  //分页
+		  makePageInfo(result);
+		  
 		  //下拉列表
-		  for(var i in result){
-			  var p =result[i];
-		  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+p.productCode+'</option>');
+		  for(var i in result.resultList){
+			  var p =result.resultList[i];
+		  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
 		  }
 	  },'json');
-  });
+  }
+  
+  function makePageInfo(page){
+	  var pageNo = page.pageNo;
+	  var pageSize = page.pageSize;
+	  var totalCount = page.totalCount;
+	  var totalPages = page.totalPages;
+	  var pageContetxt = '';
+	  if(pageNo>1){
+		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
+		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
+	  }
+	  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
+	  if(pageNo<totalPages){
+		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
+		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalPages+'">尾页</a> ';
+	  }
+	  $('#pageTd').empty().append(pageContetxt);
+  }
   
   var times = 1000;
   function submitSomeOrder(num){
@@ -159,16 +197,31 @@
 	</header>
 	<br>
 	<div id="content" style="margin:10px auto;width:80%">
+		<form action="secKill/products" name="searchForm" >
+		<input type="hidden" name="pageNo" value="1" >
+		<input type="hidden" name="pageSize" value="10" >
 		<table border="1" style="width:100%">
-			<tr>
-				<th>CODE</th>
-				<th>PRICE</th>
-				<th>STOCK NUM</th>
-				<th>IN SECKILL</th>
-				<th>OPER</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>CODE</th>
+					<th>NAME</th>
+					<th>STORE NAME</th>
+					<th>PRICE</th>
+					<th>STOCK NUM</th>
+					<th>IN SECKILL</th>
+					<th>OPER</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td id="pageTd" colspan="7"></td>
+				</tr>
+			</tfoot>
 			
 		</table>
+		</form>
 		
 		<br>
 		
