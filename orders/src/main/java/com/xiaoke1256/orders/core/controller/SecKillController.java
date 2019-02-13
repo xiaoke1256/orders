@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.common.utils.ResponseUtils;
@@ -25,6 +26,8 @@ import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.ProductService;
+import com.xiaoke1256.orders.product.dto.ProductQueryResult;
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
@@ -45,6 +48,9 @@ public class SecKillController {
 	@Autowired
 	private OrederService orederService;
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 //	@RequestMapping(value="/",method={RequestMethod.GET})
 //	public ModelAndView toIndex() {
 //		List<Product> products = productService.queryProductsWithLimit(10);
@@ -60,9 +66,19 @@ public class SecKillController {
 	 * @return
 	 */
 	@RequestMapping(value="/products",method={RequestMethod.GET})
-	public List<OStorage> queryProduct() {
-		List<OStorage> products = productService.queryProductsWithLimit(10);
-		return products;
+	public ProductQueryResult queryProduct(ProductCondition condition) {
+		int pageNo = condition.getPageNo();
+		int pageSize = condition.getPageSize();
+		StringBuilder paramsSb = new StringBuilder();
+		paramsSb.append("pageNo=").append(pageNo).append("&");
+		paramsSb.append("pageSize=").append(pageSize);
+		if(StringUtils.isNotBlank(condition.getProductCode())) {
+			paramsSb.append("&").append("productCode=").append(condition.getProductCode());
+		}
+		if(StringUtils.isNotBlank(condition.getProductName())) {
+			paramsSb.append("&").append("productName=").append(condition.getProductName());
+		}
+		return restTemplate.getForObject("http://127.0.0.1:8081/product/product/search?"+paramsSb.toString(), ProductQueryResult.class);
 	}
 	/**
 	 * 下订单（利用redis缓存）

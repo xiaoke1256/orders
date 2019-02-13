@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.xiaoke1256.orders.product.bo.Product;
-import com.xiaoke1256.orders.product.vo.ProductCondition;
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 public interface ProductDao {
 	public Product getProductByCode(String productCode);

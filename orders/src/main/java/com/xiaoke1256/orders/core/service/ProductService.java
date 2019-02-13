@@ -1,7 +1,5 @@
 package com.xiaoke1256.orders.core.service;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -21,11 +19,6 @@ public class ProductService {
 	
 	public OStorage getProduct(String productCode) {
 		return entityManager.find(OStorage.class, productCode);
-	}
-	
-	@Transactional(readOnly=true)
-	public List<OStorage> queryProductsWithLimit(int limit) {
-		return entityManager.createQuery("from Product").setMaxResults(limit).getResultList();
 	}
 	
 	public void openSecKill(String productCode) {

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.product.vo;
+package com.xiaoke1256.orders.product.dto;
 
 import com.xiaoke1256.orders.common.page.BaseCondition;
 

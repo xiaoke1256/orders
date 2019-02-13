@@ -17,7 +17,7 @@ import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.bo.ProductParam;
 import com.xiaoke1256.orders.product.bo.ProductType;
 import com.xiaoke1256.orders.product.dao.ProductDao;
-import com.xiaoke1256.orders.product.vo.ProductCondition;
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 
 @RunWith(SpringRunner.class)

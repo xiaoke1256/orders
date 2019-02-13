@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.dto.Product;
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.ProductService;
-import com.xiaoke1256.orders.product.vo.ProductCondition;
 
 @RestController
 public class ProductController {

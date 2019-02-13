@@ -17,7 +17,7 @@
        		and update_time > #{lastTime}
        </if>
    </select>
-   <select id="countByCondition" parameterType="com.xiaoke1256.orders.product.vo.ProductCondition" resultType="java.lang.Integer">
+   <select id="countByCondition" parameterType="com.xiaoke1256.orders.product.dto.ProductCondition" resultType="java.lang.Integer">
    	  select count(*)
        from PRODUCT 
       where 1=1
@@ -30,7 +30,7 @@
       	and product_name like #{productNameLike}
       </if>
    </select>
-   <select id="queryByCondition" parameterType="com.xiaoke1256.orders.product.vo.ProductCondition" resultMap="productMap">
+   <select id="queryByCondition" parameterType="com.xiaoke1256.orders.product.dto.ProductCondition" resultMap="productMap">
    	  select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT 
       where 1=1

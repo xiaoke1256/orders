@@ -55,11 +55,11 @@
 	  $.get("secKill/products",{},function(result){
 		  var $th = $('#content>table tr').first();
 		  //列表
-		  for(var i in result){
-			  var p =result[i];
+		  for(var i in result.resultList){
+			  var p =result.resultList[i];
 			  var innerHtml = '<tr> ';
 			  innerHtml+='<td>'+p.productCode+'</td>';
-			  innerHtml+='<td>'+p.productPrice+'</td>';
+			  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
 			  innerHtml+='<td>'+p.stockNum+'</td>';
 			  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
 			  innerHtml+='<td>';

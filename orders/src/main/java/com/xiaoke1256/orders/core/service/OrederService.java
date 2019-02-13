@@ -38,8 +38,7 @@ import com.xiaoke1256.orders.product.dto.Product;
 @Transactional
 public class OrederService {
 	private static  final Logger logger = LogManager.getLogger(OrederService.class);
-//	@Autowired
-//	private BaseDao baseDao;
+
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	

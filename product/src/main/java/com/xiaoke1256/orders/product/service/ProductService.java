@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.dao.ProductDao;
-import com.xiaoke1256.orders.product.vo.ProductCondition;
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 @Service
 @Transactional
