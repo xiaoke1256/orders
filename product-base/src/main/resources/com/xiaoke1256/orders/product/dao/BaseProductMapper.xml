@@ -8,6 +8,7 @@
        <result property="productName" column="product_name" />
        <result property="productPrice" column="product_price" />
        <!-- <result property="storeNo" column="store_no" /> -->
+       <result property="inSeckill" column="in_seckill" />
        <result property="productStatus" column="product_status" />
        <result property="productIntro" column="product_intro" />
        <result property="insertTime" column="insert_time" />

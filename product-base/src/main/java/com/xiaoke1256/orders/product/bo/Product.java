@@ -21,6 +21,8 @@ public class Product implements Serializable {
 	
 	private Store store;
 	
+	private String inSeckill;
+	
 	private String productStatus;
 	
 	private String productIntro;
@@ -120,5 +122,15 @@ public class Product implements Serializable {
 	public void setParams(List<ProductParam> params) {
 		this.params = params;
 	}
+
+	public String getInSeckill() {
+		return inSeckill;
+	}
+
+	public void setInSeckill(String inSeckill) {
+		this.inSeckill = inSeckill;
+	}
+	
+	
 	
 }
