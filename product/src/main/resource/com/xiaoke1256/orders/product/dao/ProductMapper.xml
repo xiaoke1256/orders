@@ -26,7 +26,7 @@
       	and product_code like #{productCodeLike}
       </if>
       <if test="productName!=null and productName!=''">
-      	<bind name="productNameLike" value="'%' + productName + '%'" />
+      	<bind name="productNameLike" value="'%' + productName + '%'" /> 
       	and product_name like #{productNameLike}
       </if>
    </select>
