@@ -16,4 +16,6 @@ public interface ProductDao {
 	public List<Product> queryByCondition(ProductCondition condition);
 	
 	public Integer countByCondition(ProductCondition condition);
+	
+	public void updateSecKill(String productCode,String isSecKill);
 }

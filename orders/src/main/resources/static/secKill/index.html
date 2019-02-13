@@ -26,7 +26,7 @@
 				  url+="open";
 			  $.post(url+"/"+$btn.attr("pcode"),{},function(result){
 				 // alert($btn.html());
-				  if(result=="success!"){
+				  if(result.code=="0"){
 					  if($btn.text()=="CLOSE"){
 						$btn.text("OPEN");
 						$btn.parent().prev().text("NO");
@@ -38,7 +38,7 @@
 					  alert("Something wrong happen:"+result);
 				  }
 					  
-			  },"text");
+			  },"json");
 		  }
 	  );
 	  

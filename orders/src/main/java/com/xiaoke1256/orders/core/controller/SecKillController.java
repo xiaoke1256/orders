@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.common.utils.ResponseUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.dto.ProductWithStorage;
@@ -102,6 +104,7 @@ public class SecKillController {
 		BeanUtils.copyProperties(p, productWithStorage);
 		productWithStorage.setStockNum(storage.getStockNum());
 		productWithStorage.setStoreName(p.getStore().getStoreName());
+		logger.info("p.getInSeckill()="+p.getInSeckill());
 		//productWithStorage.setProductTypeNames(productTypeNames);TODO 暂不处理
 		return productWithStorage;
 	}
@@ -189,21 +192,17 @@ public class SecKillController {
 	/**
 	 * 开始秒杀活动
 	 */
-	@RequestMapping("/open/{productCode}")
-	public void openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		if(StringUtils.isBlank(productCode))
-			ResponseUtils.writeToResponse(response, "error:ProductCode can not be null.");
-		productService.openSecKill(productCode);
-		ResponseUtils.writeToResponse(response, "success!");
+	@PostMapping("/open/{productCode}")
+	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
+		return restTemplate.postForObject("http://127.0.0.1:8081/product/secKill/open/"+productCode,null, RespMsg.class);
 	}
 	
 	/**
 	 * 结束秒杀活动。
 	 * @param productCodes
 	 */
-	@RequestMapping("/close/{productCode}")
-	public void closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		productService.closeSecKill(productCode);
-		ResponseUtils.writeToResponse(response, "success!");
+	@PostMapping("/close/{productCode}")
+	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
+		return restTemplate.postForObject("http://127.0.0.1:8081/product/secKill/close/"+productCode,null, RespMsg.class);
 	}
 }

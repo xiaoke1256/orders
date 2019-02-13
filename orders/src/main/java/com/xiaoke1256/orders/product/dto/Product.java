@@ -20,6 +20,8 @@ public class Product implements Serializable {
 	private BigDecimal productPrice;
 	
 	private Store store;
+
+	private String inSeckill;
 	
 	private String productStatus;
 	
@@ -119,6 +121,14 @@ public class Product implements Serializable {
 
 	public void setParams(List<ProductParam> params) {
 		this.params = params;
+	}
+
+	public String getInSeckill() {
+		return inSeckill;
+	}
+
+	public void setInSeckill(String inSeckill) {
+		this.inSeckill = inSeckill;
 	}
 	
 }

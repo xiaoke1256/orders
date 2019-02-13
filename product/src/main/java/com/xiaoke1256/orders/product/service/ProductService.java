@@ -37,4 +37,22 @@ public class ProductService {
 	public Product getProductByCode(String productCode) {
 		return productDao.getProductByCode(productCode);
 	}
+
+	/**
+	 * 开启秒杀活动
+	 * @param productCode
+	 */
+	public void openSecKill(String productCode) {
+		productDao.updateSecKill(productCode, "1");
+		//TODO 操作redis
+	}
+
+	/**
+	 * 关闭秒杀活动
+	 * @param productCode
+	 */
+	public void closeSecKill(String productCode) {
+		productDao.updateSecKill(productCode, "0");
+		//TODO 操作redis
+	}
 }

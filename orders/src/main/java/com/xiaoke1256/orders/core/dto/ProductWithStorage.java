@@ -14,6 +14,8 @@ public class ProductWithStorage {
 	
 	private String storeName;
 	
+	private String inSeckill;
+	
 	private String productStatus;
 	
 	private String productIntro;
@@ -112,6 +114,14 @@ public class ProductWithStorage {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getInSeckill() {
+		return inSeckill;
+	}
+
+	public void setInSeckill(String inSeckill) {
+		this.inSeckill = inSeckill;
 	}
 	
 	
