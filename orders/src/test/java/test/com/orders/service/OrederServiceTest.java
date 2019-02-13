@@ -62,6 +62,10 @@ public class OrederServiceTest {
 	}
 	
 	//@Test
+	/**
+	 * @deprecated 暂时废除。相关接口都已经变了。
+	 * @throws Exception
+	 */
 	public void testConcurrentPlaceOrder() throws Exception{
 		final Random r = new Random();
 		final List<StatResult> ressults = new Vector<StatResult>();
