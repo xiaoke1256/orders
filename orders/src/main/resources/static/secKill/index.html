@@ -93,6 +93,7 @@
 		  makePageInfo(result);
 		  
 		  //下拉列表
+		  $('select[name=productCode]').empty();
 		  for(var i in result.resultList){
 			  var p =result.resultList[i];
 		  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
@@ -162,12 +163,17 @@
 		        } else {      
 		        	 $("#console").append("<font color=\"red\">"+ret.errMsg.errCode+":"+ret.errMsg.errMsg+"</font><br>");    
 		        }
-		        endTime=new Date().getTime();
+		    },
+		    error:function(req,errMsg,errorThrown){
+		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
+		    },
+		    complete:function(){
+		    	endTime=new Date().getTime();
 		        costTime += (endTime-startTime);
 		        taskCount--;
 		        completedCount++;
-		        $("#console").append("taskCount:"+taskCount+"<br>");    
-		        if(taskCount==0){
+		        $("#console").append("taskCount:"+taskCount+"<br>"); 
+		    	if(taskCount==0){
 		        	endTimeAll = new Date().getTime();
 		        	var avgTime = Math.round(costTime/completedCount);
 		        	var epandTime = endTimeAll-startTimeAll;
