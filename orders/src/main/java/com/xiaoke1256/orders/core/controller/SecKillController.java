@@ -125,7 +125,7 @@ public class SecKillController {
 				String key = "SecKill_P_"+productCode;
 				String inStore = RedisUtils.get(conn, key);
 				if(inStore==null) {
-					OStorage p = productService.getProduct(productCode);
+					OStorage p = oStorageService.getByProductCode(productCode);
 					if(productService.isInSecKill(productCode)) {
 						RedisUtils.set(conn, key, String.valueOf(p.getStockNum()));
 					}else {
@@ -194,7 +194,22 @@ public class SecKillController {
 	 */
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		return restTemplate.postForObject("http://127.0.0.1:8081/product/secKill/open/"+productCode,null, RespMsg.class);
+		RespMsg respMsg = restTemplate.postForObject("http://127.0.0.1:8081/product/secKill/open/"+productCode,null, RespMsg.class);
+		if(!"0".equals(respMsg.getCode())) {
+			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+			return respMsg;
+		}
+		OStorage storage = oStorageService.getByProductCode(productCode);
+		
+		if(storage.getStockNum()<100) {
+			throw new RuntimeException(""+productCode+"的库存不足,库存需大于100份才可支持秒杀活动。");
+		}
+		
+		Jedis conn = RedisUtils.connect();
+		RedisUtils.set(conn, "SecKill_P_"+storage.getProductCode(), String.valueOf(storage.getStockNum()));
+		conn.close();
+		
+		return respMsg;
 	}
 	
 	/**
@@ -203,6 +218,18 @@ public class SecKillController {
 	 */
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		return restTemplate.postForObject("http://127.0.0.1:8081/product/secKill/close/"+productCode,null, RespMsg.class);
+		RespMsg respMsg =  restTemplate.postForObject("http://127.0.0.1:8081/product/secKill/close/"+productCode,null, RespMsg.class);
+		if(!"0".equals(respMsg.getCode())) {
+			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+			return respMsg;
+		}
+		Jedis conn = RedisUtils.connect();
+		try {
+			RedisUtils.del(conn, "SecKill_P_"+productCode);
+		}catch(RuntimeException e) {
+			logger.warn(e);
+		}
+		conn.close();
+		return respMsg;
 	}
 }

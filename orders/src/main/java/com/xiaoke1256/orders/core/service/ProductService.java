@@ -16,11 +16,7 @@ import redis.clients.jedis.Jedis;
 public class ProductService {
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
-	
-	public OStorage getProduct(String productCode) {
-		return entityManager.find(OStorage.class, productCode);
-	}
-	
+
 	/**
 	 * @deprecated 是否支持秒杀要调用product 应用的东西。
 	 * @param productCode

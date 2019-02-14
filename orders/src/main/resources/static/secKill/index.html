@@ -47,6 +47,7 @@
 		  startTimeAll = new Date().getTime();
 		  var curNum = $("[name=curNum]").val();
 		  taskCount = parseInt(curNum);
+		  times = 1000;
 		  intervalCode = setInterval(function(){submitSomeOrder(curNum/1000)},1);
 		  //submitOrder();
 	  });//
@@ -235,6 +236,7 @@
 			<option value="1000">1000</option>
 			<option value="5000">5000</option>
 			<option value="9000">9000</option>
+			<option value="15000">15000</option>
 		</select>
 		&nbsp;&nbsp;
 		<span><a id="doSecKill" href="javascript:void(0);" >秒杀</a></span>
