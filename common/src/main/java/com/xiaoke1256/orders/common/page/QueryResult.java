@@ -20,6 +20,23 @@ public class QueryResult<T> implements Serializable {
 	
 	private List<T> resultList;
 
+	public QueryResult() {
+		super();
+	}
+	
+	public QueryResult(int pageNo, int pageSize, int totalCount) {
+		super();
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+		this.totalCount = totalCount;
+		if(totalCount<=0)
+			totalPages = 1;
+		else
+			totalPages = (totalCount-1)/pageSize+1;
+		if(pageNo>totalPages)
+			throw new RuntimeException("Out of the bound of page no.");
+	}
+
 	public int getPageNo() {
 		return pageNo;
 	}
