@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.dto.ProductType;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
 import com.xiaoke1256.orders.product.dto.ProductParam;
 import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
-import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.ProductService;
 
@@ -34,15 +35,15 @@ public class ProductController {
 	}
 	
 	@GetMapping("/product/search")
-	public ProductQueryResult searchProductByCondition(ProductCondition condition){
+	public SimpleProductQueryResult searchProductByCondition(ProductCondition condition){
 		QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
-		ArrayList<Product> dtoList = new ArrayList<Product>();
+		ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
 		for(com.xiaoke1256.orders.product.bo.Product product:result.getResultList()) {
-			Product dto = new Product();
-			copyProperties(dto,product);
+			SimpleProduct dto = new SimpleProduct();
+			copyProperties(dto,product,true);
 			dtoList.add(dto);
 		}
-		ProductQueryResult newRet = new ProductQueryResult();
+		SimpleProductQueryResult newRet = new SimpleProductQueryResult();
 		newRet.setPageNo(result.getPageNo());
 		newRet.setPageSize(result.getPageSize());
 		newRet.setTotalCount(result.getTotalCount());
@@ -75,6 +76,32 @@ public class ProductController {
 				paramDtos.add(paramDto);
 			}
 		dto.setParams(paramDtos);
+	}
+	
+	private void copyProperties(SimpleProduct dto,com.xiaoke1256.orders.product.bo.Product product,boolean needFullTypeName) {
+		BeanUtils.copyProperties(product, dto);
+		if(product.getStore()!=null) {
+			dto.setStoreName(product.getStore().getStoreName());
+		}
+		if(needFullTypeName && product.getProductTypes()!=null ) {
+			StringBuilder typeSb = new StringBuilder();
+			for(com.xiaoke1256.orders.product.bo.ProductType productType:product.getProductTypes()) {
+				if(typeSb.length()==0)
+					typeSb.append(" ").append(getFullTypeName(productType));
+				
+			}
+			dto.setFullProductTypeName(typeSb.toString());
+		}
+	}
+	
+	private String getFullTypeName(com.xiaoke1256.orders.product.bo.ProductType type) {
+		StringBuilder typeSb = new StringBuilder();
+		if(type.getParentType()!=null) {
+			typeSb.append( getFullTypeName(type.getParentType()));
+			typeSb.append(" > ");
+		}
+		typeSb.append(type.getTypeName());
+		return typeSb.toString();
 	}
 	
 	private void copyProductType(ProductType dto,com.xiaoke1256.orders.product.bo.ProductType bo) {

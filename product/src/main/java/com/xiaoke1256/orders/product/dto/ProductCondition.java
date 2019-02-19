@@ -14,6 +14,8 @@ public class ProductCondition extends BaseCondition {
 	private String productName;
 	
 	private String productTypeName;
+	
+	private boolean needFullTypeName;
 
 	public String getProductCode() {
 		return productCode;
@@ -37,6 +39,14 @@ public class ProductCondition extends BaseCondition {
 
 	public void setProductTypeName(String productTypeName) {
 		this.productTypeName = productTypeName;
+	}
+
+	public boolean isNeedFullTypeName() {
+		return needFullTypeName;
+	}
+
+	public void setNeedFullTypeName(boolean needFullTypeName) {
+		this.needFullTypeName = needFullTypeName;
 	}
 	
 	

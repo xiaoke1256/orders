@@ -44,7 +44,6 @@ public class ProductService {
 	 */
 	public void openSecKill(String productCode) {
 		productDao.updateSecKill(productCode, "1");
-		//TODO 操作redis
 	}
 
 	/**
@@ -53,6 +52,5 @@ public class ProductService {
 	 */
 	public void closeSecKill(String productCode) {
 		productDao.updateSecKill(productCode, "0");
-		//TODO 操作redis
 	}
 }
