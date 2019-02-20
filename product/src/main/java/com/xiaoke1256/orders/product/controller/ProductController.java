@@ -40,7 +40,7 @@ public class ProductController {
 		ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
 		for(com.xiaoke1256.orders.product.bo.Product product:result.getResultList()) {
 			SimpleProduct dto = new SimpleProduct();
-			copyProperties(dto,product,true);
+			copyProperties(dto,product,condition.isNeedFullTypeName());
 			dtoList.add(dto);
 		}
 		SimpleProductQueryResult newRet = new SimpleProductQueryResult();

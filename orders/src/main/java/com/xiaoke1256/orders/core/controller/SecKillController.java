@@ -32,8 +32,8 @@ import com.xiaoke1256.orders.core.dto.ProductWithStorageQueryResult;
 import com.xiaoke1256.orders.core.service.OStorageService;
 import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.ProductService;
-import com.xiaoke1256.orders.product.dto.ProductQueryResult;
-import com.xiaoke1256.orders.product.dto.Product;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 import redis.clients.jedis.Jedis;
@@ -88,21 +88,21 @@ public class SecKillController {
 		if(StringUtils.isNotBlank(condition.getProductName())) {
 			paramsSb.append("&").append("productName=").append(condition.getProductName());
 		}
-		ProductQueryResult productResut = restTemplate.getForObject("http://127.0.0.1:8081/product/product/search?"+paramsSb.toString(), ProductQueryResult.class);
+		SimpleProductQueryResult productResut = restTemplate.getForObject("http://127.0.0.1:8081/product/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
 		ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
 		List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
 		result.setResultList(resultList);
 		return result;
 	}
 	
-	private ProductWithStorage makeProductWithStorage(Product p) {
+	private ProductWithStorage makeProductWithStorage(SimpleProduct p) {
 		String productCode = p.getProductCode();
 		OStorage storage = oStorageService.getByProductCode(productCode);
 		storage.getStockNum();
 		ProductWithStorage productWithStorage = new ProductWithStorage();
 		BeanUtils.copyProperties(p, productWithStorage);
 		productWithStorage.setStockNum(storage.getStockNum());
-		productWithStorage.setStoreName(p.getStore().getStoreName());
+		productWithStorage.setStoreName(p.getStoreName());
 		logger.info("p.getInSeckill()="+p.getInSeckill());
 		//productWithStorage.setProductTypeNames(productTypeNames);TODO 暂不处理
 		return productWithStorage;
