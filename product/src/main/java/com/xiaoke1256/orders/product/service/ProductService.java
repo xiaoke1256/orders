@@ -10,6 +10,7 @@ import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.dao.ProductDao;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
 @Transactional
@@ -37,6 +38,11 @@ public class ProductService {
 	public Product getProductByCode(String productCode) {
 		return productDao.getProductByCode(productCode);
 	}
+	
+	@Transactional(readOnly=true)
+	public SimpleProduct getSimpleProductByCode(String productCode) {
+		return productDao.getSimpleProductByCode(productCode);
+	}
 
 	/**
 	 * 开启秒杀活动
@@ -44,7 +50,6 @@ public class ProductService {
 	 */
 	public void openSecKill(String productCode) {
 		productDao.updateSecKill(productCode, "1");
-		//TODO 操作redis
 	}
 
 	/**
@@ -53,6 +58,5 @@ public class ProductService {
 	 */
 	public void closeSecKill(String productCode) {
 		productDao.updateSecKill(productCode, "0");
-		//TODO 操作redis
 	}
 }

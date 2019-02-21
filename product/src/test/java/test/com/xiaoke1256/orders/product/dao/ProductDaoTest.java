@@ -31,7 +31,6 @@ public class ProductDaoTest {
 	@Test
 	public void testGet() {
 		Product p = productDao.getProductByCode("0006101504");
-		System.out.println(p);
 		if(p != null) {
 			System.out.println("productName : "+ p.getProductName());
 			if(p.getParams()!=null)
@@ -39,6 +38,8 @@ public class ProductDaoTest {
 					System.out.println("paramName : "+ param.getParamName());
 					System.out.println("paramValue : "+ param.getParamValue());
 				}
+		}else {
+			System.out.println("product is null. ");
 		}
 	}
 	

@@ -1,7 +1,10 @@
 package com.xiaoke1256.orders.product.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,50 +12,117 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
+import com.xiaoke1256.orders.product.dto.ProductType;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
+import com.xiaoke1256.orders.product.dto.ProductParam;
 import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
-import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.ProductService;
 
 @RestController
 public class ProductController {
+	private static final Logger logger = LogManager.getLogger(ProductController.class);
+	
 	@Autowired
 	private ProductService productService;
 	
 	@GetMapping("/product/{productCode}")
 	public Product getProductByCode(@PathVariable String productCode) {
+		logger.info("full product.");
 		com.xiaoke1256.orders.product.bo.Product product = productService.getProductByCode(productCode);
 		if(product==null)
 			return null;
 		Product dto = new Product();
-		BeanUtils.copyProperties(product, dto);
-		//Store 特殊处理一下。
-		Store store = new Store();
-		BeanUtils.copyProperties(product.getStore(), store);
-		dto.setStore(store);
+		copyProperties(dto,product);
 		return dto;
 	}
 	
+	@GetMapping("/simpleProduct/{productCode}")
+	public SimpleProduct getSimpleProductByCode(@PathVariable String productCode) {
+		logger.info("simple product.");
+		return productService.getSimpleProductByCode(productCode);
+	}
+	
 	@GetMapping("/product/search")
-	public ProductQueryResult searchProductByCondition(ProductCondition condition){
+	public SimpleProductQueryResult searchProductByCondition(ProductCondition condition){
 		QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
-		ArrayList<Product> dtoList = new ArrayList<Product>();
+		ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
 		for(com.xiaoke1256.orders.product.bo.Product product:result.getResultList()) {
-			Product dto = new Product();
-			BeanUtils.copyProperties(product, dto);
-			//Store 特殊处理一下。
-			Store store = new Store();
-			BeanUtils.copyProperties(product.getStore(), store);
-			dto.setStore(store);
+			SimpleProduct dto = new SimpleProduct();
+			copyProperties(dto,product,condition.isNeedFullTypeName());
 			dtoList.add(dto);
 		}
-		ProductQueryResult newRet = new ProductQueryResult();
+		SimpleProductQueryResult newRet = new SimpleProductQueryResult();
 		newRet.setPageNo(result.getPageNo());
 		newRet.setPageSize(result.getPageSize());
 		newRet.setTotalCount(result.getTotalCount());
 		newRet.setTotalPages(result.getTotalPages());
 		newRet.setResultList(dtoList);
 		return newRet;
+	}
+	
+	private void copyProperties(Product dto,com.xiaoke1256.orders.product.bo.Product product) {
+		BeanUtils.copyProperties(product, dto);
+		
+		Store store = new Store();
+		BeanUtils.copyProperties(product.getStore(), store);
+		dto.setStore(store);
+		
+		List<ProductType> types = new ArrayList<ProductType>();
+		if(product.getProductTypes()!=null)
+			for(com.xiaoke1256.orders.product.bo.ProductType productType:product.getProductTypes()) {
+				ProductType typeDto = new ProductType();
+				copyProductType(typeDto,productType);
+				types.add(typeDto);
+			}
+		dto.setProductTypes(types);
+		
+		ArrayList<ProductParam> paramDtos = new ArrayList<ProductParam>();
+		if(product.getParams()!=null)
+			for(com.xiaoke1256.orders.product.bo.ProductParam param:product.getParams()) {
+				ProductParam paramDto = new ProductParam();
+				BeanUtils.copyProperties(param,paramDto);
+				paramDtos.add(paramDto);
+			}
+		dto.setParams(paramDtos);
+	}
+	
+	private void copyProperties(SimpleProduct dto,com.xiaoke1256.orders.product.bo.Product product,boolean needFullTypeName) {
+		BeanUtils.copyProperties(product, dto);
+		if(product.getStore()!=null) {
+			dto.setStoreName(product.getStore().getStoreName());
+		}
+		if(needFullTypeName && product.getProductTypes()!=null ) {
+			StringBuilder typeSb = new StringBuilder();
+			for(com.xiaoke1256.orders.product.bo.ProductType productType:product.getProductTypes()) {
+				if(typeSb.length()==0)
+					typeSb.append(" ").append(getFullTypeName(productType));
+				
+			}
+			dto.setFullProductTypeName(typeSb.toString());
+		}
+	}
+	
+	private String getFullTypeName(com.xiaoke1256.orders.product.bo.ProductType type) {
+		StringBuilder typeSb = new StringBuilder();
+		if(type.getParentType()!=null) {
+			typeSb.append( getFullTypeName(type.getParentType()));
+			typeSb.append(" > ");
+		}
+		typeSb.append(type.getTypeName());
+		return typeSb.toString();
+	}
+	
+	private void copyProductType(ProductType dto,com.xiaoke1256.orders.product.bo.ProductType bo) {
+		if(bo.getParentType()!=null) {
+			ProductType parentDto = new ProductType();
+			BeanUtils.copyProperties(bo.getParentType(), parentDto);
+			copyProductType(parentDto,bo.getParentType());
+			dto.setParentType(parentDto);
+		}else {
+			dto.setParentType(null);
+		}
 	}
 }

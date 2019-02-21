@@ -32,7 +32,7 @@
 		  if(!pageNo || isNaN(pageNo) )
 			  pageNo=1;
 		  //alert(pageNo);
-		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10};
+		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,needFullTypeName:true};
 		  $.ajax({  
 			    url:"product/search",
 			    type:"GET",  
@@ -46,7 +46,7 @@
 			    		var p = ret.resultList[i];
 			    		//alert("p:"+p);
 			    		$tr.append('<tr> <td>'+p.productCode+'</td><td>'+p.productName+'</td><td>'+(p.productPrice/1000)+'</td>'
-			    				+'<td>'+p.store.storeName+'</td><td></td><td>'+dateFtt(new Date(p.updateTime),'yyyy-MM-dd HH:mm:ss.S')+'</td> </tr>');
+			    				+'<td>'+p.storeName+'</td><td>'+p.fullProductTypeName+'</td><td>'+dateFtt(new Date(p.updateTime),'yyyy-MM-dd HH:mm:ss.S')+'</td> </tr>');
 			    		
 			    	}
 			    	makePageInfo(ret);
