@@ -10,6 +10,7 @@ import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.dao.ProductDao;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
 @Transactional
@@ -36,6 +37,11 @@ public class ProductService {
 	@Transactional(readOnly=true)
 	public Product getProductByCode(String productCode) {
 		return productDao.getProductByCode(productCode);
+	}
+	
+	@Transactional(readOnly=true)
+	public SimpleProduct getSimpleProductByCode(String productCode) {
+		return productDao.getSimpleProductByCode(productCode);
 	}
 
 	/**

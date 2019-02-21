@@ -33,6 +33,7 @@ import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.product.dto.Product;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
 @Transactional
@@ -58,10 +59,10 @@ public class OrederService {
 		}
 			
 		//先查各个商品的信息 ，判断是否是上线商品。
-		List<Product> products = new ArrayList<Product>();
+		List<SimpleProduct> products = new ArrayList<SimpleProduct>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			Product product = restTemplate.getForObject("http://127.0.0.1:8081/product/product/"+productCode, Product.class);
+			SimpleProduct product = restTemplate.getForObject("http://127.0.0.1:8081/product/simpleProduct/"+productCode+"", SimpleProduct.class);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}
@@ -69,15 +70,15 @@ public class OrederService {
 		}
 		
 		//按店铺分组。
-		Map<String, List<Product>> groupByStore = groupByStoreNo(products);
+		Map<String, List<SimpleProduct>> groupByStore = groupByStoreNo(products);
 		
 		//构造子订单
 		List<SubOrder> subOrders = new ArrayList<SubOrder>();
-		for(Entry<String, List<Product>> entry:groupByStore.entrySet()) {
+		for(Entry<String, List<SimpleProduct>> entry:groupByStore.entrySet()) {
 			String storeNo =entry.getKey();
-			List<Product> subProducts = entry.getValue();
-			Map<Product,Integer> subOrderMap = new HashMap<Product,Integer>();
-			for(Product product:subProducts) {
+			List<SimpleProduct> subProducts = entry.getValue();
+			Map<SimpleProduct,Integer> subOrderMap = new HashMap<SimpleProduct,Integer>();
+			for(SimpleProduct product:subProducts) {
 				subOrderMap.put(product, orderMap.get(product.getProductCode()));
 			}
 			//检查各个商品的运费定价。（同一店铺商品不超过1公斤的情况下，运费不会叠加）。
@@ -89,7 +90,7 @@ public class OrederService {
 			BigDecimal totalAmt = BigDecimal.ZERO.add(carriage);
 			//构造订单项
 			Set<OrderItem> items = new HashSet<OrderItem>();
-			for(Product product:subProducts) {
+			for(SimpleProduct product:subProducts) {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setProductCode(product.getProductCode());
 				orderItem.setProductNum(orderMap.get(product.getProductCode()));
@@ -165,14 +166,14 @@ public class OrederService {
 	 * 按店铺分组
 	 * @return 其key是店铺号。
 	 */
-	private Map<String,List<Product>> groupByStoreNo(List<Product> products){
-		Map<String,List<Product>> resultMap = new LinkedHashMap<String,List<Product>>();
-		for(Product product:products) {
+	private Map<String,List<SimpleProduct>> groupByStoreNo(List<SimpleProduct> products){
+		Map<String,List<SimpleProduct>> resultMap = new LinkedHashMap<String,List<SimpleProduct>>();
+		for(SimpleProduct product:products) {
 			String productCode = product.getProductCode();
-			List<Product> list = resultMap.get(productCode);
+			List<SimpleProduct> list = resultMap.get(productCode);
 			if(list==null) {
-				list = new ArrayList<Product>();
-				resultMap.put(product.getStore().getStoreNo(), list);
+				list = new ArrayList<SimpleProduct>();
+				resultMap.put(product.getStoreNo(), list);
 			}
 			list.add(product);
 		}
@@ -185,7 +186,7 @@ public class OrederService {
 	 * @param products
 	 * @return
 	 */
-	private BigDecimal calCarriage(String storeNo, Map<Product,Integer> subOrderMap) {
+	private BigDecimal calCarriage(String storeNo, Map<SimpleProduct,Integer> subOrderMap) {
 		//算法先简单一点。
 		//5件商品以内运费7元，5件以上按比例增加
 		int productNum = subOrderMap.values().stream().mapToInt(x->x).sum();
