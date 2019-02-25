@@ -32,7 +32,6 @@ import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
-import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
@@ -62,7 +61,7 @@ public class OrederService {
 		List<SimpleProduct> products = new ArrayList<SimpleProduct>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			SimpleProduct product = restTemplate.getForObject("http://127.0.0.1:8081/product/simpleProduct/"+productCode+"", SimpleProduct.class);
+			SimpleProduct product = restTemplate.getForObject("http://api.product/product/simpleProduct/"+productCode+"", SimpleProduct.class);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}
