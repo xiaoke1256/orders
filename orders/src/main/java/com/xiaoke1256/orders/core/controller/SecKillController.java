@@ -88,7 +88,7 @@ public class SecKillController {
 		if(StringUtils.isNotBlank(condition.getProductName())) {
 			paramsSb.append("&").append("productName=").append(condition.getProductName());
 		}
-		SimpleProductQueryResult productResut = restTemplate.getForObject("http://api.product/product/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
+		SimpleProductQueryResult productResut = restTemplate.getForObject("http://api-product/product/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
 		ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
 		List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
 		result.setResultList(resultList);
@@ -193,7 +193,7 @@ public class SecKillController {
 	 */
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg = restTemplate.postForObject("http://api.product/product/secKill/open/"+productCode,null, RespMsg.class);
+		RespMsg respMsg = restTemplate.postForObject("http://api-product/product/secKill/open/"+productCode,null, RespMsg.class);
 		if(!"0".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;
@@ -217,7 +217,7 @@ public class SecKillController {
 	 */
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg =  restTemplate.postForObject("http://api.product/product/secKill/close/"+productCode,null, RespMsg.class);
+		RespMsg respMsg =  restTemplate.postForObject("http://api-product/product/secKill/close/"+productCode,null, RespMsg.class);
 		if(!"0".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;

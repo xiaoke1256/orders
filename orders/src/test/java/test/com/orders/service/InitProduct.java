@@ -55,7 +55,7 @@ public class InitProduct {
 	@Transactional
 	@Rollback(false)
 	public void initOStorage() {
-		ProductQueryResult result = restTemplate.getForObject("http://api.product/product/product/search?pageSize="+Integer.MAX_VALUE, ProductQueryResult.class);
+		ProductQueryResult result = restTemplate.getForObject("http://api-product/product/product/search?pageSize="+Integer.MAX_VALUE, ProductQueryResult.class);
 		for(Product product:result.getResultList()) {
 			String hql = "from OStorage o where o.productCode='"+product.getProductCode()+"'";
 			@SuppressWarnings("unchecked")
