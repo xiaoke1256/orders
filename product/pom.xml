@@ -120,7 +120,7 @@
   		<dependency>
   			<groupId>org.springframework.cloud</groupId>
   			<artifactId>spring-cloud-dependencies</artifactId>
-  			<version>Camden.SR4</version>
+  			<version>Edgware.SR2</version>
   			<type>pom</type>
   			<scope>import</scope>
   		</dependency>
@@ -145,6 +145,33 @@
                </excludes>
             </configuration>
         </plugin>
+   		<!-- 
+        <plugin>
+	      <groupId>com.spotify</groupId>
+	      <artifactId>docker-maven-plugin</artifactId>
+	      <version>0.4.13</version>
+	      <executions>
+	        <execution>
+	       	  <id>build-image</id>
+	       	  <phase>package</phase>
+	       	  <goals>
+	       	  	<goal>build</goal>
+	       	  </goals>
+	       	</execution>
+	      </executions>
+	      <configuration>
+	        <imageName>itmuch/product:1.0.0-SNAPSHOT</imageName>
+	       	<defaultProfile>${project.basedir}/src/main/docker</defaultProfile>
+	       	<resources>
+	       	  <resource>
+	       	    <targetPath>/</targetPath>
+	       	    <directory>${project.build.directory}</directory>
+	       	    <include>${project.build.finalName}</include>
+	       	  </resource>
+	       	</resources>
+	      </configuration>
+        </plugin>
+         -->
   	</plugins>
   </build>
 
