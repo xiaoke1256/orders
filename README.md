@@ -9,6 +9,7 @@
 2. Searching porducts(ES).
 3. Order circulation in high throughput capacity.
 
+### 购物流程图
 ```
                           ┌-> 开启物流流程 -> 签收
                           | 
