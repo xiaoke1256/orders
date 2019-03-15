@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -121,7 +120,7 @@ public class SecKillController {
 	 * 下订单（利用redis缓存）
 	 */
 	@RequestMapping(value="/place",method={RequestMethod.POST})
-	public @ResponseBody OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request) {
+	public OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
 			throw new RuntimeException("空订单！");
 		}
