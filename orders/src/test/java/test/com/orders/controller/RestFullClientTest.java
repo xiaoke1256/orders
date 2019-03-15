@@ -58,7 +58,7 @@ public class RestFullClientTest {
 				OrderPlaceResponse response = restTemplate.postForObject("http://localhost:8080/orders/orders/", request, OrderPlaceResponse.class);
 				//System.out.println("order no :"+response.getPayOrderNo());
 				if(response.getErrMsg()!=null) {
-					System.out.println("excpetion :"+response.getErrMsg().getErrMsg());
+					System.out.println("excpetion :"+response.getErrMsg().getMsg());
 					ressult.isError=true;
 				}
 			}catch(Exception ex){

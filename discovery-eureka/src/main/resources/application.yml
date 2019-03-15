@@ -1,6 +1,8 @@
 spring:
   application:
     name: discovery-eureka
+server:
+  context-path: /discovery
 ---
 spring:
   profiles: peer1
@@ -16,7 +18,7 @@ eureka:
     leaseExpirationDurationInSeconds: 30
   client:
     serviceUrl:
-      defaultZone: http://peer2:8762/eureka/
+      defaultZone: http://peer2:8762/discovery/eureka/
     fetch-registry: true
     register-with-eureka: true
   server:
@@ -37,7 +39,7 @@ eureka:
     leaseExpirationDurationInSeconds: 30
   client:
     serviceUrl:
-      defaultZone: http://peer1:8761/eureka/
+      defaultZone: http://peer1:8761/discovery/eureka/
     fetch-registry: true
     register-with-eureka: true
   server:

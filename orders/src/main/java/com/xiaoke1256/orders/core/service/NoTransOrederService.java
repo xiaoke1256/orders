@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class NoTransOrederService {
-	private static  final Logger logger = LogManager.getLogger(OrederService.class);
+	private static  final Logger logger = LoggerFactory.getLogger(OrederService.class);
 	
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager;

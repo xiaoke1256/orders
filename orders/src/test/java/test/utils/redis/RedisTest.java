@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.xiaoke1256.common.utils.RedisUtils;
 
-import junit.framework.Assert.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 

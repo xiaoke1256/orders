@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
@@ -47,7 +49,7 @@ import redis.clients.jedis.Transaction;
 @RestController
 @RequestMapping("/secKill")
 public class SecKillController {
-	private static  final Logger logger = LogManager.getLogger(SecKillController.class);
+	private static  final Logger logger = LoggerFactory.getLogger(SecKillController.class);
 	
 	@Autowired
 	private ProductService productService;
@@ -60,6 +62,9 @@ public class SecKillController {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Value("${remote.api.product.uri}")
+	private String productApiUri;
 	
 //	@RequestMapping(value="/",method={RequestMethod.GET})
 //	public ModelAndView toIndex() {
@@ -76,23 +81,28 @@ public class SecKillController {
 	 * @return
 	 */
 	@RequestMapping(value="/products",method={RequestMethod.GET})
-	public ProductWithStorageQueryResult queryProduct(ProductCondition condition) {
-		int pageNo = condition.getPageNo();
-		int pageSize = condition.getPageSize();
-		StringBuilder paramsSb = new StringBuilder();
-		paramsSb.append("pageNo=").append(pageNo).append("&");
-		paramsSb.append("pageSize=").append(pageSize);
-		if(StringUtils.isNotBlank(condition.getProductCode())) {
-			paramsSb.append("&").append("productCode=").append(condition.getProductCode());
+	public RespMsg queryProduct(ProductCondition condition) {
+		try {
+			int pageNo = condition.getPageNo();
+			int pageSize = condition.getPageSize();
+			StringBuilder paramsSb = new StringBuilder();
+			paramsSb.append("pageNo=").append(pageNo).append("&");
+			paramsSb.append("pageSize=").append(pageSize);
+			if(StringUtils.isNotBlank(condition.getProductCode())) {
+				paramsSb.append("&").append("productCode=").append(condition.getProductCode());
+			}
+			if(StringUtils.isNotBlank(condition.getProductName())) {
+				paramsSb.append("&").append("productName=").append(condition.getProductName());
+			}
+			SimpleProductQueryResult productResut = restTemplate.getForObject(productApiUri+"/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
+			ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
+			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
+			result.setResultList(resultList);
+			return new QueryResultResp("0","success!",result);
+		}catch (Exception ex) {
+			logger.error(ex.getMessage(),ex);
+			return new ErrMsg("99",ex.getMessage());
 		}
-		if(StringUtils.isNotBlank(condition.getProductName())) {
-			paramsSb.append("&").append("productName=").append(condition.getProductName());
-		}
-		SimpleProductQueryResult productResut = restTemplate.getForObject("http://api-product/product/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
-		ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
-		List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
-		result.setResultList(resultList);
-		return result;
 	}
 	
 	private ProductWithStorage makeProductWithStorage(SimpleProduct p) {
@@ -178,7 +188,7 @@ public class SecKillController {
 			return response ;
 			
 		}catch(Exception ex){
-			logger.error(ex, ex);
+			logger.error(ex.getMessage(), ex);
 			ErrMsg error = new ErrMsg("code",ex.getMessage());
 			OrderPlaceResponse response = new OrderPlaceResponse();
 			response.setErrMsg(error);
@@ -193,7 +203,7 @@ public class SecKillController {
 	 */
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg = restTemplate.postForObject("http://api-product/product/secKill/open/"+productCode,null, RespMsg.class);
+		RespMsg respMsg = restTemplate.postForObject(productApiUri+"/secKill/open/"+productCode,null, RespMsg.class);
 		if(!"0".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;
@@ -217,7 +227,7 @@ public class SecKillController {
 	 */
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg =  restTemplate.postForObject("http://api-product/product/secKill/close/"+productCode,null, RespMsg.class);
+		RespMsg respMsg =  restTemplate.postForObject(productApiUri+"/secKill/close/"+productCode,null, RespMsg.class);
 		if(!"0".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;
@@ -226,7 +236,7 @@ public class SecKillController {
 		try {
 			RedisUtils.del(conn, "SecKill_P_"+productCode);
 		}catch(RuntimeException e) {
-			logger.warn(e);
+			logger.warn(e.getMessage(),e);
 		}
 		conn.close();
 		return respMsg;

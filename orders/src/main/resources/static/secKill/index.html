@@ -3,7 +3,7 @@
 <head>
   <base href="../">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>orders</title>
+  <title>orders welcome!</title>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript">
   var intervalCode = "";
@@ -69,6 +69,10 @@
 	  var pageSize = $('[name=pageSize]').val();
 
 	  $.get("secKill/products",{pageNo:pageNo,pageSize:pageSize},function(result){
+		  if(result.code!='0'){
+	    	  alert(ret.code+":"+ret.msg);
+	    	  return;
+	      }
 		  var $tbody = $('#content table tbody').empty();
 		  //列表
 		  for(var i in result.resultList){
@@ -161,7 +165,7 @@
 		        	 $("#console").append("<font color=\"green\">A order has created! OrderNo : "+ret.payOrderNo+"</font><br>")
 		        	 successCount++;
 		        } else {      
-		        	 $("#console").append("<font color=\"red\">"+ret.errMsg.errCode+":"+ret.errMsg.errMsg+"</font><br>");    
+		        	 $("#console").append("<font color=\"red\">"+ret.errMsg.code+":"+ret.errMsg.msg+"</font><br>");    
 		        }
 		    },
 		    error:function(req,errMsg,errorThrown){

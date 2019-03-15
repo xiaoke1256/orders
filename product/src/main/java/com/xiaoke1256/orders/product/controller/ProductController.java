@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.QueryResultResp;
+import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.dto.ProductType;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
@@ -46,21 +49,26 @@ public class ProductController {
 	}
 	
 	@GetMapping("/product/search")
-	public SimpleProductQueryResult searchProductByCondition(ProductCondition condition){
-		QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
-		ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
-		for(com.xiaoke1256.orders.product.bo.Product product:result.getResultList()) {
-			SimpleProduct dto = new SimpleProduct();
-			copyProperties(dto,product,condition.isNeedFullTypeName());
-			dtoList.add(dto);
+	public RespMsg searchProductByCondition(ProductCondition condition){
+		try {
+			QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
+			ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
+			for(com.xiaoke1256.orders.product.bo.Product product:result.getResultList()) {
+				SimpleProduct dto = new SimpleProduct();
+				copyProperties(dto,product,condition.isNeedFullTypeName());
+				dtoList.add(dto);
+			}
+			SimpleProductQueryResult newRet = new SimpleProductQueryResult();
+			newRet.setPageNo(result.getPageNo());
+			newRet.setPageSize(result.getPageSize());
+			newRet.setTotalCount(result.getTotalCount());
+			newRet.setTotalPages(result.getTotalPages());
+			newRet.setResultList(dtoList);
+			return new QueryResultResp("0","success!",newRet);
+		}catch(Exception ex) {
+			logger.error(ex, ex);
+			return new ErrMsg("99",ex.getMessage());
 		}
-		SimpleProductQueryResult newRet = new SimpleProductQueryResult();
-		newRet.setPageNo(result.getPageNo());
-		newRet.setPageSize(result.getPageSize());
-		newRet.setTotalCount(result.getTotalCount());
-		newRet.setTotalPages(result.getTotalPages());
-		newRet.setResultList(dtoList);
-		return newRet;
 	}
 	
 	private void copyProperties(Product dto,com.xiaoke1256.orders.product.bo.Product product) {

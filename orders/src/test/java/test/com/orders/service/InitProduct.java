@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,6 +29,9 @@ import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 @SpringBootTest(classes=SpringbootApplication.class)
 @ActiveProfiles("test")
 public class InitProduct {
+	
+	@Value("${remote.api.product.uri}")
+	private String productApiUri;
 	
 	@Before
 	public void init(){
@@ -55,7 +59,7 @@ public class InitProduct {
 	@Transactional
 	@Rollback(false)
 	public void initOStorage() {
-		ProductQueryResult result = restTemplate.getForObject("http://api-product/product/product/search?pageSize="+Integer.MAX_VALUE, ProductQueryResult.class);
+		ProductQueryResult result = restTemplate.getForObject(productApiUri+"/product/search?pageSize="+Integer.MAX_VALUE, ProductQueryResult.class);
 		for(Product product:result.getResultList()) {
 			String hql = "from OStorage o where o.productCode='"+product.getProductCode()+"'";
 			@SuppressWarnings("unchecked")

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>trans_test welcome</title>
+  <title>orders-product welcome!</title>
   <script type="text/javascript" src="js/jquery.min.js" ></script>
   <style>
   dl dt {float:left}
@@ -41,6 +41,10 @@
 			    contentType: "application/json;charset=utf-8",
 			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
 			    success: function (ret) {  
+			    	if(ret.code!='0'){
+			    		alert(ret.code+":"+ret.msg);
+			    		return;
+			    	}
 			    	var $tr = $('#listTable tbody').empty();
 			    	for(var i in ret.resultList){
 			    		var p = ret.resultList[i];

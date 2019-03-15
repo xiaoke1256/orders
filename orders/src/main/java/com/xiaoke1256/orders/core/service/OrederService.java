@@ -19,10 +19,11 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -37,13 +38,16 @@ import com.xiaoke1256.orders.product.dto.SimpleProduct;
 @Service
 @Transactional
 public class OrederService {
-	private static  final Logger logger = LogManager.getLogger(OrederService.class);
+	private static  final Logger logger = LoggerFactory.getLogger(OrederService.class);
 
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Value("${remote.api.product.uri}")
+	private String productApiUri;
 	
 	public PayOrder place(String payerNo,Map<String,Integer> orderMap){
 		logger.info("start place a oreder.");
@@ -61,7 +65,7 @@ public class OrederService {
 		List<SimpleProduct> products = new ArrayList<SimpleProduct>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			SimpleProduct product = restTemplate.getForObject("http://api-product/product/simpleProduct/"+productCode+"", SimpleProduct.class);
+			SimpleProduct product = restTemplate.getForObject(productApiUri+"/simpleProduct/"+productCode+"", SimpleProduct.class);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}

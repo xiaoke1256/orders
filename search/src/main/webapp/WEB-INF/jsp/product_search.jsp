@@ -44,19 +44,19 @@
 			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
 			    success: function (ret) {  
 			    	if(ret.code=='error'){
-			    		alert(ret.error.code+":"+ret.error.msg);
+			    		alert(ret.code+":"+ret.msg);
 			    		return;
 			    	}
 			    	//alert("共查出记录："+ret.totalCount);
 			    	var $tr = $('#listTable tbody').empty();
-			    	for(var i in ret.respObj.resultList){
-			    		var p = ret.respObj.resultList[i];
+			    	for(var i in ret.resultList){
+			    		var p = ret.resultList[i];
 			    		//alert("p:"+p);
 			    		$tr.append('<tr> <td>'+p.code+'</td><td>'+p.name+'</td><td>'+(p.price/1000)+'</td><td>'
 			    				+p.storeName+'</td><td>'+$.trim(p.typeName)+'</td><td>'+dateFtt(new Date(p.updTime),'yyyy-MM-dd HH:mm:ss.S')+'</td><td>'+p.score+'</td> </tr>');
 			    		
 			    	}
-			    	makePageInfo(ret.respObj);
+			    	makePageInfo(ret);
 			    },
 			    error:function(err){
 			    	//alert("网络异常："+err.responseText);

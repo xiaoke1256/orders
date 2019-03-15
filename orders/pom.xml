@@ -40,10 +40,23 @@
 	    </exclusions>
 	</dependency>
 	
+	<dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.25</version>
+    </dependency>
+	
+	<dependency>
+	  <groupId>ch.qos.logback</groupId>
+	  <artifactId>logback-classic</artifactId>
+	  <version>1.2.2</version>
+	</dependency>
+	<!-- 
     <dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-log4j2</artifactId>
 	</dependency>
+	-->
 	
 	<dependency>
         <groupId>org.springframework.boot</groupId>
@@ -114,7 +127,7 @@
   		<dependency>
   			<groupId>org.springframework.cloud</groupId>
   			<artifactId>spring-cloud-dependencies</artifactId>
-  			<version>Camden.SR4</version>
+  			<version>Edgware.SR2</version>
   			<type>pom</type>
   			<scope>import</scope>
   		</dependency>

@@ -17,7 +17,6 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction.Modifier;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -34,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.search.vo.Product;
@@ -63,7 +63,7 @@ public class SearchController {
 			
 			//TODO order by.
 			
-			return new RespMsg("0","success!",searchFunction(qb,condition.getPageNo(),condition.getPageSize()));
+			return new QueryResultResp("0","success!",searchFunction(qb,condition.getPageNo(),condition.getPageSize()));
 		}catch(Exception e) {
 			e.printStackTrace();
 			ErrMsg error = new ErrMsg("error",e.getMessage());
