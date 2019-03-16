@@ -3,8 +3,8 @@ package com.xiaoke1256.orders.product.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ import com.xiaoke1256.orders.product.service.ProductService;
 
 @RestController
 public class ProductController {
-	private static final Logger logger = LogManager.getLogger(ProductController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
 	@Autowired
 	private ProductService productService;
@@ -66,7 +66,7 @@ public class ProductController {
 			newRet.setResultList(dtoList);
 			return new QueryResultResp("0","success!",newRet);
 		}catch(Exception ex) {
-			logger.error(ex, ex);
+			logger.error(ex.getMessage(), ex);
 			return new ErrMsg("99",ex.getMessage());
 		}
 	}
