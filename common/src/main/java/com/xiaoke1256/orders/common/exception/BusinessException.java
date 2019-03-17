@@ -41,9 +41,11 @@ public class BusinessException extends AppException {
 		errorCode=ErrorCode.BUSSNESS_ERROR.getCode();
 	}
 
-	public BusinessException(String message) {
-		super(message);
+	public BusinessException(String showMsg) {
+		super(showMsg);
 		errorCode=ErrorCode.BUSSNESS_ERROR.getCode();
+		errorMsg = ErrorCode.BUSSNESS_ERROR.getMsg();
+		this.showMsg = showMsg;
 	}
 
 	public BusinessException(Throwable cause) {

@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.controller.OrderPlaceRequest;
 import com.xiaoke1256.orders.core.controller.OrderPlaceResponse;
 
@@ -55,10 +57,11 @@ public class RestFullClientTest {
 				request.setPayerNo(payerNo);
 				request.setCarriageAmt(carriageAmt);
 				request.setProductMap(productMap);
-				OrderPlaceResponse response = restTemplate.postForObject("http://localhost:8080/orders/orders/", request, OrderPlaceResponse.class);
+				RespMsg respMsg = restTemplate.postForObject("http://localhost:8080/orders/orders/", request, RespMsg.class);
 				//System.out.println("order no :"+response.getPayOrderNo());
-				if(response.getErrMsg()!=null) {
-					System.out.println("excpetion :"+response.getErrMsg().getMsg());
+				if(respMsg instanceof ErrMsg) {
+					ErrMsg errMsg = (ErrMsg)respMsg;
+					System.out.println("excpetion :"+errMsg.getMsg());
 					ressult.isError=true;
 				}
 			}catch(Exception ex){

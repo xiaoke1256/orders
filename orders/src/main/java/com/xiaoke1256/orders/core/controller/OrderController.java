@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
@@ -42,7 +43,7 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value="/",method={RequestMethod.POST})
-	public @ResponseBody OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request){
+	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request){
 		try {
 			PayOrder order = orederService.place(request.getPayerNo(), request.getProductMap());
 			OrderPlaceResponse response = new OrderPlaceResponse();
@@ -50,9 +51,7 @@ public class OrderController {
 			return response ;
 		}catch(Exception ex){
 			ErrMsg error = new ErrMsg("code",ex.getMessage());
-			OrderPlaceResponse response = new OrderPlaceResponse();
-			response.setErrMsg(error);
-			return response;
+			return error;
 		}
 	}
 	

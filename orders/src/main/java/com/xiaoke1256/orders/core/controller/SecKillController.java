@@ -26,6 +26,8 @@ import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.dto.ProductWithStorage;
@@ -120,9 +122,9 @@ public class SecKillController {
 	 * 下订单（利用redis缓存）
 	 */
 	@RequestMapping(value="/place",method={RequestMethod.POST})
-	public OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request) {
+	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
-			throw new RuntimeException("空订单！");
+			return new ErrMsg(ErrorCode.BUSSNESS_ERROR.getCode(),"空订单！");
 		}
 		
 		Jedis conn = RedisUtils.connect();
@@ -137,7 +139,7 @@ public class SecKillController {
 					if(productService.isInSecKill(productCode)) {
 						RedisUtils.set(conn, key, String.valueOf(p.getStockNum()));
 					}else {
-						throw new RuntimeException("This product is not in seckill!");
+						throw new BusinessException("This product is not in seckill!");
 					}
 				}
 				keys.add(key);
@@ -154,7 +156,7 @@ public class SecKillController {
 					Long inStore = Long.parseLong(RedisUtils.get(conn, key));
 					if(inStore<request.getProductMap().get(productCode)) {//库存不够了
 						RedisUtils.unwatch(conn);
-						throw new RuntimeException("秒杀失败！（被抢完了）");
+						throw new BusinessException("秒杀失败！（被抢完了）");
 					}
 				}
 				
@@ -185,13 +187,15 @@ public class SecKillController {
 			OrderPlaceResponse response = new OrderPlaceResponse();
 			PropertyUtils.copyProperties(response, order);
 			return response ;
-			
+		
+		}catch(BusinessException ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}catch(Exception ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg("code",ex.getMessage());
-			OrderPlaceResponse response = new OrderPlaceResponse();
-			response.setErrMsg(error);
-			return response;
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}finally {
 			conn.close();
 		}

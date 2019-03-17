@@ -26,21 +26,6 @@ public class RespMsg implements java.io.Serializable {
 		this.code = errorCode.getCode();
 		this.msg = errorCode.getMsg();
 	}
-	
-	public RespMsg(AppException ex) {
-		super();
-		this.code = ex.getErrorCode();
-		if(ex instanceof BusinessException)
-			this.msg = ((BusinessException)ex).getShowMsg();
-		else
-			this.msg = ex.getErrorMsg();
-	}
-	
-	public RespMsg(BusinessException ex) {
-		super();
-		this.code = ex.getErrorCode();
-		this.msg = ex.getShowMsg();
-	}
 
 	/**
 	 * 
