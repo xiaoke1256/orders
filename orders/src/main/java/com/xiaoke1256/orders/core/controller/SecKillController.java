@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
@@ -81,6 +82,7 @@ public class SecKillController {
 	 * 查询商品
 	 * @return
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/products",method={RequestMethod.GET})
 	public RespMsg queryProduct(ProductCondition condition) {
 		try {
@@ -121,6 +123,7 @@ public class SecKillController {
 	/**
 	 * 下订单（利用redis缓存）
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/place",method={RequestMethod.POST})
 	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
@@ -204,30 +207,42 @@ public class SecKillController {
 	/**
 	 * 开始秒杀活动
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg = restTemplate.postForObject(productApiUri+"/secKill/open/"+productCode,null, RespMsg.class);
-		if(!"0".equals(respMsg.getCode())) {
-			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+		try {
+			RespMsg respMsg = restTemplate.postForObject(productApiUri+"/secKill/open/"+productCode,null, RespMsg.class);
+			if(!"0".equals(respMsg.getCode())) {
+				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+				return respMsg;
+			}
+			OStorage storage = oStorageService.getByProductCode(productCode);
+			
+			if(storage.getStockNum()<100) {
+				throw new BusinessException(""+productCode+"的库存不足,库存需大于100份才可支持秒杀活动。");
+			}
+			
+			Jedis conn = RedisUtils.connect();
+			RedisUtils.set(conn, "SecKill_P_"+storage.getProductCode(), String.valueOf(storage.getStockNum()));
+			conn.close();
+			
 			return respMsg;
+		}catch(BusinessException ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
+		}catch(Exception ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}
-		OStorage storage = oStorageService.getByProductCode(productCode);
-		
-		if(storage.getStockNum()<100) {
-			throw new RuntimeException(""+productCode+"的库存不足,库存需大于100份才可支持秒杀活动。");
-		}
-		
-		Jedis conn = RedisUtils.connect();
-		RedisUtils.set(conn, "SecKill_P_"+storage.getProductCode(), String.valueOf(storage.getStockNum()));
-		conn.close();
-		
-		return respMsg;
 	}
 	
 	/**
 	 * 结束秒杀活动。
 	 * @param productCodes
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
 		RespMsg respMsg =  restTemplate.postForObject(productApiUri+"/secKill/close/"+productCode,null, RespMsg.class);
@@ -243,5 +258,13 @@ public class SecKillController {
 		}
 		conn.close();
 		return respMsg;
+	}
+	
+	/**
+	 * 若restfull 发生连接异常，则执行此方法。
+	 * @return
+	 */
+	public RespMsg connectFail() {
+		return new ErrMsg(ErrorCode.CONNECT_ERROR);
 	}
 }
