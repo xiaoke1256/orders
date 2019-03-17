@@ -13,11 +13,15 @@ public class ErrMsg extends RespMsg{
 	public ErrMsg() {
 		super();
 	}
-
+	
 	public ErrMsg(String code, String msg) {
 		super(code, msg);
 	}
 	
+	public ErrMsg(ErrorCode errorCode) {
+		super(errorCode);
+	}
+
 	public ErrMsg(Exception ex) {
 		super();
 		this.setCode(ErrorCode.OTHER_ERROR.getCode());
