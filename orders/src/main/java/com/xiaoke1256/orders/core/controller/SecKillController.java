@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
@@ -33,10 +35,9 @@ import com.xiaoke1256.orders.core.dto.ProductWithStorage;
 import com.xiaoke1256.orders.core.dto.ProductWithStorageQueryResult;
 import com.xiaoke1256.orders.core.service.OStorageService;
 import com.xiaoke1256.orders.core.service.OrederService;
-import com.xiaoke1256.orders.core.service.ProductQueryClient;
 import com.xiaoke1256.orders.core.service.ProductService;
-import com.xiaoke1256.orders.core.service.SecKillSupportClient;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 import redis.clients.jedis.Jedis;
@@ -64,11 +65,8 @@ public class SecKillController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	@Autowired
-	private SecKillSupportClient secKillSupportClient;
-	
-	@Autowired
-	private ProductQueryClient productQueryClient;
+	@Value("${remote.api.product.uri}")
+	private String productApiUri;
 	
 //	@RequestMapping(value="/",method={RequestMethod.GET})
 //	public ModelAndView toIndex() {
@@ -84,6 +82,7 @@ public class SecKillController {
 	 * 查询商品
 	 * @return
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/products",method={RequestMethod.GET})
 	public RespMsg queryProduct(ProductCondition condition) {
 		try {
@@ -98,11 +97,11 @@ public class SecKillController {
 			if(StringUtils.isNotBlank(condition.getProductName())) {
 				paramsSb.append("&").append("productName=").append(condition.getProductName());
 			}
-			QueryResultResp productResut = (QueryResultResp)productQueryClient.searchProductByCondition(condition);
+			SimpleProductQueryResult productResut = restTemplate.getForObject(productApiUri+"/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
 			ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
-			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage((SimpleProduct)p)).collect(Collectors.toList());
+			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
 			result.setResultList(resultList);
-			return new QueryResultResp("00","success!",result);
+			return new QueryResultResp("0","success!",result);
 		}catch (Exception ex) {
 			logger.error(ex.getMessage(),ex);
 			return new ErrMsg("99",ex.getMessage());
@@ -124,6 +123,7 @@ public class SecKillController {
 	/**
 	 * 下订单（利用redis缓存）
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/place",method={RequestMethod.POST})
 	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
@@ -207,10 +207,11 @@ public class SecKillController {
 	/**
 	 * 开始秒杀活动
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
 		try {
-			RespMsg respMsg = secKillSupportClient.openSecKill(productCode);
+			RespMsg respMsg = restTemplate.postForObject(productApiUri+"/secKill/open/"+productCode,null, RespMsg.class);
 			if(!"0".equals(respMsg.getCode())) {
 				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 				return respMsg;
@@ -241,9 +242,10 @@ public class SecKillController {
 	 * 结束秒杀活动。
 	 * @param productCodes
 	 */
+	@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg =  secKillSupportClient.closeSecKill(productCode);
+		RespMsg respMsg =  restTemplate.postForObject(productApiUri+"/secKill/close/"+productCode,null, RespMsg.class);
 		if(!"0".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;
