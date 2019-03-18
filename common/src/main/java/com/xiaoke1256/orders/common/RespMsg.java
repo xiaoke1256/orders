@@ -1,7 +1,5 @@
 package com.xiaoke1256.orders.common;
 
-import com.xiaoke1256.orders.common.exception.AppException;
-import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 /**
