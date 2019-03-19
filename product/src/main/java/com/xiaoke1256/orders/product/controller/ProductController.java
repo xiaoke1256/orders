@@ -19,13 +19,14 @@ import com.xiaoke1256.orders.product.dto.ProductType;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
 import com.xiaoke1256.orders.product.dto.ProductParam;
+import com.xiaoke1256.orders.product.api.ProductQueryService;
 import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.ProductService;
 
 @RestController
-public class ProductController {
+public class ProductController implements ProductQueryService {
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
 	@Autowired

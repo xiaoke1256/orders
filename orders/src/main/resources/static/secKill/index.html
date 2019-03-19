@@ -68,41 +68,49 @@
 	  var pageNo = $('[name=pageNo]').val();
 	  var pageSize = $('[name=pageSize]').val();
 
-	  $.get("secKill/products",{pageNo:pageNo,pageSize:pageSize},function(result){
-		  if(result.code!='0'){
-	    	  alert(ret.code+":"+ret.msg);
-	    	  return;
-	      }
-		  var $tbody = $('#content table tbody').empty();
-		  //列表
-		  for(var i in result.resultList){
-			  var p =result.resultList[i];
-			  var innerHtml = '<tr> ';
-			  innerHtml+='<td>'+p.productCode+'</td>';
-			  innerHtml+='<td>'+p.productName+'</td>';
-			  innerHtml+='<td>'+p.storeName+'</td>';
-			  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
-			  innerHtml+='<td>'+p.stockNum+'</td>';
-			  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
-			  innerHtml+='<td>';
-			  if(p.inSeckill=='1')
-				  innerHtml+='<a href="javascript:void(0);" class="openBtn" pcode="'+p.productCode+'">CLOSE</a>';
-			  else
-				  innerHtml+='<a href="javascript:void(0);" class="closeBtn" pcode="'+p.productCode+'">OPEN</a>';
-			  innerHtml+='</td>';
-			  innerHtml+='</tr>';
-			  $tbody.append(innerHtml);
+	  $.ajax({
+		  url:"secKill/products",
+		  type:"GET",
+		  data:{pageNo:pageNo,pageSize:pageSize},
+		  success:function(result){
+			  if(result.code!='0'){
+		    	  alert(ret.code+":"+ret.msg);
+		    	  return;
+		      }
+			  var $tbody = $('#content table tbody').empty();
+			  //列表
+			  for(var i in result.resultList){
+				  var p =result.resultList[i];
+				  var innerHtml = '<tr> ';
+				  innerHtml+='<td>'+p.productCode+'</td>';
+				  innerHtml+='<td>'+p.productName+'</td>';
+				  innerHtml+='<td>'+p.storeName+'</td>';
+				  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
+				  innerHtml+='<td>'+p.stockNum+'</td>';
+				  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
+				  innerHtml+='<td>';
+				  if(p.inSeckill=='1')
+					  innerHtml+='<a href="javascript:void(0);" class="openBtn" pcode="'+p.productCode+'">CLOSE</a>';
+				  else
+					  innerHtml+='<a href="javascript:void(0);" class="closeBtn" pcode="'+p.productCode+'">OPEN</a>';
+				  innerHtml+='</td>';
+				  innerHtml+='</tr>';
+				  $tbody.append(innerHtml);
+			  }
+			  //分页
+			  makePageInfo(result);
+			  
+			  //下拉列表
+			  $('select[name=productCode]').empty();
+			  for(var i in result.resultList){
+				  var p =result.resultList[i];
+			  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
+			  }
+		  },
+		  error:function(resp,errMsg,err){
+			  alert("error:"+err);
 		  }
-		  //分页
-		  makePageInfo(result);
-		  
-		  //下拉列表
-		  $('select[name=productCode]').empty();
-		  for(var i in result.resultList){
-			  var p =result.resultList[i];
-		  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
-		  }
-	  },'json');
+      });
   }
   
   function makePageInfo(page){

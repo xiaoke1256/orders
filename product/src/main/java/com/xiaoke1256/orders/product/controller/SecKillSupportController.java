@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
+import com.xiaoke1256.orders.product.api.SecKillSupportService;
 import com.xiaoke1256.orders.product.service.ProductService;
 
 /**
@@ -19,7 +20,7 @@ import com.xiaoke1256.orders.product.service.ProductService;
  */
 @RestController
 @RequestMapping("/secKill")
-public class SecKillSupportController {
+public class SecKillSupportController implements SecKillSupportService {
 	@Autowired
 	private ProductService productService;
 	/**

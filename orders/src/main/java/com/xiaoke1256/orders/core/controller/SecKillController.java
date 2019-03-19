@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
@@ -31,6 +30,7 @@ import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
+import com.xiaoke1256.orders.core.client.SecKillSupportClient;
 import com.xiaoke1256.orders.core.dto.ProductWithStorage;
 import com.xiaoke1256.orders.core.dto.ProductWithStorageQueryResult;
 import com.xiaoke1256.orders.core.service.OStorageService;
@@ -65,6 +65,9 @@ public class SecKillController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	private SecKillSupportClient secKillSupportClient;
+	
 	@Value("${remote.api.product.uri}")
 	private String productApiUri;
 	
@@ -82,7 +85,7 @@ public class SecKillController {
 	 * 查询商品
 	 * @return
 	 */
-	@HystrixCommand(fallbackMethod="connectFail")
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/products",method={RequestMethod.GET})
 	public RespMsg queryProduct(ProductCondition condition) {
 		try {
@@ -123,7 +126,7 @@ public class SecKillController {
 	/**
 	 * 下订单（利用redis缓存）
 	 */
-	@HystrixCommand(fallbackMethod="connectFail")
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/place",method={RequestMethod.POST})
 	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
@@ -207,11 +210,11 @@ public class SecKillController {
 	/**
 	 * 开始秒杀活动
 	 */
-	@HystrixCommand(fallbackMethod="connectFail")
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
 		try {
-			RespMsg respMsg = restTemplate.postForObject(productApiUri+"/secKill/open/"+productCode,null, RespMsg.class);
+			RespMsg respMsg = secKillSupportClient.openSecKill(productCode);
 			if(!"0".equals(respMsg.getCode())) {
 				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 				return respMsg;
@@ -242,10 +245,10 @@ public class SecKillController {
 	 * 结束秒杀活动。
 	 * @param productCodes
 	 */
-	@HystrixCommand(fallbackMethod="connectFail")
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg =  restTemplate.postForObject(productApiUri+"/secKill/close/"+productCode,null, RespMsg.class);
+		RespMsg respMsg = secKillSupportClient.closeSecKill(productCode);
 		if(!"0".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;
@@ -260,11 +263,4 @@ public class SecKillController {
 		return respMsg;
 	}
 	
-	/**
-	 * 若restfull 发生连接异常，则执行此方法。
-	 * @return
-	 */
-	public RespMsg connectFail() {
-		return new ErrMsg(ErrorCode.CONNECT_ERROR);
-	}
 }

@@ -2,7 +2,6 @@ package com.xiaoke1256.orders.core.controller;
 
 import java.math.BigDecimal;
 
-import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 
 public class OrderPlaceResponse extends RespMsg implements java.io.Serializable {
