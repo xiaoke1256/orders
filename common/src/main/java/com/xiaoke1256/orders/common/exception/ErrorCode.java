@@ -21,11 +21,12 @@ public class ErrorCode implements Serializable {
 	/**
 	 * 禁用构造方法
 	 */
+	@SuppressWarnings("unused")
 	private ErrorCode() {
 		
 	}
 
-	private ErrorCode(String code, String msg) {
+	protected ErrorCode(String code, String msg) {
 		super();
 		this.code = code;
 		this.msg = msg;
