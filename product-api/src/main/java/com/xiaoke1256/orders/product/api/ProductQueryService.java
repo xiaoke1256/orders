@@ -1,8 +1,10 @@
 package com.xiaoke1256.orders.product.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 /**
@@ -11,6 +13,6 @@ import com.xiaoke1256.orders.product.dto.ProductCondition;
  *
  */
 public interface ProductQueryService {
-	@GetMapping("/product/search")
-	public RespMsg searchProductByCondition(ProductCondition condition);
+	@RequestMapping(value="/product/search",method=RequestMethod.GET,consumes="application/json")
+	public QueryResultResp searchProductByCondition(@RequestBody ProductCondition condition);
 }

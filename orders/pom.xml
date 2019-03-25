@@ -87,7 +87,13 @@
     <dependency>
          <groupId>org.springframework.cloud</groupId>
          <artifactId>spring-cloud-starter-feign</artifactId>
-     </dependency>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.netflix.hystrix</groupId>
+        <artifactId>hystrix-javanica</artifactId>
+        <version>1.5.12</version>
+    </dependency>
      
     <dependency>
        <groupId>org.apache.tomcat.embed</groupId>

@@ -26,7 +26,7 @@
 				  url+="open";
 			  $.post(url+"/"+$btn.attr("pcode"),{},function(result){
 				 // alert($btn.html());
-				  if(result.code=="0"){
+				  if(result.code=="00"){
 					  if($btn.text()=="CLOSE"){
 						$btn.text("OPEN");
 						$btn.parent().prev().text("NO");
@@ -73,8 +73,8 @@
 		  type:"GET",
 		  data:{pageNo:pageNo,pageSize:pageSize},
 		  success:function(result){
-			  if(result.code!='0'){
-		    	  alert(ret.code+":"+ret.msg);
+			  if(result.code!='00'){
+		    	  alert(result.code+":"+result.msg);
 		    	  return;
 		      }
 			  var $tbody = $('#content table tbody').empty();

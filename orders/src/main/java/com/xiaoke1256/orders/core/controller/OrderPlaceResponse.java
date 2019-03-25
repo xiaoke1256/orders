@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.core.controller;
 import java.math.BigDecimal;
 
 import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 public class OrderPlaceResponse extends RespMsg implements java.io.Serializable {
 	/**
@@ -10,6 +11,17 @@ public class OrderPlaceResponse extends RespMsg implements java.io.Serializable 
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
+	
+	public OrderPlaceResponse() {
+		super(ErrorCode.SUCCESS);
+	}
+	public OrderPlaceResponse(ErrorCode errorCode) {
+		super(errorCode);
+	}
+	public OrderPlaceResponse(String code, String msg) {
+		super(code, msg);
+	}
 	private String payOrderNo;
 	private BigDecimal totalAmt;
 	private BigDecimal  carriageAmt;

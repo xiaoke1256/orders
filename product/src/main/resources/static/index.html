@@ -32,7 +32,7 @@
 		  if(!pageNo || isNaN(pageNo) )
 			  pageNo=1;
 		  //alert(pageNo);
-		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,needFullTypeName:true};
+		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,"needFullTypeName":true};
 		  $.ajax({  
 			    url:"product/search",
 			    type:"GET",  

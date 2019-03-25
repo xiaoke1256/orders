@@ -9,6 +9,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.ErrMsg;
@@ -49,8 +52,8 @@ public class ProductController implements ProductQueryService {
 		return productService.getSimpleProductByCode(productCode);
 	}
 	
-	@GetMapping("/product/search")
-	public RespMsg searchProductByCondition(ProductCondition condition){
+	@RequestMapping(value="/product/search",method=RequestMethod.GET)
+	public QueryResultResp searchProductByCondition(ProductCondition condition){
 		try {
 			QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
 			ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
@@ -65,10 +68,10 @@ public class ProductController implements ProductQueryService {
 			newRet.setTotalCount(result.getTotalCount());
 			newRet.setTotalPages(result.getTotalPages());
 			newRet.setResultList(dtoList);
-			return new QueryResultResp("0","success!",newRet);
+			return new QueryResultResp(newRet);
 		}catch(Exception ex) {
 			logger.error(ex.getMessage(), ex);
-			return new ErrMsg("99",ex.getMessage());
+			return new QueryResultResp("99",ex.getMessage(),null);
 		}
 	}
 	
