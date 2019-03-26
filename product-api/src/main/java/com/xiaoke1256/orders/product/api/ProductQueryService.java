@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 
 /**
  * 商品的相关服务
@@ -14,5 +14,5 @@ import com.xiaoke1256.orders.product.dto.ProductCondition;
  */
 public interface ProductQueryService {
 	@RequestMapping(value="/product/search",method=RequestMethod.GET,consumes="application/json")
-	public QueryResultResp searchProductByCondition(@RequestBody ProductCondition condition);
+	public SimpleProductQueryResultResp searchProductByCondition(@RequestBody ProductCondition condition);
 }

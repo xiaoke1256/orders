@@ -5,7 +5,7 @@ import java.util.List;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.page.QueryResult;
 
-public class QueryResultResp extends RespMsg {
+public class QueryResultResp<T> extends RespMsg {
 
 	/**
 	 * 
@@ -20,7 +20,7 @@ public class QueryResultResp extends RespMsg {
 	
 	private int totalPages;
 	
-	private List<?> resultList;
+	private List<T> resultList;
 	
 
 	public QueryResultResp() {
@@ -35,7 +35,7 @@ public class QueryResultResp extends RespMsg {
 		super(code, msg);
 	}
 
-	public QueryResultResp(QueryResult<?> queryResult) {
+	public QueryResultResp(QueryResult<T> queryResult) {
 		super(ErrorCode.SUCCESS);
 		this.pageNo = queryResult.getPageNo();
 		this.pageSize = queryResult.getPageSize();
@@ -44,7 +44,7 @@ public class QueryResultResp extends RespMsg {
 		this.resultList = queryResult.getResultList();
 	}
 
-	public QueryResultResp(String code, String msg, QueryResult<?> queryResult) {
+	public QueryResultResp(String code, String msg, QueryResult<T> queryResult) {
 		super(code, msg);
 		this.pageNo = queryResult.getPageNo();
 		this.pageSize = queryResult.getPageSize();
@@ -89,7 +89,7 @@ public class QueryResultResp extends RespMsg {
 		return resultList;
 	}
 
-	public void setResultList(List<?> resultList) {
+	public void setResultList(List<T> resultList) {
 		this.resultList = resultList;
 	}
 

@@ -9,18 +9,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xiaoke1256.orders.common.ErrMsg;
-import com.xiaoke1256.orders.common.QueryResultResp;
-import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.dto.ProductType;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
-import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 import com.xiaoke1256.orders.product.dto.ProductParam;
 import com.xiaoke1256.orders.product.api.ProductQueryService;
 import com.xiaoke1256.orders.product.dto.Product;
@@ -53,7 +49,7 @@ public class ProductController implements ProductQueryService {
 	}
 	
 	@RequestMapping(value="/product/search",method=RequestMethod.GET)
-	public QueryResultResp searchProductByCondition(ProductCondition condition){
+	public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition){
 		try {
 			QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
 			ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
@@ -62,16 +58,16 @@ public class ProductController implements ProductQueryService {
 				copyProperties(dto,product,condition.isNeedFullTypeName());
 				dtoList.add(dto);
 			}
-			SimpleProductQueryResult newRet = new SimpleProductQueryResult();
+			QueryResult<SimpleProduct> newRet = new QueryResult<SimpleProduct>();
 			newRet.setPageNo(result.getPageNo());
 			newRet.setPageSize(result.getPageSize());
 			newRet.setTotalCount(result.getTotalCount());
 			newRet.setTotalPages(result.getTotalPages());
 			newRet.setResultList(dtoList);
-			return new QueryResultResp(newRet);
+			return new SimpleProductQueryResultResp(newRet);
 		}catch(Exception ex) {
 			logger.error(ex.getMessage(), ex);
-			return new QueryResultResp("99",ex.getMessage(),null);
+			return new SimpleProductQueryResultResp("99",ex.getMessage(),null);
 		}
 	}
 	

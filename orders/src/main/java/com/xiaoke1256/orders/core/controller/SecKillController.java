@@ -38,6 +38,7 @@ import com.xiaoke1256.orders.core.service.OStorageService;
 import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.ProductService;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 import com.xiaoke1256.orders.product.api.SecKillSupportService;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
@@ -105,7 +106,7 @@ public class SecKillController {
 			if(!RespMsg.SUCCESS.getCode().equals(respMsg.getCode())) {
 				return respMsg;
 			}
-			QueryResultResp productResut = (QueryResultResp)respMsg;
+			SimpleProductQueryResultResp productResut = (SimpleProductQueryResultResp)respMsg;
 			ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
 			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage((SimpleProduct)p)).collect(Collectors.toList());
 			result.setResultList(resultList);
