@@ -1,22 +1,23 @@
-package com.xiaoke1256.orders.product.fallback;
+package com.xiaoke1256.orders.core.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
-import com.xiaoke1256.orders.product.api.SecKillSupportService;
 
 import feign.hystrix.FallbackFactory;
 
-public class SecKillSupportFallbackFactory implements FallbackFactory<SecKillSupportService> {
+@Component
+public class SecKillSupportFallbackFactory implements FallbackFactory<SecKillSupportClient> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SecKillSupportFallbackFactory.class);
 
 	@Override
-	public SecKillSupportService create(Throwable arg0) {
-		return new SecKillSupportService() {
+	public SecKillSupportClient create(Throwable arg0) {
+		return new SecKillSupportClient() {
 
 			@Override
 			public RespMsg openSecKill(String productCode) {

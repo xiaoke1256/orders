@@ -110,7 +110,7 @@ public class SecKillController {
 			ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
 			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage((SimpleProduct)p)).collect(Collectors.toList());
 			result.setResultList(resultList);
-			return new QueryResultResp(result);
+			return new QueryResultResp<ProductWithStorage>(result);
 		}catch (Exception ex) {
 			logger.error(ex.getMessage(),ex);
 			return new ErrMsg("99",ex.getMessage());
@@ -221,7 +221,7 @@ public class SecKillController {
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
 		try {
 			RespMsg respMsg = secKillSupportService.openSecKill(productCode);
-			if(!"0".equals(respMsg.getCode())) {
+			if(!"00".equals(respMsg.getCode())) {
 				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 				return respMsg;
 			}
@@ -255,7 +255,7 @@ public class SecKillController {
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
 		RespMsg respMsg = secKillSupportService.closeSecKill(productCode);
-		if(!"0".equals(respMsg.getCode())) {
+		if(!"00".equals(respMsg.getCode())) {
 			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
 			return respMsg;
 		}

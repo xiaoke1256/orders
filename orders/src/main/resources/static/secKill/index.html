@@ -35,7 +35,7 @@
 						$btn.parent().prev().text("YES");
 					  }
 				  }else{
-					  alert("Something wrong happen:"+result);
+					  alert("Something wrong happen:"+result.code+":"+result.msg);
 				  }
 					  
 			  },"json");
@@ -173,7 +173,7 @@
 		        	 $("#console").append("<font color=\"green\">A order has created! OrderNo : "+ret.payOrderNo+"</font><br>")
 		        	 successCount++;
 		        } else {      
-		        	 $("#console").append("<font color=\"red\">"+ret.errMsg.code+":"+ret.errMsg.msg+"</font><br>");    
+		        	 $("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");    
 		        }
 		    },
 		    error:function(req,errMsg,errorThrown){
