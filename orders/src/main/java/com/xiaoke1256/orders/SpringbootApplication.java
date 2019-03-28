@@ -30,6 +30,11 @@ public class SpringbootApplication extends SpringBootServletInitializer {
 		return new RestTemplate();
 	}
 	
+	/**
+	 * @deprecated 用feign 后此bean就失效了。
+	 * @return
+	 */
+	@Deprecated
 	@Bean
 	@Profile({"dev","test"})
 	public RestTemplate restTemplate() {

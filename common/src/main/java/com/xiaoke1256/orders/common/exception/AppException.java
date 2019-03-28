@@ -5,7 +5,7 @@ package com.xiaoke1256.orders.common.exception;
  * @author Administrator
  *
  */
-public class AppException extends Exception {
+public class AppException extends RuntimeException {
 
 	/**
 	 * 
@@ -22,6 +22,12 @@ public class AppException extends Exception {
 	public AppException(String message, Throwable cause) {
 		super(message, cause);
 		errorCode=ErrorCode.OTHER_ERROR.getCode();
+	}
+	
+	public AppException(ErrorCode errorCode) {
+		super();
+		this.errorCode=errorCode.getCode();
+		this.errorMsg = errorCode.getMsg();
 	}
 
 	public AppException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

@@ -1,7 +1,8 @@
 package com.xiaoke1256.orders.product.api;
 
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.xiaoke1256.orders.common.RespMsg;
 
@@ -11,9 +12,9 @@ import com.xiaoke1256.orders.common.RespMsg;
  *
  */
 public interface SecKillSupportService {
-	@PostMapping("/open/{productCode}")
+	@RequestMapping(value="/open/{productCode}",method=RequestMethod.POST)
 	public RespMsg openSecKill(@PathVariable("productCode")String productCode);
 	
-	@PostMapping("/close/{productCode}")
+	@RequestMapping(value="/close/{productCode}",method=RequestMethod.POST)
 	public RespMsg closeSecKill(@PathVariable("productCode")String productCode);
 }

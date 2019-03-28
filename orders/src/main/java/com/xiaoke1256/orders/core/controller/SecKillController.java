@@ -254,19 +254,29 @@ public class SecKillController {
 	//@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg = secKillSupportService.closeSecKill(productCode);
-		if(!"00".equals(respMsg.getCode())) {
-			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
-			return respMsg;
-		}
-		Jedis conn = RedisUtils.connect();
 		try {
-			RedisUtils.del(conn, "SecKill_P_"+productCode);
-		}catch(RuntimeException e) {
-			logger.warn(e.getMessage(),e);
+			RespMsg respMsg = secKillSupportService.closeSecKill(productCode);
+			if(!"00".equals(respMsg.getCode())) {
+				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+				return respMsg;
+			}
+			Jedis conn = RedisUtils.connect();
+			try {
+				RedisUtils.del(conn, "SecKill_P_"+productCode);
+			}catch(RuntimeException e) {
+				logger.warn(e.getMessage(),e);
+			}
+			conn.close();
+			return respMsg;
+		}catch(BusinessException ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
+		}catch(Exception ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}
-		conn.close();
-		return respMsg;
 	}
 	
 }
