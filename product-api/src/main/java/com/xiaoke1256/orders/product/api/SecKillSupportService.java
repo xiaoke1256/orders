@@ -12,9 +12,9 @@ import com.xiaoke1256.orders.common.RespMsg;
  *
  */
 public interface SecKillSupportService {
-	@RequestMapping(value="/open/{productCode}",method=RequestMethod.POST)
+	@RequestMapping(value="/secKill/open/{productCode}",method=RequestMethod.POST)
 	public RespMsg openSecKill(@PathVariable("productCode")String productCode);
 	
-	@RequestMapping(value="/close/{productCode}",method=RequestMethod.POST)
+	@RequestMapping(value="/secKill/close/{productCode}",method=RequestMethod.POST)
 	public RespMsg closeSecKill(@PathVariable("productCode")String productCode);
 }

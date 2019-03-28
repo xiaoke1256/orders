@@ -16,18 +16,18 @@ public class SecKillSupportFallbackFactory implements FallbackFactory<SecKillSup
 	private static final Logger logger = LoggerFactory.getLogger(SecKillSupportFallbackFactory.class);
 
 	@Override
-	public SecKillSupportClient create(Throwable arg0) {
+	public SecKillSupportClient create(Throwable cause) {
 		return new SecKillSupportClient() {
 
 			@Override
 			public RespMsg openSecKill(String productCode) {
-				logger.error("connect fail.by hystrix.");
+				logger.error("connect fail.by hystrix.",cause);
 				return new ErrMsg(ErrorCode.CONNECT_ERROR);
 			}
 
 			@Override
 			public RespMsg closeSecKill(String productCode) {
-				logger.error("connect fail.by hystrix.");
+				logger.error("connect fail.by hystrix.",cause);
 				return new ErrMsg(ErrorCode.CONNECT_ERROR);
 			}
 			

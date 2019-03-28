@@ -19,25 +19,25 @@ public class ProductQueryFallbackFactory implements FallbackFactory<ProductQuery
 
 	private static final Logger logger = LoggerFactory.getLogger(SecKillSupportFallbackFactory.class);
 	@Override
-	public ProductQueryClient create(Throwable arg0) {
+	public ProductQueryClient create(Throwable cause) {
 		
 		return new ProductQueryClient() {
 
 			@Override
 			public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition) {
-				logger.error("connect fail.by hystrix.");
+				logger.error("connect fail.by hystrix.",cause);
 				return new SimpleProductQueryResultResp(ErrorCode.CONNECT_ERROR);
 			}
 
 			@Override
 			public SimpleProductQueryResultResp searchProductByCondition(Map<String, Object> condition) {
-				logger.error("connect fail.by hystrix.");
+				logger.error("connect fail.by hystrix.",cause);
 				return new SimpleProductQueryResultResp(ErrorCode.CONNECT_ERROR);
 			}
 
 			@Override
 			public SimpleProduct getSimpleProductByCode(String productCode) {
-				logger.error("connect fail.by hystrix.");
+				logger.error("connect fail.by hystrix.",cause);
 				throw new AppException(ErrorCode.CONNECT_ERROR);
 			}
 			
