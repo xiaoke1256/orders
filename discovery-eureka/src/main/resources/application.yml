@@ -14,16 +14,16 @@ eureka:
     instance-id: peer1-8761
     #作为Eureka Client，把实例的ip的信息注册到eureka server中。
     #prefer-ip-address: true
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 30
+    #leaseRenewalIntervalInSeconds: 10
+    #leaseExpirationDurationInSeconds: 30
   client:
     serviceUrl:
       defaultZone: http://peer2:8762/discovery/eureka/
     fetch-registry: true
     register-with-eureka: true
   server:
-    enable-self-preservation: false
-    eviction-interval-timer-in-ms: 10000
+    #enable-self-preservation: false
+    #eviction-interval-timer-in-ms: 10000
 ---
 spring:
   profiles: peer2
@@ -35,14 +35,14 @@ eureka:
     instance-id: peer2-8762
     #作为Eureka Client，把实例的ip的信息注册到eureka server中。
     #prefer-ip-address: true
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 30
+    #leaseRenewalIntervalInSeconds: 10
+    #leaseExpirationDurationInSeconds: 30
   client:
     serviceUrl:
       defaultZone: http://peer1:8761/discovery/eureka/
     fetch-registry: true
     register-with-eureka: true
   server:
-    enable-self-preservation: false
-    eviction-interval-timer-in-ms: 10000
+    #enable-self-preservation: false
+    #eviction-interval-timer-in-ms: 10000
   
