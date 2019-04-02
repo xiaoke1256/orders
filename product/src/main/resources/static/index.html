@@ -32,7 +32,7 @@
 		  if(!pageNo || isNaN(pageNo) )
 			  pageNo=1;
 		  //alert(pageNo);
-		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,needFullTypeName:true};
+		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,"needFullTypeName":true};
 		  $.ajax({  
 			    url:"product/search",
 			    type:"GET",  
@@ -41,7 +41,7 @@
 			    contentType: "application/json;charset=utf-8",
 			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
 			    success: function (ret) {  
-			    	if(ret.code!='0'){
+			    	if(ret.code!='00'){
 			    		alert(ret.code+":"+ret.msg);
 			    		return;
 			    	}

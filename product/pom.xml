@@ -48,7 +48,25 @@
 	 <dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter</artifactId>
+	    <exclusions>
+	        <exclusion>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter-logging</artifactId>
+	        </exclusion>
+	    </exclusions>
 	 </dependency>
+	 
+	 <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.25</version>
+    </dependency>
+	
+	<dependency>
+	  <groupId>ch.qos.logback</groupId>
+	  <artifactId>logback-classic</artifactId>
+	  <version>1.2.2</version>
+	</dependency>
 	 
 	 <dependency>
          <groupId>org.springframework.boot</groupId>
@@ -104,6 +122,12 @@
      <dependency>
     	<groupId>com.xiaoke_1256.orders</groupId>
     	<artifactId>product-base</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+     </dependency>
+     
+     <dependency>
+    	<groupId>com.xiaoke_1256.orders</groupId>
+    	<artifactId>product-api</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
      </dependency>	
      

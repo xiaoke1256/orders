@@ -2,20 +2,30 @@ package com.xiaoke1256.orders.core.controller;
 
 import java.math.BigDecimal;
 
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.ErrorCode;
 
-public class OrderPlaceResponse implements java.io.Serializable {
+public class OrderPlaceResponse extends RespMsg implements java.io.Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
+	
+	public OrderPlaceResponse() {
+		super(ErrorCode.SUCCESS);
+	}
+	public OrderPlaceResponse(ErrorCode errorCode) {
+		super(errorCode);
+	}
+	public OrderPlaceResponse(String code, String msg) {
+		super(code, msg);
+	}
 	private String payOrderNo;
 	private BigDecimal totalAmt;
 	private BigDecimal  carriageAmt;
 	private String payerNo;
-	
-	private ErrMsg errMsg;
 	
 	public String getPayOrderNo() {
 		return payOrderNo;
@@ -41,13 +51,5 @@ public class OrderPlaceResponse implements java.io.Serializable {
 	public void setPayerNo(String payerNo) {
 		this.payerNo = payerNo;
 	}
-	public ErrMsg getErrMsg() {
-		return errMsg;
-	}
-	public void setErrMsg(ErrMsg errMsg) {
-		this.errMsg = errMsg;
-	}
-	
-	
 	
 }

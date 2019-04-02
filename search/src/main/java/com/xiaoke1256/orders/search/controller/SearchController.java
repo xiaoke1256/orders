@@ -38,6 +38,7 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.search.vo.Product;
 import com.xiaoke1256.orders.search.vo.SearchCondition;
+import com.xiaoke1256.orders.search.vo.SearchResult;
 
 @Controller
 @RequestMapping("/")
@@ -63,7 +64,7 @@ public class SearchController {
 			
 			//TODO order by.
 			
-			return new QueryResultResp("0","success!",searchFunction(qb,condition.getPageNo(),condition.getPageSize()));
+			return new SearchResult("0","success!",searchFunction(qb,condition.getPageNo(),condition.getPageSize()));
 		}catch(Exception e) {
 			e.printStackTrace();
 			ErrMsg error = new ErrMsg("error",e.getMessage());

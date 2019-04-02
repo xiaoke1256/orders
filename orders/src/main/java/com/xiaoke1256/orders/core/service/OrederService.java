@@ -26,13 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.orders.common.util.Base32;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
+import com.xiaoke1256.orders.core.client.ProductQueryClient;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
@@ -44,7 +44,7 @@ public class OrederService {
 	private EntityManager entityManager ;
 	
 	@Autowired
-	private RestTemplate restTemplate;
+	private ProductQueryClient productQueryClient;
 	
 	@Value("${remote.api.product.uri}")
 	private String productApiUri;
@@ -65,7 +65,7 @@ public class OrederService {
 		List<SimpleProduct> products = new ArrayList<SimpleProduct>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			SimpleProduct product = restTemplate.getForObject(productApiUri+"/simpleProduct/"+productCode+"", SimpleProduct.class);
+			SimpleProduct product = productQueryClient.getSimpleProductByCode(productCode);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}

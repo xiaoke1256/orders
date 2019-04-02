@@ -75,6 +75,11 @@
      </dependency>
      
      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId> spring-boot-starter-actuator</artifactId>
+     </dependency>
+     
+     <dependency>
      	<groupId>org.springframework.cloud</groupId>
      	<artifactId>spring-cloud-starter-eureka</artifactId>
      </dependency>
@@ -83,6 +88,22 @@
          <groupId>org.springframework.cloud</groupId>
          <artifactId>spring-cloud-starter-ribbon</artifactId>
      </dependency>
+     
+    <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-starter-feign</artifactId>
+    </dependency>
+    
+    <dependency>
+	   <groupId>org.springframework.cloud</groupId>
+	   <artifactId>spring-cloud-starter-hystrix</artifactId>
+	</dependency>
+    
+    <dependency>
+        <groupId>com.netflix.hystrix</groupId>
+        <artifactId>hystrix-javanica</artifactId>
+        <version>1.5.12</version>
+    </dependency>
      
     <dependency>
        <groupId>org.apache.tomcat.embed</groupId>
@@ -117,6 +138,12 @@
 	<dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
+       <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+       <groupId>com.xiaoke_1256.orders</groupId>
+       <artifactId>product-api</artifactId>
        <version>1.0.0-SNAPSHOT</version>
     </dependency>
 	

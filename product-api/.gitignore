@@ -1,3 +1,11 @@
+<<<<<<< HEAD
 /.classpath
 /.project
 /target/
+=======
+/bin/
+/target/
+/.classpath
+/.project
+/.settings/
+>>>>>>> refs/heads/common

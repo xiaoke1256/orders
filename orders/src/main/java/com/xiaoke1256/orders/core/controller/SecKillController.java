@@ -1,8 +1,10 @@
 package com.xiaoke1256.orders.core.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,21 +22,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
+import com.xiaoke1256.orders.core.client.ProductQueryClient;
 import com.xiaoke1256.orders.core.dto.ProductWithStorage;
 import com.xiaoke1256.orders.core.dto.ProductWithStorageQueryResult;
 import com.xiaoke1256.orders.core.service.OStorageService;
 import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.ProductService;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
-import com.xiaoke1256.orders.product.dto.SimpleProductQueryResult;
+import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
+import com.xiaoke1256.orders.product.api.SecKillSupportService;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 import redis.clients.jedis.Jedis;
@@ -60,7 +65,10 @@ public class SecKillController {
 	private OStorageService oStorageService;
 	
 	@Autowired
-	private RestTemplate restTemplate;
+	private ProductQueryClient productQueryService;
+	
+	@Autowired
+	private SecKillSupportService secKillSupportService;
 	
 	@Value("${remote.api.product.uri}")
 	private String productApiUri;
@@ -79,25 +87,30 @@ public class SecKillController {
 	 * 查询商品
 	 * @return
 	 */
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/products",method={RequestMethod.GET})
 	public RespMsg queryProduct(ProductCondition condition) {
 		try {
 			int pageNo = condition.getPageNo();
 			int pageSize = condition.getPageSize();
-			StringBuilder paramsSb = new StringBuilder();
-			paramsSb.append("pageNo=").append(pageNo).append("&");
-			paramsSb.append("pageSize=").append(pageSize);
+			Map<String,Object> paramsMap = new HashMap<>();
+			paramsMap.put("pageNo", pageNo);
+			paramsMap.put("pageSize", pageSize);
 			if(StringUtils.isNotBlank(condition.getProductCode())) {
-				paramsSb.append("&").append("productCode=").append(condition.getProductCode());
+				paramsMap.put("productCode", condition.getProductCode());
 			}
 			if(StringUtils.isNotBlank(condition.getProductName())) {
-				paramsSb.append("&").append("productName=").append(condition.getProductName());
+				paramsMap.put("productName", condition.getProductName());
 			}
-			SimpleProductQueryResult productResut = restTemplate.getForObject(productApiUri+"/product/search?"+paramsSb.toString(), SimpleProductQueryResult.class);
+			RespMsg respMsg = productQueryService.searchProductByCondition(paramsMap);
+			if(!RespMsg.SUCCESS.getCode().equals(respMsg.getCode())) {
+				return respMsg;
+			}
+			SimpleProductQueryResultResp productResut = (SimpleProductQueryResultResp)respMsg;
 			ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
-			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage(p)).collect(Collectors.toList());
+			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage((SimpleProduct)p)).collect(Collectors.toList());
 			result.setResultList(resultList);
-			return new QueryResultResp("0","success!",result);
+			return new QueryResultResp<ProductWithStorage>(result);
 		}catch (Exception ex) {
 			logger.error(ex.getMessage(),ex);
 			return new ErrMsg("99",ex.getMessage());
@@ -119,10 +132,11 @@ public class SecKillController {
 	/**
 	 * 下订单（利用redis缓存）
 	 */
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@RequestMapping(value="/place",method={RequestMethod.POST})
-	public OrderPlaceResponse placeOrder(@RequestBody OrderPlaceRequest request) {
+	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
-			throw new RuntimeException("空订单！");
+			return new ErrMsg(ErrorCode.BUSSNESS_ERROR.getCode(),"空订单！");
 		}
 		
 		Jedis conn = RedisUtils.connect();
@@ -137,7 +151,7 @@ public class SecKillController {
 					if(productService.isInSecKill(productCode)) {
 						RedisUtils.set(conn, key, String.valueOf(p.getStockNum()));
 					}else {
-						throw new RuntimeException("This product is not in seckill!");
+						throw new BusinessException("This product is not in seckill!");
 					}
 				}
 				keys.add(key);
@@ -154,7 +168,7 @@ public class SecKillController {
 					Long inStore = Long.parseLong(RedisUtils.get(conn, key));
 					if(inStore<request.getProductMap().get(productCode)) {//库存不够了
 						RedisUtils.unwatch(conn);
-						throw new RuntimeException("秒杀失败！（被抢完了）");
+						throw new BusinessException("秒杀失败！（被抢完了）");
 					}
 				}
 				
@@ -185,13 +199,15 @@ public class SecKillController {
 			OrderPlaceResponse response = new OrderPlaceResponse();
 			PropertyUtils.copyProperties(response, order);
 			return response ;
-			
+		
+		}catch(BusinessException ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}catch(Exception ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg("code",ex.getMessage());
-			OrderPlaceResponse response = new OrderPlaceResponse();
-			response.setErrMsg(error);
-			return response;
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}finally {
 			conn.close();
 		}
@@ -200,44 +216,67 @@ public class SecKillController {
 	/**
 	 * 开始秒杀活动
 	 */
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg = restTemplate.postForObject(productApiUri+"/secKill/open/"+productCode,null, RespMsg.class);
-		if(!"0".equals(respMsg.getCode())) {
-			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+		try {
+			RespMsg respMsg = secKillSupportService.openSecKill(productCode);
+			if(!"00".equals(respMsg.getCode())) {
+				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+				return respMsg;
+			}
+			OStorage storage = oStorageService.getByProductCode(productCode);
+			
+			if(storage.getStockNum()<100) {
+				throw new BusinessException(""+productCode+"的库存不足,库存需大于100份才可支持秒杀活动。");
+			}
+			
+			Jedis conn = RedisUtils.connect();
+			RedisUtils.set(conn, "SecKill_P_"+storage.getProductCode(), String.valueOf(storage.getStockNum()));
+			conn.close();
+			
 			return respMsg;
+		}catch(BusinessException ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
+		}catch(Exception ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}
-		OStorage storage = oStorageService.getByProductCode(productCode);
-		
-		if(storage.getStockNum()<100) {
-			throw new RuntimeException(""+productCode+"的库存不足,库存需大于100份才可支持秒杀活动。");
-		}
-		
-		Jedis conn = RedisUtils.connect();
-		RedisUtils.set(conn, "SecKill_P_"+storage.getProductCode(), String.valueOf(storage.getStockNum()));
-		conn.close();
-		
-		return respMsg;
 	}
 	
 	/**
 	 * 结束秒杀活动。
 	 * @param productCodes
 	 */
+	//@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(HttpServletResponse response,@PathVariable("productCode") String productCode) {
-		RespMsg respMsg =  restTemplate.postForObject(productApiUri+"/secKill/close/"+productCode,null, RespMsg.class);
-		if(!"0".equals(respMsg.getCode())) {
-			logger.error(respMsg.getCode()+":"+respMsg.getMsg());
-			return respMsg;
-		}
-		Jedis conn = RedisUtils.connect();
 		try {
-			RedisUtils.del(conn, "SecKill_P_"+productCode);
-		}catch(RuntimeException e) {
-			logger.warn(e.getMessage(),e);
+			RespMsg respMsg = secKillSupportService.closeSecKill(productCode);
+			if(!"00".equals(respMsg.getCode())) {
+				logger.error(respMsg.getCode()+":"+respMsg.getMsg());
+				return respMsg;
+			}
+			Jedis conn = RedisUtils.connect();
+			try {
+				RedisUtils.del(conn, "SecKill_P_"+productCode);
+			}catch(RuntimeException e) {
+				logger.warn(e.getMessage(),e);
+			}
+			conn.close();
+			return respMsg;
+		}catch(BusinessException ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
+		}catch(Exception ex){
+			logger.error(ex.getMessage(), ex);
+			ErrMsg error = new ErrMsg(ex);
+			return error;
 		}
-		conn.close();
-		return respMsg;
 	}
+	
 }
