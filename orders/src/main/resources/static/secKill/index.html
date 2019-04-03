@@ -5,6 +5,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>orders welcome!</title>
   <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
   <script type="text/javascript">
   var intervalCode = "";
   var taskCount = 0;
@@ -54,20 +56,18 @@
 	  
 	  //初始化列表
 	  refreshPage();
-	 
-	  //点击分页。
-	  $('body').on('click','a.page',function(){
-		  $('[name=pageNo]').val($(this).attr("pageNo"));
-		  refreshPage();
-	  });
 	  
   });
   
   //刷新列表内容
   function refreshPage(){
-	  var pageNo = $('[name=pageNo]').val();
+	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo || isNaN(pageNo) )
+		  pageNo=1;
+	  $('[name=pageNo]').val(pageNo);
 	  var pageSize = $('[name=pageSize]').val();
 
+	  var callee = arguments.callee;
 	  $.ajax({
 		  url:"secKill/products",
 		  type:"GET",
@@ -98,7 +98,7 @@
 				  $tbody.append(innerHtml);
 			  }
 			  //分页
-			  makePageInfo(result);
+			  $('#pageTd').makePage(result,refreshPage);
 			  
 			  //下拉列表
 			  $('select[name=productCode]').empty();

@@ -20,7 +20,7 @@
 			pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalPages+'">尾页</a> ';
 		  }
 		  $(this).empty().append(pageContetxt);
-		  
+
 		  if(typeof(refleshFunction)=='function'){
 			  $(this).find('.page').click(refleshFunction);
 		  }
