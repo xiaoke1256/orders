@@ -4,18 +4,21 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>orders-product welcome!</title>
   <script type="text/javascript" src="js/jquery.min.js" ></script>
-  <script type="text/javascript" src="js/dateFormat.js" ></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
   <style>
   dl dt {float:left}
   </style>
   <script type="text/javascript">
   $(function (){
-	  $('body').on('click','#searchBtn,.page',function(){
+
+	  function queryData(){
 		  var pageNo = $(this).attr("pageNo");
 		  if(!pageNo || isNaN(pageNo) )
 			  pageNo=1;
 		  //alert(pageNo);
 		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,"needFullTypeName":true};
+		  var callee = arguments.callee;
 		  $.ajax({  
 			    url:"product/search",
 			    type:"GET",  
@@ -36,7 +39,7 @@
 			    				+'<td>'+p.storeName+'</td><td>'+p.fullProductTypeName+'</td><td>'+new Date(p.updateTime).format('yyyy-MM-dd HH:mm:ss.S')+'</td> </tr>');
 			    		
 			    	}
-			    	makePageInfo(ret);
+			    	$('#pageTd').makePage(ret,callee);
 			    },
 			    error:function(err){
 			    	//alert("网络异常："+err.responseText);
@@ -44,25 +47,9 @@
 			    }
 		  });
 		  
-	  });
-	  
-	  function makePageInfo(page){
-		  var pageNo = page.pageNo;
-		  var pageSize = page.pageSize;
-		  var totalCount = page.totalCount;
-		  var totalPages = page.totalPages;
-		  var pageContetxt = '';
-		  if(pageNo>1){
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
-		  }
-		  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
-		  if(pageNo<totalPages){
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalPages+'">尾页</a> ';
-		  }
-		  $('#pageTd').empty().append(pageContetxt);
 	  }
+	  
+	  $('body').on('click','#searchBtn',queryData);
 	  
   });
   </script>
