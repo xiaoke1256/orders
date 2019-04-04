@@ -7,6 +7,7 @@
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/date_format.js" ></script>
   <script type="text/javascript" src="js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
   <script type="text/javascript">
   var intervalCode = "";
   var taskCount = 0;
@@ -113,24 +114,6 @@
       });
   }
   
-  function makePageInfo(page){
-	  var pageNo = page.pageNo;
-	  var pageSize = page.pageSize;
-	  var totalCount = page.totalCount;
-	  var totalPages = page.totalPages;
-	  var pageContetxt = '';
-	  if(pageNo>1){
-		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
-		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
-	  }
-	  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
-	  if(pageNo<totalPages){
-		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
-		  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalPages+'">尾页</a> ';
-	  }
-	  $('#pageTd').empty().append(pageContetxt);
-  }
-  
   var times = 1000;
   function submitSomeOrder(num){
 	  for(var i = 0  ; i<num; i++){
@@ -212,14 +195,14 @@
 </head>
 <body>
 	<header>
-		<h1 style="text-align:center">秒杀业务测试页面</h1>
+		<h1 class="title">秒杀业务测试页面</h1>
 	</header>
 	<br>
-	<div id="content" style="margin:10px auto;width:80%">
+	<div id="content" class="content">
 		<form action="secKill/products" name="searchForm" >
 		<input type="hidden" name="pageNo" value="1" >
 		<input type="hidden" name="pageSize" value="10" >
-		<table border="1" style="width:100%">
+		<table border="1" class="listTable">
 			<thead>
 				<tr>
 					<th>CODE</th>
