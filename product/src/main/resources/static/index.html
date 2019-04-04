@@ -6,9 +6,7 @@
   <script type="text/javascript" src="js/jquery.min.js" ></script>
   <script type="text/javascript" src="js/date_format.js" ></script>
   <script type="text/javascript" src="js/jq_page.js" ></script>
-  <style>
-  dl dt {float:left}
-  </style>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
   <script type="text/javascript">
   $(function (){
 
@@ -56,7 +54,7 @@
 </head>
 <body>
 	<header>
-		<h1 style="text-align:center">欢迎访问 orders商品管理系统</h1>
+		<h1 class="title">欢迎访问 orders商品管理系统</h1>
 	</header>
 	<br>
 	<section style="margin:10px auto;width:80%">
@@ -64,8 +62,8 @@
 		商品名称<input id="productName" type="text" value="" > 
 		<button id="searchBtn" >搜索</button>
 	</section>
-	<div id="content" style="margin:10px auto;width:80%">
-	 	<table id="listTable" style="width:100%">
+	<div id="content" class="content">
+	 	<table id="listTable" class="listTable">
 	 		<thead>
 	 			<tr>
 	 				<th>code</th>
