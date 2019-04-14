@@ -108,7 +108,7 @@ public class SecKillController {
 			}
 			SimpleProductQueryResultResp productResut = (SimpleProductQueryResultResp)respMsg;
 			ProductWithStorageQueryResult result = new ProductWithStorageQueryResult(productResut.getPageNo(),productResut.getPageSize(),productResut.getTotalCount());
-			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage((SimpleProduct)p)).collect(Collectors.toList());
+			List<ProductWithStorage> resultList = productResut.getResultList().stream().map((p)->makeProductWithStorage((SimpleProduct)p)).map((p)->makeMemo(p)).collect(Collectors.toList());
 			result.setResultList(resultList);
 			return new QueryResultResp<ProductWithStorage>(result);
 		}catch (Exception ex) {
@@ -116,6 +116,7 @@ public class SecKillController {
 			return new ErrMsg("99",ex.getMessage());
 		}
 	}
+	
 	
 	private ProductWithStorage makeProductWithStorage(SimpleProduct p) {
 		String productCode = p.getProductCode();
@@ -128,6 +129,22 @@ public class SecKillController {
 		logger.info("p.getInSeckill()="+p.getInSeckill());
 		//productWithStorage.setProductTypeNames(productTypeNames);TODO 暂不处理
 		return productWithStorage;
+	}
+	
+	private ProductWithStorage makeMemo(ProductWithStorage p) {
+		String key = "SecKill_P_"+p.getProductCode();
+		Jedis conn = RedisUtils.connect();
+		try {
+			 String memo = RedisUtils.get(conn, key);
+			 p.setMemo(memo);
+			 return p;
+		}catch(BusinessException ex){
+			throw ex;
+		}catch(Exception ex){
+			throw new RuntimeException(ex);
+		}finally {
+			conn.close();
+		}
 	}
 	/**
 	 * 下订单（利用redis缓存）

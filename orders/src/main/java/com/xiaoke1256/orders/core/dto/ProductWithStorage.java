@@ -27,6 +27,8 @@ public class ProductWithStorage {
 	private Timestamp insertTime;
 	
 	private Timestamp updateTime;
+	
+	private String memo;
 
 	public String getProductCode() {
 		return productCode;
@@ -122,6 +124,14 @@ public class ProductWithStorage {
 
 	public void setInSeckill(String inSeckill) {
 		this.inSeckill = inSeckill;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 	
 	

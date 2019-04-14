@@ -32,10 +32,10 @@
 				  if(result.code=="00"){
 					  if($btn.text()=="CLOSE"){
 						$btn.text("OPEN");
-						$btn.parent().prev().text("NO");
+						$btn.parent().prev().prev().text("NO");
 					  }else if($btn.text()=="OPEN"){
 						$btn.text("CLOSE");
-						$btn.parent().prev().text("YES");
+						$btn.parent().prev().prev().text("YES");
 					  }
 				  }else{
 					  alert("Something wrong happen:"+result.code+":"+result.msg);
@@ -89,6 +89,7 @@
 				  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
 				  innerHtml+='<td>'+p.stockNum+'</td>';
 				  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
+				  innerHtml+='<td>'+(p.memo==null?'':p.memo)+'</td>';
 				  innerHtml+='<td>';
 				  if(p.inSeckill=='1')
 					  innerHtml+='<a href="javascript:void(0);" class="openBtn" pcode="'+p.productCode+'">CLOSE</a>';
@@ -211,6 +212,7 @@
 					<th>PRICE</th>
 					<th>STOCK NUM</th>
 					<th>IN SECKILL</th>
+					<th>MEMO</th>
 					<th>OPER</th>
 				</tr>
 			</thead>
