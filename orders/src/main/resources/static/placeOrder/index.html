@@ -110,17 +110,19 @@
 	  var productCount = 1;
 	  //1从页面上选取2~3个商品。
 	  if(!productCode)
-	  	productCount = ramdomByPow({"1":6,"2":3,"3":2});
+	  	productCount = ramdomByPow({"1":6,"2":3,"3":1});
 	  var productMap = {};
 	  for(var i=0;i<productCount;i++){
 		if(!productCode){
 		  var index = Math.floor(Math.random()*$('#content table tbody tr').length)
 		  productCode =  $('#content table tbody tr').eq(index).children().first().text();
-		  //2每件商品订购1~5份。
-		  var productNum = ramdomByPow({"1":80,"2":10,"3":5,"4":3,"5":2});
-		  productMap[productCode]=productNum;
 		}
+		//2每件商品订购1~5份。
+		var productNum = ramdomByPow({"1":80,"2":10,"3":5,"4":3,"5":2});
+		productMap[productCode]=productNum;
 	    $("#console").append("productCode:"+productCode+"<br>");
+	    //productCode用完后置空
+	    productCode = null;
 	  }
 	  
 	  var carriageAmt = Math.ceil(Math.random()*10);
