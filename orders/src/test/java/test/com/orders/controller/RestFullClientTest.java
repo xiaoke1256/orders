@@ -57,7 +57,7 @@ public class RestFullClientTest {
 				request.setPayerNo(payerNo);
 				request.setCarriageAmt(carriageAmt);
 				request.setProductMap(productMap);
-				RespMsg respMsg = restTemplate.postForObject("http://localhost:8080/orders/orders/", request, RespMsg.class);
+				RespMsg respMsg = restTemplate.postForObject("http://localhost:8080/orders/orders/place", request, RespMsg.class);
 				//System.out.println("order no :"+response.getPayOrderNo());
 				if(respMsg instanceof ErrMsg) {
 					ErrMsg errMsg = (ErrMsg)respMsg;

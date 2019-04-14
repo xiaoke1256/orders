@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="../">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>orders welcome!</title>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
+  <script type="text/javascript">
+  var intervalCode = "";
+  var taskCount = 0;
+  var completedCount = 0;
+  var successCount = 0;
+  var costTime = 0;
+  var startTimeAll = 0;
+  var endTimeAll = 0;
+  $(function(){
+	
+	  //下单
+	  $("#doPalce").click(function(){
+		  startTimeAll = new Date().getTime();
+		  var curNum = $("[name=curNum]").val();
+		  taskCount = parseInt(curNum);
+		  times = 1000;
+		  intervalCode = setInterval(function(){submitSomeOrder(curNum/1000)},1);
+		  //submitOrder();
+	  });//
+	  
+	  //初始化列表
+	  refreshPage();
+	  
+	  $('#pageSize').change(refreshPage);
+	  
+  });
+  
+  //刷新列表内容
+  function refreshPage(){
+	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo || isNaN(pageNo) )
+		  pageNo=1;
+	  $('[name=pageNo]').val(pageNo);
+	  var pageSize = $('[name=pageSize]').val();
+
+	  var callee = arguments.callee;
+	  $.ajax({
+		  url:"products",
+		  type:"GET",
+		  data:{pageNo:pageNo,pageSize:pageSize},
+		  success:function(result){
+			  if(result.code!='00'){
+		    	  alert(result.code+":"+result.msg);
+		    	  return;
+		      }
+			  var $tbody = $('#content table tbody').empty();
+			  //列表
+			  for(var i in result.resultList){
+				  var p =result.resultList[i];
+				  var innerHtml = '<tr> ';
+				  innerHtml+='<td>'+p.productCode+'</td>';
+				  innerHtml+='<td>'+p.productName+'</td>';
+				  innerHtml+='<td>'+p.storeName+'</td>';
+				  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
+				  innerHtml+='<td>'+p.stockNum+'</td>';
+				  innerHtml+='<td>'+(p.memo==null?'':p.memo)+'</td>';
+				  innerHtml+='</tr>';
+				  $tbody.append(innerHtml);
+			  }
+			  //分页
+			  $('#pageTd').makePage(result,refreshPage);
+			  
+		  },
+		  error:function(resp,errMsg,err){
+			  alert("error:"+err);
+		  }
+      });
+  }
+  
+  var times = 1000;
+  function submitSomeOrder(num){
+	  for(var i = 0  ; i<num; i++){
+		  submitOrder();
+	  }
+	  times--;
+	  if(times==0)
+		  clearInterval(intervalCode);
+  }
+  
+  /**
+       按权重获取随机数
+       pow 是个Map，key 是返回值，value是该值的权重。
+  */
+  function ramdomByPow(pow){
+	  var sumP = 0;
+	  for(var i in pow){
+		  sumP += pow[i];
+	  }
+	  var seed = Math.floor(Math.random()*sumP)
+	  var sumSeed = 0;
+	  for(var s in pow){
+		  sumSeed+=pow[s]
+		  if(seed<=sumSeed)
+			  return s;
+	  }
+	  return null;
+  }
+  
+  function submitOrder(productCode){
+	  var productCount = 1;
+	  //1从页面上选取2~3个商品。
+	  if(!productCode)
+	  	productCount = ramdomByPow({"1":6,"2":3,"3":2});
+	  var productMap = {};
+	  for(var i=0;i<productCount;i++){
+		if(!productCode){
+		  var index = Math.floor(Math.random()*$('#content table tbody tr').length)
+		  productCode =  $('#content table tbody tr').eq(index).children().first().text();
+		  //2每件商品订购1~5份。
+		  var productNum = ramdomByPow({"1":80,"2":10,"3":5,"4":3,"5":2});
+		  productMap[productCode]=productNum;
+		}
+	    $("#console").append("productCode:"+productCode+"<br>");
+	  }
+	  
+	  var carriageAmt = Math.ceil(Math.random()*10);
+	  var payerNo = "PT"+Math.floor(Math.random()*10000);
+	  
+	  var data = {"payerNo":payerNo,"carriageAmt":carriageAmt,"productMap":productMap};
+
+	  var startTime=new Date().getTime();
+	  var endTime=new Date().getTime();
+	  $.ajax({  
+		    url:"orders/place",
+		    type:"post",  
+		    dataType:"json",  
+		    data:JSON.stringify(data),  
+		    contentType: "application/json; charset=utf-8",
+		    headers: {'Content-Type': 'application/json'},  
+		    success: function (ret) {    
+		        if (ret.payOrderNo) {      
+		        	 $("#console").append("<font color=\"green\">A order has created! OrderNo : "+ret.payOrderNo+"</font><br>")
+		        	 successCount++;
+		        } else {      
+		        	 $("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");    
+		        }
+		    },
+		    error:function(req,errMsg,errorThrown){
+		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
+		    },
+		    complete:function(){
+		    	endTime=new Date().getTime();
+		        costTime += (endTime-startTime);
+		        taskCount--;
+		        completedCount++;
+		        $("#console").append("taskCount:"+taskCount+"<br>"); 
+		    	if(taskCount==0){
+		        	endTimeAll = new Date().getTime();
+		        	var avgTime = Math.round(costTime/completedCount);
+		        	var epandTime = endTimeAll-startTimeAll;
+		        	var tps = completedCount/epandTime*1000
+		        	$("#console").append("<font color=\"blue\"> 统计:</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 总任务数:"+completedCount+"</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 成功数:"+successCount+"</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 总耗时:"+costTime+" ms</font><br>")
+		        	$("#console").append("<font color=\"blue\"> epandTime:"+epandTime+" ms</font><br>")
+		        	$("#console").append("<font color=\"blue\"> 平均耗时:"+avgTime+" ms</font><br>")
+		        	$("#console").append("<font color=\"blue\"> tps:"+tps+"</font><br>")
+		        	taskCount=0;
+		        	successCount=0
+		        	completedCount=0;
+		        }
+		    }
+		});
+
+	  $("#console").append("Submit a order!<br>")
+  }
+  
+  </script>
+  
+</head>
+<body>
+	<header>
+		<h1 class="title">下订单测试页面</h1>
+	</header>
+	<br>
+	<div id="content" class="content">
+		<form action="orders" name="searchForm" >
+		<input type="hidden" name="pageNo" value="1" >
+		每页
+		<select id="pageSize" name="pageSize" >
+			<option value="10" >10</option>
+			<option value="50" >50</option>
+			<option value="100" >100</option>
+			<option value="200" >200</option>
+		</select>
+		条数据
+		<table border="1" class="listTable">
+			<thead>
+				<tr>
+					<th>CODE</th>
+					<th>NAME</th>
+					<th>STORE NAME</th>
+					<th>PRICE</th>
+					<th>STOCK NUM</th>
+					<th>MEMO</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td id="pageTd" colspan="7"></td>
+				</tr>
+			</tfoot>
+			
+		</table>
+		</form>
+		
+		<br>
+		
+	
+		<span>并发量：</span>
+		<select name="curNum">
+			<option value="1000">1000</option>
+			<option value="2000">2000</option>
+			<option value="5000">5000</option>
+		</select>
+		&nbsp;&nbsp;
+		<span><a id="doPalce" href="javascript:void(0);" >下单</a></span>
+		
+		<div id="console" style="width:100%"></div>
+	</div>
+	
+</body>
+</html>

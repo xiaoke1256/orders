@@ -33,7 +33,7 @@ public class OrderController {
 	
 	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
 	public @ResponseBody com.xiaoke1256.orders.core.dto.PayOrder orderDetail(@PathVariable("orderNo") String orderNo){
-		System.out.println(orderNo);
+		//System.out.println(orderNo);
 		PayOrder order = orederService.getPayOrder(orderNo);
 		if(order==null)
 			return null;
@@ -42,7 +42,8 @@ public class OrderController {
 		
 	}
 	
-	@RequestMapping(value="/",method={RequestMethod.POST})
+	@RequestMapping(value="/place",method={RequestMethod.POST})
+	@ResponseBody
 	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request){
 		try {
 			PayOrder order = orederService.place(request.getPayerNo(), request.getProductMap());
