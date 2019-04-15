@@ -27,6 +27,7 @@ import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.OStorage;
@@ -217,7 +218,7 @@ public class SecKillController {
 			PropertyUtils.copyProperties(response, order);
 			return response ;
 		
-		}catch(BusinessException ex){
+		}catch(AppException ex){
 			logger.error(ex.getMessage(), ex);
 			ErrMsg error = new ErrMsg(ex);
 			return error;
