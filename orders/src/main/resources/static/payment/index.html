@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="../">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>orders welcome!</title>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
+  <script type="text/javascript">
+
+  $(function(){
+	  
+	  //初始化列表
+	  //refreshPage();
+	  
+  });
+  
+  //刷新列表内容
+  function refreshPage(){
+	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo || isNaN(pageNo) )
+		  pageNo=1;
+	  $('[name=pageNo]').val(pageNo);
+	  var pageSize = $('[name=pageSize]').val();
+
+	  var callee = arguments.callee;
+	  $.ajax({
+		  url:"orders/query",
+		  type:"GET",
+		  data:{pageNo:pageNo,pageSize:pageSize},
+		  success:function(result){
+			  if(result.code!='00'){
+		    	  alert(result.code+":"+result.msg);
+		    	  return;
+		      }
+			  var $tbody = $('#content table tbody').empty();
+			  //列表
+			  for(var i in result.resultList){
+				  var p =result.resultList[i];
+				  var innerHtml = '<tr> ';
+				  innerHtml+='<td>'+p.productCode+'</td>';
+				  innerHtml+='<td>'+p.productName+'</td>';
+				  innerHtml+='<td>'+p.storeName+'</td>';
+				  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
+				  innerHtml+='<td>'+p.stockNum+'</td>';
+				  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
+				  innerHtml+='<td>'+(p.memo==null?'':p.memo)+'</td>';
+				  innerHtml+='<td>';
+				  if(p.inSeckill=='1')
+					  innerHtml+='<a href="javascript:void(0);" class="openBtn" pcode="'+p.productCode+'">CLOSE</a>';
+				  else
+					  innerHtml+='<a href="javascript:void(0);" class="closeBtn" pcode="'+p.productCode+'">OPEN</a>';
+				  innerHtml+='</td>';
+				  innerHtml+='</tr>';
+				  $tbody.append(innerHtml);
+			  }
+			  //分页
+			  $('#pageTd').makePage(result,refreshPage);
+			  
+			  //下拉列表
+			  $('select[name=productCode]').empty();
+			  for(var i in result.resultList){
+				  var p =result.resultList[i];
+			  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
+			  }
+		  },
+		  error:function(resp,errMsg,err){
+			  alert("error:"+err);
+		  }
+      });
+  }
+  
+  </script>
+  
+</head>
+<body>
+	<header>
+		<h1 class="title">支付测试页面</h1>
+	</header>
+	<br>
+	<div id="content" class="content">
+		<form action="payOrders/query" name="searchForm" >
+		<input type="hidden" name="pageNo" value="1" >
+		<input type="hidden" name="pageSize" value="10" >
+		<table border="1" class="listTable">
+			<thead>
+				<tr>
+					<th>ORDER NO</th>
+					<th>PRODUCTS</th>
+					<th>TOTAL AMT</th>
+					<th>PAYER NO</th>
+					<th>MEMO</th>
+					<th>OPER</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td id="pageTd" colspan="7"></td>
+				</tr>
+			</tfoot>
+			
+		</table>
+		</form>
+		
+		<br>
+		<div id="console" style="width:100%"></div>
+	</div>
+	
+</body>
+</html>

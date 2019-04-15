@@ -27,12 +27,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.common.util.Base32;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.core.client.ProductQueryClient;
+import com.xiaoke1256.orders.core.dto.PayOrderCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
@@ -276,6 +278,10 @@ public class OrederService {
 		.append(StringUtils.leftPad(String.valueOf(millisecond), 3, '0'))
 		.append(Base32.encode(RandomUtils.nextInt(32)));
 		return orderNo.toString();
+	}
+	
+	public QueryResult<PayOrder> searchPayOrderByCondition(PayOrderCondition condition){
+		return null;
 	}
 	
 }
