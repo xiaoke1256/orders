@@ -13,7 +13,9 @@
   $(function(){
 	  
 	  //初始化列表
-	  //refreshPage();
+	  refreshPage();
+	  
+	  $('#searchBtn').click(refreshPage);
 	  
   });
   
@@ -27,9 +29,9 @@
 
 	  var callee = arguments.callee;
 	  $.ajax({
-		  url:"orders/query",
+		  url:"payOrders/search",
 		  type:"GET",
-		  data:{pageNo:pageNo,pageSize:pageSize},
+		  data:{pageNo:pageNo,pageSize:pageSize,payOrderNo:$('#payOrderNo').val(),payerNo:$('#payerNo').val()},
 		  success:function(result){
 			  if(result.code!='00'){
 		    	  alert(result.code+":"+result.msg);
@@ -38,20 +40,15 @@
 			  var $tbody = $('#content table tbody').empty();
 			  //列表
 			  for(var i in result.resultList){
-				  var p =result.resultList[i];
+				  var order =result.resultList[i];
 				  var innerHtml = '<tr> ';
-				  innerHtml+='<td>'+p.productCode+'</td>';
-				  innerHtml+='<td>'+p.productName+'</td>';
-				  innerHtml+='<td>'+p.storeName+'</td>';
-				  innerHtml+='<td>'+(p.productPrice/1000)+'</td>';
-				  innerHtml+='<td>'+p.stockNum+'</td>';
-				  innerHtml+='<td>'+(p.inSeckill=='1'?'YES':'NO')+'</td>';
-				  innerHtml+='<td>'+(p.memo==null?'':p.memo)+'</td>';
+				  innerHtml+='<td>'+order.payOrderNo+'</td>';
+				  innerHtml+='<td></td>';
+				  innerHtml+='<td>'+(order.totalAmt/1000)+'</td>';
+				  innerHtml+='<td>'+order.payerNo+'</td>';
+				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  if(p.inSeckill=='1')
-					  innerHtml+='<a href="javascript:void(0);" class="openBtn" pcode="'+p.productCode+'">CLOSE</a>';
-				  else
-					  innerHtml+='<a href="javascript:void(0);" class="closeBtn" pcode="'+p.productCode+'">OPEN</a>';
+				  innerHtml+='<a href="javascript:void(0);" class="payBtn" payNo="'+order.payOrderNo+'">PAY</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);
@@ -83,7 +80,16 @@
 	<div id="content" class="content">
 		<form action="payOrders/query" name="searchForm" >
 		<input type="hidden" name="pageNo" value="1" >
-		<input type="hidden" name="pageSize" value="10" >
+		订单号：<input type="text" name="payOrderNo" id="payOrderNo" >
+		会员号：<input type="text" name="payerNo" id="payerNo" >
+		每页
+		<select id="pageSize" name="pageSize" >
+			<option value="10" >10</option>
+			<option value="50" >50</option>
+			<option value="100" >100</option>
+			<option value="200" >200</option>
+		</select>
+		<button type="button" id="searchBtn" >查询</button>
 		<table border="1" class="listTable">
 			<thead>
 				<tr>

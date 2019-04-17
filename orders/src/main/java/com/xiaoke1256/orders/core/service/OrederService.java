@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -280,8 +281,46 @@ public class OrederService {
 		return orderNo.toString();
 	}
 	
+	/**
+	 * 
+	 * @param condition
+	 * @return
+	 */
 	public QueryResult<PayOrder> searchPayOrderByCondition(PayOrderCondition condition){
-		return null;
+		String countQl = "";
+		StringBuilder hqlSb =new StringBuilder(" from PayOrder o where 1=1 ");
+		Map<String,Object> paramMap = new HashMap<>();
+		if(!StringUtils.isEmpty(condition.getPayerNo())) {
+			hqlSb.append(" and payerNo like :payerNo");
+			paramMap.put("payerNo", condition.getPayerNo()+"%");
+		}
+		if(!StringUtils.isEmpty(condition.getPayOrderNo())) {
+			hqlSb.append(" and payOrderNo like :payOrderNo");
+			paramMap.put("payOrderNo", condition.getPayOrderNo()+"%");
+		}
+		countQl= "select count(o) "+hqlSb.toString();
+		hqlSb.append(" order by insertTime ");
+		
+		Query countQuery = entityManager.createQuery(countQl);
+		for(String key:paramMap.keySet()) {
+			countQuery.setParameter(key, paramMap.get(key));
+		}
+		int totalCount = ((Number)countQuery.getSingleResult()).intValue();
+
+		Query query = entityManager.createQuery(hqlSb.toString());
+		for(String key:paramMap.keySet()) {
+			query.setParameter(key, paramMap.get(key));
+		}
+		
+		QueryResult<PayOrder> page = new QueryResult<PayOrder>(condition.getPageNo(),condition.getPageSize(),totalCount);
+		
+		query.setFirstResult((condition.getPageNo()-1)*condition.getPageSize());
+		query.setMaxResults(condition.getPageSize());
+		@SuppressWarnings("unchecked")
+		List<PayOrder> results = query.getResultList();
+		page.setResultList(results);
+		
+		return page;
 	}
 	
 }

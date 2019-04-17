@@ -23,7 +23,7 @@ public class OStorageService {
 	
 	@Transactional(readOnly=true)
 	public OStorage getByProductCodeAndOptionCode(String productCode,String optionCode) {
-		String jql = "from OStorage where productCode=:productCode and optionCode:=optionCode";
+		String jql = "from OStorage where productCode=:productCode and optionCode=:optionCode";
 		OStorage result = (OStorage)entityManager.createQuery(jql)
 				.setParameter("productCode", productCode)
 				.setParameter("optionCode", optionCode).getSingleResult();

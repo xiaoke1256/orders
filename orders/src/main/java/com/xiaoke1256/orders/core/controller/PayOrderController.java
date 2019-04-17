@@ -46,6 +46,7 @@ public class PayOrderController {
 			orderVo.setInsertTime(order.getInsertTime());
 			orderVo.setTotalAmt(order.getTotalAmt());
 			orderVo.setUpdateTime(order.getUpdateTime());
+			orderVo.setPayOrderNo(order.getPayOrderNo());
 			if(order.getSubOrders()!=null){
 				Set<com.xiaoke1256.orders.core.dto.SubOrder> subOrderSet = new LinkedHashSet<com.xiaoke1256.orders.core.dto.SubOrder>();
 				for(SubOrder subOrder:order.getSubOrders()){
@@ -73,6 +74,8 @@ public class PayOrderController {
 	 * @param condition
 	 * @return
 	 */
+	@RequestMapping(value="/search",method={RequestMethod.GET})
+	@ResponseBody
 	public PayOrderQueryResultResp searchOrders(PayOrderCondition condition) {
 		QueryResult<PayOrder> queryResult = orederService.searchPayOrderByCondition(condition);
 		List<com.xiaoke1256.orders.core.dto.PayOrder> voList = new ArrayList<com.xiaoke1256.orders.core.dto.PayOrder>();

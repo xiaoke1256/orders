@@ -9,6 +9,8 @@ import com.xiaoke1256.orders.core.dto.SubOrder;
 public class PayOrder {
 
 	private Long payOrderId;
+	
+	private String payOrderNo;
 
 	private BigDecimal  carriageAmt;
 	
@@ -28,6 +30,14 @@ public class PayOrder {
 
 	public void setPayOrderId(Long payOrderId) {
 		this.payOrderId = payOrderId;
+	}
+
+	public String getPayOrderNo() {
+		return payOrderNo;
+	}
+
+	public void setPayOrderNo(String payOrderNo) {
+		this.payOrderNo = payOrderNo;
 	}
 
 	public BigDecimal getCarriageAmt() {
