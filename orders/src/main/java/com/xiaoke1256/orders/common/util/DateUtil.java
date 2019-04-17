@@ -3,6 +3,9 @@ package com.xiaoke1256.orders.common.util;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+
 public class DateUtil {
 	
 	public static int getYear(Date date) {
@@ -45,5 +48,17 @@ public class DateUtil {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal.get(Calendar.MILLISECOND);
+	}
+	
+	public static String format(Date date,String fmt) {
+		String result = null;
+		if (date == null) {
+			return result;
+		}
+		if (StringUtils.isEmpty(fmt)) {
+			fmt = "YYYY-MM-dd";
+		}
+		result = DateFormatUtils.format(date, fmt);
+		return result;
 	}
 }
