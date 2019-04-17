@@ -89,6 +89,7 @@ public class PayOrderController {
 	@RequestMapping(value="/search",method={RequestMethod.GET})
 	@ResponseBody
 	public PayOrderQueryResultResp searchOrders(PayOrderCondition condition) {
+		condition.setStatus(PayOrder.ORDER_STATUS_PAYING);//0是待支付
 		QueryResult<PayOrder> queryResult = orederService.searchPayOrderByCondition(condition);
 		List<com.xiaoke1256.orders.core.dto.PayOrder> voList = new ArrayList<com.xiaoke1256.orders.core.dto.PayOrder>();
 		for(PayOrder payOrder:queryResult.getResultList()) {

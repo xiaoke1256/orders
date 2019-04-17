@@ -12,6 +12,8 @@ public class PayOrderCondition extends BaseCondition {
 	private String payOrderNo;
 	
 	private String payerNo;
+	
+	private String status;
 
 	public String getPayOrderNo() {
 		return payOrderNo;
@@ -28,5 +30,14 @@ public class PayOrderCondition extends BaseCondition {
 	public void setPayerNo(String payerNo) {
 		this.payerNo = payerNo;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 }

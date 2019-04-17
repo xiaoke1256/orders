@@ -16,6 +16,21 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "SUB_ORDER")
 public class SubOrder {
+	/**订单状态：待支付*/
+	public static final String ORDER_STATUS_PAYING = "0";
+	/**订单状态：待卖家受理*/
+	public static final String ORDER_STATUS_AWAIT_ACCEPT = "1";
+	/**订单状态：待发货*/
+	public static final String ORDER_STATUS_AWAIT_SENT = "2";
+	/**订单状态：待清算*/
+	public static final String ORDER_STATUS_AWAIT_SETTLE = "3";
+	/**订单状态：待打款*/
+	public static final String ORDER_STATUS_AWAIT_MAKE_MONEY = "4";
+	/**订单状态：结束*/
+	public static final String ORDER_STATUS_FINISH = "9";
+	/**订单状态：取消*/
+	public static final String ORDER_STATUS_CANCEL = "8";
+	
 	@Id
 	@Column(name = "ORDER_NO", nullable = false)
 	private String orderNo;
@@ -28,6 +43,8 @@ public class SubOrder {
 	private BigDecimal  carriageAmt;
 	@Column(name = "STORE_NO", nullable = false)
 	private String storeNo;
+	@Column(name = "STATUS")
+	private String status="0";
 	
 	@OneToMany(mappedBy = "subOrder",cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Set<OrderItem> orderItems;
@@ -104,6 +121,12 @@ public class SubOrder {
 	}
 	public void setOrderItems(Set<OrderItem> orderItems) {
 		this.orderItems = orderItems;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

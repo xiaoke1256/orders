@@ -300,6 +300,10 @@ public class OrederService {
 			hqlSb.append(" and payOrderNo like :payOrderNo");
 			paramMap.put("payOrderNo", condition.getPayOrderNo()+"%");
 		}
+		if(!StringUtils.isEmpty(condition.getStatus())) {
+			hqlSb.append(" and status = :status");
+			paramMap.put("status", condition.getStatus());
+		}
 		countQl= "select count(o) "+hqlSb.toString();
 		hqlSb.append(" order by insertTime ");
 		

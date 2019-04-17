@@ -18,6 +18,12 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "PAY_ORDER")
 public class PayOrder {
+	
+	/**订单状态：待支付*/
+	public static final String ORDER_STATUS_PAYING = "0";
+	/**订单状态：已支付*/
+	public static final String ORDER_STATUS_PAYED = "1";
+	
 	@Id
 	@Column(name = "pay_order_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +43,8 @@ public class PayOrder {
 	private Timestamp insertTime;
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
+	@Column(name = "STATUS")
+	private String status="0";
 
 	
 	@Override
@@ -121,6 +129,12 @@ public class PayOrder {
 	}
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }
