@@ -43,7 +43,7 @@
 				  var order =result.resultList[i];
 				  var innerHtml = '<tr> ';
 				  innerHtml+='<td>'+order.payOrderNo+'</td>';
-				  innerHtml+='<td></td>';
+				  innerHtml+='<td>'+order.products.replace(",","<br>")+'</td>';
 				  innerHtml+='<td>'+(order.totalAmt/1000)+'</td>';
 				  innerHtml+='<td>'+order.payerNo+'</td>';
 				  innerHtml+='<td></td>';

@@ -23,6 +23,8 @@ public class PayOrder {
 	private Timestamp insertTime;
 
 	private Timestamp updateTime;
+	
+	private String products;
 
 	public Long getPayOrderId() {
 		return payOrderId;
@@ -86,6 +88,14 @@ public class PayOrder {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getProducts() {
+		return products;
+	}
+
+	public void setProducts(String products) {
+		this.products = products;
 	}
 	
 	

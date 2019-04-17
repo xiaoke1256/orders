@@ -148,9 +148,11 @@ public class OrederService {
 		for(SubOrder subOrder:subOrders) {
 			totalAmt = totalAmt.add(subOrder.getTotalAmt());
 		}
-		//生成订单号
 		for(SubOrder subOrder:subOrders) {
+			//生成订单号
 			subOrder.setOrderNo(genOrderNo(subOrder));
+			//维护父子关系
+			subOrder.setPayOrder(payOrder);
 		}
 		payOrder.setTotalAmt(totalAmt );
 		payOrder.setInsertTime(new Timestamp(System.currentTimeMillis()));
