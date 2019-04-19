@@ -21,7 +21,13 @@ public class ThirdPayOrder {
 	public static final String STATUS_SUCCESS = "90";
 	
 	/**状态：订单处理失败*/
-	public static final String STATUS_FAIL = "90";
+	public static final String STATUS_FAIL = "99";
+	
+	/**状态：订单处理超时失败*/
+	public static final String STATUS_EXPIRED = "98";
+	
+	/**状态：订单处理失败，需人工处理*/
+	public static final String STATUS_NEED_MANNUAL = "95";
 	
 	@Id
 	@Column(name = "ORDER_ID", nullable = false)

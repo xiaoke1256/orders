@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
@@ -23,6 +22,7 @@ import com.xiaoke1256.orders.thirdpayplatform.dto.PayResp;
 import com.xiaoke1256.orders.thirdpayplatform.service.ThirdPayService;
 
 @Controller
+@RequestMapping("/payment")
 public class PayController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MD5Util.class);
@@ -31,7 +31,7 @@ public class PayController {
 	private ThirdPayService thirdPayService;
 	
 	/**与第三方支付平台约定的秘钥*/
-	@Value("${third_pay.key}")
+	@Value("${third_pay_platform.key}")
 	private String key;
 	
 	/**
@@ -68,12 +68,12 @@ public class PayController {
 	 * @param isSuccess
 	 * @return
 	 */
-	@RequestMapping("/accept_note")
+	@RequestMapping("/ack")
 	public RespMsg acceptNote(String orderNo,String isSuccess) {
 		try {
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<10) {
-				throw new IOException("支付失败。");//模拟10%的失败概率。
+				throw new IOException("通知失败。");//模拟10%的失败概率。
 			}
 			
 			if("SUCCESS".equals(isSuccess)) {
@@ -88,7 +88,7 @@ public class PayController {
 			
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<10) {
-				throw new IOException("支付失败。");//模拟10%的失败概率。
+				throw new IOException("通知失败。");//模拟10%的失败概率。
 			}
 			return new RespMsg(ErrorCode.SUCCESS);
 		}catch (Exception e) {

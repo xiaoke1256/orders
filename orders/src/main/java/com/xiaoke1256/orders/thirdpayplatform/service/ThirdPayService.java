@@ -3,9 +3,11 @@ package com.xiaoke1256.orders.thirdpayplatform.service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -53,6 +55,7 @@ public class ThirdPayService {
 		ThirdPayOrder order = this.getByOrderNo(orderNo);
 		order.setOrderStatus(ThirdPayOrder.STATUS_SUCCESS);
 		order.setFinishTime(new Timestamp(System.currentTimeMillis()));
+		order.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(order);
 	}
 	
@@ -64,6 +67,7 @@ public class ThirdPayService {
 		ThirdPayOrder order = this.getByOrderNo(orderNo);
 		order.setOrderStatus(ThirdPayOrder.STATUS_FAIL);
 		order.setFinishTime(new Timestamp(System.currentTimeMillis()));
+		order.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(order);
 	}
 	
@@ -87,5 +91,29 @@ public class ThirdPayService {
 	public ThirdPayOrder getByOrderNo(String orderNo) {
 		String jql = "from ThirdPayOrder where orderNo = :orderNo";
 		return (ThirdPayOrder)entityManager.createQuery(jql).setParameter("orderNo", orderNo).getSingleResult();
+	}
+	
+	/**
+	 * 查出超时的订单
+	 * @return 订单号列表
+	 */
+	@Transactional(readOnly=true)
+	public List<String> queryExired(int limit) {
+		String jql = "select o.orderNo from ThirdPayOrder o where orderStatus=:orderStatus and insertTime order by orderId";
+		Query query = entityManager.createQuery(jql)
+			.setParameter("orderStatus", ThirdPayOrder.STATUS_ACCEPT);
+		if(limit>0) {
+			query.setMaxResults(limit);
+		}
+		@SuppressWarnings("unchecked")
+		List<String> result = query.getResultList();
+		return result;
+	}
+	
+	public void expired(String orderNo) {
+		//修改订单状态
+		//接入平台方提供的接口地址。通知其超时。
+		//若调用不成功则重复10次。
+		//再失败则标记为需人工处理，打印日志。
 	}
 }
