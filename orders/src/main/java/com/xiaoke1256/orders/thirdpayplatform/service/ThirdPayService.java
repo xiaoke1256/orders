@@ -22,18 +22,49 @@ public class ThirdPayService {
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
-	public ThirdPayOrder pay(String payerNo,String payeeNo,BigDecimal amt, String incident, String remark) {
+	/**
+	 * 支付
+	 * @param payerNo
+	 * @param payeeNo
+	 * @param amt
+	 * @param orderType
+	 * @param remark
+	 * @return
+	 */
+	public ThirdPayOrder pay(String payerNo,String payeeNo,BigDecimal amt,String orderType, String remark) {
 		ThirdPayOrder order = new ThirdPayOrder();
 		order.setOrderNo(genOrderNo());
 		order.setPayerNo(payerNo);
 		order.setPayeeNo(payeeNo);
+		order.setOrderType(orderType);
 		order.setAmt(amt);
-		order.setIncident(incident);
 		order.setRemark(remark);
 		order.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		order.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.persist(order);
 		return order;
+	}
+	
+	/**
+	 * 订单处理成功
+	 * @param orderNo
+	 */
+	public void success(String orderNo) {
+		ThirdPayOrder order = this.getByOrderNo(orderNo);
+		order.setOrderStatus(ThirdPayOrder.STATUS_SUCCESS);
+		order.setFinishTime(new Timestamp(System.currentTimeMillis()));
+		entityManager.merge(order);
+	}
+	
+	/**
+	 * 订单处理失败
+	 * @param orderNo
+	 */
+	public void fail(String orderNo) {
+		ThirdPayOrder order = this.getByOrderNo(orderNo);
+		order.setOrderStatus(ThirdPayOrder.STATUS_FAIL);
+		order.setFinishTime(new Timestamp(System.currentTimeMillis()));
+		entityManager.merge(order);
 	}
 	
 	/**
@@ -52,6 +83,7 @@ public class ThirdPayService {
 	 * @param orderNo
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public ThirdPayOrder getByOrderNo(String orderNo) {
 		String jql = "from ThirdPayOrder where orderNo = :orderNo";
 		return (ThirdPayOrder)entityManager.createQuery(jql).setParameter("orderNo", orderNo).getSingleResult();

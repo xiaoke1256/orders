@@ -4,11 +4,25 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table( name = "THIRD_PAY_ORDER")
 public class ThirdPayOrder {
+	
+	/**状态：刚刚接收到订单*/
+	public static final String STATUS_ACCEPT = "00";
+	
+	/**状态：订单处理成功*/
+	public static final String STATUS_SUCCESS = "90";
+	
+	/**状态：订单处理失败*/
+	public static final String STATUS_FAIL = "90";
+	
 	@Id
 	@Column(name = "ORDER_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +30,12 @@ public class ThirdPayOrder {
 	
 	@Column(name = "ORDER_NO")
 	private String orderNo;
+	
+	@Column(name = "ORDER_TYPE")
+	private String orderType;
+	
+	@Column(name = "ORDER_STATUS")
+	private String orderStatus="00";
 	
 	@Column(name = "payer_no")
 	private String payerNo;
@@ -37,6 +57,9 @@ public class ThirdPayOrder {
 	
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
+	
+	@Column(name = "FINISH_TIME")
+	private Timestamp finishTime;
 
 	public Long getOrderId() {
 		return orderId;
@@ -52,6 +75,22 @@ public class ThirdPayOrder {
 
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+	
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	public String getPayerNo() {
@@ -108,6 +147,14 @@ public class ThirdPayOrder {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public Timestamp getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(Timestamp finishTime) {
+		this.finishTime = finishTime;
 	}
 	
 	
