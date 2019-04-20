@@ -36,6 +36,9 @@ public class PaymentTxn {
 	@Column(name = "sub_order_no")
 	private String subOrderNo;
 	
+	@Column(name = "third_order_no")
+	private String thirdOrderNo;
+	
 	@Column(name = "incident")
 	private String incident;
 
@@ -105,6 +108,14 @@ public class PaymentTxn {
 
 	public void setSubOrderNo(String subOrderNo) {
 		this.subOrderNo = subOrderNo;
+	}
+
+	public String getThirdOrderNo() {
+		return thirdOrderNo;
+	}
+
+	public void setThirdOrderNo(String thirdOrderNo) {
+		this.thirdOrderNo = thirdOrderNo;
 	}
 
 	public String getIncident() {

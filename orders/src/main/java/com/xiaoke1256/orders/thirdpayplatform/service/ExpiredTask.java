@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +20,7 @@ public class ExpiredTask {
 	@Value("${third_pay_platform.expired.limit}")
 	private int limit;
 	
+	@Scheduled(cron="${third_pay_platform.expired.task.corn}")
 	public void makeOrdersExpired() {
 		//查出超时的订单。
 		List<String> orderNos = thirdPayService.queryExired(limit);

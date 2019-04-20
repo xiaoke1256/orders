@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.core.service;
 import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Service;
@@ -29,15 +30,20 @@ public class PaymentService {
 	/**
 	 * 处理支付
 	 * @param payOrderNo 支付单号
+	 * @param thirdOrderNo 第三方支付平台的订单号
+	 * @param payType 支付类型
 	 * @param verifyInfo 支付校验信息
 	 */
-	public void pay(String payOrderNo,String payType,String verifyInfo) {
+	public void pay(String payOrderNo,String thirdOrderNo,String payType) {
 		PayOrder payOrder = entityManager.find(PayOrder.class, payOrderNo);
+		
+		entityManager.refresh(payOrder, LockModeType.WRITE);
 		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {
 			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 		
-		//TODO 调用第三方支付接口校验支付情况
+		//TODO 查一下该订单号 ，是否已用过。
+		
 		
 		//记录支付流水
 		PaymentTxn paymentTxn = new PaymentTxn();
@@ -46,6 +52,7 @@ public class PaymentService {
 		paymentTxn.setPayerNo(payOrder.getPayerNo());
 		paymentTxn.setAmt(payOrder.getTotalAmt());
 		paymentTxn.setPayOrderNo(payOrder.getPayOrderNo());
+		paymentTxn.setThirdOrderNo(thirdOrderNo);
 		paymentTxn.setIncident("购买商品");
 		paymentTxn.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		paymentTxn.setUpdateTime(new Timestamp(System.currentTimeMillis()));

@@ -11,18 +11,31 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.util.DateUtil;
+import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.thirdpayplatform.bo.ThirdPayOrder;
 
 @Service
 @Transactional
 public class ThirdPayService {
 	
+	private static final Logger logger = LoggerFactory.getLogger(ThirdPayService.class);
+	
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
+	
+	@Value("${third_pay_platform.notice.uri}")
+	private String noticeUri;//反馈接口
+	
+	private RestTemplate restTemplate = new RestTemplate();
 	
 	/**
 	 * 支付
@@ -110,10 +123,30 @@ public class ThirdPayService {
 		return result;
 	}
 	
+	/**
+	 * 处理超时
+	 * @param orderNo
+	 */
 	public void expired(String orderNo) {
 		//修改订单状态
+		ThirdPayOrder order = getByOrderNo(orderNo);
+		order.setOrderStatus(ThirdPayOrder.STATUS_EXPIRED);
+		order.setFinishTime(new Timestamp(System.currentTimeMillis()));
+		entityManager.merge(order);
 		//接入平台方提供的接口地址。通知其超时。
 		//若调用不成功则重复10次。
+		PaymentCancelRequest request = new PaymentCancelRequest(order.getOrderNo(),order.getRemark(),PaymentCancelRequest.CANCEL_TYPE_EXPIRED);
+		for(int i = 0;i<10;i++) {
+			RespMsg resp = restTemplate.postForObject(noticeUri, request, RespMsg.class);
+			if(RespMsg.SUCCESS.getCode().equals(resp.getCode())) {
+				return;
+			}
+			logger.error("Remote notice the commercial tenant error . code : %s - msg: %s ",resp.getCode(),resp.getMsg());
+		}
+
 		//再失败则标记为需人工处理，打印日志。
+		order.setOrderStatus(ThirdPayOrder.STATUS_NEED_MANNUAL);
+		entityManager.merge(order);
+		logger.error("Remote notice fail for 10 times.");
 	}
 }
