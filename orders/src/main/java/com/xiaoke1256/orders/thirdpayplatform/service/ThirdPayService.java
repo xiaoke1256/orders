@@ -46,13 +46,14 @@ public class ThirdPayService {
 	 * @param remark
 	 * @return
 	 */
-	public ThirdPayOrder pay(String payerNo,String payeeNo,BigDecimal amt,String orderType, String remark) {
+	public ThirdPayOrder pay(String payerNo,String payeeNo,BigDecimal amt,String orderType,String palteform, String remark) {
 		ThirdPayOrder order = new ThirdPayOrder();
 		order.setOrderNo(genOrderNo());
 		order.setPayerNo(payerNo);
 		order.setPayeeNo(payeeNo);
 		order.setOrderType(orderType);
 		order.setAmt(amt);
+		order.setPalteform(palteform);
 		order.setRemark(remark);
 		order.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		order.setUpdateTime(new Timestamp(System.currentTimeMillis()));

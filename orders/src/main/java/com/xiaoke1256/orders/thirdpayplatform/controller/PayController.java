@@ -50,18 +50,19 @@ public class PayController {
 	public RespMsg pay(PayRequest payRequest) {
 		try {
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
-			if(RandomUtils.nextInt(100)<10) {
-				throw new IOException("支付失败。");//模拟10%的失败概率。
+			if(RandomUtils.nextInt(100)<5) {
+				throw new IOException("支付失败。");//模拟5%的失败概率。
 			}
 			String payerNo = payRequest.getPayerNo();
 			String payeeNo = payRequest.getPayeeNo();
 			String orderType = payRequest.getOrderType();
 			BigDecimal amt = payRequest.getAmt();
 			String remark = payRequest.getRemark();
-			ThirdPayOrder order = thirdPayService.pay(payerNo, payeeNo, amt, orderType, remark);
+			String palteform = payRequest.getPalteform();
+			ThirdPayOrder order = thirdPayService.pay(payerNo, payeeNo, amt, orderType,palteform, remark);
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
-			if(RandomUtils.nextInt(100)<10) {
-				throw new IOException("支付失败。");//模拟10%的失败概率。
+			if(RandomUtils.nextInt(100)<5) {
+				throw new IOException("支付失败。");//模拟5%的失败概率。
 			}
 			String verifyCode = makeVerifyCode(order.getOrderNo(),remark);
 			return new PayResp(ErrorCode.SUCCESS,order.getOrderNo(),verifyCode);
@@ -79,6 +80,8 @@ public class PayController {
 	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
 	public RespMsg queryOrder(@PathVariable("orderNo") String orderNo){
 		try {
+			//TODO 校验调用方的身份，权限。
+			//TODO 校验订单是否是是调用方建立的。
 			ThirdPayOrder order = thirdPayService.getByOrderNo(orderNo);
 			ThirdPayOrderDto orderDto = new ThirdPayOrderDto();
 			BeanUtils.copyProperties(orderDto, order);

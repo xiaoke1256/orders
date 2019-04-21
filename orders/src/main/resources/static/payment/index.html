@@ -45,7 +45,7 @@
 		  var amt = $(this).attr('amt');//金额,从页面上获取。
 		  var orderType = "01";//01表示消费
 		  var remark = payOrderNo;//把支付单号作为备注
-		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,remark:remark}
+		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark}
 		  $.ajax({
 			  url:url,
 			  type:"POST",

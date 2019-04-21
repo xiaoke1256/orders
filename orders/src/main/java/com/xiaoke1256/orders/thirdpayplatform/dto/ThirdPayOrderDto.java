@@ -20,6 +20,7 @@ public class ThirdPayOrderDto implements java.io.Serializable {
 	private String payerNo;
 	private String payeeNo;
 	private BigDecimal amt;
+	private String palteform;
 	private String incident;
 	private String remark;
 	private Timestamp insertTime;
@@ -52,6 +53,12 @@ public class ThirdPayOrderDto implements java.io.Serializable {
 	}
 	public void setAmt(BigDecimal amt) {
 		this.amt = amt;
+	}
+	public String getPalteform() {
+		return palteform;
+	}
+	public void setPalteform(String palteform) {
+		this.palteform = palteform;
 	}
 	public String getIncident() {
 		return incident;

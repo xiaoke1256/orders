@@ -52,6 +52,9 @@ public class ThirdPayOrder {
 	@Column(name = "amt")
 	private BigDecimal amt;
 
+	@Column(name = "palteform")
+	private String palteform;
+	
 	@Column(name = "incident")
 	private String incident;
 
@@ -121,6 +124,14 @@ public class ThirdPayOrder {
 
 	public void setAmt(BigDecimal amt) {
 		this.amt = amt;
+	}
+
+	public String getPalteform() {
+		return palteform;
+	}
+
+	public void setPalteform(String palteform) {
+		this.palteform = palteform;
 	}
 
 	public String getIncident() {

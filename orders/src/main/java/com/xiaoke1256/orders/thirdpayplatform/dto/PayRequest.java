@@ -13,6 +13,7 @@ public class PayRequest implements java.io.Serializable {
 	private String payeeNo;
 	private BigDecimal amt;
 	private String orderType; 
+	private String palteform;
 	private String remark;
 	public String getPayerNo() {
 		return payerNo;
@@ -37,6 +38,12 @@ public class PayRequest implements java.io.Serializable {
 	}
 	public void setOrderType(String orderType) {
 		this.orderType = orderType;
+	}
+	public String getPalteform() {
+		return palteform;
+	}
+	public void setPalteform(String palteform) {
+		this.palteform = palteform;
 	}
 	public String getRemark() {
 		return remark;
