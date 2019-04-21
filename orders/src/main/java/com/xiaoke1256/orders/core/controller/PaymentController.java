@@ -12,14 +12,18 @@ import org.springframework.web.client.RestClientException;
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
+import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.core.dto.PaymentNoticeRequest;
+import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.PaymentService;
+import com.xiaoke1256.orders.thirdpayplatform.dto.ThirdPayOrderDto;
 
 @RestController
 @RequestMapping("/payment")
@@ -31,9 +35,16 @@ public class PaymentController {
 	@Autowired
 	private ThirdPaymentClient thirdPaymentClient;
 	
+	@Autowired
+	private OrederService orederService;
+	
 	/**与第三方支付平台约定的秘钥*/
 	@Value("${third_pay_platform.key}")
 	private String key;
+	
+	/**平台方的支付账号*/
+	@Value("${platform.payment.thirdpay.account}")
+	private String pateformPayAccount ;
 	
 	/**
 	 * 处理第三方支付后的反馈
@@ -50,6 +61,9 @@ public class PaymentController {
 				//TODO 疑似黑客攻击，记录日志。
 				return new ErrMsg(ErrorCode.BUSSNESS_ERROR.getCode(),"订单校验失败，未完成支付。");
 			}
+			//检查交易记录,
+			ThirdPayOrderDto order = thirdPaymentClient.getOrder(orderNo);
+			verifyOrder(order,payOrderNo);
 			
 			paymentService.pay(payOrderNo, orderNo, payType);
 			
@@ -96,6 +110,7 @@ public class PaymentController {
 		if(PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK.equals(cancelType)) {
 			reason="远程调用异常。";
 		}
+		//查到原交易记录
 		PaymentTxn orgTxn = null;
 		if(StringUtils.isNotEmpty(thirdOrderNo)) {
 			orgTxn = paymentService.getPaymentByThirdOrderNo(thirdOrderNo);
@@ -107,7 +122,7 @@ public class PaymentController {
 			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
 		}
 		
-		//查到原交易记录
+		//冲正
 		paymentService.reverse(orgTxn, reason);
 		return RespMsg.SUCCESS;
 	}
@@ -123,6 +138,27 @@ public class PaymentController {
 			return decode.endsWith(md5);
 		}catch (Exception ex) {
 			throw new RuntimeException(ex);
+		}
+	}
+	
+	/**
+	 * 校验订单
+	 * @param order
+	 * @param payOrderNo
+	 */
+	private void verifyOrder(ThirdPayOrderDto order,String payOrderNo) {
+		//收款人必须是平台方
+		//平台方账号，
+		if(!pateformPayAccount.equals(order.getPayeeNo())) {
+			//TODO 疑似黑客攻击，记录日志。
+			throw new BusinessException("订单校验失败，未完成支付。");
+		}
+		
+		//金额必须与预期一致
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
+		if(!order.getAmt().equals(payOrder.getTotalAmt())) {
+			//TODO 疑似黑客攻击，记录日志。
+			throw new BusinessException("订单校验失败，未完成支付。");
 		}
 	}
 }

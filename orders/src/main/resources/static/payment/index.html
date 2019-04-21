@@ -17,6 +17,15 @@
 	  
 	  $('#searchBtn').click(refreshPage);
 	  
+	  $('#content').on('a.payBtn','click',function(){
+		  if(!window.comfirm("是否确定要支付？"))
+			  return false;
+		  var orderNo = $(this).attr('orderNo');
+		  //调用第三方支付接口
+		  var url= "thirdpay/"
+		  orderNo
+	  })
+	  
   });
   
   //刷新列表内容
@@ -48,7 +57,7 @@
 				  innerHtml+='<td>'+order.payerNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" payNo="'+order.payOrderNo+'">PAY</a>';
+				  innerHtml+='<a href="javascript:void(0);" class="payBtn" orderNo="'+order.payOrderNo+'">PAY</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);
