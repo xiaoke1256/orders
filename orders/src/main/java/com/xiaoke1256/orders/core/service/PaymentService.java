@@ -6,9 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.PayOrder;
@@ -26,6 +28,20 @@ public class PaymentService {
 	
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
+	
+	@Transactional(readOnly=true)
+	public PaymentTxn getPaymentByPayOrderNo(String payOrderNo) {
+		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
+		PaymentTxn txn = (PaymentTxn)entityManager.createQuery(ql).setParameter("payOrderNo", payOrderNo).getSingleResult();
+		return txn;
+	}
+	
+	@Transactional(readOnly=true)
+	public PaymentTxn getPaymentByThirdOrderNo(String thirdOrderNo) {
+		String ql = "from PaymentTxn where thirdOrderNo = :thirdOrderNo";
+		PaymentTxn txn = (PaymentTxn)entityManager.createQuery(ql).setParameter("thirdOrderNo", thirdOrderNo).getSingleResult();
+		return txn;
+	}
 	
 	/**
 	 * 处理支付
@@ -66,5 +82,34 @@ public class PaymentService {
 			entityManager.merge(subOrder);
 		}
 		//TODO 推送mq，通知其他系统。
+	}
+	
+	/**
+	 * 冲正
+	 * @param orgTxn
+	 * @param reason
+	 */
+	public void reverse(PaymentTxn orgTxn,String reason) {
+		try {
+			entityManager.refresh(orgTxn, LockModeType.WRITE);
+			if(!"0".equals(orgTxn.getReverseFlg())) {
+				throw new AppException(ErrorCode.CONCURRENCY_ERROR);
+			}
+			orgTxn.setReverseFlg("1");
+			entityManager.merge(orgTxn);
+			
+			//冲正记录
+			PaymentTxn paymentTxn = new PaymentTxn();
+			BeanUtils.copyProperties(paymentTxn, orgTxn);
+			paymentTxn.setAmt(orgTxn.getAmt().negate());
+			paymentTxn.setIncident("冲正记录:"+orgTxn.getIncident());
+			paymentTxn.setRemark(reason);
+			paymentTxn.setInsertTime(new Timestamp(System.currentTimeMillis()));
+			paymentTxn.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+			paymentTxn.setDealStatus(PaymentTxn.DEAL_STATUS_INIT);
+			entityManager.persist(paymentTxn);
+		}catch(Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 }

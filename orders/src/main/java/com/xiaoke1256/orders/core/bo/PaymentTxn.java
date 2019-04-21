@@ -13,6 +13,15 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "PAYMENT_TXN")
 public class PaymentTxn {
+	/**
+	 * 处理状态：待处理
+	 */
+	public static final String DEAL_STATUS_INIT = "0";
+	
+	/**
+	 * 处理状态：已记录分户账
+	 */
+	public static final String DEAL_STATUS_HOUSEHOLD = "1";
 	@Id
 	@Column(name = "PAYMENT_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +47,9 @@ public class PaymentTxn {
 	
 	@Column(name = "third_order_no")
 	private String thirdOrderNo;
+	
+	@Column(name = "REVERSE_FLG")
+	private String reverseFlg;
 	
 	@Column(name = "incident")
 	private String incident;
@@ -156,6 +168,15 @@ public class PaymentTxn {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+	
+
+	public String getReverseFlg() {
+		return reverseFlg;
+	}
+
+	public void setReverseFlg(String reverseFlg) {
+		this.reverseFlg = reverseFlg;
 	}
 
 	@Override

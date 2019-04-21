@@ -80,6 +80,9 @@ public class ErrorCode implements Serializable {
 	/**错误代码:错误的输入参数 */
 	public static final ErrorCode WRONG_PARAMTER_ERROR = new ErrorCode("22","Can not find any data by the paramter!");
 	
+	/**错误代码:并发异常 */
+	public static final ErrorCode CONCURRENCY_ERROR = new ErrorCode("23","Concurrency error!");
+	
 	/**错误代码:格式错误 */
 	public static final ErrorCode FORMAT_ERROR = new ErrorCode("31","Format error!");
 	

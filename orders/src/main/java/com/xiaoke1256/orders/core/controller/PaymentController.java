@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.core.controller;
 
 import java.rmi.RemoteException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,9 @@ import org.springframework.web.client.RestClientException;
 
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.common.exception.ErrorCode;
+import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.core.dto.PaymentNoticeRequest;
@@ -71,6 +75,29 @@ public class PaymentController {
 	 */
 	@RequestMapping("/cancel")
 	public RespMsg cancel(PaymentCancelRequest request) {
+		String cancelType = request.getCancelType();
+		String payOrderNo = request.getRemark();
+		String thirdOrderNo = request.getOrederNo();
+		String reason="";
+		if(PaymentCancelRequest.CANCEL_TYPE_EXPIRED.equals(cancelType)) {
+			reason="超时未反馈。";
+		}
+		if(PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK.equals(cancelType)) {
+			reason="远程调用异常。";
+		}
+		PaymentTxn orgTxn = null;
+		if(StringUtils.isNotEmpty(thirdOrderNo)) {
+			orgTxn = paymentService.getPaymentByThirdOrderNo(thirdOrderNo);
+		}
+		if(StringUtils.isNotEmpty(payOrderNo)) {
+			orgTxn = paymentService.getPaymentByPayOrderNo(payOrderNo);
+		}
+		if(orgTxn==null) {
+			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+		}
+		
+		//查到原交易记录
+		paymentService.reverse(orgTxn, reason);
 		return RespMsg.SUCCESS;
 	}
 }
