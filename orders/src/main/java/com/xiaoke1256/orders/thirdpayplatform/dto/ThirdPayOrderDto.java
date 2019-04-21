@@ -4,6 +4,13 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class ThirdPayOrderDto implements java.io.Serializable {
+	
+	/** 订单类型：消费*/
+	public static final String ORDER_TYPE_CONSUME = "01";
+	/** 订单类型：退货*/
+	public static final String ORDER_TYPE_RETURN = "02";
+	/** 订单类型：与平台方结算*/
+	public static final String ORDER_TYPE_SETTLE = "03";
 	/**
 	 * 
 	 */

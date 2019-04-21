@@ -3,7 +3,7 @@ create table PAYMENT_TXN
   PAYMENT_ID BIGINT primary key not null auto_increment comment '支付流水主键',
   payer_no VARCHAR(18) not null comment '付款方会员号(18个‘0’表示平台方)',
   payee_no VARCHAR(18) not null comment '收款方会员号(18个‘0’表示平台方)',
-  pay_type char(3) not null comment '支付方式(淘宝，支付宝等)',
+  pay_type char(3) not null comment '支付方式(001:支付宝等,002:微信,003:3rdPay)',
   amt    DECIMAL(22) not null comment '支付额',
   pay_order_no VARCHAR(18) comment '支付单号',
   sub_order_no VARCHAR(20) comment '订单号',

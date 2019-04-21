@@ -11,6 +11,21 @@
   <script type="text/javascript">
 
   $(function(){
+	  var payeeNo = null;
+	  //查询配置。
+	  $.ajax({
+		 url:'payment/config' ,
+		 type:"GET",
+		 async:false,
+		 contentType: "application/json; charset=utf-8",
+		 headers: {'Content-Type': 'application/json'},
+		 success: function(ret){ 
+			if(ret.code!='00'){
+				alert("本页面无法支付:"+ret.code+":"+ret.msg);
+			}
+			payeeNo = ret.pateformPayAccount
+	     }
+	  });
 	  
 	  //初始化列表
 	  refreshPage();
@@ -20,13 +35,61 @@
 	  $('#content').on('a.payBtn','click',function(){
 		  if(!window.comfirm("是否确定要支付？"))
 			  return false;
-		  var orderNo = $(this).attr('orderNo');
+		  var payOrderNo = $(this).attr('payOrderNo');
 		  //调用第三方支付接口
-		  var url= "thirdpay/"
-		  orderNo
+		  var url= "thirdpay/pay"
+		  var payerNo = "3RDPAY"+Math.floor(Math.random()*1000000000000);//支付方账号，随机生成一个
+		  //var payeeNo = "";//收款方账号，获取系统配置的账号。
+		  if(!payeeNo)
+			  alert("初始化失败，无法支付。");
+		  var amt = $(this).attr('amt');//金额,从页面上获取。
+		  var orderType = "01";//01表示消费
+		  var remark = payOrderNo;//把支付单号作为备注
+		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,remark:remark}
+		  $.ajax({
+			  url:url,
+			  type:"POST",
+			  data:JSON.stringify(data),  
+			  contentType: "application/json; charset=utf-8",
+			  headers: {'Content-Type': 'application/json'},  
+			  success: function (ret) {    
+		        //第三方支付平台调用OK
+		        if("00"!=ret.code){
+		        	alert(ret.code+":"+ret.msg);
+		        	return;
+		        }
+		        
+		        //再调用本平台。
+		        var payType = "003";//支付方式写死成3rdpay
+		        notice(ret.verifyCode,ret.orderNo,payOrderNo,payType);
+		      },
+		      error:function(req,errMsg,errorThrown){
+		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
+		      },
 	  })
 	  
   });
+	  
+  function notice(verifyCode,orderNo,payOrderNo:payOrderNo,payType){
+	  var data = {verifyCode:verifyCode,orderNo:orderNo,payOrderNo:payOrderNo,payType:payType}
+	  var url = "payment/notice"
+	  $.ajax({
+		  url:url,
+		  type:"POST",
+		  data:JSON.stringify(data),  
+		  contentType: "application/json; charset=utf-8",
+		  headers: {'Content-Type': 'application/json'}, 
+		  success: function (ret) {   
+		  	if("00"==ret.code){
+		  		$("#console").append("<font color=\"green\">支付成功，支付号："+orderNo+"</font><br>"); 
+		  	}else{
+		  		$("#console").append("<font color=\"red\">支付异常："+ret.code+":"+ret.msg+"</font><br>");
+		  	}
+		  },
+		  error:function(req,errMsg,errorThrown){
+		    $("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
+	      },
+  }
   
   //刷新列表内容
   function refreshPage(){
@@ -57,7 +120,7 @@
 				  innerHtml+='<td>'+order.payerNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" orderNo="'+order.payOrderNo+'">PAY</a>';
+				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+order.totalAmt+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
@@ -19,6 +20,7 @@ import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
+import com.xiaoke1256.orders.core.dto.PayConfig;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.core.dto.PaymentNoticeRequest;
 import com.xiaoke1256.orders.core.service.OrederService;
@@ -46,10 +48,15 @@ public class PaymentController {
 	@Value("${platform.payment.thirdpay.account}")
 	private String pateformPayAccount ;
 	
+	@RequestMapping(value="/config",method= {RequestMethod.GET})
+	private PayConfig getPayConfig() {
+		return new PayConfig(pateformPayAccount);
+	}
+	
 	/**
 	 * 处理第三方支付后的反馈
 	 */
-	@RequestMapping("/notice")
+	@RequestMapping(value="/notice",method= {RequestMethod.POST})
 	public RespMsg payNotice(PaymentNoticeRequest request) {
 		String orderNo = request.getOrderNo();
 		String payOrderNo = request.getPayOrderNo();
@@ -98,7 +105,7 @@ public class PaymentController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/cancel")
+	@RequestMapping(value="/cancel",method= {RequestMethod.POST})
 	public RespMsg cancel(PaymentCancelRequest request) {
 		String cancelType = request.getCancelType();
 		String payOrderNo = request.getRemark();
@@ -153,7 +160,11 @@ public class PaymentController {
 			//TODO 疑似黑客攻击，记录日志。
 			throw new BusinessException("订单校验失败，未完成支付。");
 		}
-		
+		//订单类型必须是消费
+		if(!ThirdPayOrderDto.ORDER_TYPE_CONSUME.equals(order.getOrderType())) {
+			//TODO 疑似黑客攻击，记录日志。
+			throw new BusinessException("订单校验失败，未完成支付。");
+		}
 		//金额必须与预期一致
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		if(!order.getAmt().equals(payOrder.getTotalAmt())) {
