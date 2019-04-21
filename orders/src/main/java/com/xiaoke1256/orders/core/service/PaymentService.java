@@ -58,7 +58,12 @@ public class PaymentService {
 			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 		
-		//TODO 查一下该订单号 ，是否已用过。
+		//查一下该订单号 ，是否已用过。
+		PaymentTxn payment = this.getPaymentByThirdOrderNo(thirdOrderNo);
+		if(payment!=null) {
+			//TODO 有可能是黑客攻击事件，需要记录安全日志。
+			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The third order no has usered","重复使用已支付过的订单。");
+		}
 		
 		
 		//记录支付流水

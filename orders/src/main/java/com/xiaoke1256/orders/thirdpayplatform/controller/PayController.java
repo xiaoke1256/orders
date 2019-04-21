@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.thirdpayplatform.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Random;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -134,6 +135,7 @@ public class PayController {
 	 * @throws Exception 
 	 */
 	private String makeVerifyCode(String orderNo ,String remark) throws Exception {
-		return ThreeDESUtil.encryptThreeDESECB(MD5Util.getMD5(orderNo+"-"+remark), key) ;
+		String randomNum = Integer.toHexString(new Random().nextInt());//随机值，用于混淆加密过程。
+		return ThreeDESUtil.encryptThreeDESECB(randomNum+MD5Util.getMD5(orderNo+"-"+remark), key) ;
 	}
 }

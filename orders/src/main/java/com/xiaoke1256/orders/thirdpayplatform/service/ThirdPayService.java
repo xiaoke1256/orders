@@ -137,7 +137,7 @@ public class ThirdPayService {
 		//若调用不成功则重复10次。
 		PaymentCancelRequest request = new PaymentCancelRequest(order.getOrderNo(),order.getRemark(),PaymentCancelRequest.CANCEL_TYPE_EXPIRED);
 		for(int i = 0;i<10;i++) {
-			RespMsg resp = restTemplate.postForObject(noticeUri, request, RespMsg.class);//TODO 此处有个风险，万一调用时间过长，有锁表风险。
+			RespMsg resp = restTemplate.postForObject(noticeUri, request, RespMsg.class);//TODO 此处有个风险，万一调用时间过长，有长时间锁表风险。
 			if(RespMsg.SUCCESS.getCode().equals(resp.getCode())) {
 				return;
 			}

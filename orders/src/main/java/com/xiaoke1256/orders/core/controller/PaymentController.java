@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
@@ -12,6 +13,8 @@ import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
+import com.xiaoke1256.orders.common.security.MD5Util;
+import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
@@ -27,6 +30,11 @@ public class PaymentController {
 	
 	@Autowired
 	private ThirdPaymentClient thirdPaymentClient;
+	
+	/**与第三方支付平台约定的秘钥*/
+	@Value("${third_pay_platform.key}")
+	private String key;
+	
 	/**
 	 * 处理第三方支付后的反馈
 	 */
@@ -37,8 +45,11 @@ public class PaymentController {
 		String payType = request.getPayType();
 		String verifyInfo = request.getVerifyCode();
 		try {
-			//TODO 解密校验信息。自己校验一下各项信息是否正确
-			//TODO 调用第三方支付接口校验支付情况
+			//解密校验信息。自己校验一下各项信息是否正确
+			if(!verify(orderNo,payOrderNo,verifyInfo)) {
+				//TODO 疑似黑客攻击，记录日志。
+				return new ErrMsg(ErrorCode.BUSSNESS_ERROR.getCode(),"订单校验失败，未完成支付。");
+			}
 			
 			paymentService.pay(payOrderNo, orderNo, payType);
 			
@@ -99,5 +110,19 @@ public class PaymentController {
 		//查到原交易记录
 		paymentService.reverse(orgTxn, reason);
 		return RespMsg.SUCCESS;
+	}
+	
+	/**
+	 * 校验
+	 * @return
+	 */
+	private boolean verify(String orderNo,String payOrderNo,String verifyInfo) {
+		try {
+			String md5 = MD5Util.getMD5(orderNo+"-"+payOrderNo);
+			String decode = ThreeDESUtil.decryptThreeDESECB(verifyInfo, key);
+			return decode.endsWith(md5);
+		}catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 }
