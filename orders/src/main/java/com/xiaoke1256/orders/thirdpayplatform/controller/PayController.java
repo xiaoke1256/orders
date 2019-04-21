@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,6 +21,7 @@ import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.orders.thirdpayplatform.bo.ThirdPayOrder;
+import com.xiaoke1256.orders.thirdpayplatform.dto.AckRequest;
 import com.xiaoke1256.orders.thirdpayplatform.dto.OrderResp;
 import com.xiaoke1256.orders.thirdpayplatform.dto.PayRequest;
 import com.xiaoke1256.orders.thirdpayplatform.dto.PayResp;
@@ -92,13 +94,15 @@ public class PayController {
 	 * @return
 	 */
 	@RequestMapping(value="/ack",method={RequestMethod.POST})
-	public RespMsg acceptNote(String orderNo,String isSuccess) {
+	public RespMsg acceptNote(@RequestBody AckRequest request) {
 		try {
+			String orderNo = request.getOrderNo();
+			String isSuccess = request.getIsSuccess();
 			//TODO 校验调用方的身份，权限。
 			//TODO 校验订单是否是是调用方建立的。
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
-			if(RandomUtils.nextInt(100)<10) {
-				throw new IOException("通知失败。");//模拟10%的失败概率。
+			if(RandomUtils.nextInt(100)<2) {
+				throw new IOException("通知失败。");//模拟2%的失败概率。
 			}
 			
 			if("SUCCESS".equals(isSuccess)) {
@@ -112,8 +116,8 @@ public class PayController {
 			}
 			
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
-			if(RandomUtils.nextInt(100)<10) {
-				throw new IOException("通知失败。");//模拟10%的失败概率。
+			if(RandomUtils.nextInt(100)<2) {
+				throw new IOException("通知失败。");//模拟2%的失败概率。
 			}
 			return new RespMsg(ErrorCode.SUCCESS);
 		}catch (Exception e) {

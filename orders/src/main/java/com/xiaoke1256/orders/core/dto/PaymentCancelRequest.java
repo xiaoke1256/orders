@@ -2,11 +2,16 @@ package com.xiaoke1256.orders.core.dto;
 
 public class PaymentCancelRequest {
 	/**
-	 * 通知类型：超时
+	 * 取消类型：超时
 	 */
 	public static String CANCEL_TYPE_EXPIRED = "1";
+	
 	/**
-	 * 通知类型：其他失败
+	 * 取消类型：远程调用异常
+	 */
+	public static String CANCEL_TYPE_REMOTE_INVOK = "2";
+	/**
+	 * 取消类型：其他失败
 	 */
 	public static String CANCEL_TYPE_OTHER_FAIL = "9";
 	
