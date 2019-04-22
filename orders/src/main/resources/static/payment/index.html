@@ -44,8 +44,10 @@
 		  var url= "thirdpay/pay"
 		  var payerNo = "3RDPAY"+Math.floor(Math.random()*1000000000000);//支付方账号，随机生成一个
 		  //var payeeNo = "";//收款方账号，获取系统配置的账号。
-		  if(!payeeNo)
+		  if(!payeeNo){
 			  alert("初始化失败，无法支付。");
+			  return;
+		  }
 		  var amt = $(this).attr('amt');//金额,从页面上获取。
 		  var orderType = "01";//01表示消费
 		  var remark = payOrderNo;//把支付单号作为备注
@@ -199,6 +201,7 @@
 			</tfoot>
 			
 		</table>
+		<button id="bathPayBtn" type="button">批量支付</button>
 		</form>
 		
 		<br>
