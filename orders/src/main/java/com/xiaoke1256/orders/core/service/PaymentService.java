@@ -1,12 +1,14 @@
 package com.xiaoke1256.orders.core.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,9 @@ public class PaymentService {
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
+	@Autowired
+	private OrederService orederService;
+	
 	@Transactional(readOnly=true)
 	public PaymentTxn getPaymentByPayOrderNo(String payOrderNo) {
 		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
@@ -39,8 +44,11 @@ public class PaymentService {
 	@Transactional(readOnly=true)
 	public PaymentTxn getPaymentByThirdOrderNo(String thirdOrderNo) {
 		String ql = "from PaymentTxn where thirdOrderNo = :thirdOrderNo";
-		PaymentTxn txn = (PaymentTxn)entityManager.createQuery(ql).setParameter("thirdOrderNo", thirdOrderNo).getSingleResult();
-		return txn;
+		@SuppressWarnings("unchecked")
+		List<PaymentTxn> list = entityManager.createQuery(ql).setParameter("thirdOrderNo", thirdOrderNo).getResultList();
+		if(list!=null && list.size()>0)
+			return list.get(0);
+		return null;
 	}
 	
 	/**
@@ -51,7 +59,7 @@ public class PaymentService {
 	 * @param verifyInfo 支付校验信息
 	 */
 	public void pay(String payOrderNo,String thirdOrderNo,String payType) {
-		PayOrder payOrder = entityManager.find(PayOrder.class, payOrderNo);
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		
 		entityManager.refresh(payOrder, LockModeType.WRITE);
 		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {

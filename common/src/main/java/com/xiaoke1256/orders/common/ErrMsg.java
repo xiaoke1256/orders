@@ -25,7 +25,7 @@ public class ErrMsg extends RespMsg{
 	public ErrMsg(Exception ex) {
 		super();
 		this.setCode(ErrorCode.OTHER_ERROR.getCode());
-		this.setMsg(ex.getMessage());
+		this.setMsg(ErrorCode.OTHER_ERROR.getMsg());
 	}
 	
 	public ErrMsg(AppException ex) {

@@ -21,7 +21,7 @@ public class ThirdPaymentClient {
 	private String ackUri;
 	
 	@Value("${payment.remote.get_order.uri}")
-	private String getUri;
+	private volatile String getUri;
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	
@@ -34,9 +34,11 @@ public class ThirdPaymentClient {
 	}
 	
 	public ThirdPayOrderDto getOrder(String orderNo) {
-		RespMsg resp = restTemplate.postForObject(getUri+orderNo, null, RespMsg.class);
+		if(!getUri.endsWith("/"))
+			getUri+="/";
+		OrderResp resp = restTemplate.getForObject(getUri+orderNo,OrderResp.class);
 		if(RespMsg.SUCCESS.getCode().equals(resp.getCode())) {
-			return ((OrderResp)resp).getOrder();
+			return resp.getOrder();
 		}else {
 			throw new AppException(resp.getCode(),resp.getMsg());
 		}

@@ -3,8 +3,11 @@ package com.xiaoke1256.orders.core.controller;
 import java.rmi.RemoteException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +33,7 @@ import com.xiaoke1256.orders.thirdpayplatform.dto.ThirdPayOrderDto;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
+	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 	
 	@Autowired
 	private PaymentService paymentService;
@@ -57,7 +61,7 @@ public class PaymentController {
 	 * 处理第三方支付后的反馈
 	 */
 	@RequestMapping(value="/notice",method= {RequestMethod.POST})
-	public RespMsg payNotice(PaymentNoticeRequest request) {
+	public RespMsg payNotice(@RequestBody PaymentNoticeRequest request) {
 		String orderNo = request.getOrderNo();
 		String payOrderNo = request.getPayOrderNo();
 		String payType = request.getPayType();
@@ -85,18 +89,21 @@ public class PaymentController {
 			}			
 			return RespMsg.SUCCESS;
 		}catch(RemoteException ex) {
+			logger.error(ex.getMessage(),ex);
 			//远程调用异常要将支付取消
 			PaymentCancelRequest canelRequest = new PaymentCancelRequest(orderNo, payOrderNo, PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK);
-			this.cancel(canelRequest );
+			try {
+				this.cancel(canelRequest );
+			} catch(Exception e) {
+				logger.error(e.getMessage(),e);
+			}
 			return new ErrMsg(ex);
 		}catch(Exception ex){
 			//失败也要通知第三方支付平台
+			logger.error(ex.getMessage(),ex);
 			thirdPaymentClient.acceptNote(orderNo, "FAIL");
 			return new ErrMsg(ex);
 		}
-		
-		
-		
 		
 	}
 	
@@ -106,7 +113,7 @@ public class PaymentController {
 	 * @return
 	 */
 	@RequestMapping(value="/cancel",method= {RequestMethod.POST})
-	public RespMsg cancel(PaymentCancelRequest request) {
+	public RespMsg cancel(@RequestBody PaymentCancelRequest request) {
 		String cancelType = request.getCancelType();
 		String payOrderNo = request.getRemark();
 		String thirdOrderNo = request.getOrederNo();

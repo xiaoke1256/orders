@@ -20,7 +20,6 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,9 +163,13 @@ public class OrederService {
 	
 	@Transactional(readOnly=true)
 	public PayOrder getPayOrder(String payOrderNo){
-		PayOrder order = entityManager.find(PayOrder.class, payOrderNo);
-		if(order!=null)
-			Hibernate.initialize(order.getSubOrders());
+		String hql = "from PayOrder where payOrderNo = :payOrderNo ";
+		Query query = entityManager.createQuery(hql).setParameter("payOrderNo", payOrderNo);
+		@SuppressWarnings("unchecked")
+		List<PayOrder> list = query.getResultList();
+		if(list==null||list.size()==0)
+			return null;
+		PayOrder order = list.get(0);
 		return order;
 	}
 	

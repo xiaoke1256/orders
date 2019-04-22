@@ -10,11 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
@@ -29,7 +30,7 @@ import com.xiaoke1256.orders.thirdpayplatform.dto.PayResp;
 import com.xiaoke1256.orders.thirdpayplatform.dto.ThirdPayOrderDto;
 import com.xiaoke1256.orders.thirdpayplatform.service.ThirdPayService;
 
-@Controller
+@RestController
 @RequestMapping("/thirdpay")
 public class PayController {
 	
@@ -47,7 +48,7 @@ public class PayController {
 	 * @return
 	 */
 	@RequestMapping(value="/pay",method={RequestMethod.POST})
-	public RespMsg pay(PayRequest payRequest) {
+	public RespMsg pay(@RequestBody PayRequest payRequest) {
 		try {
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<5) {
@@ -65,7 +66,7 @@ public class PayController {
 				throw new IOException("支付失败。");//模拟5%的失败概率。
 			}
 			String verifyCode = makeVerifyCode(order.getOrderNo(),remark);
-			return new PayResp(ErrorCode.SUCCESS,order.getOrderNo(),verifyCode);
+			return new PayResp(ErrorCode.SUCCESS,verifyCode,order.getOrderNo());
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new ErrMsg(e);
@@ -77,8 +78,8 @@ public class PayController {
 	 * @param orderNo
 	 * @return
 	 */
-	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
-	public RespMsg queryOrder(@PathVariable("orderNo") String orderNo){
+	@GetMapping("/orders/{orderNo}")
+	public OrderResp queryOrder(@PathVariable("orderNo") String orderNo){
 		try {
 			//TODO 校验调用方的身份，权限。
 			//TODO 校验订单是否是是调用方建立的。
@@ -88,7 +89,7 @@ public class PayController {
 			return new OrderResp(orderDto);
 		}catch(Exception ex) {
 			logger.error(ex.getMessage(),ex);
-			return new ErrMsg(ex);
+			return new OrderResp(ex);
 		}
 	}
 	

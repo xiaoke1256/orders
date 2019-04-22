@@ -61,4 +61,12 @@ public class DateUtil {
 		result = DateFormatUtils.format(date, fmt);
 		return result;
 	}
+	
+	public static Date addSeconds(Date date,int seconds) {
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(date);
+		calender.add(Calendar.SECOND, seconds);
+		return calender.getTime();
+	}
+	
 }

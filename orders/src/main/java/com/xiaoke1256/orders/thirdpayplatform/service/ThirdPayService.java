@@ -92,7 +92,7 @@ public class ThirdPayService {
 	 * @return
 	 */
 	private String genOrderNo() {
-		return DateUtil.format(new Date(), "YYYYMMddHHmmss")
+		return DateUtil.format(new Date(), "yyyyMMddHHmmss")
 				+StringUtils.leftPad(String.valueOf(RandomUtils.nextInt(1000000)),6);
 	}
 	
@@ -104,7 +104,11 @@ public class ThirdPayService {
 	@Transactional(readOnly=true)
 	public ThirdPayOrder getByOrderNo(String orderNo) {
 		String jql = "from ThirdPayOrder where orderNo = :orderNo";
-		return (ThirdPayOrder)entityManager.createQuery(jql).setParameter("orderNo", orderNo).getSingleResult();
+		@SuppressWarnings("unchecked")
+		List<ThirdPayOrder> list = entityManager.createQuery(jql).setParameter("orderNo", orderNo).getResultList();
+		if(list!=null&&list.size()>0)
+			return list.get(0);
+		return null;
 	}
 	
 	/**
@@ -113,9 +117,12 @@ public class ThirdPayService {
 	 */
 	@Transactional(readOnly=true)
 	public List<String> queryExired(int limit) {
-		String jql = "select o.orderNo from ThirdPayOrder o where orderStatus=:orderStatus and insertTime order by orderId";
+		Date now = new Date();
+		Date expiredTime = DateUtil.addSeconds(now, -5);//5秒内没有支付完毕，就是超时的
+		String jql = "select o.orderNo from ThirdPayOrder o where orderStatus=:orderStatus and insertTime>:expiredTime order by orderId";
 		Query query = entityManager.createQuery(jql)
-			.setParameter("orderStatus", ThirdPayOrder.STATUS_ACCEPT);
+			.setParameter("orderStatus", ThirdPayOrder.STATUS_ACCEPT)
+			.setParameter("expiredTime", expiredTime);
 		if(limit>0) {
 			query.setMaxResults(limit);
 		}

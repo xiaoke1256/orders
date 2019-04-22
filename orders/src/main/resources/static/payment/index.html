@@ -7,7 +7,7 @@
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/date_format.js" ></script>
   <script type="text/javascript" src="js/jq_page.js" ></script>
-  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
   <script type="text/javascript">
 
   $(function(){
@@ -32,8 +32,9 @@
 	  
 	  $('#searchBtn').click(refreshPage);
 	  
-	  $('#content').on('a.payBtn','click',function(){
-		  if(!window.comfirm("是否确定要支付？"))
+	  $('#content').on('click','a.payBtn',function(){
+		  
+		  if(!window.confirm("是否确定要支付？"))
 			  return false;
 		  var payOrderNo = $(this).attr('payOrderNo');
 		  //调用第三方支付接口
@@ -66,11 +67,14 @@
 		      error:function(req,errMsg,errorThrown){
 		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
 		      },
-	  })
+	     });
+		  
+	  });
 	  
   });
 	  
-  function notice(verifyCode,orderNo,payOrderNo:payOrderNo,payType){
+  function notice(verifyCode,orderNo,payOrderNo,payType){
+	  //alert("verifyCode:"+verifyCode+"  orderNo:"+orderNo+" payOrderNo:"+payOrderNo+" payType:"+payType);
 	  var data = {verifyCode:verifyCode,orderNo:orderNo,payOrderNo:payOrderNo,payType:payType}
 	  var url = "payment/notice"
 	  $.ajax({
@@ -88,7 +92,8 @@
 		  },
 		  error:function(req,errMsg,errorThrown){
 		    $("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
-	      },
+	      }
+	  });
   }
   
   //刷新列表内容
