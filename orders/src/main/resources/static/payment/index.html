@@ -9,6 +9,8 @@
   <script type="text/javascript" src="js/jq_page.js" ></script>
   <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
   <script type="text/javascript">
+  
+  var payingNum = 0;//正在处理的支付单数量。
 
   $(function(){
 	  var payeeNo = null;
@@ -36,6 +38,7 @@
 		  
 		  if(!window.confirm("是否确定要支付？"))
 			  return false;
+		  payingNum++;
 		  var payOrderNo = $(this).attr('payOrderNo');
 		  //调用第三方支付接口
 		  var url= "thirdpay/pay"
@@ -56,7 +59,7 @@
 			  success: function (ret) {    
 		        //第三方支付平台调用OK
 		        if("00"!=ret.code){
-		        	alert(ret.code+":"+ret.msg);
+		        	$("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");
 		        	return;
 		        }
 		        
@@ -67,6 +70,9 @@
 		      error:function(req,errMsg,errorThrown){
 		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
 		      },
+		      complete:function(){
+		    	  
+		      }
 	     });
 		  
 	  });
@@ -92,6 +98,12 @@
 		  },
 		  error:function(req,errMsg,errorThrown){
 		    $("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
+	      },
+	      complete:function(){
+	        payingNum--;
+	        if(payingNum<=0){
+	        	refreshPage();
+	        }
 	      }
 	  });
   }
@@ -120,7 +132,7 @@
 				  var order =result.resultList[i];
 				  var innerHtml = '<tr> ';
 				  innerHtml+='<td>'+order.payOrderNo+'</td>';
-				  innerHtml+='<td>'+order.products.replace(",","<br>")+'</td>';
+				  innerHtml+='<td>'+order.productCodes+'</td>';
 				  innerHtml+='<td>'+(order.totalAmt/1000)+'</td>';
 				  innerHtml+='<td>'+order.payerNo+'</td>';
 				  innerHtml+='<td></td>';

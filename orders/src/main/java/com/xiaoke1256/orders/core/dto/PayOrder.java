@@ -24,7 +24,7 @@ public class PayOrder {
 
 	private Timestamp updateTime;
 	
-	private String products;
+	private String productCodes;
 
 	public Long getPayOrderId() {
 		return payOrderId;
@@ -90,14 +90,12 @@ public class PayOrder {
 		this.updateTime = updateTime;
 	}
 
-	public String getProducts() {
-		return products;
+	public String getProductCodes() {
+		return productCodes;
 	}
 
-	public void setProducts(String products) {
-		this.products = products;
+	public void setProductCodes(String productCodes) {
+		this.productCodes = productCodes;
 	}
-	
-	
 	
 }

@@ -17,20 +17,15 @@ import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
-import com.xiaoke1256.orders.core.client.ProductQueryClient;
 import com.xiaoke1256.orders.core.dto.PayOrderCondition;
 import com.xiaoke1256.orders.core.dto.PayOrderQueryResultResp;
 import com.xiaoke1256.orders.core.service.OrederService;
-import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Controller
 @RequestMapping("/payOrders")
 public class PayOrderController {
 	@Autowired
 	private OrederService orederService;
-	
-	@Autowired
-	private ProductQueryClient productQueryService;
 	
 	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
 	public @ResponseBody com.xiaoke1256.orders.core.dto.PayOrder orderDetail(@PathVariable("orderNo") String orderNo){
@@ -46,7 +41,7 @@ public class PayOrderController {
 	private com.xiaoke1256.orders.core.dto.PayOrder covertToVo(PayOrder order){
 		try{
 			com.xiaoke1256.orders.core.dto.PayOrder orderVo = new com.xiaoke1256.orders.core.dto.PayOrder();
-			String products = "";
+			String productCodes = "";
 			orderVo.setPayerNo(order.getPayerNo());
 			orderVo.setCarriageAmt(order.getCarriageAmt());
 			orderVo.setInsertTime(order.getInsertTime());
@@ -64,17 +59,15 @@ public class PayOrderController {
 						com.xiaoke1256.orders.core.dto.OrderItem orderItemVo = new com.xiaoke1256.orders.core.dto.OrderItem();
 						PropertyUtils.copyProperties(orderItemVo, orderItem);
 						orderItemSet.add(orderItemVo);
-						//orderItem.getProductCode();
-						SimpleProduct product = productQueryService.getSimpleProductByCode(orderItem.getProductCode());
-						if(products.length()>0)
-							products += ",";
-						products += product.getProductName();
+						if(productCodes.length()>0)
+							productCodes += ",";
+						productCodes += orderItem.getProductCode();
 					}
 					subOrderVo.setOrderItems(orderItemSet);
 				}
 				orderVo.setSubOrders(subOrderSet);
 			}
-			orderVo.setProducts(products);
+			orderVo.setProductCodes(productCodes);
 			return orderVo;
 		}catch(Exception ex){
 			throw new RuntimeException(ex);
