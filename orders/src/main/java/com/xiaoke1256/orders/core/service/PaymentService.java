@@ -37,8 +37,11 @@ public class PaymentService {
 	@Transactional(readOnly=true)
 	public PaymentTxn getPaymentByPayOrderNo(String payOrderNo) {
 		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
-		PaymentTxn txn = (PaymentTxn)entityManager.createQuery(ql).setParameter("payOrderNo", payOrderNo).getSingleResult();
-		return txn;
+		@SuppressWarnings("unchecked")
+		List<PaymentTxn> list = entityManager.createQuery(ql).setParameter("payOrderNo", payOrderNo).getResultList();
+		if(list!=null && list.size()>0)
+			return list.get(0);
+		return null;
 	}
 	
 	@Transactional(readOnly=true)
@@ -82,6 +85,7 @@ public class PaymentService {
 		paymentTxn.setAmt(payOrder.getTotalAmt());
 		paymentTxn.setPayOrderNo(payOrder.getPayOrderNo());
 		paymentTxn.setThirdOrderNo(thirdOrderNo);
+		paymentTxn.setReverseFlg("0");
 		paymentTxn.setIncident("购买商品");
 		paymentTxn.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		paymentTxn.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -114,9 +118,11 @@ public class PaymentService {
 			//冲正记录
 			PaymentTxn paymentTxn = new PaymentTxn();
 			BeanUtils.copyProperties(paymentTxn, orgTxn);
+			paymentTxn.setPaymentId(null);
 			paymentTxn.setAmt(orgTxn.getAmt().negate());
 			paymentTxn.setIncident("冲正记录:"+orgTxn.getIncident());
 			paymentTxn.setRemark(reason);
+			paymentTxn.setReverseFlg("0");
 			paymentTxn.setInsertTime(new Timestamp(System.currentTimeMillis()));
 			paymentTxn.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			paymentTxn.setDealStatus(PaymentTxn.DEAL_STATUS_INIT);

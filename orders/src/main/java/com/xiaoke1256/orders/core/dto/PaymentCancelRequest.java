@@ -18,7 +18,10 @@ public class PaymentCancelRequest {
 	private String orederNo;
 	private String remark;
 	private String cancelType;
-	
+
+	public PaymentCancelRequest() {
+		super();
+	}
 	
 	public PaymentCancelRequest(String orederNo, String remark,String cancelType) {
 		super();
@@ -26,6 +29,7 @@ public class PaymentCancelRequest {
 		this.remark = remark;
 		this.cancelType = cancelType;
 	}
+	
 	public String getOrederNo() {
 		return orederNo;
 	}

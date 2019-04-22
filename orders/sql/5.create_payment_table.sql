@@ -8,7 +8,7 @@ create table PAYMENT_TXN
   pay_order_no VARCHAR(18) comment '支付单号',
   sub_order_no VARCHAR(20) comment '订单号',
   THIRD_ORDER_NO VARCHAR(20) comment '第三方平台的订单号',
-  REVERSE_FLG char(1) default '0' comment '冲正标记：“0:未冲正;1:已冲正”',
+  REVERSE_FLG char(1) not null default '0' comment '冲正标记：“0:未冲正;1:已冲正”',
   incident VARCHAR(256) comment '事由',
   remark VARCHAR(256) comment '备注',
   deal_status char(1) comment '处理状态：“0:待处理;1:已处理分户账”',

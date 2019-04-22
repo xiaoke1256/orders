@@ -124,16 +124,26 @@ public class PaymentController {
 		if(PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK.equals(cancelType)) {
 			reason="远程调用异常。";
 		}
+		
+		if(StringUtils.isEmpty(reason)) {
+			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+		}
+		
 		//查到原交易记录
+		if(StringUtils.isEmpty(thirdOrderNo)
+				&& StringUtils.isEmpty(payOrderNo)) {
+			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+		}
+		
 		PaymentTxn orgTxn = null;
 		if(StringUtils.isNotEmpty(thirdOrderNo)) {
 			orgTxn = paymentService.getPaymentByThirdOrderNo(thirdOrderNo);
-		}
-		if(StringUtils.isNotEmpty(payOrderNo)) {
+		}else if(StringUtils.isNotEmpty(payOrderNo)) {
 			orgTxn = paymentService.getPaymentByPayOrderNo(payOrderNo);
 		}
 		if(orgTxn==null) {
-			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+			logger.warn("Have not found the order by the orderNo.Maybe the order never input in our system.");
+			return new RespMsg(ErrorCode.SUCCESS.getCode(),"The order is not exist.");//订单不存在就视为已经取消了。
 		}
 		
 		//冲正

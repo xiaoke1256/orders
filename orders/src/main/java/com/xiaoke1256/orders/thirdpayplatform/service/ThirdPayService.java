@@ -119,7 +119,7 @@ public class ThirdPayService {
 	public List<String> queryExired(int limit) {
 		Date now = new Date();
 		Date expiredTime = DateUtil.addSeconds(now, -5);//5秒内没有支付完毕，就是超时的
-		String jql = "select o.orderNo from ThirdPayOrder o where orderStatus=:orderStatus and insertTime>:expiredTime order by orderId";
+		String jql = "select o.orderNo from ThirdPayOrder o where orderStatus=:orderStatus and insertTime<:expiredTime order by orderId";
 		Query query = entityManager.createQuery(jql)
 			.setParameter("orderStatus", ThirdPayOrder.STATUS_ACCEPT)
 			.setParameter("expiredTime", expiredTime);
