@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.thirdpayplatform.bo;
+package com.xiaoke1256.thirdpay.payplatform.bo;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

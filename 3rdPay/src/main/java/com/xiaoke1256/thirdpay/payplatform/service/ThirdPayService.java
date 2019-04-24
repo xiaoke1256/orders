@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.thirdpayplatform.service;
+package com.xiaoke1256.thirdpay.payplatform.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -17,9 +17,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.util.DateUtil;
-import com.xiaoke1256.orders.thirdpayplatform.bo.ThirdPayOrder;
-import com.xiaoke1256.orders.thirdpayplatform.dao.ThirdPayOrderDao;
-import com.xiaoke1256.orders.thirdpayplatform.dto.PaymentCancelRequest;
+import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
+import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
+import com.xiaoke1256.thirdpay.payplatform.dto.PaymentCancelRequest;
 
 @Service
 @Transactional

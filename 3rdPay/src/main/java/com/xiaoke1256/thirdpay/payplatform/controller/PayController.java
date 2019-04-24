@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.thirdpayplatform.controller;
+package com.xiaoke1256.thirdpay.payplatform.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,13 +22,13 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
-import com.xiaoke1256.orders.thirdpayplatform.bo.ThirdPayOrder;
-import com.xiaoke1256.orders.thirdpayplatform.dto.AckRequest;
-import com.xiaoke1256.orders.thirdpayplatform.dto.OrderResp;
-import com.xiaoke1256.orders.thirdpayplatform.dto.PayRequest;
-import com.xiaoke1256.orders.thirdpayplatform.dto.PayResp;
-import com.xiaoke1256.orders.thirdpayplatform.dto.ThirdPayOrderDto;
-import com.xiaoke1256.orders.thirdpayplatform.service.ThirdPayService;
+import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
+import com.xiaoke1256.thirdpay.payplatform.dto.AckRequest;
+import com.xiaoke1256.thirdpay.payplatform.dto.OrderResp;
+import com.xiaoke1256.thirdpay.payplatform.dto.PayRequest;
+import com.xiaoke1256.thirdpay.payplatform.dto.PayResp;
+import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
+import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 
 @RestController
 @RequestMapping("/thirdpay")

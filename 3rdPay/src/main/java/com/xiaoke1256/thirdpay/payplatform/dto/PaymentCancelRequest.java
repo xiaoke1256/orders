@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.thirdpayplatform.dto;
+package com.xiaoke1256.thirdpay.payplatform.dto;
 
 /**
  * 通知接入平台取消订单是调用的请求。
