@@ -98,6 +98,11 @@ public class PaymentController {
 				logger.error(e.getMessage(),e);
 			}
 			return new ErrMsg(ex);
+		}catch(AppException ex){
+			//失败也要通知第三方支付平台
+			logger.error(ex.getMessage(),ex);
+			thirdPaymentClient.acceptNote(orderNo, "FAIL");
+			return new ErrMsg(ex);
 		}catch(Exception ex){
 			//失败也要通知第三方支付平台
 			logger.error(ex.getMessage(),ex);

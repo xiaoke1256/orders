@@ -41,7 +41,7 @@
 		  payingNum++;
 		  var payOrderNo = $(this).attr('payOrderNo');
 		  //调用第三方支付接口
-		  var url= "thirdpay/pay"
+		  
 		  var payerNo = "3RDPAY"+Math.floor(Math.random()*1000000000000);//支付方账号，随机生成一个
 		  //var payeeNo = "";//收款方账号，获取系统配置的账号。
 		  if(!payeeNo){
@@ -49,9 +49,27 @@
 			  return;
 		  }
 		  var amt = $(this).attr('amt');//金额,从页面上获取。
+		  
+		  pay(payOrderNo,payerNo,amt);
+	  });
+	  
+	  /**批量支付*/
+	  $('#bathPayBtn').click(function(){
+		  $('#orderTable tbody tr').each(function(){
+			  var $btn = $(this).find('a.payBtn');
+			  var payOrderNo = $btn.attr('payOrderNo')
+			  var amt = $btn.attr('amt');
+			  var payerNo = "3RDPAY"+Math.floor(Math.random()*1000000000000);//支付方账号，随机生成一个
+			  pay(payOrderNo,payerNo,amt)
+		  });
+	  });
+	  
+	  //支付
+	  function pay(payOrderNo,payerNo,amt){
 		  var orderType = "01";//01表示消费
 		  var remark = payOrderNo;//把支付单号作为备注
-		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark}
+		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark};
+		  var url= "thirdpay/pay";
 		  $.ajax({
 			  url:url,
 			  type:"POST",
@@ -76,8 +94,7 @@
 		    	  
 		      }
 	     });
-		  
-	  });
+	  }
 	  
   });
 	  
@@ -181,7 +198,7 @@
 			<option value="200" >200</option>
 		</select>
 		<button type="button" id="searchBtn" >查询</button>
-		<table border="1" class="listTable">
+		<table id="orderTable" border="1" class="listTable">
 			<thead>
 				<tr>
 					<th>ORDER NO</th>
@@ -201,6 +218,7 @@
 			</tfoot>
 			
 		</table>
+		<br>
 		<button id="bathPayBtn" type="button">批量支付</button>
 		</form>
 		

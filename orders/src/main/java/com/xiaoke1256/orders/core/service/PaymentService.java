@@ -8,6 +8,8 @@ import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.bo.SubOrder;
+import com.xiaoke1256.orders.core.controller.OrderController;
 
 /**
  * 与支付有关的业务
@@ -27,6 +30,7 @@ import com.xiaoke1256.orders.core.bo.SubOrder;
 @Service
 @Transactional
 public class PaymentService {
+	private static final Logger logger = LoggerFactory.getLogger(PaymentService.class);
 	
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
@@ -110,7 +114,9 @@ public class PaymentService {
 		try {
 			entityManager.refresh(orgTxn, LockModeType.WRITE);
 			if(!"0".equals(orgTxn.getReverseFlg())) {
-				throw new AppException(ErrorCode.CONCURRENCY_ERROR);
+				//已经被冲正了。
+				logger.warn("Already been reversed!payment_id is:"+orgTxn.getPaymentId());
+				return;
 			}
 			orgTxn.setReverseFlg("1");
 			entityManager.merge(orgTxn);
