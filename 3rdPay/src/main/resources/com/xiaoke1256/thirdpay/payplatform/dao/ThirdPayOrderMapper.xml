@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao">
+
+    <resultMap type="com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder" id="thirdPayOrderMap">
+       <id property="orderId" column="order_id" />
+       <result property="orderNo" column="order_no" />
+       <result property="orderType" column="order_type" />
+       <result property="orderStatus" column="order_status" />
+       <result property="payerNo" column="payer_no" />
+       <result property="payeeNo" column="payee_no" />
+       <result property="amt" column="amt" />
+       <result property="palteform" column="palteform" />
+       <result property="incident" column="incident" />
+       <result property="remark" column="remark" />
+       <result property="insertTime" column="insert_time" />
+       <result property="updateTime" column="update_time" />
+       <result property="finishTime" column="finish_time" />
+   </resultMap>
+
+   <insert id="save" parameterType="com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder"
+   	     useGeneratedKeys="true" keyProperty="orderId" >
+   	  insert into third_pay_order(order_no,order_type,order_status,payer_no,payee_no,amt,palteform,incident,remark,insert_time,update_time,finish_time)  
+             values(#{orderNo},#{orderType},#{orderStatus},#{payerNo},#{payeeNo},#{amt},#{palteform},#{incident},#{remark},#{insertTime},#{updateTime},#{finishTime})  
+   </insert>
+   
+   <update id="updateStatus"  >
+   	  update third_pay_order set order_status=#{arg1},finish_time=#{arg2},update_time=#{arg3} where order_no=#{arg0}
+   </update>
+</mapper>
