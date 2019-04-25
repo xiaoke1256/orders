@@ -104,11 +104,11 @@ public class PaymentService {
 	}
 	
 	/**
-	 * 取消订单
+	 * 取消支付
 	 * @param orgTxn
 	 * @param reason
 	 */
-	public void cancelOrder(PaymentTxn orgTxn,String reason) {
+	public void cancel(PaymentTxn orgTxn,String reason) {
 		String payOrderNo = orgTxn.getPayOrderNo();
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		payOrder.setStatus(PayOrder.ORDER_STATUS_PAYING);

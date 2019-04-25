@@ -151,8 +151,8 @@ public class PaymentController {
 			return new RespMsg(ErrorCode.SUCCESS.getCode(),"The order is not exist.");//订单不存在就视为已经取消了。
 		}
 		
-		//取消订单
-		paymentService.cancelOrder(orgTxn, reason);
+		//取消支付
+		paymentService.cancel(orgTxn, reason);
 		return RespMsg.SUCCESS;
 	}
 	
