@@ -31,7 +31,7 @@ import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 
 @RestController
-@RequestMapping("/thirdpay")
+@RequestMapping("/pay")
 public class PayController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MD5Util.class);
