@@ -17,7 +17,7 @@ public class ExpiredTask {
 	@Autowired
 	private ThirdPayService thirdPayService;
 	
-	@Value("${third_pay_platform.expired.limit}")
+	@Value("${third_pay_platform.expired.list.max_result}")
 	private int limit;
 	
 	@Scheduled(cron="${third_pay_platform.expired.task.corn}")
