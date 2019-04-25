@@ -14,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.bo.SubOrder;
-import com.xiaoke1256.orders.core.controller.OrderController;
 
 /**
  * 与支付有关的业务
@@ -102,6 +100,23 @@ public class PaymentService {
 			subOrder.setStatus(SubOrder.ORDER_STATUS_AWAIT_ACCEPT);
 			entityManager.merge(subOrder);
 		}
+		//TODO 推送mq，通知其他系统。
+	}
+	
+	/**
+	 * 取消订单
+	 * @param orgTxn
+	 * @param reason
+	 */
+	public void cancelOrder(PaymentTxn orgTxn,String reason) {
+		String payOrderNo = orgTxn.getPayOrderNo();
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
+		payOrder.setStatus(PayOrder.ORDER_STATUS_PAYING);
+		for(SubOrder subOrder:payOrder.getSubOrders()) {
+			subOrder.setStatus(SubOrder.ORDER_STATUS_PAYING);
+			entityManager.merge(subOrder);
+		}
+		reverse(orgTxn,reason);
 		//TODO 推送mq，通知其他系统。
 	}
 	
