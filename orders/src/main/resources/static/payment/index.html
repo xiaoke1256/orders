@@ -90,7 +90,10 @@
 		        notice(ret.verifyCode,ret.orderNo,payOrderNo,payType);
 		      },
 		      error:function(req,errMsg,errorThrown){
-		    	  alert("3333333");
+		    	if(req.status=='0'){
+		    		$("#console").append("<font color=\"red\">"+req.status+":可能是跨域问题造成，请配置浏览器。</font><br>");   
+		    		return;
+		    	}
 		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
 		      },
 		      complete:function(){
