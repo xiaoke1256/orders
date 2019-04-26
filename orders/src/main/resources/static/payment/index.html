@@ -34,7 +34,7 @@
 	  //初始化列表
 	  refreshPage();
 	  
-	  $('#searchBtn').click(refreshPage);
+	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
 	  
 	  $('#content').on('click','a.payBtn',function(){
 		  
@@ -136,6 +136,8 @@
   //刷新列表内容
   function refreshPage(){
 	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo)
+		  pageNo = $('[name=pageNo]').val();
 	  if(!pageNo || isNaN(pageNo) )
 		  pageNo=1;
 	  $('[name=pageNo]').val(pageNo);
