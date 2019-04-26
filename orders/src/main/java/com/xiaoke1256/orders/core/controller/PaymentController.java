@@ -51,10 +51,13 @@ public class PaymentController {
 	/**平台方的支付账号*/
 	@Value("${platform.payment.thirdpay.account}")
 	private String pateformPayAccount ;
+	/**第三方支付平台的地址*/
+	@Value("${payment.3rdpay.site.url}")
+	private String thirdpaySiteUrl;
 	
 	@RequestMapping(value="/config",method= {RequestMethod.GET})
 	private PayConfig getPayConfig() {
-		return new PayConfig(pateformPayAccount);
+		return new PayConfig(pateformPayAccount,thirdpaySiteUrl);
 	}
 	
 	/**

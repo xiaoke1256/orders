@@ -14,6 +14,7 @@
 
   $(function(){
 	  var payeeNo = null;
+	  var paySiteUrl = null;
 	  //查询配置。
 	  $.ajax({
 		 url:'payment/config' ,
@@ -26,6 +27,7 @@
 				alert("本页面无法支付:"+ret.code+":"+ret.msg);
 			}
 			payeeNo = ret.pateformPayAccount
+			paySiteUrl = ret.thirdpaySiteUrl;
 	     }
 	  });
 	  
@@ -69,7 +71,7 @@
 		  var orderType = "01";//01表示消费
 		  var remark = payOrderNo;//把支付单号作为备注
 		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark};
-		  var url= "http://www.3rdpay.com:8080/pay/pay";
+		  var url= paySiteUrl;
 		  $.ajax({
 			  url:url,
 			  type:"POST",
