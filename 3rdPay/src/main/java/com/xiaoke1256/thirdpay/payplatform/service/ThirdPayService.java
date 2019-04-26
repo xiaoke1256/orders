@@ -95,7 +95,7 @@ public class ThirdPayService {
 	 */
 	private String genOrderNo() {
 		return DateUtil.format(new Date(), "yyyyMMddHHmmss")
-				+StringUtils.leftPad(String.valueOf(RandomUtils.nextInt(1000000)),6);
+				+StringUtils.leftPad(String.valueOf(RandomUtils.nextInt(1000000)),6,'0');
 	}
 	
 	/**
