@@ -29,4 +29,14 @@
    <update id="updateStatus"  >
    	  update third_pay_order set order_status=#{arg1},finish_time=#{arg2},update_time=#{arg3} where order_no=#{arg0}
    </update>
+   
+   <select id="findByOrderNo" resultMap="thirdPayOrderMap">
+     select order_id,order_no,order_type,order_status,payer_no,payee_no,amt,palteform,incident,remark,insert_time,update_time,finish_time from third_pay_order 
+     	where order_no = #{orderNo}
+   </select>
+   
+   <select id="findOrderNosByLimitTime" resultType="string">
+     select order_no from third_pay_order where order_status=#{orderStatus} and insert_time&lt;#{limitTime} order by order_id
+   </select>
+   
 </mapper>

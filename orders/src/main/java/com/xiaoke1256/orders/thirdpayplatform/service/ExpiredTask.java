@@ -20,7 +20,7 @@ public class ExpiredTask {
 	@Value("${third_pay_platform.expired.limit}")
 	private int limit;
 	
-	@Scheduled(cron="${third_pay_platform.expired.task.corn}")
+	//@Scheduled(cron="${third_pay_platform.expired.task.corn}")
 	public void makeOrdersExpired() {
 		//查出超时的订单。
 		List<String> orderNos = thirdPayService.queryExired(limit);

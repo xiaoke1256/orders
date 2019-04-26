@@ -90,6 +90,7 @@
 		        notice(ret.verifyCode,ret.orderNo,payOrderNo,payType);
 		      },
 		      error:function(req,errMsg,errorThrown){
+		    	  alert("3333333");
 		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
 		      },
 		      complete:function(){

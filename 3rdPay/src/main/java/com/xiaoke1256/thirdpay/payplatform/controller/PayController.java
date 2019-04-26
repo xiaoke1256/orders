@@ -34,7 +34,7 @@ import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 @RequestMapping("/pay")
 public class PayController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MD5Util.class);
+	private static final Logger logger = LoggerFactory.getLogger(PayController.class);
 	
 	@Autowired
 	private ThirdPayService thirdPayService;

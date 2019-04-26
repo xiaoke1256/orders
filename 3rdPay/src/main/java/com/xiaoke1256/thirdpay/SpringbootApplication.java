@@ -14,7 +14,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  */
 @SpringBootApplication(exclude={HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration
-@MapperScan("com.xiaoke1256.orders.product.dao")
+@MapperScan("com.xiaoke1256.thirdpay.payplatform.dao")
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
 	@Override
