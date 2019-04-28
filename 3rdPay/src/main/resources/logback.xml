@@ -29,7 +29,7 @@
     	<appender-ref ref="STDOUT"/>  
     	<appender-ref ref="file_log"/>  
   	</logger> 
-  	<logger name="com.xiaoke1256.orders.product.dao" level="TRACE" additivity="false">
+  	<logger name="com.xiaoke1256.thirdpay.payplatform.dao" level="TRACE" additivity="false">
   		<appender-ref ref="STDOUT"/>  
     	<appender-ref ref="file_log"/>  
   	</logger>

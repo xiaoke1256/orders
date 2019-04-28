@@ -34,7 +34,7 @@ public abstract class MasterWatcher extends BaseWatcher {
 					if(checkMaster(getNodePath()))
 						return isMaster;
 				default:
-					//其他异常（含ConnectLossException）
+					//其他异常（含ConnectLossException）。
 					if(checkMaster(getNodePath()))
 						return isMaster;
 				}
@@ -60,7 +60,7 @@ public abstract class MasterWatcher extends BaseWatcher {
 				case NONODE:
 					return false;
 				default:
-					//其他异常（含ConnectLossException）. Read it again.
+					//其他异常（含ConnectLossException）. Read it again.TODO 需打日志。
 				}
 			}
 		}

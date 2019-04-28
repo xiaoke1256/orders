@@ -33,6 +33,7 @@ public class ExpiredTask {
 			if(!exporedTaskWatcher.toBeMast()) {
 				logger.debug("I'm not master. Do nothong.");
 			}
+			logger.debug("I'm master .Doing the task.");
 			//查出超时的订单。
 			List<String> orderNos = thirdPayService.queryExired(limit);
 			for(String orderNo:orderNos) {
