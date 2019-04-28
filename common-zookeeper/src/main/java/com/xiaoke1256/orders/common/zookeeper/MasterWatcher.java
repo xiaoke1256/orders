@@ -8,7 +8,7 @@ import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.data.Stat;
 
 /**
- * Ñ¡¾ÙÎªÈºÖ÷µÄzookeeperÖ÷¼ü
+ * é€‰ä¸¾ä¸ºç¾¤ä¸»çš„zookeeperä¸»é”®
  * @author Administrator
  *
  */
@@ -18,7 +18,7 @@ public abstract class MasterWatcher extends BaseWatcher {
 	
 	private String serverId = Integer.toHexString(new Random().nextInt());
 	
-	/**ÓÉ¾ßÌåµÄÊ±ÏŞÀàÀ´¸æÖª½ÚµãµÄÂ·¾¶*/
+	/**ç”±å…·ä½“çš„æ—¶é™ç±»æ¥å‘ŠçŸ¥èŠ‚ç‚¹çš„è·¯å¾„*/
 	abstract protected String getNodePath();
 	
 	public synchronized boolean toBeMast() throws InterruptedException {
@@ -34,7 +34,7 @@ public abstract class MasterWatcher extends BaseWatcher {
 					if(checkMaster(getNodePath()))
 						return isMaster;
 				default:
-					//ÆäËûÒì³££¨º¬ConnectLossException£©
+					//å…¶ä»–å¼‚å¸¸ï¼ˆå«ConnectLossExceptionï¼‰
 					if(checkMaster(getNodePath()))
 						return isMaster;
 				}
@@ -60,7 +60,7 @@ public abstract class MasterWatcher extends BaseWatcher {
 				case NONODE:
 					return false;
 				default:
-					//ÆäËûÒì³££¨º¬ConnectLossException£©. Read it again.
+					//å…¶ä»–å¼‚å¸¸ï¼ˆå«ConnectLossExceptionï¼‰. Read it again.
 				}
 			}
 		}
