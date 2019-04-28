@@ -18,7 +18,7 @@ public abstract class MasterWatcher extends BaseWatcher {
 	
 	private String serverId = Integer.toHexString(new Random().nextInt());
 	
-	/**由具体的时限类来告知节点的路径*/
+	/**由具体的实现类来告知节点的路径*/
 	abstract protected String getNodePath();
 	
 	public synchronized boolean toBeMast() throws InterruptedException {
