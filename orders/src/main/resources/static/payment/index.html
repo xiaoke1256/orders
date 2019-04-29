@@ -190,7 +190,7 @@
 			  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
 			  }
 		  },
-		  error:function(resp,errMsg,err){
+		  error:function(resp,errMsg,errorThrown){
 			  $("#console").append("<font color=\"red\">查询错误："+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>"); 
 			  //alert("error:"+err);
 		  }
