@@ -69,7 +69,7 @@
 	  /**自动支付*/
 	  $('#autoPay').click(function(){
 		  if(this.checked){
-			  autoPayIntervalId = setInterval(function(){$('#bathPayBtn').click();},60000);
+			  autoPayIntervalId = setInterval(function(){if(payingNum>0)return;$('#bathPayBtn').click();},60000);
 		  }else{
 			  if(autoPayIntervalId)
 			  	clearInterval(autoPayIntervalId);
