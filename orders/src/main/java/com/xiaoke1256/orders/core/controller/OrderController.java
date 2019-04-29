@@ -14,6 +14,8 @@ import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.core.bo.PayOrder;
+import com.xiaoke1256.orders.core.dto.PayOrderCondition;
+import com.xiaoke1256.orders.core.dto.PayOrderQueryResultResp;
 import com.xiaoke1256.orders.core.service.OrederService;
 
 
@@ -47,5 +49,11 @@ public class OrderController {
 			return error;
 		}
 	}
+	
+//	@RequestMapping(value="/search",method={RequestMethod.GET})
+//	@ResponseBody
+//	public PayOrderQueryResultResp searchOrders(PayOrderCondition condition) {
+//		
+//	}
 	
 }
