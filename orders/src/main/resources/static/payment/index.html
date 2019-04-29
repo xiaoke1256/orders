@@ -66,6 +66,16 @@
 		  });
 	  });
 	  
+	  /**自动支付*/
+	  $('#autoPay').click(function(){
+		  if(this.checked){
+			  autoPayIntervalId = setInterval(function(){$('#bathPayBtn').click();},60000);
+		  }else{
+			  if(autoPayIntervalId)
+			  	clearInterval(autoPayIntervalId);
+		  }
+	  });
+	  
 	  //支付
 	  function pay(payOrderNo,payerNo,amt){
 		  var orderType = "01";//01表示消费
@@ -228,6 +238,7 @@
 		</table>
 		<br>
 		<button id="bathPayBtn" type="button">批量支付</button>
+		<input type="checkbox" value="on" id="autoPay" >自动支付(每分钟触发一次支付)。
 		</form>
 		
 		<br>
