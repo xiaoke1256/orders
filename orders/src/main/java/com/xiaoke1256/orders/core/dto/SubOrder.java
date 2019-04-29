@@ -14,6 +14,8 @@ public class SubOrder {
 	private String storeNo;
 	
 	private Set<OrderItem> orderItems;
+	
+	private String productCodes;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -53,6 +55,14 @@ public class SubOrder {
 
 	public void setOrderItems(Set<OrderItem> orderItems) {
 		this.orderItems = orderItems;
+	}
+
+	public String getProductCodes() {
+		return productCodes;
+	}
+
+	public void setProductCodes(String productCodes) {
+		this.productCodes = productCodes;
 	}
 	
 	

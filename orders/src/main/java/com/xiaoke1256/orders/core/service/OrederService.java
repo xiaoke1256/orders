@@ -34,6 +34,7 @@ import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.core.client.ProductQueryClient;
+import com.xiaoke1256.orders.core.dto.OrderCondition;
 import com.xiaoke1256.orders.core.dto.PayOrderCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
@@ -327,6 +328,53 @@ public class OrederService {
 		query.setMaxResults(condition.getPageSize());
 		@SuppressWarnings("unchecked")
 		List<PayOrder> results = query.getResultList();
+		page.setResultList(results);
+		
+		return page;
+	}
+	
+	
+	/**
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	public QueryResult<SubOrder> searchPayOrderByCondition(OrderCondition condition){
+		String countQl = "";
+		StringBuilder hqlSb =new StringBuilder(" from SubOrder o where 1=1 ");
+		Map<String,Object> paramMap = new HashMap<>();
+		if(!StringUtils.isEmpty(condition.getStoreNo())) {
+			hqlSb.append(" and storeNo like :storeNo");
+			paramMap.put("storeNo", condition.getStoreNo()+"%");
+		}
+		if(!StringUtils.isEmpty(condition.getOrderNo())) {
+			hqlSb.append(" and orderNo like :orderNo");
+			paramMap.put("orderNo", condition.getOrderNo()+"%");
+		}
+		if(!StringUtils.isEmpty(condition.getStatus())) {
+			hqlSb.append(" and status = :status");
+			paramMap.put("status", condition.getStatus());
+		}
+		countQl= "select count(o) "+hqlSb.toString();
+		hqlSb.append(" order by insertTime ");
+		
+		Query countQuery = entityManager.createQuery(countQl);
+		for(String key:paramMap.keySet()) {
+			countQuery.setParameter(key, paramMap.get(key));
+		}
+		int totalCount = ((Number)countQuery.getSingleResult()).intValue();
+
+		Query query = entityManager.createQuery(hqlSb.toString());
+		for(String key:paramMap.keySet()) {
+			query.setParameter(key, paramMap.get(key));
+		}
+		
+		QueryResult<SubOrder> page = new QueryResult<SubOrder>(condition.getPageNo(),condition.getPageSize(),totalCount);
+		
+		query.setFirstResult((condition.getPageNo()-1)*condition.getPageSize());
+		query.setMaxResults(condition.getPageSize());
+		@SuppressWarnings("unchecked")
+		List<SubOrder> results = query.getResultList();
 		page.setResultList(results);
 		
 		return page;
