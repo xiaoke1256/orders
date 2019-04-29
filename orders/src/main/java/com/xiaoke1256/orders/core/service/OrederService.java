@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -355,8 +356,12 @@ public class OrederService {
 			hqlSb.append(" and status = :status");
 			paramMap.put("status", condition.getStatus());
 		}
+		if(null!=condition.getStatuses() && condition.getStatuses().length>0 ) {
+			hqlSb.append(" and status in (:statuses)");
+			paramMap.put("statuses", Arrays.asList(condition.getStatuses()));
+		}
 		countQl= "select count(o) "+hqlSb.toString();
-		hqlSb.append(" order by insertTime ");
+		hqlSb.append(" order by orderNo ");
 		
 		Query countQuery = entityManager.createQuery(countQl);
 		for(String key:paramMap.keySet()) {

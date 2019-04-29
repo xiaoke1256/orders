@@ -59,9 +59,15 @@ public class OrderController {
 		}
 	}
 	
-	@RequestMapping(value="/search",method={RequestMethod.GET})
+	/**
+	 * 为了物流而进行的订单查询
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/searchForLo",method={RequestMethod.GET})
 	@ResponseBody
-	public RespMsg searchOrders(OrderCondition condition) {
+	public RespMsg searchOrdersForLogistics(OrderCondition condition) {
+		condition.setStatuses(new String[] {SubOrder.ORDER_STATUS_AWAIT_SENT,SubOrder.ORDER_STATUS_AWAIT_ACCEPT});
 		QueryResult<SubOrder> queryResult = orederService.searchPayOrderByCondition(condition);
 		List<com.xiaoke1256.orders.core.dto.SubOrder> voList = new ArrayList<com.xiaoke1256.orders.core.dto.SubOrder>();
 		for(SubOrder subOrder:queryResult.getResultList()) {

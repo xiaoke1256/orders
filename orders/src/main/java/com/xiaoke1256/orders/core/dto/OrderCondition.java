@@ -17,6 +17,11 @@ public class OrderCondition extends BaseCondition {
 	
 	/**订单号*/
 	private String orderNo;
+	
+	/**
+	 * 多个状态
+	 */
+	private String[] statuses;
 
 	public String getStoreNo() {
 		return storeNo;
@@ -40,6 +45,14 @@ public class OrderCondition extends BaseCondition {
 
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public String[] getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(String[] statuses) {
+		this.statuses = statuses;
 	}
 	
 	

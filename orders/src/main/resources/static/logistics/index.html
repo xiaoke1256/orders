@@ -30,12 +30,12 @@
 
 	  var callee = arguments.callee;
 	  $.ajax({
-		  url:"orders/search",
+		  url:"orders/searchForLo",
 		  type:"GET",
-		  data:{pageNo:pageNo,pageSize:pageSize,payOrderNo:$('#payOrderNo').val(),payerNo:$('#payerNo').val()},
+		  data:{pageNo:pageNo,pageSize:pageSize,orderNo:$('#orderNo').val(),storeNo:$('#storeNo').val()},
 		  success:function(result){
 			  if(result.code!='00'){
-		    	  alert(result.code+":"+result.msg);
+				  $("#console").append("<font color=\"red\">"+result.code+":"+result.msg+"</font><br>");
 		    	  return;
 		      }
 			  var $tbody = $('#content table tbody').empty();
@@ -43,29 +43,23 @@
 			  for(var i in result.resultList){
 				  var order =result.resultList[i];
 				  var innerHtml = '<tr> ';
-				  innerHtml+='<td>'+order.payOrderNo+'</td>';
+				  innerHtml+='<td>'+order.orderNo+'</td>';
 				  innerHtml+='<td>'+order.productCodes+'</td>';
 				  innerHtml+='<td>'+(order.totalAmt/1000)+'</td>';
-				  innerHtml+='<td>'+order.payerNo+'</td>';
+				  innerHtml+='<td>'+order.storeNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" orderNo="'+order.payOrderNo+'">SEND</a>';
+				  innerHtml+='<a href="javascript:void(0);" class="sendBtn" orderNo="'+order.orderNo+'">SEND</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);
 			  }
 			  //分页
 			  $('#pageTd').makePage(result,refreshPage);
-			  
-			  //下拉列表
-			  $('select[name=productCode]').empty();
-			  for(var i in result.resultList){
-				  var p =result.resultList[i];
-			  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
-			  }
+
 		  },
-		  error:function(resp,errMsg,err){
-			  alert("error:"+err);
+		  error:function(resp,errMsg,errorThrown){
+			  $("#console").append("<font color=\"red\">查询错误："+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>"); 
 		  }
       });
   }
@@ -81,8 +75,8 @@
 	<div id="content" class="content">
 		<form action="payOrders/query" name="searchForm" >
 		<input type="hidden" name="pageNo" value="1" >
-		订单号：<input type="text" name="orderNo" id="payOrderNo" >
-		会员号：<input type="text" name="payerNo" id="payerNo" >
+		订单号：<input type="text" name="orderNo" id="orderNo" >
+		商户号：<input type="text" name="storeNo" id="storeNo" >
 		每页
 		<select id="pageSize" name="pageSize" >
 			<option value="10" >10</option>
@@ -97,7 +91,7 @@
 					<th>ORDER NO</th>
 					<th>PRODUCTS</th>
 					<th>TOTAL AMT</th>
-					<th>PAYER NO</th>
+					<th>STORE NO</th>
 					<th>MEMO</th>
 					<th>OPER</th>
 				</tr>
@@ -112,8 +106,8 @@
 			
 		</table>
 		<br>
-		<button id="bathPayBtn" type="button">批量支付</button>
-		<input type="checkbox" value="on" id="autoPay" >自动支付(每分钟触发一次支付)。
+		<button id="bathPayBtn" type="button">批量发货</button>
+		<input type="checkbox" value="on" id="autoPay" >自动发货(每分钟触发一次发货)。
 		</form>
 		
 		<br>
