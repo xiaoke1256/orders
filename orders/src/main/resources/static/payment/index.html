@@ -160,7 +160,8 @@
 		  data:{pageNo:pageNo,pageSize:pageSize,payOrderNo:$('#payOrderNo').val(),payerNo:$('#payerNo').val()},
 		  success:function(result){
 			  if(result.code!='00'){
-		    	  alert(result.code+":"+result.msg);
+				  $("#console").append("<font color=\"red\">"+result.code+":"+result.msg+"</font><br>");
+		    	  //alert(result.code+":"+result.msg);
 		    	  return;
 		      }
 			  var $tbody = $('#content table tbody').empty();
@@ -190,7 +191,8 @@
 			  }
 		  },
 		  error:function(resp,errMsg,err){
-			  alert("error:"+err);
+			  $("#console").append("<font color=\"red\">查询错误："+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>"); 
+			  //alert("error:"+err);
 		  }
       });
   }
