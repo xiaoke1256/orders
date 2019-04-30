@@ -92,6 +92,8 @@ public class OrederService {
 			BigDecimal carriage = calCarriage(storeNo,subOrderMap);
 			//构造子订单
 			SubOrder subOrder = new SubOrder();
+			subOrder.setInsertTime(new Timestamp(System.currentTimeMillis()));
+			subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			subOrder.setCarriageAmt(carriage);
 			subOrder.setStoreNo(storeNo);
 			BigDecimal totalAmt = BigDecimal.ZERO.add(carriage);
@@ -340,7 +342,7 @@ public class OrederService {
 	 * @param condition
 	 * @return
 	 */
-	public QueryResult<SubOrder> searchPayOrderByCondition(OrderCondition condition){
+	public QueryResult<SubOrder> searchOrderByCondition(OrderCondition condition){
 		String countQl = "";
 		StringBuilder hqlSb =new StringBuilder(" from SubOrder o where 1=1 ");
 		Map<String,Object> paramMap = new HashMap<>();
@@ -361,7 +363,7 @@ public class OrederService {
 			paramMap.put("statuses", Arrays.asList(condition.getStatuses()));
 		}
 		countQl= "select count(o) "+hqlSb.toString();
-		hqlSb.append(" order by orderNo ");
+		hqlSb.append(" order by updateTime ");
 		
 		Query countQuery = entityManager.createQuery(countQl);
 		for(String key:paramMap.keySet()) {

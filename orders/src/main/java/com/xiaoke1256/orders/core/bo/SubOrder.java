@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.core.bo;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -45,6 +46,12 @@ public class SubOrder {
 	private String storeNo;
 	@Column(name = "STATUS")
 	private String status="0";
+	
+	@Column(name = "INSERT_TIME")
+	private Timestamp insertTime;
+	
+	@Column(name = "UPDATE_TIME")
+	private Timestamp updateTime;
 	
 	@OneToMany(mappedBy = "subOrder",cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Set<OrderItem> orderItems;
@@ -128,5 +135,19 @@ public class SubOrder {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public Timestamp getInsertTime() {
+		return insertTime;
+	}
+	public void setInsertTime(Timestamp insertTime) {
+		this.insertTime = insertTime;
+	}
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+	
+	
 	
 }

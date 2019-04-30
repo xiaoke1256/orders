@@ -95,9 +95,11 @@ public class PaymentService {
 		
 		//修改订单状态
 		payOrder.setStatus(PayOrder.ORDER_STATUS_PAYED);
+		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(payOrder);
 		for(SubOrder subOrder:payOrder.getSubOrders()) {
 			subOrder.setStatus(SubOrder.ORDER_STATUS_AWAIT_ACCEPT);
+			subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			entityManager.merge(subOrder);
 		}
 		//TODO 推送mq，通知其他系统。
@@ -112,8 +114,11 @@ public class PaymentService {
 		String payOrderNo = orgTxn.getPayOrderNo();
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		payOrder.setStatus(PayOrder.ORDER_STATUS_PAYING);
+		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		entityManager.merge(payOrder);
 		for(SubOrder subOrder:payOrder.getSubOrders()) {
 			subOrder.setStatus(SubOrder.ORDER_STATUS_PAYING);
+			subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			entityManager.merge(subOrder);
 		}
 		reverse(orgTxn,reason);
