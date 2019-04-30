@@ -49,7 +49,7 @@
 				  innerHtml+='<td>'+order.storeNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="sendBtn" orderNo="'+order.orderNo+'">SEND</a>';
+				  innerHtml+='<a href="logistics/send.html?orderNo='+order.orderNo+'" target="_blank" class="sendBtn" orderNo="'+order.orderNo+'">SEND</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);

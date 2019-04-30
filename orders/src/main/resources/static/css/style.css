@@ -4,4 +4,8 @@ dl dt {float:left}
 
 div.content {margin:10px auto;width:80%}
 
+.center {text-align:center;margin: 0 auto}
+
+.buttonDiv {text-align:center;margin: 20px auto}
+
 table.listTable {width:100%}

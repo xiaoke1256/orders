@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="../">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>orders welcome!</title>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
+  <script type="text/javascript">
+
+
+  $(function(){
+	 
+  });
+
+  </script>
+  
+</head>
+<body>
+	<header>
+		<h1 class="title">发货</h1>
+	</header>
+	<br>
+	<div id="content" class="content">
+		<form action="logistics/send" name="searchForm" >
+		<!-- 
+		<input type="hidden" name="pageNo" value="1" >
+		订单号：<input type="text" name="orderNo" id="orderNo" >
+		商户号：<input type="text" name="storeNo" id="storeNo" >
+		每页
+		<select id="pageSize" name="pageSize" >
+			<option value="10" >10</option>
+			<option value="50" >50</option>
+			<option value="100" >100</option>
+			<option value="200" >200</option>
+		</select>
+		<button type="button" id="searchBtn" >查询</button>
+		 -->
+		<table id="orderTable" border="1" class="listTable">
+			<tr>
+				<th>ORDER NO</th>
+				<td id="orderNoTd" ></td>
+			</tr>
+			<tr>
+				<th>PRODUCTS</th>
+				<td id="productsTd" ></td>
+			</tr>
+			<tr>
+				<th>TOTAL AMT</th>
+				<td id="totalAmtTd"></td>
+			</tr>
+			<tr>
+				<th>STORE NO</th>
+				<td id="storeNoTd"></td>
+			</tr>
+			<tr>
+				<th>MEMO</th>
+				<td id="memoTd"></td>
+			</tr>
+			<tr>
+				<th>物流公司</th>
+				<td>
+					<select>
+						<option>邮政</option>
+						<option>中通</option>
+						<option>德邦</option>
+						<option>华宇快运</option>
+						<option>圆通</option>
+						<option>佳吉物流</option>
+						<option>新邦物流</option>
+						<option>远成物流</option>
+						<option>宅急送</option>
+						<option>中铁快运</option>
+						<option>中远物流</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>物流单号</th>
+				<td>
+					<input type="text" name=""  >
+				</td>
+			</tr>
+		</table>
+		<div class=buttonDiv>
+			<button id="bathPayBtn" type="button">提交</button>
+		</div>
+		</form>
+		
+		<br>
+		<div id="console" style="width:100%"></div>
+	</div>
+	
+</body>
+</html>
