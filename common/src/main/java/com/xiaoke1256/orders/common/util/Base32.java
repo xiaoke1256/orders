@@ -12,12 +12,20 @@ public class Base32 {
 	};
 	
 	public static String encode(int num) {
+		boolean isMuse = false;
+		if(num<0) {
+			isMuse = true;
+			num = Math.abs(num);
+		}
 		String result = String.valueOf(BASE_NUMS[num%32]);
 		while(num>=32) {
 			num = num>>5;
-			result = String.valueOf(BASE_NUMS[num])+result;
+			result = String.valueOf(BASE_NUMS[num%32])+result;
 		}
-		return result;
+		if(isMuse)
+			return "-"+result;
+		else
+			return result;
 	}
 	
 }

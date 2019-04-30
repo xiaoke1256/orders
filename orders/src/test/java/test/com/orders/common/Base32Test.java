@@ -27,6 +27,12 @@ public class Base32Test {
 	}
 	
 	@Test
+	public void test1025() {
+		System.out.println(Base32.encode(1025));
+	}
+	
+	
+	@Test
 	public void testMuse() {
 		System.out.println(Base32.encode(-1));
 	}
