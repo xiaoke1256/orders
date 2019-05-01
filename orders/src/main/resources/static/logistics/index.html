@@ -4,19 +4,36 @@
   <base href="../">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>orders welcome!</title>
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="js/jq_page.js" ></script>
-  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jquery.modal.js" ></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/modal-styles.css" />
   <script type="text/javascript">
+  
+  jQuery(function ($) {
+	    'use strict';
+		//当点击“发货”
+	    $('#orderTable').on('click', '.send', function (e) {
+	        e.preventDefault();
+	        $(this).openModal({
+	            title: 'SEND' ,
+	            width:500
+	        });
+	    });
 
-
+	});
+  
   $(function(){
+	  
 	  //初始化列表
 	  refreshPage();
-	  
+	  //搜索数据
 	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
+	  
   });
+  
 	  
   //刷新列表内容
   function refreshPage(){
@@ -49,7 +66,7 @@
 				  innerHtml+='<td>'+order.storeNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="logistics/send.html?orderNo='+order.orderNo+'" target="_blank" class="sendBtn" orderNo="'+order.orderNo+'">SEND</a>';
+				  innerHtml+='<a href="logistics/send.html?orderNo='+order.orderNo+'" class="send" data-modal="" class="sendBtn" orderNo="'+order.orderNo+'">SEND</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);

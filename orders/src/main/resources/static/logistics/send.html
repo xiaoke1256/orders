@@ -12,7 +12,10 @@
 
 
   $(function(){
-	 
+	  //关闭按钮
+	 $('#closeBtn').click(function(){
+		 $('.modal-close').click();
+	 });
   });
 
   </script>
@@ -85,7 +88,8 @@
 			</tr>
 		</table>
 		<div class=buttonDiv>
-			<button id="bathPayBtn" type="button">提交</button>
+		    <button id="submitBtn" type="button">提交</button>
+			<button id="closeBtn" type="button">关闭</button>
 		</div>
 		</form>
 		
