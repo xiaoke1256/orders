@@ -1,4 +1,5 @@
-package test.com.orders.common;
+package test.com.xiaoke1256.orders.common;
+
 
 import org.junit.Test;
 

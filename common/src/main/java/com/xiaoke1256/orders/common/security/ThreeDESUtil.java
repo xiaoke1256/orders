@@ -10,7 +10,6 @@ import javax.crypto.spec.IvParameterSpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-@SuppressWarnings({ "restriction" })
 public class ThreeDESUtil {
     private static final String IV = "1234567-";
     public static final String KEY = "uatspdbcccgame2014061800";
