@@ -22,11 +22,13 @@ public class SubOrder {
 	/**订单状态：待卖家受理*/
 	public static final String ORDER_STATUS_AWAIT_ACCEPT = "1";
 	/**订单状态：待发货*/
-	public static final String ORDER_STATUS_AWAIT_SENT = "2";
+	public static final String ORDER_STATUS_AWAIT_SEND = "2";
+	/**订单状态：送货中*/
+	public static final String ORDER_STATUS_SENDING = "3";
 	/**订单状态：待清算*/
-	public static final String ORDER_STATUS_AWAIT_SETTLE = "3";
+	public static final String ORDER_STATUS_AWAIT_SETTLE = "4";
 	/**订单状态：待打款*/
-	public static final String ORDER_STATUS_AWAIT_MAKE_MONEY = "4";
+	public static final String ORDER_STATUS_AWAIT_MAKE_MONEY = "5";
 	/**订单状态：结束*/
 	public static final String ORDER_STATUS_FINISH = "9";
 	/**订单状态：取消*/
