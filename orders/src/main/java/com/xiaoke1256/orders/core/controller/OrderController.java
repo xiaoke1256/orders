@@ -37,6 +37,7 @@ public class OrderController {
 	private OrederService orederService;
 	
 	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
+	@ResponseBody
 	public com.xiaoke1256.orders.core.dto.SubOrder orderDetail(@PathVariable("orderNo") String orderNo){
 		SubOrder order = orederService.getSubOrder(orderNo);
 		return covertToVo(order);

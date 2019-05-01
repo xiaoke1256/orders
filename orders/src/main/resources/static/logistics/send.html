@@ -20,7 +20,7 @@
   });
   
   function initSendPage(orderNo){
-	  $('input[name=orderNo]').val(orderNo);
+	  $('#sendTable input[name=orderNo]').val(orderNo);
 	  $.ajax({
 		  url:"orders/"+orderNo,
 		  type:"GET",
@@ -29,6 +29,7 @@
 			  $('#productsTd').html(result.productCodes);
 			  $('#totalAmtTd').html(result.totalAmt/1000);
 			  $('#storeNoTd').html(result.storeNo);
+			  $('#carriageAmtTd').html(result.carriageAmt/1000);
 		  },
 		  error:function(resp,errMsg,errorThrown){
 			  alert("查询错误："+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")); 
@@ -60,25 +61,29 @@
 		<button type="button" id="searchBtn" >查询</button>
 		 -->
 		<input type="hidden" name="orderNo" value="" >
-		<table id="orderTable" border="1" class="listTable">
+		<table id="sendTable" border="1" class="listTable">
 			<tr>
-				<th>ORDER NO</th>
+				<th>订单号</th>
 				<td id="orderNoTd" ></td>
 			</tr>
 			<tr>
-				<th>PRODUCTS</th>
+				<th>购买商品</th>
 				<td id="productsTd" ></td>
 			</tr>
 			<tr>
-				<th>TOTAL AMT</th>
+				<th>订单总额</th>
 				<td id="totalAmtTd"></td>
 			</tr>
 			<tr>
-				<th>STORE NO</th>
+				<th>其中物流费用</th>
+				<td id="carriageAmtTd"></td>
+			</tr>
+			<tr>
+				<th>商铺号</th>
 				<td id="storeNoTd"></td>
 			</tr>
 			<tr>
-				<th>MEMO</th>
+				<th>备忘</th>
 				<td id="memoTd"></td>
 			</tr>
 			<tr>
