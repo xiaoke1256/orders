@@ -23,6 +23,7 @@ public class LogisticsService {
 	 * @param loOrderNo 物流单号
 	 */
 	public void submitLoOrder(String subOrderNo,String companyCode,String loOrderNo) {
-		
+		//保存物流单信息
+		//改变订单状态
 	}
 }
