@@ -16,9 +16,25 @@
 	 $('#closeBtn').click(function(){
 		 $('.modal-close').click();
 	 });
-	  
-	  var orderNo = 
+	 
   });
+  
+  function initSendPage(orderNo){
+	  $('input[name=orderNo]').val(orderNo);
+	  $.ajax({
+		  url:"orders/"+orderNo,
+		  type:"GET",
+		  success:function(result){
+			  $('#orderNoTd').html(orderNo);
+			  $('#productsTd').html(result.productCodes);
+			  $('#totalAmtTd').html(result.totalAmt/1000);
+			  $('#storeNoTd').html(result.storeNo);
+		  },
+		  error:function(resp,errMsg,errorThrown){
+			  alert("查询错误："+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")); 
+		  }
+	  });
+  }
 
   </script>
   
@@ -43,6 +59,7 @@
 		</select>
 		<button type="button" id="searchBtn" >查询</button>
 		 -->
+		<input type="hidden" name="orderNo" value="" >
 		<table id="orderTable" border="1" class="listTable">
 			<tr>
 				<th>ORDER NO</th>

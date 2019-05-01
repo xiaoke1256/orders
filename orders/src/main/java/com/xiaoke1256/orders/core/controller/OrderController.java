@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,9 +36,10 @@ public class OrderController {
 	@Autowired
 	private OrederService orederService;
 	
-	@RequestMapping(value="/",method={RequestMethod.GET})
-	public String toIndex(){
-		return "orders/index";
+	@RequestMapping(value="/{orderNo}",method={RequestMethod.GET})
+	public com.xiaoke1256.orders.core.dto.SubOrder orderDetail(@PathVariable("orderNo") String orderNo){
+		SubOrder order = orederService.getSubOrder(orderNo);
+		return covertToVo(order);
 	}
 	
 	@RequestMapping(value="/place",method={RequestMethod.POST})

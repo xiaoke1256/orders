@@ -387,4 +387,8 @@ public class OrederService {
 		return page;
 	}
 	
+	public SubOrder getSubOrder(String orderNo) {
+		return entityManager.find(SubOrder.class, orderNo);
+	}
+	
 }

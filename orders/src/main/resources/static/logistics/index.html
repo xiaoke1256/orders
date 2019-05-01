@@ -17,9 +17,13 @@
 		//当点击“发货”
 	    $('#orderTable').on('click', '.send', function (e) {
 	        e.preventDefault();
+	        var orderNo = $(this).attr('orderNo');
 	        $(this).openModal({
 	            title: 'SEND' ,
-	            width:500
+	            width:500,
+	            onLoad: function () {
+	            	initSendPage(orderNo);
+	            }
 	        });
 	    });
 
@@ -90,7 +94,7 @@
 	</header>
 	<br>
 	<div id="content" class="content">
-		<form action="payOrders/query" name="searchForm" >
+		<form action="orders/searchForLo" name="searchForm" >
 		<input type="hidden" name="pageNo" value="1" >
 		订单号：<input type="text" name="orderNo" id="orderNo" >
 		商户号：<input type="text" name="storeNo" id="storeNo" >
