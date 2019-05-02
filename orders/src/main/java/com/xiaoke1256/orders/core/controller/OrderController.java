@@ -70,7 +70,7 @@ public class OrderController {
 	@RequestMapping(value="/searchForLo",method={RequestMethod.GET})
 	@ResponseBody
 	public RespMsg searchOrdersForLogistics(OrderCondition condition) {
-		condition.setStatuses(new String[] {SubOrder.ORDER_STATUS_AWAIT_SENT,SubOrder.ORDER_STATUS_AWAIT_ACCEPT});
+		condition.setStatuses(new String[] {SubOrder.ORDER_STATUS_AWAIT_SEND,SubOrder.ORDER_STATUS_AWAIT_ACCEPT});
 		QueryResult<SubOrder> queryResult = orederService.searchOrderByCondition(condition);
 		List<com.xiaoke1256.orders.core.dto.SubOrder> voList = new ArrayList<com.xiaoke1256.orders.core.dto.SubOrder>();
 		for(SubOrder subOrder:queryResult.getResultList()) {
