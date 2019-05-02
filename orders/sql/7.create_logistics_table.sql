@@ -8,3 +8,5 @@ create table LO_ORDER
   insert_time TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null DEFAULT NOW() comment '修改时间'
 ) comment='物流单表';
+
+CREATE UNIQUE INDEX IDX_COMPANY_LO_ORDER_NO ON LO_ORDER(company_code,lo_order_no);
