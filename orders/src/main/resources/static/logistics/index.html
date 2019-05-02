@@ -29,6 +29,21 @@
 
 	});
   
+  /*物流公司。TODO 以后要放到后台*/
+  loCompanies = {
+  	"0001":"邮政物流",
+  	"0002":"中通物流",
+  	"0003":"德邦快递",
+  	"0004":"华宇快运",
+  	"0005":"圆通物流",
+  	"0006":"佳吉物流",
+  	"0007":"新邦物流",
+  	"0008":"远成物流",
+  	"0009":"宅急送",
+  	"0010":"中铁快运",
+  	"0011":"中远物流",
+  };
+  
   $(function(){
 	  
 	  //初始化列表
@@ -66,7 +81,7 @@
 				  var innerHtml = '<tr> ';
 				  innerHtml+='<td>'+order.orderNo+'</td>';
 				  innerHtml+='<td>'+order.productCodes+'</td>';
-				  innerHtml+='<td>'+(order.totalAmt/1000)+'</td>';
+				  innerHtml+='<td>￥'+(order.totalAmt/1000)+'</td>';
 				  innerHtml+='<td>'+order.storeNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
