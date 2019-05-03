@@ -248,7 +248,7 @@ public class OrederService {
 			.append(StringUtils.leftPad(String.valueOf(second), 2, '0'));
 		
 		long nanoSecode = System.nanoTime();//这是纳秒，需要转成微妙。
-		int microSecond = ((int)(nanoSecode/1000))%1000;
+		int microSecond = (int)((nanoSecode/1000)%1000);
 		orderNo.append(StringUtils.leftPad(String.valueOf(microSecond), 3, '0'));
 		
 		orderNo.append(StringUtils.leftPad(Base32.encode(RandomUtils.nextInt(32*32)),2,'0'));
