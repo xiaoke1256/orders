@@ -69,4 +69,11 @@ public class DateUtil {
 		return calender.getTime();
 	}
 	
+	public static Date addDays(Date date, int num) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DAY_OF_YEAR, num);
+		return cal.getTime();
+	}
+	
 }
