@@ -34,7 +34,7 @@ public class LogisticsService {
 	 */
 	public void submitLoOrder(String subOrderNo,String companyCode,String loOrderNo) {
 		//检查订单状态
-		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo,LockModeType.WRITE);
+		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo,LockModeType.PESSIMISTIC_WRITE);
 		if(subOrder==null) {
 			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
 		}

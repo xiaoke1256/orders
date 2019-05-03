@@ -66,7 +66,7 @@ public class PaymentService {
 	public void pay(String payOrderNo,String thirdOrderNo,String payType) {
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		
-		entityManager.refresh(payOrder, LockModeType.WRITE);
+		entityManager.refresh(payOrder, LockModeType.PESSIMISTIC_WRITE);
 		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {
 			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
