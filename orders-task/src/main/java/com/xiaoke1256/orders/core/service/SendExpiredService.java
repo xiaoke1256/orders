@@ -26,9 +26,9 @@ public class SendExpiredService {
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
-	public void sendExpired(SubOrder subOrder) {
+	public void sendExpired(String subOrderNo) {
 		//检查订单状态
-		entityManager.refresh(subOrder, LockModeType.PESSIMISTIC_WRITE);
+		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo, LockModeType.PESSIMISTIC_WRITE);
 		if(subOrder==null) {
 			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
 		}

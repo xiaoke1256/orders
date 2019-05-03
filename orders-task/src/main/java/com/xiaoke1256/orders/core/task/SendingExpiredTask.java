@@ -40,7 +40,7 @@ public class SendingExpiredTask {
 			logger.info("Start send expird task.");
 			List<SubOrder> orders = sendExpiredService.findExpiredOrders(resultSize);
 			for(SubOrder order:orders) {
-				sendExpiredService.sendExpired(order);
+				sendExpiredService.sendExpired(order.getOrderNo());
 			}
 			logger.info("End of send expird task.");
 		}catch(InterruptedException e) {
