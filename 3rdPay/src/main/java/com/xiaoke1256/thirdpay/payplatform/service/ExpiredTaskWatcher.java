@@ -10,7 +10,7 @@ import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
  *
  */
 @Component
-public class ExporedTaskWatcher extends MasterWatcher {
+public class ExpiredTaskWatcher extends MasterWatcher {
 	
 	private final String NODE_PATH = "/zookeeper/3rdpay/expired_order/master";
 

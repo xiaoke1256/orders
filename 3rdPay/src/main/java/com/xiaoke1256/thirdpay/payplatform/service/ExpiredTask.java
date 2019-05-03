@@ -19,7 +19,7 @@ public class ExpiredTask {
 	private static final Logger logger = LoggerFactory.getLogger(ExpiredTask.class);
 	
 	@Autowired
-	private ExporedTaskWatcher exporedTaskWatcher;
+	private ExpiredTaskWatcher exporedTaskWatcher;
 	
 	@Autowired
 	private ThirdPayService thirdPayService;
