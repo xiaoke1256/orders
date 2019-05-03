@@ -32,6 +32,7 @@ public class ExpiredTask {
 		try {
 			if(!exporedTaskWatcher.toBeMast()) {
 				logger.debug("I'm not master. Do nothong.");
+				return;
 			}
 			logger.debug("I'm master .Doing the task.");
 			//查出超时的订单。
