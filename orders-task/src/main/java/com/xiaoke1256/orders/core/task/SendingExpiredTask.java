@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.core.service.SendExpiredService;
@@ -16,6 +17,7 @@ import com.xiaoke1256.orders.core.service.SendExpiredService;
  * @author Administrator
  *
  */
+@Component
 public class SendingExpiredTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SendingExpiredTask.class);
@@ -32,8 +34,9 @@ public class SendingExpiredTask {
 	@Scheduled(cron="${logistics.send_expired.task.corn}")
 	public void sendExpired() {
 		try {
-			if(!sendingExpiredTaskWatcher.toBeMast())
+			if(!sendingExpiredTaskWatcher.toBeMast()) {
 				return;
+			}
 			logger.info("Start send expird task.");
 			List<SubOrder> orders = sendExpiredService.findExpiredOrders(resultSize);
 			for(SubOrder order:orders) {
