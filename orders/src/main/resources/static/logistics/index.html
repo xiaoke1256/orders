@@ -51,6 +51,49 @@
 	  //搜索数据
 	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
 	  
+	  var sendingNum = 0;//正在处理的定单数量。
+	  $('#bathSendBtn').click(function(){
+		  var companyCodes = Object.keys(loCompanies);
+		  $('#orderTable>tbody>tr').each(function(){
+			  $btn = $(this).find('a.send');
+			  var subOrderNo = $btn.attr('orderNo');
+			  var companyCode = companyCodes[Math.floor(Math.random()*companyCodes.length)];
+			  var loOrderNo = companyCode.substring(2)+new Date().format('yyyyMMdd')+Math.floor(Math.random()*100000000)
+			  var data = {subOrderNo:subOrderNo,companyCode:companyCode,loOrderNo:loOrderNo};
+			  sendingNum++;
+			  $.ajax({
+				  url:"logistics/submit",
+				  data:JSON.stringify(data),
+				  type:"POST",
+				  contentType: "application/json; charset=utf-8",
+				  headers: {'Content-Type': 'application/json'},  
+				  success:function(ret){
+				      if("00"!=ret.code){
+				    	  $("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");
+				          return;
+				      }
+				      $("#console").append("<font color=\"green\">发货成功，定单号："+subOrderNo+"，物流单号:"+loOrderNo+"</font><br>"); 
+				      sendingNum--;
+				      if(sendingNum<=0)
+				      	refreshPage();//刷新列表
+				  },
+				  error:function(resp,errMsg,errorThrown){
+					  $("#console").append("<font color=\"red\">"+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");
+				  }
+			  });
+		  });
+	  });
+	  
+	  /**自动发货*/
+	  $('#autoSend').click(function(){
+		  if(this.checked){
+			  autoSendIntervalId = setInterval(function(){if(sendingNum>0)return;$('#bathSendBtn').click();},60000);
+		  }else{
+			  if(autoSendIntervalId)
+			  	clearInterval(autoSendIntervalId);
+		  }
+	  });
+	  
   });
   
 	  
@@ -142,8 +185,8 @@
 			
 		</table>
 		<br>
-		<button id="bathPayBtn" type="button">批量发货</button>
-		<input type="checkbox" value="on" id="autoPay" >自动发货(每分钟触发一次发货)。
+		<button id="bathSendBtn" type="button">批量发货</button>
+		<input type="checkbox" value="on" id="autoSend" >自动发货(每分钟触发一次发货)。
 		</form>
 		
 		<br>
