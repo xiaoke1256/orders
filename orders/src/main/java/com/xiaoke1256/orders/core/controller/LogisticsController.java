@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.ErrMsg;
@@ -60,4 +61,25 @@ public class LogisticsController {
 		}
 	}
 	
+	/**
+	 * 确认收货
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/confirmReceived")
+	public RespMsg confirmReceived(@RequestParam("subOrderNo") String subOrderNo) {
+		try {
+			if(StringUtils.isEmpty(subOrderNo)) {
+				throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"SubOrderNo can not be null.");
+			}
+			logisticsService.confirmReceived(subOrderNo);
+			return RespMsg.SUCCESS;
+		}catch(AppException e) {
+			logger.error(e.getMessage(), e);
+			return new ErrMsg(e);
+		}catch(Exception e) {
+			logger.error(e.getMessage(), e);
+			return new ErrMsg(e);
+		}
+	}
 }

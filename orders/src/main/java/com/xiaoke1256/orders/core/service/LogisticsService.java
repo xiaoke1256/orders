@@ -74,4 +74,21 @@ public class LogisticsService {
 			return list.get(0);
 		return null;
 	}
+	
+	public void confirmReceived(String subOrderNo) {
+		//检查订单状态
+		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo,LockModeType.PESSIMISTIC_WRITE);
+		if(subOrder==null) {
+			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
+		}
+		if(!SubOrder.ORDER_STATUS_SENDING.equals(subOrder.getStatus())) {
+			logger.error("Wrong order status!(order no is {}, order status is {})",subOrder.getOrderNo(),subOrder.getStatus());
+			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
+		}
+		
+		//改变订单状态
+		subOrder.setStatus(SubOrder.ORDER_STATUS_AWAIT_SETTLE);
+		subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		entityManager.merge(subOrder);
+	}
 }
