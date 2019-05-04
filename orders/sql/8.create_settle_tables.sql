@@ -19,7 +19,7 @@ create table SETTLEMENT_STATEMENT
 create table SETTLEMENT_STATEMENT_ITEM
 (
   ITEM_ID BIGINT primary key not null auto_increment comment '结算单项主键',
-  ORDER_NO not null comment '订单号',
+  ORDER_NO VARCHAR(20) not null comment '订单号',
   TOTAL_AMT DECIMAL(25) comment '订单总额',
   COMMISSION DECIMAL(20) comment '佣金',
   OTHER_CHARGE DECIMAL(20) comment '其他扣除',
