@@ -1,7 +1,8 @@
 --与清算有关的业务表
-create table SETTLEMENT_STATEMENT
+
+create table SETTLE_STATEMT
 (
-  SETTLEMENT_ID BIGINT primary key not null auto_increment comment '结算单主键',
+  SETTLE_ID BIGINT primary key not null auto_increment comment '结算单主键',
   YEAR char(4) not null comment '年份',
   MONTH char(2) not null comment '月份',
   STORE_NO VARCHAR(18) not null comment '商铺号',
@@ -16,9 +17,10 @@ create table SETTLEMENT_STATEMENT
   UPDATE_TIME TIMESTAMP not null DEFAULT NOW() comment '修改时间'
 ) comment='结算单表';
 
-create table SETTLEMENT_STATEMENT_ITEM
+create table SETTLE_STATEMT_ITEM
 (
   ITEM_ID BIGINT primary key not null auto_increment comment '结算单项主键',
+  SETTLE_ID BIGINT not null comment '结算单主键',
   ORDER_NO VARCHAR(20) not null comment '订单号',
   TOTAL_AMT DECIMAL(25) comment '订单总额',
   COMMISSION DECIMAL(20) comment '佣金',
