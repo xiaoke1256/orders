@@ -2,8 +2,8 @@ package com.xiaoke1256.orders.core.controller;
 
 import java.math.BigDecimal;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 public class OrderPlaceResponse extends RespMsg implements java.io.Serializable {
 	/**
@@ -14,9 +14,9 @@ public class OrderPlaceResponse extends RespMsg implements java.io.Serializable 
 	
 	
 	public OrderPlaceResponse() {
-		super(ErrorCode.SUCCESS);
+		super(RespCode.SUCCESS);
 	}
-	public OrderPlaceResponse(ErrorCode errorCode) {
+	public OrderPlaceResponse(RespCode errorCode) {
 		super(errorCode);
 	}
 	public OrderPlaceResponse(String code, String msg) {

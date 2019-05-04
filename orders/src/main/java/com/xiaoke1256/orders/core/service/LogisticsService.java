@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.BusinessException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.LoOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
 
@@ -36,17 +36,17 @@ public class LogisticsService {
 		//检查订单状态
 		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo,LockModeType.PESSIMISTIC_WRITE);
 		if(subOrder==null) {
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
 		}
 		if(!SubOrder.ORDER_STATUS_AWAIT_SEND.equals(subOrder.getStatus())
 				&&!SubOrder.ORDER_STATUS_AWAIT_ACCEPT.equals(subOrder.getStatus())) {
 			logger.error("Wrong order status!(order no is {}, order status is {})",subOrder.getOrderNo(),subOrder.getStatus());
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
 		}
 		//同一物流公司物流单号不能重复
 		LoOrder order = findByCompanyAndNo(companyCode,loOrderNo);
 		if(order!=null)
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"LoOrderNo can not repeat in same company.","同一物流公司下，物流单号不能重复。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"LoOrderNo can not repeat in same company.","同一物流公司下，物流单号不能重复。");
 		//保存物流单信息
 		order = new LoOrder();
 		order.setCompanyCode(companyCode);
@@ -79,11 +79,11 @@ public class LogisticsService {
 		//检查订单状态
 		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo,LockModeType.PESSIMISTIC_WRITE);
 		if(subOrder==null) {
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
 		}
 		if(!SubOrder.ORDER_STATUS_SENDING.equals(subOrder.getStatus())) {
 			logger.error("Wrong order status!(order no is {}, order status is {})",subOrder.getOrderNo(),subOrder.getStatus());
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
 		}
 		
 		//改变订单状态

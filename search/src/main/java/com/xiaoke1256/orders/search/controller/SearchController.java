@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.page.QueryResult;
@@ -67,7 +66,7 @@ public class SearchController {
 			return new SearchResult("0","success!",searchFunction(qb,condition.getPageNo(),condition.getPageSize()));
 		}catch(Exception e) {
 			e.printStackTrace();
-			ErrMsg error = new ErrMsg("error",e.getMessage());
+			RespMsg error = new RespMsg("error",e.getMessage());
 			return error;
 		}
 	}

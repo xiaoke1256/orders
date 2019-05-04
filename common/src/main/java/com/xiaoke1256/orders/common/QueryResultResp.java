@@ -2,7 +2,6 @@ package com.xiaoke1256.orders.common;
 
 import java.util.List;
 
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.page.QueryResult;
 
 public class QueryResultResp<T> extends RespMsg {
@@ -27,7 +26,7 @@ public class QueryResultResp<T> extends RespMsg {
 		super();
 	}
 	
-	public QueryResultResp(ErrorCode errorCode) {
+	public QueryResultResp(RespCode errorCode) {
 		super(errorCode);
 	}
 
@@ -36,7 +35,7 @@ public class QueryResultResp<T> extends RespMsg {
 	}
 
 	public QueryResultResp(QueryResult<T> queryResult) {
-		super(ErrorCode.SUCCESS);
+		super(RespCode.SUCCESS);
 		this.pageNo = queryResult.getPageNo();
 		this.pageSize = queryResult.getPageSize();
 		this.totalCount = queryResult.getTotalCount();

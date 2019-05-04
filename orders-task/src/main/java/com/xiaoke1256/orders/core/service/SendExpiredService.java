@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.BusinessException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.SubOrder;
 
@@ -30,11 +30,11 @@ public class SendExpiredService {
 		//检查订单状态
 		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo, LockModeType.PESSIMISTIC_WRITE);
 		if(subOrder==null) {
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
 		}
 		if(!SubOrder.ORDER_STATUS_SENDING.equals(subOrder.getStatus())) {
 			logger.error("Wrong order status!(order no is {}, order status is {})",subOrder.getOrderNo(),subOrder.getStatus());
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
 		}
 		
 		//改变订单状态

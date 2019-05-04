@@ -24,12 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.common.utils.RedisUtils;
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.client.ProductQueryClient;
@@ -114,7 +113,7 @@ public class SecKillController {
 			return new QueryResultResp<ProductWithStorage>(result);
 		}catch (Exception ex) {
 			logger.error(ex.getMessage(),ex);
-			return new ErrMsg("99",ex.getMessage());
+			return new RespMsg("99",ex.getMessage());
 		}
 	}
 	
@@ -154,7 +153,7 @@ public class SecKillController {
 	@RequestMapping(value="/place",method={RequestMethod.POST})
 	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request) {
 		if(request.getProductMap().isEmpty()) {
-			return new ErrMsg(ErrorCode.BUSSNESS_ERROR.getCode(),"空订单！");
+			return new RespMsg(RespCode.BUSSNESS_ERROR.getCode(),"空订单！");
 		}
 		
 		Jedis conn = RedisUtils.connect();
@@ -220,11 +219,11 @@ public class SecKillController {
 		
 		}catch(AppException ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}catch(Exception ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}finally {
 			conn.close();
@@ -256,11 +255,11 @@ public class SecKillController {
 			return respMsg;
 		}catch(BusinessException ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}catch(Exception ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}
 	}
@@ -288,11 +287,11 @@ public class SecKillController {
 			return respMsg;
 		}catch(BusinessException ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}catch(Exception ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}
 	}

@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.product.api.SecKillSupportService;
 import com.xiaoke1256.orders.product.service.ProductService;
 
@@ -29,7 +28,7 @@ public class SecKillSupportController implements SecKillSupportService {
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(@PathVariable("productCode") String productCode) {
 		if(StringUtils.isBlank(productCode))
-			return new ErrMsg(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"error:ProductCode can not be null.");
+			return new RespMsg(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"error:ProductCode can not be null.");
 		productService.openSecKill(productCode);
 		return RespMsg.SUCCESS;
 		

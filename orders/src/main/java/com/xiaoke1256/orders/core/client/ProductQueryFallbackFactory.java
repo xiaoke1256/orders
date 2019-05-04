@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
@@ -26,19 +26,19 @@ public class ProductQueryFallbackFactory implements FallbackFactory<ProductQuery
 			@Override
 			public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition) {
 				logger.error("connect fail.by hystrix.",cause);
-				return new SimpleProductQueryResultResp(ErrorCode.CONNECT_ERROR);
+				return new SimpleProductQueryResultResp(RespCode.CONNECT_ERROR);
 			}
 
 			@Override
 			public SimpleProductQueryResultResp searchProductByCondition(Map<String, Object> condition) {
 				logger.error("connect fail.by hystrix.",cause);
-				return new SimpleProductQueryResultResp(ErrorCode.CONNECT_ERROR);
+				return new SimpleProductQueryResultResp(RespCode.CONNECT_ERROR);
 			}
 
 			@Override
 			public SimpleProduct getSimpleProductByCode(String productCode) {
 				logger.error("connect fail.by hystrix.",cause);
-				throw new AppException(ErrorCode.CONNECT_ERROR);
+				throw new AppException(RespCode.CONNECT_ERROR);
 			}
 			
 		};

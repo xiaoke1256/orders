@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.common.exception;
+package com.xiaoke1256.orders.common;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Administrator
  *
  */
-public class ErrorCode implements Serializable {
+public class RespCode implements Serializable {
 
 	/**
 	 * 
@@ -22,11 +22,11 @@ public class ErrorCode implements Serializable {
 	 * 禁用构造方法
 	 */
 	@SuppressWarnings("unused")
-	private ErrorCode() {
+	private RespCode() {
 		
 	}
 
-	protected ErrorCode(String code, String msg) {
+	protected RespCode(String code, String msg) {
 		super();
 		this.code = code;
 		this.msg = msg;
@@ -56,7 +56,7 @@ public class ErrorCode implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ErrorCode other = (ErrorCode) obj;
+		RespCode other = (RespCode) obj;
 		if (code == null) {
 			if (other.code != null)
 				return false;
@@ -66,27 +66,27 @@ public class ErrorCode implements Serializable {
 	}
 
 	/**错误代码:操作成功 */
-	public static final ErrorCode SUCCESS = new ErrorCode("00","Success!");
+	public static final RespCode SUCCESS = new RespCode("00","Success!");
 	
 	/**错误代码:业务异常 */
-	public static final ErrorCode BUSSNESS_ERROR = new ErrorCode("80","Bussness exception!");
+	public static final RespCode BUSSNESS_ERROR = new RespCode("80","Bussness exception!");
 	
 	/**错误代码:网络连接异常 */
-	public static final ErrorCode CONNECT_ERROR = new ErrorCode("11","Net connect error!");
+	public static final RespCode CONNECT_ERROR = new RespCode("11","Net connect error!");
 	
 	/**错误代码:空参数错误 */
-	public static final ErrorCode EMPTY_PARAMTER_ERROR = new ErrorCode("21","Some input paramter can not be null!");
+	public static final RespCode EMPTY_PARAMTER_ERROR = new RespCode("21","Some input paramter can not be null!");
 	
 	/**错误代码:错误的输入参数 */
-	public static final ErrorCode WRONG_PARAMTER_ERROR = new ErrorCode("22","Can not find any data by the paramter!");
+	public static final RespCode WRONG_PARAMTER_ERROR = new RespCode("22","Can not find any data by the paramter!");
 	
 	/**错误代码:并发异常 */
-	public static final ErrorCode CONCURRENCY_ERROR = new ErrorCode("23","Concurrency error!");
+	public static final RespCode CONCURRENCY_ERROR = new RespCode("23","Concurrency error!");
 	
 	/**错误代码:格式错误 */
-	public static final ErrorCode FORMAT_ERROR = new ErrorCode("31","Format error!");
+	public static final RespCode FORMAT_ERROR = new RespCode("31","Format error!");
 	
 	/**错误代码:其他未知异常 */
-	public static final ErrorCode OTHER_ERROR = new ErrorCode("99","Not described exception!");
+	public static final RespCode OTHER_ERROR = new RespCode("99","Not described exception!");
 	
 }

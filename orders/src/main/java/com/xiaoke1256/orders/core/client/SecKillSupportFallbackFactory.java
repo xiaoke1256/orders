@@ -4,9 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 import feign.hystrix.FallbackFactory;
 
@@ -22,13 +21,13 @@ public class SecKillSupportFallbackFactory implements FallbackFactory<SecKillSup
 			@Override
 			public RespMsg openSecKill(String productCode) {
 				logger.error("connect fail.by hystrix.",cause);
-				return new ErrMsg(ErrorCode.CONNECT_ERROR);
+				return new RespMsg(RespCode.CONNECT_ERROR);
 			}
 
 			@Override
 			public RespMsg closeSecKill(String productCode) {
 				logger.error("connect fail.by hystrix.",cause);
-				return new ErrMsg(ErrorCode.CONNECT_ERROR);
+				return new RespMsg(RespCode.CONNECT_ERROR);
 			}
 			
 		};

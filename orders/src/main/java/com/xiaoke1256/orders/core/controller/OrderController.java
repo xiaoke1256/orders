@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.page.QueryResult;
@@ -53,11 +52,11 @@ public class OrderController {
 			return response ;
 		}catch(AppException ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}catch(Exception ex){
 			logger.error(ex.getMessage(), ex);
-			ErrMsg error = new ErrMsg(ex);
+			RespMsg error = new RespMsg(ex);
 			return error;
 		}
 	}

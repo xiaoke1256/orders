@@ -1,7 +1,7 @@
 package com.xiaoke1256.orders.core.dto;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 public class PayConfig extends RespMsg {
 	/**
@@ -15,7 +15,7 @@ public class PayConfig extends RespMsg {
 	
 	
 	public PayConfig(String pateformPayAccount,String thirdpaySiteUrl) {
-		super(ErrorCode.SUCCESS);
+		super(RespCode.SUCCESS);
 		this.pateformPayAccount = pateformPayAccount;
 		this.thirdpaySiteUrl = thirdpaySiteUrl;
 	}

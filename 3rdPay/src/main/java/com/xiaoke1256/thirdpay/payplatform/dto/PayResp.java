@@ -1,7 +1,7 @@
 package com.xiaoke1256.thirdpay.payplatform.dto;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 public class PayResp extends RespMsg {
 
@@ -12,7 +12,7 @@ public class PayResp extends RespMsg {
 	
 	
 	
-	public PayResp(ErrorCode errorCode, String verifyCode, String orderNo) {
+	public PayResp(RespCode errorCode, String verifyCode, String orderNo) {
 		super(errorCode);
 		this.verifyCode = verifyCode;
 		this.orderNo = orderNo;

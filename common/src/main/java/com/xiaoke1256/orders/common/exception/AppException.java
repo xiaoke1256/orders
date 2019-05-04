@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.common.exception;
 
+import com.xiaoke1256.orders.common.RespCode;
+
 /**
  * Orders应用内的通用异常。
  * @author Administrator
@@ -21,10 +23,10 @@ public class AppException extends RuntimeException {
 
 	public AppException(String message, Throwable cause) {
 		super(message, cause);
-		errorCode=ErrorCode.OTHER_ERROR.getCode();
+		errorCode=RespCode.OTHER_ERROR.getCode();
 	}
 	
-	public AppException(ErrorCode errorCode) {
+	public AppException(RespCode errorCode) {
 		super(errorCode.getMsg());
 		this.errorCode=errorCode.getCode();
 		this.errorMsg = errorCode.getMsg();
@@ -32,18 +34,18 @@ public class AppException extends RuntimeException {
 
 	public AppException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		errorCode=ErrorCode.OTHER_ERROR.getCode();
+		errorCode=RespCode.OTHER_ERROR.getCode();
 	}
 
 	public AppException(String message) {
 		super(message);
-		errorCode=ErrorCode.OTHER_ERROR.getCode();
+		errorCode=RespCode.OTHER_ERROR.getCode();
 	}
 
 	public AppException(Throwable cause) {
 		super(cause);
-		errorCode=ErrorCode.OTHER_ERROR.getCode();
-		errorMsg = ErrorCode.OTHER_ERROR.getMsg();
+		errorCode=RespCode.OTHER_ERROR.getCode();
+		errorMsg = RespCode.OTHER_ERROR.getMsg();
 	}
 
 	public AppException(String errorCode, String errorMsg) {

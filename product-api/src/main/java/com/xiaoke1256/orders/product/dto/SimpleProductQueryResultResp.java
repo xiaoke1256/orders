@@ -1,7 +1,7 @@
 package com.xiaoke1256.orders.product.dto;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.QueryResultResp;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.page.QueryResult;
 
 public class SimpleProductQueryResultResp extends QueryResultResp<SimpleProduct> {
@@ -15,7 +15,7 @@ public class SimpleProductQueryResultResp extends QueryResultResp<SimpleProduct>
 		super();
 	}
 
-	public SimpleProductQueryResultResp(ErrorCode errorCode) {
+	public SimpleProductQueryResultResp(RespCode errorCode) {
 		super(errorCode);
 	}
 

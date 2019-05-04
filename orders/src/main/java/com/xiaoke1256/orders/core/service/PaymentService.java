@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.BusinessException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.bo.SubOrder;
@@ -68,14 +68,14 @@ public class PaymentService {
 		
 		entityManager.refresh(payOrder, LockModeType.PESSIMISTIC_WRITE);
 		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 		
 		//查一下该订单号 ，是否已用过。
 		PaymentTxn payment = this.getPaymentByThirdOrderNo(thirdOrderNo);
 		if(payment!=null) {
 			//TODO 有可能是黑客攻击事件，需要记录安全日志。
-			throw new BusinessException(ErrorCode.BUSSNESS_ERROR.getCode(),"The third order no has usered","重复使用已支付过的订单。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The third order no has usered","重复使用已支付过的订单。");
 		}
 		
 		

@@ -1,9 +1,9 @@
 package com.xiaoke1256.thirdpay.payplatform.dto;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 
 public class OrderResp extends RespMsg {
 
@@ -18,7 +18,7 @@ public class OrderResp extends RespMsg {
 		super();
 	}
 
-	public OrderResp(ErrorCode errorCode) {
+	public OrderResp(RespCode errorCode) {
 		super(errorCode);
 	}
 
@@ -27,14 +27,14 @@ public class OrderResp extends RespMsg {
 	}
 
 	public OrderResp(ThirdPayOrderDto order) {
-		super(ErrorCode.SUCCESS);
+		super(RespCode.SUCCESS);
 		this.order = order;
 	}
 	
 	public OrderResp(Exception ex) {
 		super();
-		this.setCode(ErrorCode.OTHER_ERROR.getCode());
-		this.setMsg(ErrorCode.OTHER_ERROR.getMsg());
+		this.setCode(RespCode.OTHER_ERROR.getCode());
+		this.setMsg(RespCode.OTHER_ERROR.getMsg());
 	}
 	
 	public OrderResp(AppException ex) {

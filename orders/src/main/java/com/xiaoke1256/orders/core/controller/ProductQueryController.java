@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.OStorage;
@@ -70,7 +69,7 @@ public class ProductQueryController {
 			return new QueryResultResp<ProductWithStorage>(result);
 		}catch (Exception ex) {
 			logger.error(ex.getMessage(),ex);
-			return new ErrMsg("99",ex.getMessage());
+			return new RespMsg("99",ex.getMessage());
 		}
 	}
 	

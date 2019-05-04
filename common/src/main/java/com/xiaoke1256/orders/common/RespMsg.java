@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.common;
 
-import com.xiaoke1256.orders.common.exception.ErrorCode;
+import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.common.exception.BusinessException;
 
 /**
  * Response message for restful request.
@@ -19,7 +20,7 @@ public class RespMsg implements java.io.Serializable {
 		this.msg = msg;
 	}
 	
-	public RespMsg(ErrorCode errorCode) {
+	public RespMsg(RespCode errorCode) {
 		super();
 		this.code = errorCode.getCode();
 		this.msg = errorCode.getMsg();
@@ -44,6 +45,27 @@ public class RespMsg implements java.io.Serializable {
 		this.msg = msg;
 	}
 	
-	public static final RespMsg SUCCESS = new RespMsg(ErrorCode.SUCCESS);
+	public static final RespMsg SUCCESS = new RespMsg(RespCode.SUCCESS);
+	
+	public RespMsg(Exception ex) {
+		super();
+		this.setCode(RespCode.OTHER_ERROR.getCode());
+		this.setMsg(RespCode.OTHER_ERROR.getMsg());
+	}
+	
+	public RespMsg(AppException ex) {
+		super();
+		this.setCode(ex.getErrorCode());
+		if(ex instanceof BusinessException)
+			this.setMsg(((BusinessException)ex).getShowMsg());
+		else
+			this.setMsg(ex.getErrorMsg());
+	}
+	
+	public RespMsg(BusinessException ex) {
+		super();
+		this.setCode(ex.getErrorCode());
+		this.setMsg(ex.getShowMsg());
+	}
 	
 }

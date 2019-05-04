@@ -13,10 +13,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.xiaoke1256.orders.common.ErrMsg;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.controller.OrderPlaceRequest;
-import com.xiaoke1256.orders.core.controller.OrderPlaceResponse;
 
 public class RestFullClientTest {
 	
@@ -59,8 +57,8 @@ public class RestFullClientTest {
 				request.setProductMap(productMap);
 				RespMsg respMsg = restTemplate.postForObject("http://localhost:8080/orders/orders/place", request, RespMsg.class);
 				//System.out.println("order no :"+response.getPayOrderNo());
-				if(respMsg instanceof ErrMsg) {
-					ErrMsg errMsg = (ErrMsg)respMsg;
+				if(RespMsg.SUCCESS.getCode().equals(respMsg.getCode())) {
+					RespMsg errMsg = (RespMsg)respMsg;
 					System.out.println("excpetion :"+errMsg.getMsg());
 					ressult.isError=true;
 				}

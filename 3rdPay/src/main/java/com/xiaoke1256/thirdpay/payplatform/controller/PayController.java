@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
@@ -66,10 +65,10 @@ public class PayController {
 				throw new IOException("支付失败。");//模拟5%的失败概率。
 			}
 			String verifyCode = makeVerifyCode(order.getOrderNo(),remark);
-			return new PayResp(ErrorCode.SUCCESS,verifyCode,order.getOrderNo());
+			return new PayResp(RespCode.SUCCESS,verifyCode,order.getOrderNo());
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ErrMsg(e);
+			return new RespMsg(e);
 		}
 	}
 	
@@ -117,17 +116,17 @@ public class PayController {
 				//支付失败
 				thirdPayService.fail(orderNo);
 			}else {
-				new ErrMsg(ErrorCode.WRONG_PARAMTER_ERROR);
+				new RespMsg(RespCode.WRONG_PARAMTER_ERROR);
 			}
 			
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<2) {
 				throw new IOException("通知失败。");//模拟2%的失败概率。
 			}
-			return new RespMsg(ErrorCode.SUCCESS);
+			return new RespMsg(RespCode.SUCCESS);
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ErrMsg(e);
+			return new RespMsg(e);
 		}
 	}
 	

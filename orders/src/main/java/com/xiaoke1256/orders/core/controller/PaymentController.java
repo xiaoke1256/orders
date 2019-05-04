@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.orders.core.bo.PayOrder;
@@ -73,7 +72,7 @@ public class PaymentController {
 			//解密校验信息。自己校验一下各项信息是否正确
 			if(!verify(orderNo,payOrderNo,verifyInfo)) {
 				//TODO 疑似黑客攻击，记录日志。
-				return new ErrMsg(ErrorCode.BUSSNESS_ERROR.getCode(),"订单校验失败，未完成支付。");
+				return new RespMsg(RespCode.BUSSNESS_ERROR.getCode(),"订单校验失败，未完成支付。");
 			}
 			//检查交易记录,
 			ThirdPayOrderDto order = thirdPaymentClient.getOrder(orderNo);
@@ -100,17 +99,17 @@ public class PaymentController {
 			} catch(Exception e) {
 				logger.error(e.getMessage(),e);
 			}
-			return new ErrMsg(ex);
+			return new RespMsg(ex);
 		}catch(AppException ex){
 			//失败也要通知第三方支付平台
 			logger.error(ex.getMessage(),ex);
 			thirdPaymentClient.acceptNote(orderNo, "FAIL");
-			return new ErrMsg(ex);
+			return new RespMsg(ex);
 		}catch(Exception ex){
 			//失败也要通知第三方支付平台
 			logger.error(ex.getMessage(),ex);
 			thirdPaymentClient.acceptNote(orderNo, "FAIL");
-			return new ErrMsg(ex);
+			return new RespMsg(ex);
 		}
 		
 	}
@@ -134,13 +133,13 @@ public class PaymentController {
 		}
 		
 		if(StringUtils.isEmpty(reason)) {
-			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
 		}
 		
 		//查到原交易记录
 		if(StringUtils.isEmpty(thirdOrderNo)
 				&& StringUtils.isEmpty(payOrderNo)) {
-			throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
 		}
 		
 		PaymentTxn orgTxn = null;
@@ -151,7 +150,7 @@ public class PaymentController {
 		}
 		if(orgTxn==null) {
 			logger.warn("Have not found the order by the orderNo.Maybe the order never input in our system.");
-			return new RespMsg(ErrorCode.SUCCESS.getCode(),"The order is not exist.");//订单不存在就视为已经取消了。
+			return new RespMsg(RespCode.SUCCESS.getCode(),"The order is not exist.");//订单不存在就视为已经取消了。
 		}
 		
 		//取消支付

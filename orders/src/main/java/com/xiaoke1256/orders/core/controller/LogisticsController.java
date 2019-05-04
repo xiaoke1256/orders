@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xiaoke1256.orders.common.ErrMsg;
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
-import com.xiaoke1256.orders.common.exception.ErrorCode;
 import com.xiaoke1256.orders.core.dto.LoOrderRequest;
 import com.xiaoke1256.orders.core.service.LogisticsService;
 
@@ -38,15 +37,15 @@ public class LogisticsController {
 		try {
 			String subOrderNo = request.getSubOrderNo();
 			if(StringUtils.isEmpty(subOrderNo)) {
-				throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"SubOrderNo can not be null.");
+				throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"SubOrderNo can not be null.");
 			}
 			String companyCode = request.getCompanyCode();
 			if(StringUtils.isEmpty(companyCode)) {
-				throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"CompanyCode can not be null.");
+				throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"CompanyCode can not be null.");
 			}
 			String loOrderNo = request.getLoOrderNo();
 			if(StringUtils.isEmpty(loOrderNo)) {
-				throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"LoOrderNo can not be null.");
+				throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"LoOrderNo can not be null.");
 			}
 			
 			logisticsService.submitLoOrder(subOrderNo, companyCode, loOrderNo);
@@ -54,10 +53,10 @@ public class LogisticsController {
 			return RespMsg.SUCCESS;
 		}catch(AppException e) {
 			logger.error(e.getMessage(), e);
-			return new ErrMsg(e);
+			return new RespMsg(e);
 		}catch(Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ErrMsg(e);
+			return new RespMsg(e);
 		}
 	}
 	
@@ -70,16 +69,16 @@ public class LogisticsController {
 	public RespMsg confirmReceived(@RequestParam("subOrderNo") String subOrderNo) {
 		try {
 			if(StringUtils.isEmpty(subOrderNo)) {
-				throw new AppException(ErrorCode.EMPTY_PARAMTER_ERROR.getCode(),"SubOrderNo can not be null.");
+				throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"SubOrderNo can not be null.");
 			}
 			logisticsService.confirmReceived(subOrderNo);
 			return RespMsg.SUCCESS;
 		}catch(AppException e) {
 			logger.error(e.getMessage(), e);
-			return new ErrMsg(e);
+			return new RespMsg(e);
 		}catch(Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ErrMsg(e);
+			return new RespMsg(e);
 		}
 	}
 }
