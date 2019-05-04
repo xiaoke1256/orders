@@ -1,4 +1,4 @@
---与清算有关的业务表
+-- 与清算有关的业务表
 
 create table SETTLE_STATEMT
 (
