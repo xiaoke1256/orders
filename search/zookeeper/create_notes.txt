@@ -1,0 +1,4 @@
+#初始化创建节点的命令：
+
+create /zookeeper zookeeper
+create /zookeeper/search search
