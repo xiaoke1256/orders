@@ -13,6 +13,7 @@ create table SETTLE_STATEMT
   OTHER_CHARGE DECIMAL(20) comment '其他扣除',
   PENDING_PAYMENT DECIMAL(20) comment '待结款',
   ALREADY_PAID DECIMAL(20) comment '已结款',
+  MEMO varchar(512) comment '备忘',
   INSERT_TIME TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   UPDATE_TIME TIMESTAMP not null DEFAULT NOW() comment '修改时间'
 ) comment='结算单表';

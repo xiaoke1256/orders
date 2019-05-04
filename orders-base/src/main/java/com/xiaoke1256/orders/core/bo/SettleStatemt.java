@@ -53,6 +53,9 @@ public class SettleStatemt {
 	@Column(name = "already_paid")
 	private BigDecimal alreadyPaid;
 	
+	@Column(name = "memo")
+	private String memo;
+	
 	@Column(name = "insert_time")
 	private Timestamp insertTime;
 	
@@ -124,6 +127,12 @@ public class SettleStatemt {
 	}
 	public void setAlreadyPaid(BigDecimal alreadyPaid) {
 		this.alreadyPaid = alreadyPaid;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 	public Timestamp getInsertTime() {
 		return insertTime;
