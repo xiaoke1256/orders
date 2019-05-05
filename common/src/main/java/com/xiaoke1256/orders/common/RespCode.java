@@ -83,6 +83,9 @@ public class RespCode implements Serializable {
 	/**错误代码:并发异常 */
 	public static final RespCode CONCURRENCY_ERROR = new RespCode("23","Concurrency error!");
 	
+	/**错误代码:并发异常 */
+	public static final RespCode STATUS_ERROR = new RespCode("24","Business object status error!");
+	
 	/**错误代码:格式错误 */
 	public static final RespCode FORMAT_ERROR = new RespCode("31","Format error!");
 	

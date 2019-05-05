@@ -18,8 +18,8 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table( name = "SETTLE_STATEMT_ITEM")
-public class SettleStatemtItem {
+@Table( name = "SETTLE_ITEM_ORDER")
+public class SettleItemOrder {
 	@Id
 	@Column(name = "item_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

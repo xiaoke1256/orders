@@ -60,6 +60,7 @@ public class LogisticsService {
 		//改变订单状态
 		subOrder.setStatus(SubOrder.ORDER_STATUS_SENDING);
 		subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		subOrder.setReceiveTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(subOrder);
 	}
 	

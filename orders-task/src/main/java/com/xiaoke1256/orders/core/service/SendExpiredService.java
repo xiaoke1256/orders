@@ -40,6 +40,7 @@ public class SendExpiredService {
 		//改变订单状态
 		subOrder.setStatus(SubOrder.ORDER_STATUS_AWAIT_SETTLE);
 		subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		subOrder.setReceiveTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(subOrder);
 	}
 	

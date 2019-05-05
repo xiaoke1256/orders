@@ -2,12 +2,17 @@ package com.xiaoke1256.orders.core.bo;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -18,6 +23,21 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "SETTLE_STATEMT")
 public class SettleStatemt {
+	/**
+	 * 状态：待打款
+	 */
+	public static final String STATUS_AWAIT_MAKE_MONEY = "0";
+	
+	/**
+	 * 状态：已打款
+	 */
+	public static final String STATUS_HAS_MADE_MONEY = "1";
+	
+	/**
+	 * 状态：废除
+	 */
+	public static final String STATUS_DISUSED = "9";
+	
 	@Id
 	@Column(name = "settle_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +81,10 @@ public class SettleStatemt {
 	
 	@Column(name = "update_time")
 	private Timestamp updateTime;
+	
+	@OneToMany(mappedBy = "settleStatemt",cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@OrderBy("orderNo ASC")
+	private Set<SettleItemOrder> settleItemOrders;
 	
 	public Long getSettleId() {
 		return settleId;
@@ -145,6 +169,12 @@ public class SettleStatemt {
 	}
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+	public Set<SettleItemOrder> getSettleItemOrders() {
+		return settleItemOrders;
+	}
+	public void setSettleItemOrders(Set<SettleItemOrder> settleItemOrders) {
+		this.settleItemOrders = settleItemOrders;
 	}
 	
 	

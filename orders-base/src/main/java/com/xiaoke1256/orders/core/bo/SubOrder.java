@@ -55,6 +55,9 @@ public class SubOrder {
 	@Column(name = "UPDATE_TIME")
 	private Timestamp updateTime;
 	
+	@Column(name = "receive_time")
+	private Timestamp receiveTime;
+	
 	@OneToMany(mappedBy = "subOrder",cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Set<OrderItem> orderItems;
 	
@@ -148,6 +151,12 @@ public class SubOrder {
 	}
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+	public Timestamp getReceiveTime() {
+		return receiveTime;
+	}
+	public void setReceiveTime(Timestamp receiveTime) {
+		this.receiveTime = receiveTime;
 	}
 	
 	

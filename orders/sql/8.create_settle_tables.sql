@@ -18,7 +18,7 @@ create table SETTLE_STATEMT
   UPDATE_TIME TIMESTAMP not null DEFAULT NOW() comment '修改时间'
 ) comment='结算单表';
 
-create table SETTLE_STATEMT_ITEM
+create table SETTLE_ITEM_ORDER
 (
   ITEM_ID BIGINT primary key not null auto_increment comment '结算单项主键',
   SETTLE_ID BIGINT not null comment '结算单主键',
@@ -28,4 +28,4 @@ create table SETTLE_STATEMT_ITEM
   OTHER_CHARGE DECIMAL(20) comment '其他扣除',
   INSERT_TIME TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   UPDATE_TIME TIMESTAMP not null DEFAULT NOW() comment '修改时间'
- ) comment='结算单项表';
+ ) comment='结算单项(订单类)表';
