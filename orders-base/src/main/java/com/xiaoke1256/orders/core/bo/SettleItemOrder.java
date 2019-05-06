@@ -27,7 +27,6 @@ public class SettleItemOrder {
 	
 	@ManyToOne
 	@JoinColumn(name="settle_id")
-	@Column(name = "settle_id", nullable = false)
 	private SettleStatemt settleStatemt;
 	
 	@Column(name = "order_no")

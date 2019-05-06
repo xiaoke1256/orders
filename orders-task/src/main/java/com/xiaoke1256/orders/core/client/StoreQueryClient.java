@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.xiaoke1256.orders.product.api.StoreQueryService;
 import com.xiaoke1256.orders.product.dto.Store;
 
-@FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory=StoreQueryFallbackFactory.class,path="store")
+@FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory=StoreQueryFallbackFactory.class,path="product")
 public interface StoreQueryClient extends StoreQueryService {
 
 	@Override

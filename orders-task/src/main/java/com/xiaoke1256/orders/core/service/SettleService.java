@@ -65,10 +65,18 @@ public class SettleService {
 			disableSettleStatemt(orgSettle);
 		}
 		
-		
 		//查待清算的订单。
-		SettleStatemt settleStatemt = new SettleStatemt();
 		List<SubOrder> orders = queryAwaitSettleOrders(storeNo,year,month);
+		if(orders==null || orders.isEmpty()) {
+			logger.info("The store(%s) has no orders to settle.",storeNo);
+			return;
+		}
+		
+		SettleStatemt settleStatemt = new SettleStatemt();
+		settleStatemt.setYear(year);
+		settleStatemt.setStoreNo(storeNo);
+		settleStatemt.setMonth(month);
+		
 		Set<SettleItemOrder> settleItemOrders = new HashSet<>();
 		//生成结算项
 		for(SubOrder order:orders) {
@@ -94,9 +102,9 @@ public class SettleService {
 		BigDecimal commission = BigDecimal.ZERO;
 		for(SettleItemOrder settleItemOrder:settleItemOrders) {
 			//计算订单总额合计
-			totalAmt.add(settleItemOrder.getTotalAmt());
+			totalAmt = totalAmt.add(settleItemOrder.getTotalAmt());
 			//计算佣金合计
-			commission.add(settleItemOrder.getCommission());
+			commission = commission.add(settleItemOrder.getCommission());
 		}
 		settleStatemt.setTotalAmt(totalAmt);
 		settleStatemt.setCommission(commission);
@@ -105,6 +113,7 @@ public class SettleService {
 		//计算待结款
 		settleStatemt.setPendingPayment(settleStatemt.getTotalAmt().subtract(settleStatemt.getCommission()).subtract(settleStatemt.getMonthlyCharge()));
 		settleStatemt.setAlreadyPaid(BigDecimal.ZERO);
+		settleStatemt.setStatus(SettleStatemt.STATUS_AWAIT_MAKE_MONEY);
 		
 		//保存
 		entityManager.persist(settleStatemt);
