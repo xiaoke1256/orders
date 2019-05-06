@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.util.DateUtil;
@@ -31,6 +32,10 @@ public class SettlementTask {
 	@Autowired
 	private SettleService settleService;
 	
+	/**
+	 * 定时触发
+	 */
+	@Scheduled(cron="${logistics.settle.task.corn}")
 	public void startSettlement() {
 		try {
 			if(!settlementTaskWatcher.toBeMast()) {
