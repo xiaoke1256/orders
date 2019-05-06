@@ -13,4 +13,8 @@
 	<select id="getByStoreNo" parameterType="string" resultMap="storeMap" >
 		select store_no,store_name,store_intro,insert_time,update_time from store where store_no=#{id}
 	</select>
+	
+	<select id="queryAllStores" resultMap="storeMap" >
+		select store_no,store_name,store_intro,insert_time,update_time from store 
+	</select>
 </mapper>

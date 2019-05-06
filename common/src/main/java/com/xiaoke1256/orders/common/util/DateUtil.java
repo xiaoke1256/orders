@@ -109,4 +109,11 @@ public class DateUtil {
 		return cal.getTime();
 	}
 	
+	public static Date addMonth(Date date, int num) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MONTH, num);
+		return cal.getTime();
+	}
+	
 }
