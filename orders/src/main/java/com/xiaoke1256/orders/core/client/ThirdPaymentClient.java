@@ -6,9 +6,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
-import com.xiaoke1256.orders.thirdpayplatform.dto.AckRequest;
-import com.xiaoke1256.orders.thirdpayplatform.dto.OrderResp;
-import com.xiaoke1256.orders.thirdpayplatform.dto.ThirdPayOrderDto;
+import com.xiaoke1256.thirdpay.payplatform.dto.AckRequest;
+import com.xiaoke1256.thirdpay.payplatform.dto.OrderResp;
+import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 
 /**
  * 第三方支付的客户

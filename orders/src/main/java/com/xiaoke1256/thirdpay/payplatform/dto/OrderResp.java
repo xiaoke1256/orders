@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.thirdpayplatform.dto;
+package com.xiaoke1256.thirdpay.payplatform.dto;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;

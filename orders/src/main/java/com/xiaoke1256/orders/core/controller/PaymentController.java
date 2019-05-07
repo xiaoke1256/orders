@@ -27,7 +27,7 @@ import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.core.dto.PaymentNoticeRequest;
 import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.PaymentService;
-import com.xiaoke1256.orders.thirdpayplatform.dto.ThirdPayOrderDto;
+import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 
 @RestController
 @RequestMapping("/payment")
