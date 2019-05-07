@@ -8,10 +8,12 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.thirdpay.payplatform.dto.AckRequest;
 import com.xiaoke1256.thirdpay.payplatform.dto.OrderResp;
+import com.xiaoke1256.thirdpay.payplatform.dto.PayRequest;
+import com.xiaoke1256.thirdpay.payplatform.dto.PayResp;
 import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 
 /**
- * 第三方支付的客户
+ * 第三方支付的客户端
  * @author Administrator
  *
  */
@@ -22,6 +24,10 @@ public class ThirdPaymentClient {
 	
 	@Value("${payment.remote.get_order.uri}")
 	private volatile String getUri;
+	
+	/**第三方支付平台的地址*/
+	@Value("${payment.3rdpay.site.url}")
+	private String thirdpaySiteUrl;
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	
@@ -42,5 +48,10 @@ public class ThirdPaymentClient {
 		}else {
 			throw new AppException(resp.getCode(),resp.getMsg());
 		}
+	}
+	
+	public PayResp pay( PayRequest payRequest) {
+		PayResp resp = restTemplate.postForObject(thirdpaySiteUrl, payRequest, PayResp.class);
+		return resp;
 	}
 }

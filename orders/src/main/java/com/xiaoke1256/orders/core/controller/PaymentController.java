@@ -78,7 +78,7 @@ public class PaymentController {
 			ThirdPayOrderDto order = thirdPaymentClient.getOrder(orderNo);
 			verifyOrder(order,payOrderNo);
 			
-			paymentService.pay(payOrderNo, orderNo, payType);
+			paymentService.notice(orderNo, payType,payOrderNo);
 			
 			//成功则通知第三方支付平台
 			try {
@@ -115,7 +115,7 @@ public class PaymentController {
 	}
 	
 	/**
-	 * 第三方支付通知我们，取消支付
+	 * 第三方支付平台通知我们，取消支付
 	 * @param request
 	 * @return
 	 */
@@ -124,37 +124,17 @@ public class PaymentController {
 		String cancelType = request.getCancelType();
 		String payOrderNo = request.getRemark();
 		String thirdOrderNo = request.getOrederNo();
-		String reason="";
-		if(PaymentCancelRequest.CANCEL_TYPE_EXPIRED.equals(cancelType)) {
-			reason="超时未反馈。";
-		}
-		if(PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK.equals(cancelType)) {
-			reason="远程调用异常。";
-		}
 		
-		if(StringUtils.isEmpty(reason)) {
+		if(StringUtils.isEmpty(cancelType)) {
 			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
 		}
 		
-		//查到原交易记录
 		if(StringUtils.isEmpty(thirdOrderNo)
 				&& StringUtils.isEmpty(payOrderNo)) {
 			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
 		}
+		paymentService.cancel(thirdOrderNo, cancelType, payOrderNo);
 		
-		PaymentTxn orgTxn = null;
-		if(StringUtils.isNotEmpty(thirdOrderNo)) {
-			orgTxn = paymentService.getPaymentByThirdOrderNo(thirdOrderNo);
-		}else if(StringUtils.isNotEmpty(payOrderNo)) {
-			orgTxn = paymentService.getPaymentByPayOrderNo(payOrderNo);
-		}
-		if(orgTxn==null) {
-			logger.warn("Have not found the order by the orderNo.Maybe the order never input in our system.");
-			return new RespMsg(RespCode.SUCCESS.getCode(),"The order is not exist.");//订单不存在就视为已经取消了。
-		}
-		
-		//取消支付
-		paymentService.cancel(orgTxn, reason);
 		return RespMsg.SUCCESS;
 	}
 	

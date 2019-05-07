@@ -47,7 +47,7 @@ public class PayController {
 	 * @return
 	 */
 	@RequestMapping(value="/pay",method={RequestMethod.POST})
-	public RespMsg pay(@RequestBody PayRequest payRequest) {
+	public PayResp pay(@RequestBody PayRequest payRequest) {
 		try {
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<5) {
@@ -68,7 +68,7 @@ public class PayController {
 			return new PayResp(RespCode.SUCCESS,verifyCode,order.getOrderNo());
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new RespMsg(e);
+			return new PayResp(e);
 		}
 	}
 	
