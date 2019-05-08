@@ -43,6 +43,9 @@ public class SettleStatemt {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long settleId;
 	
+	@Column(name = "SETTLE_NO")
+	private String settleNo;
+	
 	@Column(name = "year")
 	private String year;
 	
@@ -91,6 +94,12 @@ public class SettleStatemt {
 	}
 	public void setSettleId(Long settleId) {
 		this.settleId = settleId;
+	}
+	public String getSettleNo() {
+		return settleNo;
+	}
+	public void setSettleNo(String settleNo) {
+		this.settleNo = settleNo;
 	}
 	public String getYear() {
 		return year;
