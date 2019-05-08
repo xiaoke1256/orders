@@ -25,6 +25,12 @@ public class RespMsg implements java.io.Serializable {
 		this.code = errorCode.getCode();
 		this.msg = errorCode.getMsg();
 	}
+	
+	public RespMsg(RespCode errorCode, String msg) {
+		super();
+		this.code = errorCode.getCode();
+		this.msg = msg;
+	}
 
 	/**
 	 * 
