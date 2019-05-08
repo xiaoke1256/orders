@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.common.util.Base32;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.SettleItemOrder;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
@@ -73,6 +76,7 @@ public class SettleService {
 		}
 		
 		SettleStatemt settleStatemt = new SettleStatemt();
+		settleStatemt.setSettleNo(genSettleNo(storeNo));
 		settleStatemt.setYear(year);
 		settleStatemt.setStoreNo(storeNo);
 		settleStatemt.setMonth(month);
@@ -146,5 +150,17 @@ public class SettleService {
 			entityManager.merge(order);
 		}
 		
+	}
+	
+	/**
+	 * 生成清算单号
+	 * @return
+	 */
+	public String genSettleNo(String storeNo) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(storeNo.substring(storeNo.length()-2));
+		sb.append(DateUtil.format(new Date(), "yyyyMMdd"));
+		sb.append(StringUtils.leftPad(Base32.encode(RandomUtils.nextInt(32*32)),2,'0'));
+		return sb.toString();
 	}
 }

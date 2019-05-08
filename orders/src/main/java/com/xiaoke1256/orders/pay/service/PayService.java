@@ -56,8 +56,8 @@ public class PayService {
 			try {
 				//处理完了后通知第三方平台。
 				RespMsg noticeResp = thirdPaymentClient.acceptNote(orderNo, "SUCCESS");
-				if(!RespMsg.SUCCESS.getCode().equals(resp.getCode())) {
-					throw new RemoteException(resp.getCode()+":"+resp.getMsg());
+				if(!RespMsg.SUCCESS.getCode().equals(noticeResp.getCode())) {
+					throw new RemoteException(noticeResp.getCode()+":"+noticeResp.getMsg());
 				}
 			}catch(RestClientException ex ) {
 				throw new RemoteException(ex.getMessage(),ex);

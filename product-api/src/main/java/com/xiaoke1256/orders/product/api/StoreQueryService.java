@@ -15,4 +15,11 @@ public interface StoreQueryService {
 	 * 获取有用的（未关闭的）商铺
 	 * */
 	public List<Store> queryAvailableStore();
+
+	/**
+	 * 根据商铺号查询商铺
+	 * @param storeNo
+	 * @return
+	 */
+	public Store getStore(String storeNo);
 }

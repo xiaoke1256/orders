@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,15 @@ public class StoreQueryController implements StoreQueryService {
 			dtos.add(dto);
 		}
 		return dtos;
+	}
+	
+	@RequestMapping(value="/{storeNo}",method=RequestMethod.GET)
+	@Override
+	public Store getStore(@PathVariable("storeNo") String storeNo) {
+		com.xiaoke1256.orders.product.bo.Store bo = storeService.getByStoreNo(storeNo);
+		Store dto = new Store();
+		BeanUtils.copyProperties(bo, dto);
+		return dto;
 	}
 	
 	

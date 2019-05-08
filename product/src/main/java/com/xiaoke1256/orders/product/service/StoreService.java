@@ -20,4 +20,9 @@ public class StoreService {
 		return storeDao.queryAllStores();
 		
 	}
+	
+	@Transactional(readOnly=true)
+	public Store getByStoreNo(String storeNo) {
+		return storeDao.getByStoreNo(storeNo);
+	}
 }
