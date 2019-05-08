@@ -92,7 +92,7 @@ public class PaymentService implements PayBusinessService {
 		paymentTxn.setAmt(payOrder.getTotalAmt());
 		paymentTxn.setPayOrderNo(payOrder.getPayOrderNo());
 		paymentTxn.setThirdOrderNo(thirdOrderNo);
-		paymentTxn.setReverseFlg("0");
+		paymentTxn.setReverseFlg("0");//未冲正
 		paymentTxn.setIncident("购买商品");
 		paymentTxn.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		paymentTxn.setUpdateTime(new Timestamp(System.currentTimeMillis()));
