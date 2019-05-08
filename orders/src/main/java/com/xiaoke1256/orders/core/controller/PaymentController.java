@@ -20,7 +20,6 @@ import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.orders.core.bo.PayOrder;
-import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import com.xiaoke1256.orders.core.dto.PayConfig;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
@@ -93,9 +92,8 @@ public class PaymentController {
 		}catch(RemoteException ex) {
 			logger.error(ex.getMessage(),ex);
 			//远程调用异常要将支付取消
-			PaymentCancelRequest canelRequest = new PaymentCancelRequest(orderNo, payOrderNo, PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK);
 			try {
-				this.cancel(canelRequest );
+				paymentService.cancel(orderNo, PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK,payOrderNo);
 			} catch(Exception e) {
 				logger.error(e.getMessage(),e);
 			}
@@ -112,30 +110,6 @@ public class PaymentController {
 			return new RespMsg(ex);
 		}
 		
-	}
-	
-	/**
-	 * 第三方支付平台通知我们，取消支付
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/cancel",method= {RequestMethod.POST})
-	public RespMsg cancel(@RequestBody PaymentCancelRequest request) {
-		String cancelType = request.getCancelType();
-		String payOrderNo = request.getRemark();
-		String thirdOrderNo = request.getOrederNo();
-		
-		if(StringUtils.isEmpty(cancelType)) {
-			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
-		}
-		
-		if(StringUtils.isEmpty(thirdOrderNo)
-				&& StringUtils.isEmpty(payOrderNo)) {
-			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
-		}
-		paymentService.cancel(thirdOrderNo, cancelType, payOrderNo);
-		
-		return RespMsg.SUCCESS;
 	}
 	
 	/**
