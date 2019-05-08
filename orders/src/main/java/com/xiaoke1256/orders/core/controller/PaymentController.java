@@ -2,7 +2,6 @@ package com.xiaoke1256.orders.core.controller;
 
 import java.rmi.RemoteException;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
