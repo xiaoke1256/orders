@@ -1,116 +1,116 @@
---´óÀà£º·ş×°¡¢Ïä°ü¡¢Íæ¾ß¡¢¼Òµç¡¢»¯×±Æ·¡¢ÔË¶¯¡¢ÓÎÏ·¡¢Êé¡¢°ì¹«¡¢ÃÀÊ³
+--å¤§ç±»ï¼šæœè£…ã€ç®±åŒ…ã€ç©å…·ã€å®¶ç”µã€åŒ–å¦†å“ã€è¿åŠ¨ã€æ¸¸æˆã€ä¹¦ã€åŠå…¬ã€ç¾é£Ÿ
 delete from product_type;
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('01','·ş×°',null,null,1);
+	values ('01','æœè£…',null,null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0101','ÄĞ×°','01',null,1);
+	values ('0101','ç”·è£…','01',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0102','Å®×°','01',null,2);
+	values ('0102','å¥³è£…','01',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0103','ÄÚÒÂ','01',null,3);
+	values ('0103','å†…è¡£','01',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0104','Ğ¬Íà','01',null,4);
+	values ('0104','é‹è¢œ','01',null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('02','Ïä°ü',null,null,2);
+	values ('02','ç®±åŒ…',null,null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0201','Ç®°ü','02',null,1);
+	values ('0201','é’±åŒ…','02',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0202','ÂÃĞĞÏä','02',null,2);
+	values ('0202','æ—…è¡Œç®±','02',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0203','Ë«¼ç°ü','02',null,3);
+	values ('0203','åŒè‚©åŒ…','02',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0204','¹«ÎÄ°ü','02',null,4);
+	values ('0204','å…¬æ–‡åŒ…','02',null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0205','ÊÖÌá°ü','02',null,5);
+	values ('0205','æ‰‹æåŒ…','02',null,5);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('03','Íæ¾ß',null,null,3);
+	values ('03','ç©å…·',null,null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0301','»ıÄ¾','03',null,1);
+	values ('0301','ç§¯æœ¨','03',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('030101','Æ´²å','0301',null,1);
+	values ('030101','æ‹¼æ’','0301',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('030102','½¨¹¹','0301',null,2);
+	values ('030102','å»ºæ„','0301',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('030103','´ÅÁ¦','0301',null,3);
+	values ('030103','ç£åŠ›','0301',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0302','²¼Å¼','03',null,2);
+	values ('0302','å¸ƒå¶','03',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0303','Ä£ĞÍ','03',null,3);
+	values ('0303','æ¨¡å‹','03',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('030301','´¬Ä£','0303',null,1);
+	values ('030301','èˆ¹æ¨¡','0303',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('030302','º½¿ÕÄ£ĞÍ','0303',null,2);
+	values ('030302','èˆªç©ºæ¨¡å‹','0303',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('030303','°Ú¼ş','0303',null,3);
+	values ('030303','æ‘†ä»¶','0303',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0304','µçÍæ','03',null,4);
+	values ('0304','ç”µç©','03',null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('04','µç×Ó',null,null,4);
+	values ('04','ç”µå­',null,null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0401','¼Òµç','04',null,1);
+	values ('0401','å®¶ç”µ','04',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040101','µçÊÓ','0401',null,1);
+	values ('040101','ç”µè§†','0401',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
 	values ('040102','dvd','0401',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040103','Ï´ÒÂ»ú','0401',null,3);
+	values ('040103','æ´—è¡£æœº','0401',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040104','µç±ùÏä','0401',null,4);
+	values ('040104','ç”µå†°ç®±','0401',null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040105','É¨µØ»ú','0401',null,5);
+	values ('040105','æ‰«åœ°æœº','0401',null,5);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040108','Îü³¾Æ÷','0401',null,8);
+	values ('040108','å¸å°˜å™¨','0401',null,8);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040106','³øµç','0401',null,6);
+	values ('040106','å¨ç”µ','0401',null,6);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('04010601','µç·¹ìÒ','040106',null,1);
+	values ('04010601','ç”µé¥­ç…²','040106',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('04010602','Î¢²¨Â¯','040106',null,2);
+	values ('04010602','å¾®æ³¢ç‚‰','040106',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('04010603','Ï´Íë»ú','040106',null,3);
+	values ('04010603','æ´—ç¢—æœº','040106',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040109','È¡Å¯»ú','0401',null,9);
+	values ('040109','å–æš–æœº','0401',null,9);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('0402','ÊıÂë','04',null,2);
+	values ('0402','æ•°ç ','04',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040201','ÊÖ»ú','0402',null,1);
+	values ('040201','æ‰‹æœº','0402',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040202','Æ½°åµçÄÔ','0402',null,2);
+	values ('040202','å¹³æ¿ç”µè„‘','0402',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040211','±Ê¼Ç±¾','0402',null,2);
+	values ('040211','ç¬”è®°æœ¬','0402',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040203','Ì¨Ê½»ú','0402',null,3);
+	values ('040203','å°å¼æœº','0402',null,3);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040204','Ïà»ú/ÉãÏñ','0402',null,4);
+	values ('040204','ç›¸æœº/æ‘„åƒ','0402',null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040205','ÓÎÏ·Éè±¸','0402',null,5);
+	values ('040205','æ¸¸æˆè®¾å¤‡','0402',null,5);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040206','Ó°Òô','0402',null,6);
+	values ('040206','å½±éŸ³','0402',null,6);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040207','Êó±ê','0402',null,7);
+	values ('040207','é¼ æ ‡','0402',null,7);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040208','¼üÅÌ','0402',null,8);
+	values ('040208','é”®ç›˜','0402',null,8);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040209','UÅÌ','0402',null,9);
+	values ('040209','Uç›˜','0402',null,9);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('040210','ÊÖ»·','0402',null,10);
+	values ('040210','æ‰‹ç¯','0402',null,10);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('05','»¯×±Æ·',null,null,5);
+	values ('05','åŒ–å¦†å“',null,null,5);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('06','ÔË¶¯',null,null,6);
+	values ('06','è¿åŠ¨',null,null,6);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('07','ÓÎÏ·',null,null,7);
+	values ('07','æ¸¸æˆ',null,null,7);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('08','Êé',null,null,8);
+	values ('08','ä¹¦',null,null,8);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('09','°ì¹«',null,null,9);
+	values ('09','åŠå…¬',null,null,9);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('10','ÃÀÊ³',null,null,10);
+	values ('10','ç¾é£Ÿ',null,null,10);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('1001','ÁãÊ³','10',null,1);
+	values ('1001','é›¶é£Ÿ','10',null,1);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('1002','²èÒû','10',null,2);
+	values ('1002','èŒ¶é¥®','10',null,2);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('1004','²ÍÒû','10',null,4);
+	values ('1004','é¤é¥®','10',null,4);
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
-	values ('1003','ÍÁÌØ²ú','10',null,3);
+	values ('1003','åœŸç‰¹äº§','10',null,3);
