@@ -11,6 +11,8 @@ public class Store implements Serializable {
 	private String storeNo;
 	private String storeName;
 	private String storeIntro;
+	private String payType;
+	private String payAccountNo;
 	private Timestamp insertTime;
 	private Timestamp updateTime;
 	public String getStoreNo() {
@@ -30,6 +32,18 @@ public class Store implements Serializable {
 	}
 	public void setStoreIntro(String storeIntro) {
 		this.storeIntro = storeIntro;
+	}
+	public String getPayType() {
+		return payType;
+	}
+	public void setPayType(String payType) {
+		this.payType = payType;
+	}
+	public String getPayAccountNo() {
+		return payAccountNo;
+	}
+	public void setPayAccountNo(String payAccountNo) {
+		this.payAccountNo = payAccountNo;
 	}
 	public Timestamp getInsertTime() {
 		return insertTime;

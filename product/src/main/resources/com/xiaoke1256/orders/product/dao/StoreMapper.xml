@@ -7,14 +7,16 @@
 		<id property="storeNo" column="store_no"/>
 		<result property="storeName" column="store_name" />
 		<result property="storeIntro" column="store_intro" />
+		<result property="payType" column="pay_type" />
+		<result property="payAccountNo" column="pay_account_no" />
 		<result property="insertTime" column="insert_time" />
 		<result property="updateTime" column="update_time" />
 	</resultMap>
 	<select id="getByStoreNo" parameterType="string" resultMap="storeMap" >
-		select store_no,store_name,store_intro,insert_time,update_time from store where store_no=#{id}
+		select store_no,store_name,store_intro,pay_type,pay_account_no,insert_time,update_time from store where store_no=#{id}
 	</select>
 	
 	<select id="queryAllStores" resultMap="storeMap" >
-		select store_no,store_name,store_intro,insert_time,update_time from store 
+		select store_no,store_name,store_intro,pay_type,pay_account_no,insert_time,update_time from store 
 	</select>
 </mapper>
