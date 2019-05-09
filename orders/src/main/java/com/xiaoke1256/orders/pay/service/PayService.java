@@ -27,6 +27,11 @@ public class PayService {
 	@Autowired
 	private ThirdPaymentClient thirdPaymentClient;
 	
+	@Autowired
+	private PayBusinessConfig payBusinessConfig;
+	
+	private static final String PAY_TYPE = "003";//统一为 3rdPay;
+	
 	/**
 	 * 
 	 * @param payerNo 付款方账号
@@ -49,10 +54,12 @@ public class PayService {
 			throw new AppException(resp.getCode(),resp.getMsg());
 		}
 		String orderNo = resp.getOrderNo();
-		String verifyCode = resp.getVerifyCode();
+		//String verifyCode = resp.getVerifyCode();
+		PayBusinessService businessService = payBusinessConfig.getPayBusinessService(orderType);
 		
 		try {
 			//TODO 处理notice 业务。
+			businessService.notice(orderNo, PAY_TYPE, remark);
 			try {
 				//处理完了后通知第三方平台。
 				RespMsg noticeResp = thirdPaymentClient.acceptNote(orderNo, "SUCCESS");

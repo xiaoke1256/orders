@@ -1,8 +1,5 @@
 package com.xiaoke1256.orders.pay.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +12,7 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
+import com.xiaoke1256.orders.pay.service.PayBusinessConfig;
 import com.xiaoke1256.orders.pay.service.PayBusinessService;
 import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 
@@ -24,16 +22,8 @@ public class PayController {
 	@Autowired
 	private ThirdPaymentClient thirdPaymentClient;
 	
-	@Autowired
-	private Map<String,PayBusinessService> payBusinessServices; 
+	private PayBusinessConfig payBusinessConfig;
 	
-	/**
-	 * 从订单类型对应的业务。
-	 */
-	private static final Map<String,String> ORDER_TYPE_TO_BISINESS = new HashMap<>();
-	static {
-		ORDER_TYPE_TO_BISINESS.put("01", "paymentService");//01是消费
-	}
 	
 	/**
 	 * 第三方支付平台通知我们，取消支付
@@ -53,7 +43,7 @@ public class PayController {
 		
 		//根据OrderType获取不同的支付业务对象。
 		String orderType = order.getOrderType();
-		PayBusinessService businessServices = payBusinessServices.get(ORDER_TYPE_TO_BISINESS.get(orderType));
+		PayBusinessService businessServices = payBusinessConfig.getPayBusinessService(orderType);
 		businessServices.cancel(order.getOrderNo(), request.getCancelType(), order.getRemark());
 		
 		return RespMsg.SUCCESS;
