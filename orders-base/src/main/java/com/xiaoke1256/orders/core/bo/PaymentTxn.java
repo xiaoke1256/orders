@@ -48,6 +48,9 @@ public class PaymentTxn {
 	@Column(name = "third_order_no")
 	private String thirdOrderNo;
 	
+	@Column(name = "business_no")
+	private String businessNo;
+	
 	@Column(name = "REVERSE_FLG")
 	private String reverseFlg;
 	
@@ -128,6 +131,14 @@ public class PaymentTxn {
 
 	public void setThirdOrderNo(String thirdOrderNo) {
 		this.thirdOrderNo = thirdOrderNo;
+	}
+	
+	public String getBusinessNo() {
+		return businessNo;
+	}
+
+	public void setBusinessNo(String businessNo) {
+		this.businessNo = businessNo;
 	}
 
 	public String getIncident() {

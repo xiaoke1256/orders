@@ -7,6 +7,7 @@ create table PAYMENT_TXN
   amt    DECIMAL(22) not null comment '支付额',
   pay_order_no VARCHAR(18) comment '支付单号',
   sub_order_no VARCHAR(20) comment '订单号',
+  business_no VARCHAR(25) comment '其他业务号',
   THIRD_ORDER_NO VARCHAR(20) comment '第三方平台的订单号',
   REVERSE_FLG char(1) not null default '0' comment '冲正标记：“0:未冲正;1:已冲正”',
   incident VARCHAR(256) comment '事由',
