@@ -66,7 +66,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		}
 		
 		//保存订单流水
-		this.savePayment(thirdOrderNo, payOrder.getPayerNo(), "000000000000000000", payType, payOrder.getTotalAmt(), payOrderNo, null, "购买商品");
+		this.savePayment(thirdOrderNo, payOrder.getPayerNo(), "000000000000000000", payType, payOrder.getTotalAmt(), payOrderNo, null,null, "购买商品");
 		
 		//修改订单状态
 		payOrder.setStatus(PayOrder.ORDER_STATUS_PAYED);
@@ -96,7 +96,6 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 			subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			entityManager.merge(subOrder);
 		}
-		reverse(orgTxn,reason);
 		//TODO 推送mq，通知其他系统。
 	}
 	
@@ -105,18 +104,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	 */
 	@Override
 	public void cancel(String thirdOrderNo, String cancelType, String payOrderNo) {
-		String reason="";
-		if(PaymentCancelRequest.CANCEL_TYPE_EXPIRED.equals(cancelType)) {
-			reason="超时未反馈。";
-		}else if(PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK.equals(cancelType)) {
-			reason="远程调用异常。";
-		}else if(PaymentCancelRequest.CANCEL_TYPE_OTHER_FAIL.equals(cancelType)) {
-			reason="其他异常。";
-		}
-		if(StringUtils.isEmpty(reason)) {
-			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
-		}
-		
+		String reason = getReson(cancelType);
 
 		PaymentTxn orgTxn = null;
 		if(StringUtils.isNotEmpty(thirdOrderNo)) {
@@ -129,6 +117,9 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 			return;//订单不存在就视为已经取消了。
 		}
 		cancel(orgTxn, reason);
+		reverse(orgTxn,reason);
 	}
+
+	
 
 }

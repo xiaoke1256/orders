@@ -9,13 +9,16 @@ import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.common.RespCode;
+import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
+import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 
 public abstract class AbstractPayBusinessService implements PayBusinessService {
 	
@@ -26,7 +29,7 @@ public abstract class AbstractPayBusinessService implements PayBusinessService {
 	
 	@Transactional
 	protected void savePayment(String thirdOrderNo, String payerNo, String payeeNo, String payType, BigDecimal amt, String payOrderNo,
-			String subOrderNo, String incident) {
+			String subOrderNo,String businessNo, String incident) {
 		//查一下该订单号 ，是否已用过。
 		PaymentTxn payment = this.getPaymentByThirdOrderNo(thirdOrderNo);
 		if(payment!=null) {
@@ -43,6 +46,7 @@ public abstract class AbstractPayBusinessService implements PayBusinessService {
 		paymentTxn.setAmt(amt);
 		paymentTxn.setPayOrderNo(payOrderNo);
 		paymentTxn.setSubOrderNo(subOrderNo);
+		paymentTxn.setBusinessNo(businessNo);
 		paymentTxn.setThirdOrderNo(thirdOrderNo);
 		paymentTxn.setReverseFlg("0");//未冲正
 		paymentTxn.setIncident(incident);
@@ -66,7 +70,7 @@ public abstract class AbstractPayBusinessService implements PayBusinessService {
 	 * @param orgTxn
 	 * @param reason
 	 */
-	public void reverse(PaymentTxn orgTxn,String reason) {
+	protected void reverse(PaymentTxn orgTxn,String reason) {
 		try {
 			entityManager.refresh(orgTxn, LockModeType.WRITE);
 			if(!"0".equals(orgTxn.getReverseFlg())) {
@@ -92,5 +96,20 @@ public abstract class AbstractPayBusinessService implements PayBusinessService {
 		}catch(Exception ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+	
+	protected String getReson(String cancelType) {
+		String reason="";
+		if(PaymentCancelRequest.CANCEL_TYPE_EXPIRED.equals(cancelType)) {
+			reason="超时未反馈。";
+		}else if(PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK.equals(cancelType)) {
+			reason="远程调用异常。";
+		}else if(PaymentCancelRequest.CANCEL_TYPE_OTHER_FAIL.equals(cancelType)) {
+			reason="其他异常。";
+		}
+		if(StringUtils.isEmpty(reason)) {
+			throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+		}
+		return reason;
 	}
 }
