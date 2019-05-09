@@ -7,20 +7,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.common.RespCode;
-import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.bo.SubOrder;
-import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.pay.service.AbstractPayBusinessService;
 import com.xiaoke1256.orders.pay.service.PayBusinessService;
 
@@ -32,23 +27,11 @@ import com.xiaoke1256.orders.pay.service.PayBusinessService;
 @Service
 @Transactional
 public class PaymentService extends AbstractPayBusinessService implements PayBusinessService {
-	private static final Logger logger = LoggerFactory.getLogger(PaymentService.class);
-	
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
 	@Autowired
 	private OrederService orederService;
-	
-	@Transactional(readOnly=true)
-	public PaymentTxn getPaymentByPayOrderNo(String payOrderNo) {
-		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
-		@SuppressWarnings("unchecked")
-		List<PaymentTxn> list = entityManager.createQuery(ql).setParameter("payOrderNo", payOrderNo).getResultList();
-		if(list!=null && list.size()>0)
-			return list.get(0);
-		return null;
-	}
 	
 	/**
 	 * 处理支付(收到第三方平台的支付看反馈后)
@@ -98,28 +81,15 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		}
 		//TODO 推送mq，通知其他系统。
 	}
-	
-	/**
-	 * 取消
-	 */
+
 	@Override
-	public void cancel(String thirdOrderNo, String cancelType, String payOrderNo) {
-		String reason = getReson(cancelType);
-
-		PaymentTxn orgTxn = null;
-		if(StringUtils.isNotEmpty(thirdOrderNo)) {
-			orgTxn = getPaymentByThirdOrderNo(thirdOrderNo);
-		}else if(StringUtils.isNotEmpty(payOrderNo)) {
-			orgTxn = getPaymentByPayOrderNo(payOrderNo);
-		}
-		if(orgTxn==null) {
-			logger.warn("Have not found the order by the orderNo.Maybe the order never input in our system.");
-			return;//订单不存在就视为已经取消了。
-		}
-		cancel(orgTxn, reason);
-		reverse(orgTxn,reason);
+	protected PaymentTxn getPaymentByBusiness(String payOrderNo) {
+		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
+		@SuppressWarnings("unchecked")
+		List<PaymentTxn> list = entityManager.createQuery(ql).setParameter("payOrderNo", payOrderNo).getResultList();
+		if(list!=null && list.size()>0)
+			return list.get(0);
+		return null;
 	}
-
-	
 
 }

@@ -112,4 +112,35 @@ public abstract class AbstractPayBusinessService implements PayBusinessService {
 		}
 		return reason;
 	}
+	
+	@Override
+	public void cancel(String orderNo, String cancelType, String remark) {
+		String reason = getReson(cancelType);
+		PaymentTxn orgTxn = null;
+		if(StringUtils.isNotEmpty(orderNo)) {
+			orgTxn = getPaymentByThirdOrderNo(orderNo);
+		}else if(StringUtils.isNotEmpty(remark)) {
+			orgTxn = getPaymentByBusiness(remark);
+		}
+		if(orgTxn==null) {
+			logger.warn("Have not found the order by the orderNo.Maybe the order never input in our system.");
+			return;//订单不存在就视为已经取消了。
+		}
+		cancel(orgTxn, reason);
+		reverse(orgTxn,reason);
+	}
+
+	/**
+	 * 处理具体业务的取消。
+	 * @param orgTxn
+	 * @param reason
+	 */
+	protected abstract void cancel(PaymentTxn orgTxn, String reason);
+
+	/**
+	 * 根据业务来获取支付流水
+	 * @param remark
+	 * @return
+	 */
+	protected abstract PaymentTxn getPaymentByBusiness(String remark);
 }

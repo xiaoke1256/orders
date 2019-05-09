@@ -8,10 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +31,6 @@ import com.xiaoke1256.orders.pay.service.PayBusinessService;
 @Transactional
 public class MakeMoneyService extends AbstractPayBusinessService implements PayBusinessService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MakeMoneyService.class);
-
 	@Autowired
 	private SettleService settleService;
 	
@@ -72,25 +67,9 @@ public class MakeMoneyService extends AbstractPayBusinessService implements PayB
 		}
 	}
 
-	@Override
-	public void cancel(String orderNo, String cancelType, String remark) {
-		String reason = getReson(cancelType);
-		String settleNo = remark;
-		PaymentTxn orgTxn = null;
-		if(StringUtils.isNotEmpty(orderNo)) {
-			orgTxn = getPaymentByThirdOrderNo(orderNo);
-		}else if(StringUtils.isNotEmpty(settleNo)) {
-			orgTxn = getPaymentByBusiness(settleNo);
-		}
-		if(orgTxn==null) {
-			logger.warn("Have not found the order by the orderNo.Maybe the order never input in our system.");
-			return;//订单不存在就视为已经取消了。
-		}
-		cancel(orgTxn, reason);
-		reverse(orgTxn,reason);
-	}
 	
-	private void cancel(PaymentTxn orgTxn, String reason) {
+	
+	protected void cancel(PaymentTxn orgTxn, String reason) {
 		String settleNo = orgTxn.getBusinessNo();
 		SettleStatemt settle = settleService.getSettleStatemtByNo(settleNo);
 		//月结单的状态还原,包括待付款，已付款
