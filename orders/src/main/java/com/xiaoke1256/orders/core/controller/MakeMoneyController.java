@@ -5,15 +5,15 @@ import java.math.BigDecimal;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
-import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.core.client.StoreQueryClient;
-import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.SettleService;
 import com.xiaoke1256.orders.pay.service.PayService;
 import com.xiaoke1256.orders.product.dto.Store;
@@ -45,7 +45,8 @@ public class MakeMoneyController {
 	 * @param orderNo
 	 * @return
 	 */
-	public RespMsg makeMoney(String settleNo) {
+	@RequestMapping(value="/pay",method= {RequestMethod.POST})
+	public RespMsg makeMoney(@RequestBody String settleNo) {
 		//检查
 		if(StringUtils.isEmpty(settleNo)) {
 			return new RespMsg(RespCode.EMPTY_PARAMTER_ERROR);
@@ -63,7 +64,7 @@ public class MakeMoneyController {
 		Store store = storeQueryClient.getStore(storeNo);
 		String payerNo = pateformPayAccount;//付款方
 		String payeeNo = store.getPayAccountNo();//收款方
-		String payType = store.getPayType();//支付方式
+		//String payType = store.getPayType();//支付方式
 		BigDecimal amt = settle.getPendingPayment();
 		//TODO 假装根据 payType 找到3rdPay的service.
 		String orderType = "03";//03表示“与平台方结算”

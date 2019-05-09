@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="../">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>orders welcome!</title>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
+  <script type="text/javascript">
+  $(function(){
+
+	  //初始化列表
+	  refreshPage();
+	  
+	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
+	  
+  });
+
+  //刷新列表内容
+  function refreshPage(){
+	  /*
+	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo)
+		  pageNo = $('[name=pageNo]').val();
+	  if(!pageNo || isNaN(pageNo) )
+		  pageNo=1;
+	  $('[name=pageNo]').val(pageNo);
+	  var pageSize = $('[name=pageSize]').val();
+
+	  var callee = arguments.callee;
+	  $.ajax({
+		  url:"payOrders/search",
+		  type:"GET",
+		  data:{pageNo:pageNo,pageSize:pageSize,payOrderNo:$('#payOrderNo').val(),payerNo:$('#payerNo').val()},
+		  success:function(result){
+			  if(result.code!='00'){
+				  $("#console").append("<font color=\"red\">"+result.code+":"+result.msg+"</font><br>");
+		    	  //alert(result.code+":"+result.msg);
+		    	  return;
+		      }
+			  var $tbody = $('#content table tbody').empty();
+			  //列表
+			  for(var i in result.resultList){
+				  var order =result.resultList[i];
+				  var innerHtml = '<tr> ';
+				  innerHtml+='<td>'+order.payOrderNo+'</td>';
+				  innerHtml+='<td>'+order.productCodes+'</td>';
+				  innerHtml+='<td>￥'+(order.totalAmt/1000)+'</td>';
+				  innerHtml+='<td>'+order.payerNo+'</td>';
+				  innerHtml+='<td></td>';
+				  innerHtml+='<td>';
+				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+order.totalAmt+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
+				  innerHtml+='</td>';
+				  innerHtml+='</tr>';
+				  $tbody.append(innerHtml);
+			  }
+			  //分页
+			  $('#pageTd').makePage(result,refreshPage);
+			  
+			  //下拉列表
+			  $('select[name=productCode]').empty();
+			  for(var i in result.resultList){
+				  var p =result.resultList[i];
+			  	  $('select[name=productCode]').append('<option value="'+p.productCode+'">'+'('+p.productCode+')'+p.productName+'</option>');
+			  }
+		  },
+		  error:function(resp,errMsg,errorThrown){
+			  $("#console").append("<font color=\"red\">查询错误："+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>"); 
+			  //alert("error:"+err);
+		  }
+      });
+	  */
+  }
+  
+  </script>
+  
+</head>
+<body>
+	<header>
+		<h1 class="title">结算打款页面</h1>
+	</header>
+	<br>
+	<div id="content" class="content">
+		<form action="makeMoney/query" name="searchForm" >
+		<input type="hidden" name="pageNo" value="1" >
+		结算号：<input type="text" name="settleNo" id="settleNo" >
+		商户号：<input type="text" name="storeNo" id="storeNo" >
+		年度：<input type="text" name="year" id="year" >
+		月度：<input type="text" name="month" id="month" >
+		状态：<input type="text" name="status" id="status" >
+		每页
+		<select id="pageSize" name="pageSize" >
+			<option value="10" >10</option>
+			<option value="50" >50</option>
+			<option value="100" >100</option>
+			<option value="200" >200</option>
+		</select>
+		<button type="button" id="searchBtn" >查询</button>
+		<table id="orderTable" border="1" class="listTable">
+			<thead>
+				<tr>
+					<th>结算号</th>
+					<th>年度</th>
+					<th>月度</th>
+					<th>商铺号</th>
+					<th>营业额</th>
+					<th>待结款</th>
+					<th>已结款</th>
+					<th>OPER</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td id="pageTd" colspan="7"></td>
+				</tr>
+			</tfoot>
+			
+		</table>
+		<br>
+		</form>
+		
+		<br>
+		<div id="console" style="width:100%"></div>
+	</div>
+	
+</body>
+</html>
