@@ -76,6 +76,7 @@ public class OrederServiceTest {
 				StatResult ressult = new StatResult();
 				ressult.startTime = System.currentTimeMillis();
 				String payerNo = StringUtils.leftPad(String.valueOf(r.nextInt(1000000)),24,"0");
+				@SuppressWarnings("unused")
 				BigDecimal carriageAmt = BigDecimal.valueOf(4.0);
 				Map<String, Integer> productMap = new HashMap<String, Integer>();
 				String productId = String.valueOf(r.nextInt(1000));

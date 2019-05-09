@@ -14,6 +14,7 @@ import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
 import com.xiaoke1256.orders.core.client.StoreQueryClient;
+import com.xiaoke1256.orders.core.dto.OrderCondition;
 import com.xiaoke1256.orders.core.service.SettleService;
 import com.xiaoke1256.orders.pay.service.PayService;
 import com.xiaoke1256.orders.product.dto.Store;
@@ -24,7 +25,6 @@ import com.xiaoke1256.orders.product.dto.Store;
  *
  */
 @RestController
-@RequestMapping("/makeMoney")
 public class MakeMoneyController {
 	
 	@Autowired
@@ -45,7 +45,7 @@ public class MakeMoneyController {
 	 * @param orderNo
 	 * @return
 	 */
-	@RequestMapping(value="/pay",method= {RequestMethod.POST})
+	@RequestMapping(value="/makeMoney/pay",method= {RequestMethod.POST})
 	public RespMsg makeMoney(@RequestBody String settleNo) {
 		//检查
 		if(StringUtils.isEmpty(settleNo)) {
@@ -73,5 +73,10 @@ public class MakeMoneyController {
 		payService.pay(payerNo, payeeNo, amt, orderType, palteform , remark );
 		return RespMsg.SUCCESS;
 		
+	}
+	
+	@RequestMapping(value="/settles/search",method= {RequestMethod.GET})
+	public RespMsg searchSettle(OrderCondition condition) {
+		return null;
 	}
 }
