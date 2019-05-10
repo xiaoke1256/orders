@@ -1,7 +1,12 @@
 package com.xiaoke1256.orders.core.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.page.QueryResult;
+import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
 import com.xiaoke1256.orders.core.client.StoreQueryClient;
-import com.xiaoke1256.orders.core.dto.OrderCondition;
+import com.xiaoke1256.orders.core.dto.SettleStatemtCondition;
+import com.xiaoke1256.orders.core.dto.SettleStatemtQueryResultResp;
 import com.xiaoke1256.orders.core.service.SettleService;
 import com.xiaoke1256.orders.pay.service.PayService;
 import com.xiaoke1256.orders.product.dto.Store;
@@ -59,6 +68,14 @@ public class MakeMoneyController {
 		if(SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
 			return new RespMsg(RespCode.STATUS_ERROR,String.format("SettleStatemt(no:%s) in wrong status.", settleNo));
 		}
+		
+		Date now = new Date();
+		Date lastMonth = DateUtil.addMonth(now, -1);
+		if(Integer.parseInt(settle.getMonth())!=DateUtil.getMonth(lastMonth)
+				||Integer.parseInt(settle.getYear())!=DateUtil.getYear(lastMonth)) {
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"Only settlestatemt of last month can be payed.","仅能对上一个月的结算单进行打款.");
+		}
+		
 		String storeNo = settle.getStoreNo();
 		//调用product服务，查询商铺的收款账号和支付方式。
 		Store store = storeQueryClient.getStore(storeNo);
@@ -76,7 +93,24 @@ public class MakeMoneyController {
 	}
 	
 	@RequestMapping(value="/settles/search",method= {RequestMethod.GET})
-	public RespMsg searchSettle(OrderCondition condition) {
-		return null;
+	public RespMsg searchSettle(SettleStatemtCondition condition) {
+		QueryResult<SettleStatemt> queryResult = settleService.searchSettleStatemts(condition);
+		List<com.xiaoke1256.orders.core.dto.SettleStatemt> voList = new ArrayList<com.xiaoke1256.orders.core.dto.SettleStatemt>();
+		for(SettleStatemt settleStatemt:queryResult.getResultList()) {
+			voList.add(covertToVo(settleStatemt));
+		}
+		QueryResult<com.xiaoke1256.orders.core.dto.SettleStatemt> voResult = new QueryResult<com.xiaoke1256.orders.core.dto.SettleStatemt>(queryResult.getPageNo(),queryResult.getPageSize(),queryResult.getTotalCount());
+		voResult.setResultList(voList);
+		return new SettleStatemtQueryResultResp(voResult);
+	}
+
+	private com.xiaoke1256.orders.core.dto.SettleStatemt covertToVo(SettleStatemt bo) {
+		try {
+			com.xiaoke1256.orders.core.dto.SettleStatemt dto = new com.xiaoke1256.orders.core.dto.SettleStatemt();
+			PropertyUtils.copyProperties(dto, bo);
+			return dto;
+		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

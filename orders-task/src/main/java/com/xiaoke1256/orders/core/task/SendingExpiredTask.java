@@ -45,6 +45,8 @@ public class SendingExpiredTask {
 			logger.info("End of send expird task.");
 		}catch(InterruptedException e) {
 			logger.error(e.getMessage(), e);
+		}catch(Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 	}
 }

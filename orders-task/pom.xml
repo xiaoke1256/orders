@@ -191,12 +191,11 @@
        <version>2.20</version>
        <configuration>
        	  <skip>true</skip>    
-       	  <!-- 
-        		排除掉特定的测试类 
+       	  <!-- 排除掉特定的测试类  -->
          <excludes>
-           <exclude>**/InitProduct.java</exclude>
+           <exclude>**/task/*Task.java</exclude>
          </excludes>
-          -->
+         
        </configuration>
      </plugin>
       

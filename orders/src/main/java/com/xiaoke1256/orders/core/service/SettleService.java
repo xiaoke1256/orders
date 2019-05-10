@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
-import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.core.dto.SettleStatemtCondition;
 
 /**
@@ -41,7 +40,7 @@ public class SettleService {
 	
 	@Transactional(readOnly = true)
 	public QueryResult<SettleStatemt> searchSettleStatemts(SettleStatemtCondition condition){
-		StringBuilder qlSb = new StringBuilder("from SettleStatemt where 1 = 1 ");
+		StringBuilder qlSb = new StringBuilder("from SettleStatemt s where 1 = 1 ");
 		Map<String,Object> paramMap = new HashMap<>();
 		if(StringUtils.isNotEmpty(condition.getSettleNo())) {
 			qlSb.append(" and settleNo like :settleNo ");
@@ -64,7 +63,7 @@ public class SettleService {
 			paramMap.put("status", condition.getStatus());
 		}
 		
-		String countQl = "select count(o) "+qlSb.toString();
+		String countQl = "select count(s) "+qlSb.toString();
 		qlSb.append(" order by updateTime desc ");
 		Query countQuery = entityManager.createQuery(countQl);
 		for(String key:paramMap.keySet()) {

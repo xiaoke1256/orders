@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.core.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.bo.SettleItemOrder;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
@@ -48,6 +50,12 @@ public class MakeMoneyService extends AbstractPayBusinessService implements PayB
 		//检查月结单的状态
 		if(SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The settlestatemt has payed","已结清.");
+		}
+		Date now = new Date();
+		Date lastMonth = DateUtil.addMonth(now, -1);
+		if(Integer.parseInt(settle.getMonth())!=DateUtil.getMonth(lastMonth)
+				||Integer.parseInt(settle.getYear())!=DateUtil.getYear(lastMonth)) {
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The settlestatemt has payed","仅能对上一个月的结算单进行打款.");
 		}
 		//保存支付流水
 		this.savePayment(orderNo, "000000000000000000", settle.getStoreNo(), payType, settle.getPendingPayment(), null, null,settleNo, "结算款");
