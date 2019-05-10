@@ -42,7 +42,9 @@ public class SettlementTask {
 				return;
 			}
 			settlement();
-		} catch (InterruptedException e) {
+		}catch(InterruptedException e) {
+			logger.error(e.getMessage(), e);
+		}catch(Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}

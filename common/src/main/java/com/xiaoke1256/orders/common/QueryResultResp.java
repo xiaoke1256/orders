@@ -84,7 +84,7 @@ public class QueryResultResp<T> extends RespMsg {
 		this.totalPages = totalPages;
 	}
 
-	public List<?> getResultList() {
+	public List<T> getResultList() {
 		return resultList;
 	}
 

@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.RespCode;
-import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
 import com.xiaoke1256.orders.core.client.StoreQueryClient;
+import com.xiaoke1256.orders.core.dto.PayResp;
 import com.xiaoke1256.orders.core.dto.SettleStatemtCondition;
 import com.xiaoke1256.orders.core.dto.SettleStatemtQueryResultResp;
 import com.xiaoke1256.orders.core.service.SettleService;
@@ -54,25 +54,25 @@ public class MakeMoneyController {
 	 * @return
 	 */
 	@RequestMapping(value="/makeMoney/pay",method= {RequestMethod.POST})
-	public RespMsg makeMoney(@RequestBody String settleNo) {
+	public PayResp makeMoney(@RequestBody String settleNo) {
 		//检查
 		if(StringUtils.isEmpty(settleNo)) {
-			return new RespMsg(RespCode.EMPTY_PARAMTER_ERROR);
+			return new PayResp(RespCode.EMPTY_PARAMTER_ERROR);
 		}
 		SettleStatemt settle = settleService.getSettleStatemtByNo(settleNo);
 		if(settle==null) {
-			return new RespMsg(RespCode.WRONG_PARAMTER_ERROR,"wrong settleNo!");
+			return new PayResp(RespCode.WRONG_PARAMTER_ERROR,"wrong settleNo!");
 		}
 		//检查结算单状态。
 		if(!SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
-			return new RespMsg(RespCode.STATUS_ERROR,String.format("SettleStatemt(no:%s) in wrong status.", settleNo));
+			return new PayResp(RespCode.STATUS_ERROR,String.format("SettleStatemt(no:%s) in wrong status.", settleNo));
 		}
 		
 		Date now = new Date();
 		Date lastMonth = DateUtil.addMonth(now, -1);
 		if(Integer.parseInt(settle.getMonth())!=DateUtil.getMonth(lastMonth)
 				||Integer.parseInt(settle.getYear())!=DateUtil.getYear(lastMonth)) {
-			return new RespMsg(RespCode.BUSSNESS_ERROR,"仅能对上一个月的结算单进行打款.");
+			return new PayResp(RespCode.BUSSNESS_ERROR,"仅能对上一个月的结算单进行打款.");
 		}
 		
 		String storeNo = settle.getStoreNo();
@@ -87,12 +87,12 @@ public class MakeMoneyController {
 		String palteform = "orders";
 		String remark = settleNo;
 		payService.pay(payerNo, payeeNo, amt, orderType, palteform , remark );
-		return RespMsg.SUCCESS;
+		return new PayResp(RespCode.SUCCESS);
 		
 	}
 	
 	@RequestMapping(value="/settles/search",method= {RequestMethod.GET})
-	public RespMsg searchSettle(SettleStatemtCondition condition) {
+	public SettleStatemtQueryResultResp searchSettle(SettleStatemtCondition condition) {
 		QueryResult<SettleStatemt> queryResult = settleService.searchSettleStatemts(condition);
 		List<com.xiaoke1256.orders.core.dto.SettleStatemt> voList = new ArrayList<com.xiaoke1256.orders.core.dto.SettleStatemt>();
 		for(SettleStatemt settleStatemt:queryResult.getResultList()) {
