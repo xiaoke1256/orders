@@ -14,6 +14,11 @@ public class PayResp extends RespMsg {
 	
 	
 	
+	public PayResp() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public PayResp(RespCode errorCode, String verifyCode, String orderNo) {
 		super(errorCode);
 		this.verifyCode = verifyCode;

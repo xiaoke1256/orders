@@ -12,6 +12,7 @@ import org.springframework.web.client.RestClientException;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
+import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.thirdpay.payplatform.dto.PayRequest;
 import com.xiaoke1256.thirdpay.payplatform.dto.PayResp;
 
@@ -58,7 +59,7 @@ public class PayService {
 		PayBusinessService businessService = payBusinessConfig.getPayBusinessService(orderType);
 		
 		try {
-			//TODO 处理notice 业务。
+			//处理notice 业务。
 			businessService.notice(orderNo, PAY_TYPE, remark);
 			try {
 				//处理完了后通知第三方平台。
@@ -74,7 +75,7 @@ public class PayService {
 			logger.error(ex.getMessage(),ex);
 			//远程调用异常要将支付取消
 			try {
-				//TODO cancel(canelRequest );
+				businessService.cancel(orderNo, PaymentCancelRequest.CANCEL_TYPE_REMOTE_INVOK, remark);
 			} catch(Exception e) {
 				logger.error(e.getMessage(),e);
 			}

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
@@ -65,7 +64,7 @@ public class MakeMoneyController {
 			return new RespMsg(RespCode.WRONG_PARAMTER_ERROR,"wrong settleNo!");
 		}
 		//检查结算单状态。
-		if(SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
+		if(!SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
 			return new RespMsg(RespCode.STATUS_ERROR,String.format("SettleStatemt(no:%s) in wrong status.", settleNo));
 		}
 		
@@ -73,7 +72,7 @@ public class MakeMoneyController {
 		Date lastMonth = DateUtil.addMonth(now, -1);
 		if(Integer.parseInt(settle.getMonth())!=DateUtil.getMonth(lastMonth)
 				||Integer.parseInt(settle.getYear())!=DateUtil.getYear(lastMonth)) {
-			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"Only settlestatemt of last month can be payed.","仅能对上一个月的结算单进行打款.");
+			return new RespMsg(RespCode.BUSSNESS_ERROR,"仅能对上一个月的结算单进行打款.");
 		}
 		
 		String storeNo = settle.getStoreNo();

@@ -14,6 +14,10 @@ public class PayResp extends RespMsg {
 	
 	
 	
+	public PayResp() {
+		super();
+	}
+
 	public PayResp(RespCode errorCode, String verifyCode, String orderNo) {
 		super(errorCode);
 		this.verifyCode = verifyCode;

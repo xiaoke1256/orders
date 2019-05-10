@@ -17,8 +17,28 @@
 	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
 	  
 	  $('#settleTable').on('click','.payBtn',function(){
+		  if(!confirm("是否真的要打款?")){
+			  return false;
+		  }
 		  var settleNo = $(this).attr('settleNo');
-		  
+		  $.ajax({
+			  url:'makeMoney/pay',
+			  type:"POST",
+			  data:settleNo,
+			  contentType: "application/json; charset=utf-8",
+			  headers: {'Content-Type': 'application/json'},  
+			  success: function (ret) {    
+		        if("00"!=ret.code){
+		        	$("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");
+		        	return;
+		        }
+		        $("#console").append("<font color=\"green\">打款成功，结算单："+settleNo+"</font><br>");   
+		        refreshPage();
+		      },
+		      error:function(req,errMsg,errorThrown){
+		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
+		      }
+		  });
 	  });
 	  
   });

@@ -48,7 +48,7 @@ public class MakeMoneyService extends AbstractPayBusinessService implements PayB
 		SettleStatemt settle = settleService.getSettleStatemtByNo(settleNo);
 		entityManager.refresh(settle, LockModeType.PESSIMISTIC_WRITE);
 		//检查月结单的状态
-		if(SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
+		if(!SettleStatemt.STATUS_AWAIT_MAKE_MONEY.equals(settle.getStatus())) {
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The settlestatemt has payed","已结清.");
 		}
 		Date now = new Date();
@@ -64,6 +64,7 @@ public class MakeMoneyService extends AbstractPayBusinessService implements PayB
 		settle.setAlreadyPaid(settle.getPendingPayment());
 		settle.setPendingPayment(BigDecimal.ZERO);
 		settle.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		//TODO 保存第三方支付单，且要反馈到页面上。
 		Hibernate.initialize(settle.getSettleItemOrders());
 		entityManager.merge(settle);
 		//修改订单状态

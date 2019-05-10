@@ -21,7 +21,7 @@ import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 public class PayController {
 	@Autowired
 	private ThirdPaymentClient thirdPaymentClient;
-	
+	@Autowired
 	private PayBusinessConfig payBusinessConfig;
 	
 	
