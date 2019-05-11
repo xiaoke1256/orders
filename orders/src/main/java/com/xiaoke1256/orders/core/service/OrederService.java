@@ -280,13 +280,13 @@ public class OrederService {
 		int millisecond = DateUtil.getMillisecond(now);
 		
 		orderNo.append(StringUtils.leftPad(String.valueOf(year),2,'0'))
-		.append(StringUtils.leftPad(String.valueOf(month),2,'0'))
-		.append(StringUtils.leftPad(String.valueOf(date),2,'0'))
-		.append(StringUtils.leftPad(String.valueOf(hour),2,'0'))
-		.append(StringUtils.leftPad(String.valueOf(minute), 2, '0'))
-		.append(StringUtils.leftPad(String.valueOf(second), 2, '0'))
-		.append(StringUtils.leftPad(String.valueOf(millisecond), 3, '0'))
-		.append(Base32.encode(RandomUtils.nextInt(32)));
+			.append(StringUtils.leftPad(String.valueOf(month),2,'0'))
+			.append(StringUtils.leftPad(String.valueOf(date),2,'0'))
+			.append(StringUtils.leftPad(String.valueOf(hour),2,'0'))
+			.append(StringUtils.leftPad(String.valueOf(minute), 2, '0'))
+			.append(StringUtils.leftPad(String.valueOf(second), 2, '0'))
+			.append(StringUtils.leftPad(String.valueOf(millisecond), 3, '0'))
+			.append(Base32.encode(RandomUtils.nextInt(32)));
 		return orderNo.toString();
 	}
 	
