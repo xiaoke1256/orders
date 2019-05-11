@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.common.util.DateUtil;
+import com.xiaoke1256.orders.core.api.MakeMoneyService;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
 import com.xiaoke1256.orders.core.client.StoreQueryClient;
 import com.xiaoke1256.orders.core.dto.PayResp;
@@ -33,7 +34,7 @@ import com.xiaoke1256.orders.product.dto.Store;
  *
  */
 @RestController
-public class MakeMoneyController {
+public class MakeMoneyController implements MakeMoneyService {
 	
 	@Autowired
 	private PayService payService;
