@@ -23,12 +23,14 @@ import com.xiaoke1256.orders.core.dto.SettleStatemtQueryResultResp;
 @Component
 public class MakeMoneyTask {
 	private static final Logger logger = LoggerFactory.getLogger(MakeMoneyTask.class);
-	private Watcher watcher = new Watcher();
+	
+	@Autowired
+	private MakeMoneyTaskWatcher watcher;
 	
 	@Autowired
 	private MakeMoneyClient makeMoneyClient;
 	
-	@Scheduled(cron="${logistics.make_money.task.corn}")
+	//@Scheduled(cron="${logistics.make_money.task.corn}")
 	public void startMakeMoneys() {
 		try {
 			if(!watcher.toBeMast()) {
@@ -57,12 +59,4 @@ public class MakeMoneyTask {
 		}
 	}
 	
-	class Watcher extends MasterWatcher{
-		private final static String NODE_PATH = "/zookeeper/orders/make_money/master";
-		@Override
-		protected String getNodePath() {
-			return NODE_PATH;
-		}
-		
-	}
 }
