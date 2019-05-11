@@ -76,7 +76,9 @@
 				  innerHtml+='<td>'+settle.status+'</td>';
 				  innerHtml+='<td>￥'+(settle.pendingPayment+settle.alreadyPaid)/1000+'</td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" settleNo="'+settle.settleNo+'">打款</a>';
+				  if(settle.status=='0'){
+				  	innerHtml+='<a href="javascript:void(0);" class="payBtn" settleNo="'+settle.settleNo+'">打款</a>';
+				  }
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);

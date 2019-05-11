@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.common.RespCode;
@@ -102,6 +103,23 @@ public class MakeMoneyController implements MakeMoneyService {
 		QueryResult<com.xiaoke1256.orders.core.dto.SettleStatemt> voResult = new QueryResult<com.xiaoke1256.orders.core.dto.SettleStatemt>(queryResult.getPageNo(),queryResult.getPageSize(),queryResult.getTotalCount());
 		voResult.setResultList(voList);
 		return new SettleStatemtQueryResultResp(voResult);
+	}
+	
+	/**
+	 * 查询待打款的结算单
+	 */
+	@RequestMapping(value="/settles/queryAwaitMakeMoney",method= {RequestMethod.GET})
+	public List<com.xiaoke1256.orders.core.dto.SettleStatemt> queryAwaitMakeMoney(@RequestParam("year") String year,@RequestParam("month") String month) {
+		SettleStatemtCondition condition = new SettleStatemtCondition();
+		condition.setYear(year);
+		condition.setMonth(month);
+		condition.setStatus(SettleStatemt.STATUS_AWAIT_MAKE_MONEY);
+		List<SettleStatemt> result = settleService.querySettleStatemts(condition);
+		List<com.xiaoke1256.orders.core.dto.SettleStatemt> voList = new ArrayList<com.xiaoke1256.orders.core.dto.SettleStatemt>();
+		for(SettleStatemt settleStatemt:result) {
+			voList.add(covertToVo(settleStatemt));
+		}
+		return voList;
 	}
 
 	private com.xiaoke1256.orders.core.dto.SettleStatemt covertToVo(SettleStatemt bo) {

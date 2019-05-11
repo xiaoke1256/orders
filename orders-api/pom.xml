@@ -5,6 +5,13 @@
   <name>orders-api</name>
   <version>1.0.0-SNAPSHOT</version>
   
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.5.6.RELEASE</version>
+    <relativePath /> 
+  </parent>
+  
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<maven.compiler.source>1.8</maven.compiler.source>  
@@ -13,6 +20,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-web</artifactId>
+       <scope>provided</scope>
+    </dependency>
+  
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>

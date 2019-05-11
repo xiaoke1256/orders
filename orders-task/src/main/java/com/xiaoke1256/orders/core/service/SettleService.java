@@ -58,7 +58,7 @@ public class SettleService {
 	 */
 	public void genSettleStatemt(String storeNo,String year,String month) {
 		//先查本月有没有已存在的结算单，如有则先废除掉。
-		String ql = "from SettleStatemt where storeNo=:storeNo and year=:year and month=:month and status in ('"+SettleStatemt.STATUS_AWAIT_MAKE_MONEY+"','"+SettleStatemt.STATUS_HAS_MADE_MONEY+"')";
+		String ql = "from SettleStatemt where storeNo=:storeNo and year=:year and month=:month and status in ('"+SettleStatemt.STATUS_AWAIT_MAKE_MONEY+"')";
 		@SuppressWarnings("unchecked")
 		List<SettleStatemt> orgSettles = entityManager.createQuery(ql)
 			.setParameter("storeNo", storeNo)

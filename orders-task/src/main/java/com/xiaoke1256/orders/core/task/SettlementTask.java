@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.core.task;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class SettlementTask {
 		if(date<=5)
 			reportDate = DateUtil.addMonth(reportDate, -1);
 		String year = String.valueOf(DateUtil.getYear(reportDate));
-		String month = String.valueOf(DateUtil.getMonth(reportDate));
+		String month = StringUtils.leftPad(String.valueOf(DateUtil.getMonth(reportDate)), 2, '0');
 		for(Store store:stores) {
 			settleService.genSettleStatemt(store.getStoreNo(), year, month);
 		}

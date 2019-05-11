@@ -87,5 +87,42 @@ public class SettleService {
 		return page;
 		
 	}
+	
+	@Transactional(readOnly = true)
+	public List<SettleStatemt> querySettleStatemts(SettleStatemtCondition condition){
+		StringBuilder qlSb = new StringBuilder("from SettleStatemt s where 1 = 1 ");
+		Map<String,Object> paramMap = new HashMap<>();
+		if(StringUtils.isNotEmpty(condition.getSettleNo())) {
+			qlSb.append(" and settleNo like :settleNo ");
+			paramMap.put("settleNo", condition.getSettleNo()+"%");
+		}
+		if(StringUtils.isNotEmpty(condition.getStoreNo())) {
+			qlSb.append(" and storeNo = :storeNo ");
+			paramMap.put("storeNo", condition.getStoreNo());
+		}
+		if(StringUtils.isNotEmpty(condition.getYear())) {
+			qlSb.append(" and year = :year ");
+			paramMap.put("year", condition.getYear());
+		}
+		if(StringUtils.isNotEmpty(condition.getMonth())) {
+			qlSb.append(" and month = :month ");
+			paramMap.put("month", condition.getMonth());
+		}
+		if(StringUtils.isNotEmpty(condition.getStatus())) {
+			qlSb.append(" and status = :status ");
+			paramMap.put("status", condition.getStatus());
+		}
+		
+		qlSb.append(" order by updateTime desc ");
+
+		Query query = entityManager.createQuery(qlSb.toString());
+		for(String key:paramMap.keySet()) {
+			query.setParameter(key, paramMap.get(key));
+		}
+		@SuppressWarnings("unchecked")
+		List<SettleStatemt> results = query.getResultList();
+		return results;
+		
+	}
 
 }
