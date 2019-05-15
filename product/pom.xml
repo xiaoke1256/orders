@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xiaoke_1256.orders</groupId>
   <artifactId>product</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>war</packaging>
   <!-- 
   <repositories>
@@ -122,19 +122,19 @@
      <dependency>
     	<groupId>com.xiaoke_1256.orders</groupId>
     	<artifactId>product-base</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
      </dependency>
      
      <dependency>
     	<groupId>com.xiaoke_1256.orders</groupId>
     	<artifactId>product-api</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
      </dependency>	
      
      <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
-       <version>1.0.0-SNAPSHOT</version>
+       <version>1.0.0</version>
     </dependency>
    
   </dependencies>
@@ -184,7 +184,7 @@
 	       	</execution>
 	      </executions>
 	      <configuration>
-	        <imageName>itmuch/product:1.0.0-SNAPSHOT</imageName>
+	        <imageName>itmuch/product:1.0.0</imageName>
 	       	<defaultProfile>${project.basedir}/src/main/docker</defaultProfile>
 	       	<resources>
 	       	  <resource>

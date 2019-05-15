@@ -5,7 +5,7 @@
   <groupId>com.xiaoke_1256.orders</groupId>
   <artifactId>product-api</artifactId>
   <name>product-api</name>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -46,7 +46,7 @@
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
-       <version>1.0.0-SNAPSHOT</version>
+       <version>1.0.0</version>
     </dependency>
     
   </dependencies>
