@@ -3,6 +3,8 @@ package com.xiaoke1256.orders.core.task;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.util.DateUtil;
+import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 import com.xiaoke1256.orders.core.client.MakeMoneyClient;
 import com.xiaoke1256.orders.core.dto.SettleStatemt;
 /**
@@ -21,8 +24,8 @@ import com.xiaoke1256.orders.core.dto.SettleStatemt;
 public class MakeMoneyTask {
 	private static final Logger logger = LoggerFactory.getLogger(MakeMoneyTask.class);
 	
-	@Autowired
-	private MakeMoneyTaskWatcher watcher;
+	@Resource(name="makeMoneyTaskWatcher")
+	private MasterWatcher watcher;
 	
 	@Autowired
 	private MakeMoneyClient makeMoneyClient;
