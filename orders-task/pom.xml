@@ -140,7 +140,7 @@
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common-zookeeper</artifactId>
-       <version>1.0.1.1-SNAPSHOT</version>
+       <version>1.0.0</version>
     </dependency>
     
     <dependency>

@@ -9,19 +9,24 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 public abstract class BaseWatcher implements Watcher {
 	private static final Logger logger = LoggerFactory.getLogger(BaseWatcher.class);
 	
-	@Value("${zookeeper.url}") 
 	private String zookeeperUrl;
 	
-	@Value("${zookeeper.timeout}") 
 	private int timeOut;
 	
 	protected ZooKeeper zooKeeper;
-	
+
+	public void setZookeeperUrl(String zookeeperUrl) {
+		this.zookeeperUrl = zookeeperUrl;
+	}
+
+	public void setTimeOut(int timeOut) {
+		this.timeOut = timeOut;
+	}
+
 	@PostConstruct
 	public void init() throws IOException {
 		zooKeeper = new ZooKeeper(zookeeperUrl,timeOut,this);

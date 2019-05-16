@@ -2,12 +2,16 @@ package com.xiaoke1256.thirdpay.payplatform.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 
 /**
  * 支付超时所要执行的定时任务
@@ -18,8 +22,8 @@ import org.springframework.stereotype.Service;
 public class ExpiredTask {
 	private static final Logger logger = LoggerFactory.getLogger(ExpiredTask.class);
 	
-	@Autowired
-	private ExpiredTaskWatcher exporedTaskWatcher;
+	@Resource(name="exporedTaskWatcher")
+	private MasterWatcher masterWatcher;
 	
 	@Autowired
 	private ThirdPayService thirdPayService;
@@ -30,7 +34,7 @@ public class ExpiredTask {
 	@Scheduled(cron="${third_pay_platform.expired.task.corn}")
 	public void makeOrdersExpired() {
 		try {
-			if(!exporedTaskWatcher.toBeMast()) {
+			if(!masterWatcher.toBeMast()) {
 				logger.debug("I'm not master. Do nothong.");
 				return;
 			}

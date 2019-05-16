@@ -12,30 +12,35 @@ import org.apache.zookeeper.data.Stat;
  * @author Administrator
  *
  */
-public abstract class MasterWatcher extends BaseWatcher {
+public class MasterWatcher extends BaseWatcher {
 	
 	private volatile Boolean isMaster;
 	
 	private String serverId = Integer.toHexString(new Random().nextInt());
 	
-	/**由具体的实现类来告知节点的路径*/
-	abstract protected String getNodePath();
+	/**zookeeper上节点的路径*/
+	private String nodePath;
 	
+	public MasterWatcher(String nodePath) {
+		super();
+		this.nodePath = nodePath;
+	}
+
 	public synchronized boolean toBeMast() throws InterruptedException {
 		isMaster = null;
 		while(true) {
 			try {
-				this.zooKeeper.create(getNodePath(), serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+				this.zooKeeper.create(nodePath, serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 				isMaster = true;
 				return isMaster;
 			} catch (KeeperException e) {
 				switch (e.code()) {
 				case NODEEXISTS:
-					if(checkMaster(getNodePath()))
+					if(checkMaster(nodePath))
 						return isMaster;
 				default:
 					//其他异常（含ConnectLossException）。
-					if(checkMaster(getNodePath()))
+					if(checkMaster(nodePath))
 						return isMaster;
 				}
 			}
