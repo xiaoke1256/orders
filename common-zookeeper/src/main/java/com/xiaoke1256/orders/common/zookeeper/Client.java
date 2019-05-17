@@ -18,7 +18,7 @@ public class Client extends BaseWatcher {
 		this.baseNodePath = baseNodePath;
 	}
 
-	public String queueCommand(String command) throws Exception {
+	public String queueCommand(String command) throws KeeperException,InterruptedException {
 		while(true) {
 			try {
 				String name = this.zooKeeper.create(baseNodePath+"/tasks/task-", command.getBytes(),
@@ -28,9 +28,7 @@ public class Client extends BaseWatcher {
 				throw new RuntimeException("%s alrealy appear to be runing.",e);
 			} catch (ConnectionLossException e) {
 				//do nothing.
-			} catch (KeeperException | InterruptedException e) {
-				throw e;
-			}
+			} 
 		}
 	}
 }

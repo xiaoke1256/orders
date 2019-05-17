@@ -105,6 +105,7 @@ public class MasterWatcher extends BaseWatcher {
 		createParent(basePath+"/assign",new byte[0]);
 		createParent(basePath+"/tasks",new byte[0]);
 		createParent(basePath+"/status",new byte[0]);
+		//TODO 如果不是主节点就要设置监视点
 	}
 	
 	private void createParent(String path, byte[] data) {
