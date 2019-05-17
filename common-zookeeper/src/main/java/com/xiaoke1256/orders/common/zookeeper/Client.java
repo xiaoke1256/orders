@@ -9,6 +9,15 @@ import org.apache.zookeeper.ZooDefs.Ids;
 public class Client extends BaseWatcher {
 	private String baseNodePath;
 	
+	/**
+	 * Construct
+	 * @param baseNodePath
+	 */
+	public Client(String baseNodePath) {
+		super();
+		this.baseNodePath = baseNodePath;
+	}
+
 	public String queueCommand(String command) throws Exception {
 		while(true) {
 			try {
@@ -19,7 +28,7 @@ public class Client extends BaseWatcher {
 				throw new RuntimeException("%s alrealy appear to be runing.",e);
 			} catch (ConnectionLossException e) {
 				//do nothing.
-			}  catch (KeeperException | InterruptedException e) {
+			} catch (KeeperException | InterruptedException e) {
 				throw e;
 			}
 		}

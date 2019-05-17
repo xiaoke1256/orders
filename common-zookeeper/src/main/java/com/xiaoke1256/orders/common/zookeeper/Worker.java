@@ -20,8 +20,17 @@ public class Worker extends BaseWatcher {
 	
 	private String baseNodePath;
 	
-	private String status;
+	private String status = "Idle";
 	
+	/**
+	 * Construct
+	 * @param baseNodePath
+	 */
+	public Worker(String baseNodePath) {
+		super();
+		this.baseNodePath = baseNodePath;
+	}
+
 	public void register() {
 		zooKeeper.create(baseNodePath+"/workers/worker-"+serverId,
 				"Idle".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL, createWorkerCallback, null);//"Idle" 表示空闲
