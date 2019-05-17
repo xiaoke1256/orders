@@ -18,12 +18,12 @@ public class Worker extends BaseWatcher {
 	
 	private String serverId = Integer.toHexString(new Random().nextInt());
 	
-	private String parentNodePath;
+	private String baseNodePath;
 	
 	private String status;
 	
 	public void register() {
-		zooKeeper.create(parentNodePath+"/workers/worker-"+serverId,
+		zooKeeper.create(baseNodePath+"/workers/worker-"+serverId,
 				"Idle".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL, createWorkerCallback, null);//"Idle" 表示空闲
 	}
 	
@@ -65,7 +65,7 @@ public class Worker extends BaseWatcher {
 
 	protected void updateStatus(String status) {
 		if(this.status==status) {
-			zooKeeper.setData(parentNodePath+"/workers/worker-"+serverId, status.getBytes(), -1,statusUpdateCallback,status);
+			zooKeeper.setData(baseNodePath+"/workers/worker-"+serverId, status.getBytes(), -1,statusUpdateCallback,status);
 		}
 		
 	}
