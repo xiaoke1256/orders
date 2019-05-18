@@ -4,11 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChildrenCache {
-	List<String> children = new ArrayList<String>();
-	
+	private List<String> children = new ArrayList<String>();
+
+	public List<String> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<String> children) {
+		this.children = children;
+	}
+
 	public ChildrenCache(List<String> children) {
 		super();
 		this.children = children;
+	}
+	
+	public int size() {
+		return children.size();
+	}
+	
+	public String get(int index) {
+		return children.get(index);
 	}
 
 	public List<String> removedAndSet(List<String> children) {
