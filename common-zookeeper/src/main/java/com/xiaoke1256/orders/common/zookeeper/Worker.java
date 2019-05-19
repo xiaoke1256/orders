@@ -158,6 +158,7 @@ public class Worker extends BaseWatcher {
 				doBusiness((String)ctx);
 				break;
 			default:
+				logger.error("Get TaskData fail: ",KeeperException.create(Code.get(rc),path));
 			}
 		}
 		
