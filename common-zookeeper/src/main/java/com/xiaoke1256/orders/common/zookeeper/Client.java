@@ -33,19 +33,39 @@ public class Client extends BaseWatcher {
 		this.baseNodePath = baseNodePath;
 	}
 
-	public String queueCommand(String command) throws KeeperException,InterruptedException {
-		while(true) {
-			try {
-				String name = zooKeeper.create(baseNodePath+"/tasks/task-", command.getBytes(),
-						Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
-				return name;
-			} catch (NodeExistsException e) {
-				throw new RuntimeException("%s alrealy appear to be runing.",e);
-			} catch (ConnectionLossException e) {
-				//do nothing.
-			} 
-		}
+	public void submitTask(String task,TaskObject taskCtx) {
+		taskCtx.setTask(task);
+		zooKeeper.create(baseNodePath+"/tasks/task-", task.getBytes(),Ids.OPEN_ACL_UNSAFE,
+				CreateMode.PERSISTENT_SEQUENTIAL,createTaskCallback,taskCtx);
+		
 	}
+	
+	private StringCallback createTaskCallback = new StringCallback() {
+
+		@Override
+		public void processResult(int rc, String path, Object ctx, String name) {
+			// TODO Auto-generated method stub
+			switch(Code.get(rc)) {
+			case CONNECTIONLOSS:
+				submitTask(((TaskObject)ctx).getTask(),(TaskObject)ctx);
+				break;
+			case OK:
+				logger.info("My create task name: {}",name);
+				watchStatus(baseNodePath+"/status/"+name.replace(baseNodePath+"/tasks", ""),ctx);
+				break;
+			default:
+				logger.error("Submit task fail: ",KeeperException.create(Code.get(rc),path));
+			}
+		}
+
+		private void watchStatus(String string, Object ctx) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	};
+	
+	
 	
 	
 }
