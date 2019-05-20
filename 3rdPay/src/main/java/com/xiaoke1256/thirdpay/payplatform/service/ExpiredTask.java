@@ -42,8 +42,13 @@ public class ExpiredTask {
 			//查出超时的订单。
 			List<String> orderNos = thirdPayService.queryExired(limit);
 			for(String orderNo:orderNos) {
-				//超时处理
-				thirdPayService.expired(orderNo);
+				try {
+					//超时处理
+					thirdPayService.expired(orderNo);
+				}catch(Exception e) {
+					//若发生异常，不能影响后续订单的处理
+					logger.error(e.getMessage(), e);
+				}
 			}
 		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);

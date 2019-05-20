@@ -113,6 +113,7 @@ public abstract class AbstractPayBusinessService implements PayBusinessService {
 		return reason;
 	}
 	
+	@Transactional
 	@Override
 	public void cancel(String orderNo, String cancelType, String remark) {
 		String reason = getReson(cancelType);
