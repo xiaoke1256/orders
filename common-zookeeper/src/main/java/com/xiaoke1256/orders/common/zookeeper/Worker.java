@@ -59,6 +59,8 @@ public class Worker extends BaseWatcher {
 				register();
 				break;
 			case OK:
+				//节点创建成功，则开始监控任务
+				getTasks();
 				logger.info("Regitered successfully: %s",serverId);
 				break;
 			case NODEEXISTS:
@@ -119,7 +121,8 @@ public class Worker extends BaseWatcher {
 				getTasks();
 				break;
 			case OK:
-				if(children!=null) {
+				if(children!=null && children.size()>0) {
+					updateStatus("Busy");
 					executor.execute(() -> {
 						synchronized (onGoingTasks) {
 							for(String task:children) {
@@ -132,6 +135,9 @@ public class Worker extends BaseWatcher {
 						}
 						
 					});
+				}else {
+					//该节点没有任务
+					updateStatus("Idle");
 				}
 				break;
 			default:
@@ -156,6 +162,7 @@ public class Worker extends BaseWatcher {
 				break;
 			case OK:
 				doBusiness((String)ctx);
+				finishTask();
 				break;
 			default:
 				logger.error("Get TaskData fail: ",KeeperException.create(Code.get(rc),path));
@@ -164,6 +171,9 @@ public class Worker extends BaseWatcher {
 		
 	};
 
+	private void finishTask() {
+		
+	}
 
 	protected void doBusiness(String ctx) {
 		// TODO Auto-generated method stub

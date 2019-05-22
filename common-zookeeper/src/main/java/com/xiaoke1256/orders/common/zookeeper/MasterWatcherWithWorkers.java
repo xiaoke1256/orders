@@ -200,6 +200,7 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 				/**
 				 * Choose worker at random
 				 */
+				//TODO 优先考虑空闲的节点。
 				int workerIndex = RandomUtils.nextInt(workersCase.size());
 				String designatedWorker = workersCase.get(workerIndex);
 				
