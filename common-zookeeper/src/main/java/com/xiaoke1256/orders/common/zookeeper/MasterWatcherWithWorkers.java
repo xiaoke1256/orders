@@ -140,6 +140,8 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 
 	private void getAbsentWorkerTasks(String worker) {
 		// TODO Auto-generated method stub
+		//reassign the taskes.
+		//delete the /assign/worker-{} node.
 		
 	}
 	

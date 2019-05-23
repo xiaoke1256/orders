@@ -1,12 +1,13 @@
 package com.xiaoke1256.orders.common.zookeeper;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.zookeeper.AsyncCallback.ChildrenCallback;
 import org.apache.zookeeper.AsyncCallback.DataCallback;
@@ -23,7 +24,7 @@ import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Worker extends BaseWatcher {
+public abstract class Worker extends BaseWatcher {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Worker.class);
 	
@@ -44,8 +45,42 @@ public class Worker extends BaseWatcher {
 		super();
 		this.baseNodePath = baseNodePath;
 	}
-
+	
+	@PostConstruct
+	public void bootstrap() throws InterruptedException {
+		register();
+	}
+	
 	public void register() {
+		//Create assign node first.
+		zooKeeper.create(baseNodePath+"/assign/worker-"+serverId,
+				new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT, createAssignWorkerCallback, null);
+	}
+	
+	private StringCallback createAssignWorkerCallback = new StringCallback() {
+
+		@Override
+		public void processResult(int rc, String path, Object ctx, String name) {
+			switch(Code.get(rc)) {
+			case CONNECTIONLOSS:
+				register();
+				break;
+			case OK:
+				//节点创建成功，则创建worker节点。
+				registerWorkNode();
+				logger.info("Assign worker node create successfully: %s",serverId);
+				break;
+			case NODEEXISTS:
+				logger.warn("Already registered: %s",serverId );
+				break;
+			default:
+				logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
+			}
+		}
+		
+	};
+
+	public void registerWorkNode() {
 		zooKeeper.create(baseNodePath+"/workers/worker-"+serverId,
 				"Idle".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL, createWorkerCallback, null);//"Idle" 表示空闲
 	}
@@ -56,7 +91,7 @@ public class Worker extends BaseWatcher {
 		public void processResult(int rc, String path, Object ctx, String name) {
 			switch(Code.get(rc)) {
 			case CONNECTIONLOSS:
-				register();
+				registerWorkNode();
 				break;
 			case OK:
 				//节点创建成功，则开始监控任务
@@ -110,7 +145,7 @@ public class Worker extends BaseWatcher {
 		zooKeeper.getChildren(baseNodePath+"/assign/worker-"+serverId, newTaskWatcher,tasksGetChildrenCallback,null);
 	}
 	
-	private Set<String> onGoingTasks = new HashSet<>();
+	private Set<String> onGoingTasks = new HashSet<>();//TODO 此HsahSet 大小应该限制，根据节点的处理能力限制。
 	
 	private ChildrenCallback tasksGetChildrenCallback = new ChildrenCallback() {
 
@@ -128,6 +163,7 @@ public class Worker extends BaseWatcher {
 							for(String task:children) {
 								if(!onGoingTasks.contains(task)) {
 									logger.trace("New task {}",task);
+									//TODO 如果onGoingTasks已满，应该直接break.
 									getTaskData(task);
 									onGoingTasks.add(task);
 								}
@@ -155,14 +191,16 @@ public class Worker extends BaseWatcher {
 
 		@Override
 		public void processResult(int rc, String path, Object ctx, byte[] data, Stat stat) {
-			// TODO Auto-generated method stub
 			switch(Code.get(rc)){
 			case CONNECTIONLOSS:
 				getTaskData((String)ctx);
 				break;
 			case OK:
-				doBusiness((String)ctx);
-				finishTask();
+				try {
+					doBusiness(data);
+				}finally {
+					finishTask((String)ctx);
+				}
 				break;
 			default:
 				logger.error("Get TaskData fail: ",KeeperException.create(Code.get(rc),path));
@@ -171,13 +209,67 @@ public class Worker extends BaseWatcher {
 		
 	};
 
-	private void finishTask() {
-		
+	private void finishTask(String task) {
+	    while(true){
+			synchronized (onGoingTasks) {
+				String path = baseNodePath+"/status/"+task;
+				String content = "done by worker-"+serverId;
+				try {
+					zooKeeper.setData(path, content.getBytes(), -1);
+					onGoingTasks.remove(task);
+					return;
+				} catch (KeeperException e) {
+					switch (e.code()) {
+					case NONODE:
+						//节点没有应该是其他其他线程把它删了.
+						logger.warn("The node has bean deleted by the master.");
+						return;
+					case CONNECTIONLOSS:
+						if(ckeckStatusData(path,content)) {
+							logger.info("Modify successfull!");
+							onGoingTasks.remove(task);
+							return;
+						}
+					default:
+						//其他异常。
+						logger.error("Something wrong has happen!",e);
+					}
+				} catch (InterruptedException e) {
+					logger.error("Suspend!",e);
+					
+				}
+				
+			}
+	    }
 	}
-
-	protected void doBusiness(String ctx) {
-		// TODO Auto-generated method stub
-		
+	
+	private boolean ckeckStatusData(String path, String content) {
+		while(true) {
+			try {
+				Stat stat = new Stat();
+				byte[] data = zooKeeper.getData(path, false,stat);
+				return new String(data).equals(content);
+			}catch(KeeperException e) {
+				switch (e.code()) {
+				case NONODE:
+					//节点没有应该是其他其他线程把它删了.说明也修改成功了。
+					logger.warn("The node has bean deleted by the master.");
+					return true;
+				default:
+					//其他异常（含ConnectLossException）. Read it again.TODO 需打日志。
+					logger.error("Something wrong has happen!",e);
+				}
+			} catch (InterruptedException e) {
+				logger.error("Something wrong has happen!",e);
+				//继续查状态
+			}
+		}
 	}
+	
+	/**
+	 * 处理具体业务
+	 * @param data
+	 */
+	abstract protected void doBusiness(byte[] data) ;
 	
 }
