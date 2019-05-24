@@ -256,7 +256,7 @@ public abstract class Worker extends BaseWatcher {
 					logger.warn("The node has bean deleted by the master.");
 					return true;
 				default:
-					//其他异常（含ConnectLossException）. Read it again.TODO 需打日志。
+					//其他异常（含ConnectLossException）. Read it again.
 					logger.error("Something wrong has happen!",e);
 				}
 			} catch (InterruptedException e) {

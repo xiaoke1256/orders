@@ -1,15 +1,18 @@
 package com.xiaoke1256.orders.common.zookeeper;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.Op;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.AsyncCallback.ChildrenCallback;
 import org.apache.zookeeper.AsyncCallback.DataCallback;
 import org.apache.zookeeper.AsyncCallback.StringCallback;
+import org.apache.zookeeper.AsyncCallback.VoidCallback;
 import org.apache.zookeeper.KeeperException.Code;
 import org.apache.zookeeper.Watcher.Event.EventType;
 import org.apache.zookeeper.ZooDefs.Ids;
@@ -139,10 +142,89 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 	}
 
 	private void getAbsentWorkerTasks(String worker) {
-		// TODO Auto-generated method stub
+		String assignmentPath = baseNodePath+"/assign/"+worker;
+		zooKeeper.getChildren(assignmentPath, false, getAbsentWorkerTasksCallBack, worker);
+	}
+	
+	private ChildrenCallback getAbsentWorkerTasksCallBack = (int rc, String path, Object ctx, List<String> tasks)->{
+		switch(Code.get(rc)) {
+		case CONNECTIONLOSS:
+			getAbsentWorkerTasks((String)ctx);
+			break;
+		case OK:
+			if(tasks!=null) {
+				reassignTasks((String)ctx,tasks);
+			}
+			break;
+		default:
+			logger.error("get children fail: ",KeeperException.create(Code.get(rc),path));
+		}
+	};
+	
+	private void reassignTasks(String worker,List<String> tasks) {
 		//reassign the taskes.
+		for(String task:tasks) {
+			reassignTask(worker,task);
+		}
 		//delete the /assign/worker-{} node.
+		deleteAssignWorkNode(worker);
+	}
+	
+	private void reassignTask(String worker,String task){
+		while(true) {
+			try {
+				//完成以下事情： 1、删 除 /assign/work-?/ 下对应节点。创建任务节点
+				String assignPath = baseNodePath + "/assign/"+worker+"/"+task;
+				String taskesPath = baseNodePath + "/tasks/"+task;
+				Stat stat = new Stat();
+				byte[] data = zooKeeper.getData(assignPath, false, stat );
+				zooKeeper.multi(Arrays.asList(Op.delete(assignPath, -1)
+						,Op.create(taskesPath, data, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL)));
+				return;
+			} catch (KeeperException e) {
+				switch (e.code()) {
+				case NONODE:
+					//说明有其他节点已经帮他处理掉了。
+					logger.info("the node has been deleted!");
+					return;
+				case NODEEXISTS:
+					//说明有其他节点已经帮他处理掉了。
+					logger.info("the node has been created!");
+					return;
+				default:
+					//其他异常（含ConnectLossException）。
+					logger.warn("Something wrong has happen when delete reassign task. ",e);
+					//继续循环
+				}
+			} catch (InterruptedException e) {
+				logger.error("Something wrong has happen when delete reassign task. ",e);
+				//继续循环
+			}
+		}
 		
+	}
+	
+	private void deleteAssignWorkNode(String worker) {
+		String assignmentPath = baseNodePath+"/assign/"+worker;
+		while(true) {
+			try {
+				zooKeeper.delete(assignmentPath, -1);
+			}catch (KeeperException e) {
+				switch (e.code()) {
+				case NONODE:
+					//说明有其他节点已经帮他处理掉了。
+					logger.info("the node has been deleted!");
+					return;
+				default:
+					//其他异常（含ConnectLossException）。
+					logger.warn("Something wrong has happen when delete reassign worker task. ",e);
+					//继续循环
+				}
+			} catch (InterruptedException e) {
+				logger.error("Something wrong has happen when delete reassign worker task. ",e);
+				//继续循环
+			}
+		}
 	}
 	
 	private Watcher taskChangeWatcher = new Watcher() {
@@ -241,9 +323,25 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 		
 	};
 
-	protected void deleteTask(String substring) {
-		// TODO Auto-generated method stub
-		
+	private void deleteTask(String task) {
+		String path = baseNodePath +"/tasks/"+task;
+		zooKeeper.delete(path,-1, deleteTaskCallback, task);
 	}
+	
+	private VoidCallback deleteTaskCallback = (int rc, String path, Object ctx)->{
+		switch(Code.get(rc)) {
+		case CONNECTIONLOSS:
+			deleteTask((String)ctx);
+			break;
+		case OK:
+			logger.info("Task deleted successfull: "+(String)ctx);
+			break;
+		case NONODE:
+			logger.warn("Task already deleted");
+			break;
+		default:
+			logger.error("Error happen when try to assign task : ",KeeperException.create(Code.get(rc),path));
+		}
+	} ;
 
 }
