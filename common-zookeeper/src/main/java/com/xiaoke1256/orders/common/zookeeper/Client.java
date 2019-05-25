@@ -33,7 +33,11 @@ public class Client extends BaseWatcher {
 		this.baseNodePath = baseNodePath;
 	}
 
-	public void submitTask(String task,TaskObject taskCtx) {
+	public void submitTask(String task) {
+		TaskObject taskCtx = new TaskObject();
+		submitTask(task,taskCtx);
+	}
+	private void submitTask(String task,TaskObject taskCtx) {
 		taskCtx.setTask(task);
 		zooKeeper.create(baseNodePath+"/tasks/task-", task.getBytes(),Ids.OPEN_ACL_UNSAFE,
 				CreateMode.PERSISTENT_SEQUENTIAL,createTaskCallback,taskCtx);

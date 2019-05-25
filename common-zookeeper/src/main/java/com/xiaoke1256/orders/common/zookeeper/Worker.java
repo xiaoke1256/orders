@@ -197,7 +197,10 @@ public abstract class Worker extends BaseWatcher {
 				break;
 			case OK:
 				try {
-					doBusiness(data);
+					doBusiness(new String(data));
+				}catch(Exception e){
+					logger.error("Some errer happen when excute business.",e);
+					throw e;
 				}finally {
 					finishTask((String)ctx);
 				}
@@ -270,6 +273,6 @@ public abstract class Worker extends BaseWatcher {
 	 * 处理具体业务
 	 * @param data
 	 */
-	abstract protected void doBusiness(byte[] data) ;
+	abstract protected void doBusiness(String businessData) ;
 	
 }
