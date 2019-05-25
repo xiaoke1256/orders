@@ -14,6 +14,6 @@ import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 public class WatcherConfig {
 	@Bean
 	public MasterWatcher exporedTaskWatcher() {
-		return new MasterWatcher("/zookeeper/3rdpay/expired_order/master");
+		return new MasterWatcher("/zookeeper/3rdpay/expired_order");
 	}
 }

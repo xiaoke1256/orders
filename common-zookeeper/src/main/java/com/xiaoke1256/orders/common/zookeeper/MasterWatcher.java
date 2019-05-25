@@ -23,17 +23,13 @@ public class MasterWatcher extends BaseWatcher {
 	
 	private String serverId = Integer.toHexString(new Random().nextInt());
 	
-	/**
-	 * @deprecated 要替换掉的
-	 * zookeeper上节点的路径
-	 */
-	protected String nodePath;
+
 	
 	protected String baseNodePath;
 	
-	public MasterWatcher(String nodePath) {
+	public MasterWatcher(String baseNodePath) {
 		super();
-		this.nodePath = nodePath;
+		this.baseNodePath = baseNodePath;
 	}
 	
 	/**
@@ -44,6 +40,7 @@ public class MasterWatcher extends BaseWatcher {
 	 */
 	public synchronized boolean toBeMast() throws InterruptedException {
 		isMaster = null;
+		String nodePath = baseNodePath+"/master";
 		while(true) {
 			try {
 				this.zooKeeper.create(nodePath, serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
