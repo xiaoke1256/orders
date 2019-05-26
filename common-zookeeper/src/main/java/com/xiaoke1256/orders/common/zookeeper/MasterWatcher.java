@@ -4,6 +4,9 @@ import java.util.Random;
 
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.Watcher.Event.EventType;
 import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
@@ -26,10 +29,19 @@ public class MasterWatcher extends BaseWatcher {
 
 	
 	protected String baseNodePath;
+
 	
 	public MasterWatcher(String baseNodePath) {
 		super();
 		this.baseNodePath = baseNodePath;
+	}
+	
+	/**
+	 * init
+	 * @throws InterruptedException
+	 */
+	protected void bootstrap() throws InterruptedException{
+		//留给子类实现。
 	}
 	
 	/**
@@ -45,16 +57,23 @@ public class MasterWatcher extends BaseWatcher {
 			try {
 				this.zooKeeper.create(nodePath, serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 				isMaster = true;
+				bootstrap();
 				return isMaster;
 			} catch (KeeperException e) {
 				switch (e.code()) {
 				case NODEEXISTS:
 					if(checkMaster(nodePath)) {
+						if(isMaster) {
+							bootstrap();
+						}
 						return isMaster;
 					}
 				default:
 					//其他异常（含ConnectLossException）。
 					if(checkMaster(nodePath)) {
+						if(isMaster) {
+							bootstrap();
+						}
 						return isMaster;
 					}
 				}
@@ -72,7 +91,7 @@ public class MasterWatcher extends BaseWatcher {
 		while(true) {
 			try {
 				Stat stat = new Stat();
-				byte[] data = zooKeeper.getData(nodePath, false, stat);
+				byte[] data = zooKeeper.getData(nodePath, masterLostWater, stat);
 				isMaster = new String(data).equals(serverId);
 				return true;
 			} catch (KeeperException e) {
@@ -85,5 +104,19 @@ public class MasterWatcher extends BaseWatcher {
 			}
 		}	
 	}
-	
+	private Watcher masterLostWater = new Watcher() {
+
+		@Override
+		public void process(WatchedEvent event) {
+			if(EventType.NodeDeleted.equals(event.getType())) {
+				assert (baseNodePath+"/master").equals(event.getPath());
+				try {
+					toBeMast();
+				} catch (InterruptedException e) {
+					logger.error("I can not to be the master. ",e);
+				}
+			}
+		}
+		
+	};
 }

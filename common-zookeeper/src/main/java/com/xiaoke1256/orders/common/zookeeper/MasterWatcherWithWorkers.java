@@ -3,6 +3,8 @@ package com.xiaoke1256.orders.common.zookeeper;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -33,22 +35,13 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 		super(nodePath);
 	}
 	
-
-	@Override
-	public synchronized boolean toBeMast() throws InterruptedException {
-		boolean isMaster = super.toBeMast();
-		if(isMaster)
-			bootstrap();
-		return isMaster;
-	}
-
-
 	/**
 	 * Create meta node.
 	 * @throws InterruptedException 
 	 */
-	private void bootstrap() throws InterruptedException {
+	protected void bootstrap() throws InterruptedException {
 		String basePath = baseNodePath;
+		logger.info("basePath:"+basePath);
 		if(basePath.lastIndexOf("/master")>=0)
 			basePath.substring(0, basePath.lastIndexOf("/master"));
 		createParent(basePath+"/workers",new byte[0]);
@@ -61,6 +54,11 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 		getTasks();
 	}
 	
+	@PostConstruct
+	public void startUp() throws InterruptedException {
+		super.toBeMast();
+	}
+
 	private void createParent(String path, byte[] data) throws InterruptedException {
 		try {
 			zooKeeper.create(path, data, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
@@ -75,7 +73,7 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 					createParent(path,data);//如果是继续创建
 				}else {
 					//如果不是了，就抛异常，后续工作都不用做了。
-					throw new InterruptedException("I'm not the master.");
+					throw new RuntimeException("I'm not the master.");
 				}
 				break;
 			default:
@@ -269,7 +267,7 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 	}
 
 	private void getTaskData(String task) {
-		zooKeeper.getData(baseNodePath+"/tasks", false, taskDataCallback, task);
+		zooKeeper.getData(baseNodePath+"/tasks/"+task, false, taskDataCallback, task);
 	}
 	
 	private DataCallback taskDataCallback = new DataCallback() {
@@ -284,11 +282,22 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 				/**
 				 * Choose worker at random
 				 */
+				if(workersCase.size()==0) {
+					//工作节点还没有注册上来需稍等片刻
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						logger.error("the task assign  terminated!",e);
+					}
+					getTaskData((String)ctx);
+					break;
+				}
 				//TODO 优先考虑空闲的节点。
 				int workerIndex = RandomUtils.nextInt(workersCase.size());
 				String designatedWorker = workersCase.get(workerIndex);
 				
 				String assignmentPath = baseNodePath+"/assign/"+designatedWorker+"/"+(String)ctx;
+				logger.debug("Task data is: "+new String(data));
 				createAssignment(assignmentPath,data);
 				break;
 			default:

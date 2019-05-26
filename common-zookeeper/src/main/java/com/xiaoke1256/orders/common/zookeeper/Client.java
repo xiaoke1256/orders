@@ -41,7 +41,7 @@ public class Client extends BaseWatcher {
 		taskCtx.setTask(task);
 		zooKeeper.create(baseNodePath+"/tasks/task-", task.getBytes(),Ids.OPEN_ACL_UNSAFE,
 				CreateMode.PERSISTENT_SEQUENTIAL,createTaskCallback,taskCtx);
-		
+		logger.debug("task business params :"+task);
 	}
 	
 	private StringCallback createTaskCallback = new StringCallback() {
@@ -53,9 +53,10 @@ public class Client extends BaseWatcher {
 				submitTask(((TaskObject)ctx).getTask(),(TaskObject)ctx);
 				break;
 			case OK:
-				logger.info("My create task name: {}",name);
+				((TaskObject)ctx).setTaskName(name);
+				logger.debug("My create task name: {}",name);
 				//任务一旦创建，就开始监控任务状态。
-				watchStatus(baseNodePath+"/status/"+name.replace(baseNodePath+"/tasks", ""),(TaskObject)ctx);
+				watchStatus(baseNodePath+"/status/"+name.replace(baseNodePath+"/tasks/", ""),(TaskObject)ctx);
 				break;
 			default:
 				logger.error("Submit task fail: ",KeeperException.create(Code.get(rc),path));
@@ -89,7 +90,7 @@ public class Client extends BaseWatcher {
 			break;
 		case NONODE:
 			//节点没有是异常情况。
-			logger.error("Something wrong has happen: the Node disapeared!");
+			logger.error("Something wrong has happen: the node disapeared!");
 		default:
 			logger.error("Something wrong has happen.",KeeperException.create(Code.get(rc),path));
 		}

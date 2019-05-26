@@ -71,10 +71,10 @@ public abstract class Worker extends BaseWatcher {
 			case OK:
 				//节点创建成功，则创建worker节点。
 				registerWorkNode();
-				logger.info("Assign worker node create successfully: %s",serverId);
+				logger.info("Assign worker node create successfully: {}",serverId);
 				break;
 			case NODEEXISTS:
-				logger.warn("Already registered: %s",serverId );
+				logger.warn("Already registered: {}",serverId );
 				break;
 			default:
 				logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
@@ -151,7 +151,7 @@ public abstract class Worker extends BaseWatcher {
 		zooKeeper.getChildren(baseNodePath+"/assign/worker-"+serverId, newTaskWatcher,tasksGetChildrenCallback,null);
 	}
 	
-	private Set<String> onGoingTasks = new HashSet<>();//TODO 此HsahSet 大小应该限制，根据节点的处理能力限制。
+	private Set<String> onGoingTasks = new HashSet<>();//TODO 此HsahSet 大小应该限制，根据服务器的处理能力限制。
 	
 	private ChildrenCallback tasksGetChildrenCallback = new ChildrenCallback() {
 

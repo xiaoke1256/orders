@@ -29,17 +29,17 @@ public class ChildrenCache {
 
 	public List<String> removedAndSet(List<String> children) {
 		List<String> absentList = new ArrayList<String>();
-		if(children==null || children.size()==0)
-			return absentList;
+		if(children==null)
+			children = new ArrayList<>();
 		List<String> toAddList = new ArrayList<String>();
 		for(String child:children) {
 			if(!this.children.contains(child)) {
-				absentList.add(child);
+				toAddList.add(child);
 			}
 		}
 		for(String child:this.children) {
 			if(!children.contains(child)) {
-				toAddList.add(child);
+				absentList.add(child);
 			}
 		}
 		this.children.removeAll(absentList);
