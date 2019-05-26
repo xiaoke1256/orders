@@ -1,12 +1,14 @@
 package com.xiaoke1256.orders.core.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.zookeeper.Worker;
 import com.xiaoke1256.orders.core.service.SettleService;
 
+@Component
 public class SettlementWorker extends Worker {
 	
 	@Autowired

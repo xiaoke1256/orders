@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.xiaoke1256.orders.common.zookeeper.Client;
 import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
+import com.xiaoke1256.orders.common.zookeeper.MasterWatcherWithWorkers;
 
 @Configuration
 public class WatcherConifg {
@@ -24,7 +25,7 @@ public class WatcherConifg {
 	
 	@Bean
 	public MasterWatcher settlementTaskWatcher() {
-		return new MasterWatcher(SETTLE_PATH);
+		return new MasterWatcherWithWorkers(SETTLE_PATH);
 	}
 	
 	@Bean

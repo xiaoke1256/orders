@@ -65,6 +65,9 @@ public abstract class Worker extends BaseWatcher {
 			case CONNECTIONLOSS:
 				register();
 				break;
+			case NONODE:
+				register();//父节点还没有被创建
+				break;
 			case OK:
 				//节点创建成功，则创建worker节点。
 				registerWorkNode();
@@ -92,6 +95,9 @@ public abstract class Worker extends BaseWatcher {
 			switch(Code.get(rc)) {
 			case CONNECTIONLOSS:
 				registerWorkNode();
+				break;
+			case NONODE:
+				registerWorkNode();//父节点还没有被创建
 				break;
 			case OK:
 				//节点创建成功，则开始监控任务
