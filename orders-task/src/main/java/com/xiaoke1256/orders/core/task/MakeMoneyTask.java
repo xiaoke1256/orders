@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.util.DateUtil;
+import com.xiaoke1256.orders.common.zookeeper.Client;
 import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 import com.xiaoke1256.orders.core.client.MakeMoneyClient;
 import com.xiaoke1256.orders.core.dto.SettleStatemt;
@@ -30,6 +31,9 @@ public class MakeMoneyTask {
 	@Autowired
 	private MakeMoneyClient makeMoneyClient;
 	
+	@Resource(name="makeMoneyZkClient")
+	private Client zkClient;
+	
 	@Scheduled(cron="${logistics.make_money.task.corn}")
 	public void startMakeMoneys() {
 		try {
@@ -46,7 +50,7 @@ public class MakeMoneyTask {
 			
 			//打款
 			for(SettleStatemt settle:settles) {
-				makeMoneyClient.makeMoney(settle.getSettleNo());
+				zkClient.submitTask(settle.getSettleNo());
 			}
 			
 		}catch(InterruptedException e) {

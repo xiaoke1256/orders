@@ -9,13 +9,13 @@ import com.xiaoke1256.orders.common.zookeeper.MasterWatcherWithWorkers;
 
 @Configuration
 public class WatcherConifg {
-	private static final String MAKE_MONET_PATH = "/zookeeper/orders/make_money";
+	public static final String MAKE_MONET_PATH = "/zookeeper/orders/make_money";
 	private static final String SENDING_EXPIRED_PATH = "/zookeeper/orders/sending_expired";
 	public static final String SETTLE_PATH = "/zookeeper/orders/settle";
 	
 	@Bean
 	public MasterWatcher makeMoneyTaskWatcher() {
-		return new MasterWatcher(MAKE_MONET_PATH);
+		return new MasterWatcherWithWorkers(MAKE_MONET_PATH);
 	}
 	
 	@Bean
@@ -29,7 +29,12 @@ public class WatcherConifg {
 	}
 	
 	@Bean
-	public Client settleClient() {
+	public Client settleZkClient() {
 		return new Client(SETTLE_PATH);
+	}
+	
+	@Bean
+	public Client makeMoneyZkClient() {
+		return new Client(MAKE_MONET_PATH);
 	}
 }

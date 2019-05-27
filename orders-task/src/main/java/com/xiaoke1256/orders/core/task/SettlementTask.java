@@ -33,7 +33,7 @@ public class SettlementTask {
 	@Resource(name="settlementTaskWatcher")
 	private MasterWatcher settlementTaskWatcher;
 	
-	@Resource(name="settleClient")
+	@Resource(name="settleZkClient")
 	private Client settleClient;
 	
 	/**
