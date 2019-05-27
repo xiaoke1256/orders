@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.xiaoke1256.orders.common.zookeeper.Client;
 import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 
 /**
@@ -24,6 +25,10 @@ public class ExpiredTask {
 	
 	@Resource(name="exporedTaskWatcher")
 	private MasterWatcher masterWatcher;
+	
+
+	@Resource(name="expiredZkClient")
+	private Client zkClient;
 	
 	@Autowired
 	private ThirdPayService thirdPayService;
@@ -42,13 +47,7 @@ public class ExpiredTask {
 			//查出超时的订单。
 			List<String> orderNos = thirdPayService.queryExired(limit);
 			for(String orderNo:orderNos) {
-				try {
-					//超时处理
-					thirdPayService.expired(orderNo);
-				}catch(Exception e) {
-					//若发生异常，不能影响后续订单的处理
-					logger.error(e.getMessage(), e);
-				}
+				zkClient.submitTask(orderNo);
 			}
 		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
