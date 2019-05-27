@@ -50,12 +50,6 @@
 	    <version>2.3</version>
 	</dependency>
     
-    <dependency>
-       <groupId>com.xiaoke_1256.orders</groupId>
-       <artifactId>orders-common</artifactId>
-       <version>1.0.1.1-SNAPSHOT</version>
-    </dependency>
-    
   </dependencies>
   <build>
     <plugins>
