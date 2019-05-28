@@ -51,7 +51,8 @@ public class MasterWatcher extends BaseWatcher {
 	 * @throws InterruptedException
 	 */
 	public synchronized boolean toBeMast() throws InterruptedException {
-		isMaster = null;
+		if(isMaster != null)
+			return isMaster;
 		String nodePath = baseNodePath+"/master";
 		while(true) {
 			try {
@@ -102,6 +103,7 @@ public class MasterWatcher extends BaseWatcher {
 					//其他异常（含ConnectLossException）. Read it again.TODO 需打日志。
 				}
 			}
+			Thread.sleep(10);//给CPU以喘息的机会
 		}	
 	}
 	private Watcher masterLostWater = new Watcher() {
@@ -111,6 +113,7 @@ public class MasterWatcher extends BaseWatcher {
 			if(EventType.NodeDeleted.equals(event.getType())) {
 				assert (baseNodePath+"/master").equals(event.getPath());
 				try {
+					isMaster = null;
 					toBeMast();
 				} catch (InterruptedException e) {
 					logger.error("I can not to be the master. ",e);
