@@ -45,6 +45,10 @@ public class SettlementTask {
 			if(!settlementTaskWatcher.toBeMast()) {
 				return;
 			}
+			if(!settleClient.isAllFinished()) {
+				logger.debug("some tasks is going working!");
+				return;
+			}
 			settlement();
 		}catch(InterruptedException e) {
 			logger.error(e.getMessage(), e);

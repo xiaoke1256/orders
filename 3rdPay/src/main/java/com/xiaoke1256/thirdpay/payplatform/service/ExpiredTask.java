@@ -43,6 +43,10 @@ public class ExpiredTask {
 				logger.debug("I'm not master. Do nothong.");
 				return;
 			}
+			if(!zkClient.isAllFinished()) {
+				logger.debug("some tasks is going working!");
+				return;
+			}
 			logger.debug("I'm master .Doing the task.");
 			//查出超时的订单。
 			List<String> orderNos = thirdPayService.queryExired(limit);

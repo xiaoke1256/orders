@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.common.zookeeper;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -148,7 +149,7 @@ public class Client extends BaseWatcher {
 				//完成以下事情： 1、删 除 /assign/work-?/ 下对应节点。2、删除任务状态节点。
 				String assignPath = baseNodePath + "/assign/"+workName+"/"+taskName;
 				String statusPath = baseNodePath + "/status/"+taskName;
-			
+				ctxMap.remove(statusPath);
 				zooKeeper.multi(Arrays.asList(Op.delete(assignPath, -1)
 						,Op.delete(statusPath, -1)));
 				return;
@@ -164,6 +165,25 @@ public class Client extends BaseWatcher {
 					//继续循环
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 所有的任务是否已完成？
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public boolean isAllFinished() throws InterruptedException {
+		while(true) {
+			try {
+				List<String> list = zooKeeper.getChildren(baseNodePath+"/tasks", false);
+				if(!list.isEmpty())
+					return false;
+				return ctxMap.isEmpty();
+			} catch (KeeperException e) {
+				//发生任何异常就继续循环
+				logger.warn("Something wrong has happen when delete finished task. ",e);
+			} 
 		}
 	}
 }

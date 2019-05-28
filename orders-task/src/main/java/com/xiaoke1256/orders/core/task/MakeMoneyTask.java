@@ -40,6 +40,10 @@ public class MakeMoneyTask {
 			if(!watcher.toBeMast()) {
 				return;
 			}
+			if(!zkClient.isAllFinished()) {
+				logger.debug("some tasks is going working!");
+				return;
+			}
 			Date todate = new Date();
 			Date lastMonth = DateUtil.addMonth(todate, -1);
 			String year = String.valueOf(DateUtil.getYear(lastMonth));
