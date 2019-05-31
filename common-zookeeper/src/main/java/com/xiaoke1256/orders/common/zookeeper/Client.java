@@ -181,9 +181,16 @@ public class Client extends BaseWatcher {
 					return false;
 				return ctxMap.isEmpty();
 			} catch (KeeperException e) {
-				//发生任何异常就继续循环
-				logger.warn("Something wrong has happen when delete finished task. ",e);
+				switch(e.code()){
+				case SESSIONEXPIRED:
+					//session 过期则作为异常抛出，等待下一个调度周期再恢复session。
+					throw new RuntimeException(e);
+				default:
+					//发生其他异常就继续循环
+					logger.warn("Something wrong has happen when check task finished . ",e);
+				}
 			} 
+			Thread.sleep(200);//给CPU以喘息的机会
 		}
 	}
 }

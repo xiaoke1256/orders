@@ -3,9 +3,11 @@ package com.xiaoke1256.orders.common.zookeeper;
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.ZooKeeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,31 @@ public abstract class BaseWatcher implements Watcher {
 	@Override
 	public void process(WatchedEvent event) {
 		logger.debug("Event is {}", event);
+		if(KeeperState.SyncConnected.equals(event.getState())) {
+			logger.debug("connected.");
+		}else if(KeeperState.Expired.equals(event.getState())) {
+			logger.warn("Session Expired!");
+			synchronized(this) {
+				close();
+				try {
+					init();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+	
+	@PreDestroy
+	public synchronized void close() {
+		if (zooKeeper != null) {
+	        try {
+	        	zooKeeper.close();
+	        	zooKeeper = null;
+	        } catch (InterruptedException e) {
+	            //ignore exception
+	        }
+	    }
 	}
 
 }

@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public class MasterWatcher extends BaseWatcher {
 	
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(MasterWatcher.class);
 	
 	private volatile Boolean isMaster;
@@ -100,10 +99,11 @@ public class MasterWatcher extends BaseWatcher {
 				case NONODE:
 					return false;
 				default:
-					//其他异常（含ConnectLossException）. Read it again.TODO 需打日志。
+					//其他异常（含ConnectLossException）. Read it again.
+					logger.warn("Someting wrong happen when check master.");
 				}
 			}
-			Thread.sleep(10);//给CPU以喘息的机会
+			Thread.sleep(200);//给CPU以喘息的机会
 		}	
 	}
 	private Watcher masterLostWater = new Watcher() {
