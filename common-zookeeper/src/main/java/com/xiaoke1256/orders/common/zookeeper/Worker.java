@@ -61,23 +61,32 @@ public abstract class Worker extends BaseWatcher {
 
 		@Override
 		public void processResult(int rc, String path, Object ctx, String name) {
-			switch(Code.get(rc)) {
-			case CONNECTIONLOSS:
-				register();
-				break;
-			case NONODE:
-				register();//父节点还没有被创建
-				break;
-			case OK:
-				//节点创建成功，则创建worker节点。
-				registerWorkNode();
-				logger.info("Assign worker node create successfully: {}",serverId);
-				break;
-			case NODEEXISTS:
-				logger.warn("Already registered: {}",serverId );
-				break;
-			default:
-				logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
+			try {
+				switch(Code.get(rc)) {
+				case CONNECTIONLOSS:
+					Thread.sleep(300);
+					logger.warn("Connection loss !");
+					register();
+					break;
+				case NONODE:
+					Thread.sleep(300);
+					logger.warn("Connection loss !");
+					register();//父节点还没有被创建
+					break;
+				case OK:
+					//节点创建成功，则创建worker节点。
+					registerWorkNode();
+					logger.info("Assign worker node create successfully: {}",serverId);
+					break;
+				case NODEEXISTS:
+					logger.warn("Already registered: {}",serverId );
+					break;
+				default:
+					logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
+				}
+			}catch( InterruptedException e) {
+				logger.error(e.getMessage(),e);
+				throw new RuntimeException(e);
 			}
 		}
 		
@@ -92,23 +101,32 @@ public abstract class Worker extends BaseWatcher {
 
 		@Override
 		public void processResult(int rc, String path, Object ctx, String name) {
-			switch(Code.get(rc)) {
-			case CONNECTIONLOSS:
-				registerWorkNode();
-				break;
-			case NONODE:
-				registerWorkNode();//父节点还没有被创建
-				break;
-			case OK:
-				//节点创建成功，则开始监控任务
-				getTasks();
-				logger.info("Regitered successfully: %s",serverId);
-				break;
-			case NODEEXISTS:
-				logger.warn("Already registered: %s",serverId );
-				break;
-			default:
-				logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
+			try {
+				switch(Code.get(rc)) {
+				case CONNECTIONLOSS:
+					Thread.sleep(300);
+					logger.warn("Connection loss !");
+					registerWorkNode();
+					break;
+				case NONODE:
+					Thread.sleep(300);
+					logger.warn("Parent node has not created !");
+					registerWorkNode();//父节点还没有被创建
+					break;
+				case OK:
+					//节点创建成功，则开始监控任务
+					getTasks();
+					logger.info("Regitered successfully: %s",serverId);
+					break;
+				case NODEEXISTS:
+					logger.warn("Already registered: %s",serverId );
+					break;
+				default:
+					logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
+				}
+			}catch( InterruptedException e) {
+				logger.error(e.getMessage(),e);
+				throw new RuntimeException(e);
 			}
 			
 		}
@@ -119,12 +137,19 @@ public abstract class Worker extends BaseWatcher {
 
 		@Override
 		public void processResult(int rc, String path, Object ctx, Stat stat) {
-			switch(Code.get(rc)) {
-			case CONNECTIONLOSS:
-				updateStatus((String)ctx);
-				return;
-			default:
-				break;
+			try {
+				switch(Code.get(rc)) {
+				case CONNECTIONLOSS:
+					Thread.sleep(300);
+					logger.warn("Connection loss !");
+					updateStatus((String)ctx);
+					return;
+				default:
+					break;
+				}
+			}catch( InterruptedException e) {
+				logger.error(e.getMessage(),e);
+				throw new RuntimeException(e);
 			}
 		}
 	};
@@ -157,33 +182,40 @@ public abstract class Worker extends BaseWatcher {
 
 		@Override
 		public void processResult(int rc, String path, Object ctx, List<String> children) {
-			switch(Code.get(rc)) {
-			case CONNECTIONLOSS:
-				getTasks();
-				break;
-			case OK:
-				if(children!=null && children.size()>0) {
-					updateStatus("Busy");
-					executor.execute(() -> {
-						synchronized (onGoingTasks) {
-							for(String task:children) {
-								if(!onGoingTasks.contains(task)) {
-									logger.trace("New task {}",task);
-									//TODO 如果onGoingTasks已满，应该直接break.
-									getTaskData(task);
-									onGoingTasks.add(task);
+			try {
+				switch(Code.get(rc)) {
+				case CONNECTIONLOSS:
+					Thread.sleep(300);
+					logger.warn("Connection loss !");
+					getTasks();
+					break;
+				case OK:
+					if(children!=null && children.size()>0) {
+						updateStatus("Busy");
+						executor.execute(() -> {
+							synchronized (onGoingTasks) {
+								for(String task:children) {
+									if(!onGoingTasks.contains(task)) {
+										logger.trace("New task {}",task);
+										//TODO 如果onGoingTasks已满，应该直接break.
+										getTaskData(task);
+										onGoingTasks.add(task);
+									}
 								}
 							}
-						}
-						
-					});
-				}else {
-					//该节点没有任务
-					updateStatus("Idle");
+							
+						});
+					}else {
+						//该节点没有任务
+						updateStatus("Idle");
+					}
+					break;
+				default:
+					logger.error("Get children fail: ",KeeperException.create(Code.get(rc),path));
 				}
-				break;
-			default:
-				logger.error("Get children fail: ",KeeperException.create(Code.get(rc),path));
+			}catch( InterruptedException e) {
+				logger.error(e.getMessage(),e);
+				throw new RuntimeException(e);
 			}
 		}
 		
@@ -197,22 +229,29 @@ public abstract class Worker extends BaseWatcher {
 
 		@Override
 		public void processResult(int rc, String path, Object ctx, byte[] data, Stat stat) {
-			switch(Code.get(rc)){
-			case CONNECTIONLOSS:
-				getTaskData((String)ctx);
-				break;
-			case OK:
-				try {
-					doBusiness(new String(data));
-				}catch(Exception e){
-					logger.error("Some errer happen when excute business.",e);
-					throw e;
-				}finally {
-					finishTask((String)ctx);
+			try {
+				switch(Code.get(rc)){
+				case CONNECTIONLOSS:
+					Thread.sleep(300);
+					logger.warn("Connection loss !");
+					getTaskData((String)ctx);
+					break;
+				case OK:
+					try {
+						doBusiness(new String(data));
+					}catch(Exception e){
+						logger.error("Some errer happen when excute business.",e);
+						throw e;
+					}finally {
+						finishTask((String)ctx);
+					}
+					break;
+				default:
+					logger.error("Get TaskData fail: ",KeeperException.create(Code.get(rc),path));
 				}
-				break;
-			default:
-				logger.error("Get TaskData fail: ",KeeperException.create(Code.get(rc),path));
+			}catch( InterruptedException e) {
+				logger.error(e.getMessage(),e);
+				throw new RuntimeException(e);
 			}
 		}
 		
@@ -224,7 +263,7 @@ public abstract class Worker extends BaseWatcher {
 				String path = baseNodePath+"/status/"+task;
 				String content = "done by worker-"+serverId;
 				try {
-					zooKeeper.setData(path, content.getBytes(), -1);
+					zooKeeper.create(path, content.getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 					onGoingTasks.remove(task);
 					return;
 				} catch (KeeperException e) {
@@ -232,6 +271,7 @@ public abstract class Worker extends BaseWatcher {
 					case NONODE:
 						//节点没有应该是其他其他线程把它删了.
 						logger.warn("The node has bean deleted by the master.");
+						onGoingTasks.remove(task);
 						return;
 					case CONNECTIONLOSS:
 						if(ckeckStatusData(path,content)) {
@@ -246,6 +286,11 @@ public abstract class Worker extends BaseWatcher {
 				} catch (InterruptedException e) {
 					logger.error("Suspend!",e);
 					
+				}
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					logger.error("Suspend!",e);
 				}
 				
 			}
@@ -271,6 +316,11 @@ public abstract class Worker extends BaseWatcher {
 			} catch (InterruptedException e) {
 				logger.error("Something wrong has happen!",e);
 				//继续查状态
+			}
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				logger.error("Suspend!",e);
 			}
 		}
 	}

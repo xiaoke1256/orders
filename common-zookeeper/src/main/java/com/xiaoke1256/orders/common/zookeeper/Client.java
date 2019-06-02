@@ -51,10 +51,15 @@ public class Client extends BaseWatcher {
 		public void processResult(int rc, String path, Object ctx, String name) {
 			switch(Code.get(rc)) {
 			case CONNECTIONLOSS:
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e1) {
+					logger.error(e1.getMessage(),e1);
+				}//给CPU以喘息的机会
 				submitTask(((TaskObject)ctx).getTask(),(TaskObject)ctx);
 				break;
 			case OK:
-				((TaskObject)ctx).setTaskName(name);
+				((TaskObject)ctx).setTaskName(name.substring(name.lastIndexOf("/")+1));
 				logger.debug("My create task name: {}",name);
 				//任务一旦创建，就开始监控任务状态。
 				watchStatus(baseNodePath+"/status/"+name.replace(baseNodePath+"/tasks/", ""),(TaskObject)ctx);
@@ -80,6 +85,12 @@ public class Client extends BaseWatcher {
 	private DataCallback getStatusDataCallback = (int rc, String path, Object ctx, byte[] data, Stat stat) -> {
 		switch(Code.get(rc)) {
 		case CONNECTIONLOSS:
+			logger.warn("Connection loss !");
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e1) {
+				logger.error(e1.getMessage(),e1);
+			}//给CPU以喘息的机会
 			getStatusData(path,ctx);
 			break;
 		case OK:
@@ -103,30 +114,37 @@ public class Client extends BaseWatcher {
 		if(EventType.NodeCreated.equals(event.getType())
 				|| EventType.NodeDataChanged.equals(event.getType())) {
 			assert event.getPath().contains("/status/task-");
-			zooKeeper.getData(event.getPath(), false, getStatusDataCallback,ctxMap.get(event.getPath()));
+			this.getStatusData(event.getPath(),ctxMap.get(event.getPath()));
 		} 
 		
 	};
 	
 	private StatCallback existCallback = (int rc,String path,Object ctx,Stat stat)->{
-		switch (Code.get(rc)) {
-		case CONNECTIONLOSS:
-			watchStatus(path,(TaskObject)ctx);
-			break;
-		case OK:
-			if(stat != null) {//节点存在
-				getStatusData(path,ctx);
+		try {
+			switch (Code.get(rc)) {
+			case CONNECTIONLOSS:
+				logger.warn("Connection loss !");
+				Thread.sleep(200);//给CPU以喘息的机会
+				watchStatus(path,(TaskObject)ctx);
+				break;
+			case OK:
+				if(stat != null) {//节点存在
+					getStatusData(path,ctx);
+				}
+				break;
+			case NONODE:
+				//节点没有是常见情况。
+				break;
+			default:
+				logger.error("Something wrong has happen: ",KeeperException.create(Code.get(rc),path));
 			}
-			break;
-		case NONODE:
-			//节点没有是常见情况。
-			break;
-		default:
-			logger.error("Something wrong has happen: ",KeeperException.create(Code.get(rc),path));
+		}catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		}
 	};
 	
 	private void getStatusData(String path, Object ctx)  {
+		logger.debug("status data exist. path: {}",path);
 		zooKeeper.getData(path, false, getStatusDataCallback,ctx);
 	}
 	
@@ -149,7 +167,10 @@ public class Client extends BaseWatcher {
 				//完成以下事情： 1、删 除 /assign/work-?/ 下对应节点。2、删除任务状态节点。
 				String assignPath = baseNodePath + "/assign/"+workName+"/"+taskName;
 				String statusPath = baseNodePath + "/status/"+taskName;
-				ctxMap.remove(statusPath);
+				logger.debug("statusPath:"+statusPath);
+				TaskObject taskObj = ctxMap.remove(statusPath);
+				if(taskObj==null)
+					logger.warn("delete task in ctxMap is not success!");
 				zooKeeper.multi(Arrays.asList(Op.delete(assignPath, -1)
 						,Op.delete(statusPath, -1)));
 				return;
@@ -165,6 +186,7 @@ public class Client extends BaseWatcher {
 					//继续循环
 				}
 			}
+			Thread.sleep(200);//给CPU以喘息的机会
 		}
 	}
 	
@@ -177,8 +199,11 @@ public class Client extends BaseWatcher {
 		while(true) {
 			try {
 				List<String> list = zooKeeper.getChildren(baseNodePath+"/tasks", false);
-				if(!list.isEmpty())
+				if(!list.isEmpty()) {
+					logger.info("some task is not be assiged!");
 					return false;
+				}
+				logger.debug("ctxMap.keys:"+ctxMap.keySet());
 				return ctxMap.isEmpty();
 			} catch (KeeperException e) {
 				switch(e.code()){

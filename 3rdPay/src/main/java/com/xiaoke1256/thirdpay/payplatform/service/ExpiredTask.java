@@ -53,6 +53,7 @@ public class ExpiredTask {
 			for(String orderNo:orderNos) {
 				zkClient.submitTask(orderNo);
 			}
+			logger.info("All tasks submited");
 		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
 		}

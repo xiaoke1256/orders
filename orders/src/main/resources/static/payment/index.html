@@ -101,7 +101,7 @@
 		      },
 		      error:function(req,errMsg,errorThrown){
 		    	if(req.status=='0'){
-		    		$("#console").append("<font color=\"red\">"+req.status+":可能是跨域问题造成，请配置浏览器。</font><br>");   
+		    		$("#console").append("<font color=\"red\">"+req.status+":可能是跨域问题造成，请配置浏览器。"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");   
 		    		return;
 		    	}
 		    	$("#console").append("<font color=\"red\">"+req.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");      
@@ -110,6 +110,7 @@
 		    	  
 		      }
 	     });
+		  $("#console").append("支付提交成功。<br>");
 	  }
 	  
   });

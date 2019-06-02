@@ -44,6 +44,7 @@ public abstract class BaseWatcher implements Watcher {
 					throw new RuntimeException(e);
 				}
 			}
+			logger.info("Session recreated!");
 		}
 	}
 	
@@ -55,6 +56,7 @@ public abstract class BaseWatcher implements Watcher {
 	        	zooKeeper = null;
 	        } catch (InterruptedException e) {
 	            //ignore exception
+	        	logger.warn("Close fail!");
 	        }
 	    }
 	}
