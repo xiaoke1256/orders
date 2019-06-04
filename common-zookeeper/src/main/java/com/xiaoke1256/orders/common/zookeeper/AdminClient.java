@@ -37,6 +37,11 @@ public class AdminClient extends BaseWatcher {
 //			e.printStackTrace();
 //		}
 	}
+
+	@Override
+	protected void reboot() {
+		//do nothing.
+	}
 	
 	
 

@@ -28,6 +28,11 @@ public abstract class BaseWatcher implements Watcher {
 	public void init() throws IOException {
 		zooKeeper = new ZooKeeper(zookeeperUrl,timeOut,this);
 	}
+	
+	/**
+	 * Expired后，重新连接时要做的工作。
+	 */
+	protected abstract void reboot() throws InterruptedException;
 
 	@Override
 	public void process(WatchedEvent event) {
@@ -35,16 +40,17 @@ public abstract class BaseWatcher implements Watcher {
 		if(KeeperState.SyncConnected.equals(event.getState())) {
 			logger.debug("connected.");
 		}else if(KeeperState.Expired.equals(event.getState())) {
-			logger.warn("Session Expired!");
+			logger.warn("Session Expired! class: {}",this.getClass().getName());
 			synchronized(this) {
 				close();
 				try {
 					init();
-				} catch (IOException e) {
+					reboot();
+				} catch (IOException | InterruptedException e) {
 					throw new RuntimeException(e);
 				}
 			}
-			logger.info("Session recreated!");
+			logger.info("Session recreated! class: {}",this.getClass().getName());
 		}
 	}
 	

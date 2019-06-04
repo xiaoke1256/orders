@@ -70,7 +70,7 @@ public abstract class Worker extends BaseWatcher {
 					break;
 				case NONODE:
 					Thread.sleep(300);
-					logger.warn("Connection loss !");
+					logger.warn("Parent Node has not been created !");
 					register();//父节点还没有被创建
 					break;
 				case OK:
@@ -80,6 +80,7 @@ public abstract class Worker extends BaseWatcher {
 					break;
 				case NODEEXISTS:
 					logger.warn("Already registered: {}",serverId );
+					registerWorkNode();
 					break;
 				default:
 					logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
@@ -104,17 +105,17 @@ public abstract class Worker extends BaseWatcher {
 			try {
 				switch(Code.get(rc)) {
 				case CONNECTIONLOSS:
-					Thread.sleep(300);
 					logger.warn("Connection loss !");
+					Thread.sleep(300);
 					registerWorkNode();
 					break;
 				case NONODE:
-					Thread.sleep(300);
 					logger.warn("Parent node has not created !");
+					Thread.sleep(300);
 					registerWorkNode();//父节点还没有被创建
 					break;
 				case OK:
-					//节点创建成功，则开始监控任务
+					//节点创建成功,开始监控任务
 					getTasks();
 					logger.info("Regitered successfully: %s",serverId);
 					break;
@@ -330,5 +331,12 @@ public abstract class Worker extends BaseWatcher {
 	 * @param data
 	 */
 	abstract protected void doBusiness(String businessData) ;
+
+	@Override
+	protected void reboot() throws InterruptedException {
+		register();
+	}
+	
+	
 	
 }

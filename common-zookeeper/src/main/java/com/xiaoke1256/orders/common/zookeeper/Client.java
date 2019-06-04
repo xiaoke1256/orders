@@ -176,10 +176,11 @@ public class Client extends BaseWatcher {
 				return;
 			} catch (KeeperException e) {
 				switch (e.code()) {
-				case NODEEXISTS:
+				case NONODE:
 					//说明有其他节点已经帮他处理掉了。
-					logger.info("the node has been deleted!");
-					return;
+					logger.error("the node has been deleted!");
+					//如果发生这种情况说明系统有错误。
+					throw new RuntimeException("the task node has been deleted! node name is : "+e.getPath(),e)   ;
 				default:
 					//其他异常（含ConnectLossException）。
 					logger.warn("Something wrong has happen when delete finished task. ",e);
@@ -217,5 +218,10 @@ public class Client extends BaseWatcher {
 			} 
 			Thread.sleep(200);//给CPU以喘息的机会
 		}
+	}
+
+	@Override
+	protected void reboot() {
+		//do nothing.
 	}
 }

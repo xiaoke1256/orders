@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 选举为群主的zookeeper主节点，并且需要从节点配合完成业务。
+ * 选举为群主的zookeeper主节点，并且需要从节点配合完成业务.
  * @author Administrator
  *
  */

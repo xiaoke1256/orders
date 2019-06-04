@@ -36,7 +36,7 @@ public class MasterWatcher extends BaseWatcher {
 	}
 	
 	/**
-	 * init
+	 * 一旦成为主节点后，要进行的初始化工作（ 注册节点，开始监控等）.
 	 * @throws InterruptedException
 	 */
 	protected void bootstrap() throws InterruptedException{
@@ -57,6 +57,8 @@ public class MasterWatcher extends BaseWatcher {
 			try {
 				this.zooKeeper.create(nodePath, serverId.getBytes(),Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 				isMaster = true;
+				//创建成功后，监控这个节点
+				zooKeeper.exists(nodePath, masterLostWater);
 				bootstrap();
 				return isMaster;
 			} catch (KeeperException e) {
@@ -122,4 +124,10 @@ public class MasterWatcher extends BaseWatcher {
 		}
 		
 	};
+
+
+	@Override
+	protected void reboot() throws InterruptedException {
+		this.toBeMast();
+	}
 }
