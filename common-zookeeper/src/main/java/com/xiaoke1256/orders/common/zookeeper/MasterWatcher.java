@@ -128,6 +128,7 @@ public class MasterWatcher extends BaseWatcher {
 
 	@Override
 	protected void reboot() throws InterruptedException {
+		isMaster = null;
 		this.toBeMast();
 	}
 }
