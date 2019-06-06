@@ -117,10 +117,10 @@ public abstract class Worker extends BaseWatcher {
 				case OK:
 					//节点创建成功,开始监控任务
 					getTasks();
-					logger.info("Regitered successfully: %s",serverId);
+					logger.info("Regitered successfully: {}",serverId);
 					break;
 				case NODEEXISTS:
-					logger.warn("Already registered: %s",serverId );
+					logger.warn("Already registered: {}",serverId );
 					break;
 				default:
 					logger.error("Something went wrong: ",KeeperException.create(Code.get(rc),path));
@@ -269,10 +269,10 @@ public abstract class Worker extends BaseWatcher {
 					return;
 				} catch (KeeperException e) {
 					switch (e.code()) {
-					case NONODE:
-						//节点没有应该是其他其他线程把它删了.
-						logger.warn("The node has bean deleted by the master.");
-						onGoingTasks.remove(task);
+					case NODEEXISTS:
+						//有可能是历史数据没有清理掉
+						deleteStatus(task);
+						finishTask(task);//重新再删除一遍。
 						return;
 					case CONNECTIONLOSS:
 						if(ckeckStatusData(path,content)) {
@@ -298,6 +298,31 @@ public abstract class Worker extends BaseWatcher {
 	    }
 	}
 	
+	private void deleteStatus(String task) {
+		String path = baseNodePath+"/status/"+task;
+		while(true){
+			try {
+				zooKeeper.delete(path, -1);
+				return;
+			}  catch (KeeperException e) {
+				switch (e.code()) {
+				case NONODE:
+					return;//算他删除成功
+				default:
+					//其他异常。继续循环
+					logger.error("Something wrong has happen!",e);
+				}
+			} catch (InterruptedException e) {
+				logger.error("Suspend!",e);
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				logger.error("Suspend!",e);
+			}
+		}
+	}
+
 	private boolean ckeckStatusData(String path, String content) {
 		while(true) {
 			try {

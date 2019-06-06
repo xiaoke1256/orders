@@ -51,7 +51,7 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 		//监控/workes节点
 		getWorkers();
 		//监控/tasks节点
-		getTasks();
+		//getTasks();
 	}
 	
 	@PostConstruct
@@ -131,11 +131,15 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 			logger.info("Removing and setting");
 			toProcess = workersCase.removedAndSet(children);
 		}
-		
 		if(toProcess != null) {
 			for(String worker:toProcess) {
 				getAbsentWorkerTasks(worker);
 			}
+		}
+		
+		if(children != null && !children.isEmpty()) {
+			//当有worker 节点注册上来了，就开始，监控/tasks节点。
+			getTasks();
 		}
 	}
 
@@ -171,29 +175,19 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 	private void reassignTask(String worker,String task){
 		while(true) {
 			try {
-				//完成以下事情： 1、删 除 /assign/work-?/ 下对应节点。创建任务节点
+				//完成以下事情： 1、删 除 /assign/work-?/ 下对应节点。2、重新创建任务节点 3、删除/status下面的对应节点
 				String assignPath = baseNodePath + "/assign/"+worker+"/"+task;
 				String taskesPath = baseNodePath + "/tasks/"+task;
+				String statusPath = baseNodePath + "/status/"+task;
 				Stat stat = new Stat();
 				byte[] data = zooKeeper.getData(assignPath, false, stat );
 				zooKeeper.multi(Arrays.asList(Op.delete(assignPath, -1)
-						,Op.create(taskesPath, data, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL)));
+						,Op.create(taskesPath, data, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL)
+						,Op.delete(statusPath, -1)));
 				return;
 			} catch (KeeperException e) {
-				switch (e.code()) {
-				case NONODE:
-					//说明有其他节点已经帮他处理掉了。
-					logger.info("the node has been deleted!");
-					return;
-				case NODEEXISTS:
-					//说明有其他节点已经帮他处理掉了。
-					logger.info("the node has been created!");
-					return;
-				default:
-					//其他异常（含ConnectLossException）。
-					logger.warn("Something wrong has happen when delete reassign task. ",e);
-					//继续循环
-				}
+				//有任何异常都要重新循环
+				logger.warn("Something wrong has happen when delete reassign task. ",e);
 			} catch (InterruptedException e) {
 				logger.error("Something wrong has happen when delete reassign task. ",e);
 				//继续循环

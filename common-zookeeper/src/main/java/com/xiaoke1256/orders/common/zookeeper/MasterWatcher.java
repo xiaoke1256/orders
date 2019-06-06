@@ -102,7 +102,7 @@ public class MasterWatcher extends BaseWatcher {
 					return false;
 				default:
 					//其他异常（含ConnectLossException）. Read it again.
-					logger.warn("Someting wrong happen when check master.");
+					logger.warn("Someting wrong happen when check master.",e);
 				}
 			}
 			Thread.sleep(200);//给CPU以喘息的机会
