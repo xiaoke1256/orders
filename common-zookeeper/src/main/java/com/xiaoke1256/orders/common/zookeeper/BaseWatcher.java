@@ -9,6 +9,7 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.ZooKeeper.States;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +26,19 @@ public abstract class BaseWatcher implements Watcher {
 	protected ZooKeeper zooKeeper;
 	
 	@PostConstruct
-	public void init() throws IOException {
-		zooKeeper = new ZooKeeper(zookeeperUrl,timeOut,this);
+	public void init() throws IOException, InterruptedException {
+		while(true) {
+			zooKeeper = new ZooKeeper(zookeeperUrl,timeOut,this);
+			States stat = zooKeeper.getState();
+			if(stat.isConnected()) {
+				return;
+			} else if(States.AUTH_FAILED.equals(stat)) {
+				throw new RuntimeException("Zookeeper AuthFailed!");
+			}else {
+				logger.error("connect fail {}.",stat);
+			}
+			Thread.sleep(1000);//一秒钟后重连.
+		}
 	}
 	
 	/**
