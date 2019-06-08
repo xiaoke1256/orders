@@ -6,7 +6,7 @@
   <artifactId>orders-search</artifactId>
   <name>orders</name>
   <packaging>war</packaging>
-  <version>1.0.1.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -202,7 +202,7 @@
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
-       <version>1.0.1.1-SNAPSHOT</version>
+       <version>1.0.1</version>
     </dependency>
      
      
