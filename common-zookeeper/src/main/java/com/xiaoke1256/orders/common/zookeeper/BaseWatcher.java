@@ -1,6 +1,8 @@
 package com.xiaoke1256.orders.common.zookeeper;
 
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -23,19 +25,34 @@ public abstract class BaseWatcher implements Watcher {
 	@Value("${zookeeper.timeout}") 
 	private int timeOut;
 	
-	protected ZooKeeper zooKeeper;
+	protected volatile ZooKeeper zooKeeper;
 	
 	@PostConstruct
-	public void init() throws IOException, InterruptedException {
+	public void initZk() throws InterruptedException {
+		new Thread(()->{
+			try {
+				connect();
+			} catch (IOException | InterruptedException e) {
+				logger.error(e.getMessage(),e);
+			}
+		}).start();
+	}
+	
+	private void connect() throws IOException, InterruptedException {
 		while(true) {
+			int checkTims = 50;
 			zooKeeper = new ZooKeeper(zookeeperUrl,timeOut,this);
-			States stat = zooKeeper.getState();
-			if(stat.isConnected()) {
-				return;
-			} else if(States.AUTH_FAILED.equals(stat)) {
-				throw new RuntimeException("Zookeeper AuthFailed!");
-			}else {
-				logger.error("connect fail {}.",stat);
+			while(checkTims>=0) {
+				Thread.sleep(30);//30毫秒后检查连接情况.
+				States stat = zooKeeper.getState();
+				if(stat.isConnected()) {
+					return;
+				} else if(States.AUTH_FAILED.equals(stat)) {
+					throw new RuntimeException("Zookeeper AuthFailed!");
+				}else {
+					logger.error("connect fail {}.",stat.toString());
+				}
+				checkTims--;
 			}
 			Thread.sleep(1000);//一秒钟后重连.
 		}
@@ -56,7 +73,7 @@ public abstract class BaseWatcher implements Watcher {
 			synchronized(this) {
 				close();
 				try {
-					init();
+					connect();
 					reboot();
 				} catch (IOException | InterruptedException e) {
 					throw new RuntimeException(e);

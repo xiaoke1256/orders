@@ -56,7 +56,13 @@ public class MasterWatcherWithWorkers extends MasterWatcher {
 	
 	@PostConstruct
 	public void startUp() throws InterruptedException {
-		super.toBeMast();
+		new Thread(()->{
+			try {
+				super.toBeMast();
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage(),e);
+			}
+		});
 	}
 
 	private void createParent(String path, byte[] data) throws InterruptedException {

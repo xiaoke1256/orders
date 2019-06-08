@@ -80,6 +80,7 @@ public class MasterWatcher extends BaseWatcher {
 					}
 				}
 			}
+			Thread.sleep(200);//给CPU以喘息的机会
 		}
 	}
 	

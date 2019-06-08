@@ -48,6 +48,9 @@ public abstract class Worker extends BaseWatcher {
 	
 	@PostConstruct
 	public void bootstrap() throws InterruptedException {
+		while(zooKeeper==null) {
+			Thread.sleep(1000);
+		}
 		register();
 	}
 	
@@ -359,6 +362,9 @@ public abstract class Worker extends BaseWatcher {
 
 	@Override
 	protected void reboot() throws InterruptedException {
+		synchronized (onGoingTasks) {
+			onGoingTasks.clear();
+		}
 		register();
 	}
 	
