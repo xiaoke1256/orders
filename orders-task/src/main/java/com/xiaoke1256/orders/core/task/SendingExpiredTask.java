@@ -2,6 +2,8 @@ package com.xiaoke1256.orders.core.task;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 import com.xiaoke1256.orders.core.bo.SubOrder;
 import com.xiaoke1256.orders.core.service.SendExpiredService;
 
@@ -28,8 +31,8 @@ public class SendingExpiredTask {
 	@Autowired
 	private SendExpiredService sendExpiredService;
 	
-	@Autowired
-	private SendingExpiredTaskWatcher sendingExpiredTaskWatcher;
+	@Resource(name="sendingExpiredTaskWatcher")
+	private MasterWatcher sendingExpiredTaskWatcher;
 	
 	@Scheduled(cron="${logistics.send_expired.task.corn}")
 	public void sendExpired() {

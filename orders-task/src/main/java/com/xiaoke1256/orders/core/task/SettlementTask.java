@@ -3,6 +3,8 @@ package com.xiaoke1256.orders.core.task;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.util.DateUtil;
-import com.xiaoke1256.orders.core.service.SettleService;
+import com.xiaoke1256.orders.common.zookeeper.Client;
+import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
 import com.xiaoke1256.orders.product.api.StoreQueryService;
 import com.xiaoke1256.orders.product.dto.Store;
 
@@ -27,11 +30,11 @@ public class SettlementTask {
 	@Autowired
 	private StoreQueryService storeQueryService;
 	
-	@Autowired
-	private SettlementTaskWatcher settlementTaskWatcher;
+	@Resource(name="settlementTaskWatcher")
+	private MasterWatcher settlementTaskWatcher;
 	
-	@Autowired
-	private SettleService settleService;
+	@Resource(name="settleZkClient")
+	private Client settleClient;
 	
 	/**
 	 * 定时触发
@@ -40,6 +43,10 @@ public class SettlementTask {
 	public void startSettlement() {
 		try {
 			if(!settlementTaskWatcher.toBeMast()) {
+				return;
+			}
+			if(!settleClient.isAllFinished()) {
+				logger.debug("some tasks is going working!");
 				return;
 			}
 			settlement();
@@ -64,7 +71,8 @@ public class SettlementTask {
 		String year = String.valueOf(DateUtil.getYear(reportDate));
 		String month = StringUtils.leftPad(String.valueOf(DateUtil.getMonth(reportDate)), 2, '0');
 		for(Store store:stores) {
-			settleService.genSettleStatemt(store.getStoreNo(), year, month);
+			settleClient.submitTask(store.getStoreNo()+"," +year+","+ month);
+			//settleService.genSettleStatemt(store.getStoreNo(), year, month);
 		}
 	}
 }

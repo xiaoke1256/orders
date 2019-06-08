@@ -28,8 +28,8 @@ public class BusinessException extends AppException {
 	
 	public BusinessException(String errorCode, String errorMsg,String showMsg) {
 		super(errorCode, errorMsg);
-		if(errorCode==null || ""==errorCode.trim())
-			errorCode=RespCode.BUSSNESS_ERROR.getCode();
+		if(errorCode==null || "".equals(errorCode.trim()))
+			this.errorCode=RespCode.BUSSNESS_ERROR.getCode();
 		this.showMsg = showMsg;
 	}
 
