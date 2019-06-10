@@ -63,6 +63,14 @@
 ### 1、安装数据库
 
 先安装一个MySql实例。
+以root用户登录Mysql,执行以下脚本，创建orders数据库：
+```
+CREATE USER 'ordersUser'@'%' IDENTIFIED BY 'xiaoke_1256';
+
+create schema orders default character set utf8 collate utf8_general_ci;
+
+GRANT ALL ON orders.* TO 'ordersUser'@'%';
+```
 
 ### 2、安装Elasticsearch
 
