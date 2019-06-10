@@ -63,6 +63,7 @@
 ### 1、安装数据库
 
 先安装一个MySql实例。
+
 以root用户登录Mysql,执行以下脚本，创建orders数据库：
 ```
 CREATE USER 'ordersUser'@'%' IDENTIFIED BY 'xiaoke_1256';
