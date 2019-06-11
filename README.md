@@ -77,7 +77,7 @@
 * */orders/sql/5.create_payment_table.sql*
 * */orders/sql/6.add_insert_time_4_sub_order.sql*
 * */orders/sql/7.create_logistics_table.sql*
-* */orders/sql/8.create_settle_tables.sql**
+* */orders/sql/8.create_settle_tables.sql*
 
 切换回root用户，执行以下脚本，创建product数据库：
 ```
