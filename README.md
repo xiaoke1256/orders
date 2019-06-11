@@ -83,7 +83,7 @@
 
 * */product/sql/create_database.sql*
 
-用productUser用户登录MySql，再执依次行以下脚本：
+用productUser用户登录MySql，再执依次行以下脚本，创建数据表并初始化数据：
 
 * */product/sql/create_tables.sql*
 * */product/sql/init_product_type.sql*
