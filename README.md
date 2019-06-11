@@ -70,8 +70,10 @@ CREATE USER 'ordersUser'@'%' IDENTIFIED BY 'xiaoke_1256';
 create schema orders default character set utf8 collate utf8_general_ci;
 GRANT ALL ON orders.* TO 'ordersUser'@'%';
 ```
-以ordersUser用户登录，执行以下SQL，创建表：
+以ordersUser用户登录，执行以下脚本，创建数据表：
 ```
+use orders; 
+
 drop table ORDER_ITEM;
 drop table SUB_ORDER;
 drop table PAY_ORDER;
