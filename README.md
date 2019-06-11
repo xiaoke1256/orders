@@ -432,6 +432,34 @@ alter table PRODUCT add IN_SECKILL CHAR(1) not null default '0' comment '是否�
 alter table STORE add pay_type CHAR(3) null comment '支付方式，（目前全是3rdpay）';
 alter table STORE add pay_account_no varchar(18) null comment '支付账号';
 ```
+以root用户登录MySql，执行以下脚本，创建thirdpay数据库：
+```
+CREATE USER 'thirdpayUs'@'%' IDENTIFIED BY 'xiaoke_1256';
+create schema thirdpay default character set utf8 collate utf8_general_ci;
+GRANT ALL ON thirdpay.* TO 'thirdpayUser'@'%';
+```
+切换成thirdpayUser用户，执行以下脚本创建表：
+```
+create table THIRD_PAY_ORDER
+(
+  ORDER_ID BIGINT primary key not null auto_increment comment '订单主键',
+  ORDER_NO VARCHAR(20) not null unique comment '订单号',
+  payer_no VARCHAR(18) not null comment '付款方会员号(第三方平台的)',
+  payee_no VARCHAR(18) not null comment '收款方会员号(第三方平台的)',
+  order_type VARCHAR(2) not null comment '订单类型：01-消费;02-退货款;03-与平台方结算;04-理财;05-结息;06-借款;07-还款;99-其他',
+  order_status VARCHAR(2) not null comment '状态：00-受理支付;99-失败;90-成功;98-处理超时;95-需人工处理',
+  amt    DECIMAL(22) not null comment '支付额',
+  palteform VARCHAR(64) not null comment '接入平台(目前只有orders)',
+  incident VARCHAR(256) comment '事由',
+  remark VARCHAR(256) comment '备注',
+  insert_time TIMESTAMP not null DEFAULT NOW() comment '插入时间',
+  update_time TIMESTAMP not null DEFAULT NOW() comment '修改时间',
+  finish_time TIMESTAMP null DEFAULT NOW() comment '订单处理完成的（含成功和失败）'
+) comment='第三方支付记录表';
+
+CREATE UNIQUE INDEX IDX_THIRD_PAY_ORDER_NO ON THIRD_PAY_ORDER(ORDER_NO);
+
+```
 
 ### 2、安装Elasticsearch
 
