@@ -240,6 +240,13 @@ CREATE UNIQUE INDEX IDX_SETTLE_STATEMT_NO ON SETTLE_STATEMT(SETTLE_NO);
 CREATE INDEX IDX_SETTLE_ITEM_ORDER_SETTLE_ID ON SETTLE_ITEM_ORDER(SETTLE_ID);
 ```
 
+切换回root用户，执行以下脚本，创建product数据库：
+```
+CREATE USER 'productUser'@'%' IDENTIFIED BY 'xiaoke_1256';
+create schema product default character set utf8 collate utf8_general_ci;
+GRANT ALL ON product.* TO 'productUser'@'%' IDENTIFIED BY 'xiaoke_1256';
+```
+
 ### 2、安装Elasticsearch
 
 ### 3、安装redis
