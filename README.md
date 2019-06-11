@@ -66,18 +66,18 @@
 
 以root用户登录Mysql,在源代码中找到并执行以下脚本，创建orders数据库：
 
-**/orders/sql/0.create_database.sql**
+* */orders/sql/0.create_database.sql*
 
 以ordersUser用户登录，依次执行以下脚本，创建数据表：
 
-**/orders/sql/1.create_tables.sql**
-**/orders/sql/2.re_create_index.sql**
-**/orders/sql/3.collect_static.sql**
-**/orders/sql/4.add_status_4_orders.sql**
-**/orders/sql/5.create_payment_table.sql**
-**/orders/sql/6.add_insert_time_4_sub_order.sql**
-**/orders/sql/7.create_logistics_table.sql**
-**/orders/sql/8.create_settle_tables.sql**
+* */orders/sql/1.create_tables.sql*
+* */orders/sql/2.re_create_index.sql*
+* */orders/sql/3.collect_static.sql*
+* */orders/sql/4.add_status_4_orders.sql*
+* */orders/sql/5.create_payment_table.sql*
+* */orders/sql/6.add_insert_time_4_sub_order.sql*
+* */orders/sql/7.create_logistics_table.sql*
+* */orders/sql/8.create_settle_tables.sql**
 
 切换回root用户，执行以下脚本，创建product数据库：
 ```
