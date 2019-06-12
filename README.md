@@ -111,6 +111,46 @@ orders
 
 安装postman。
 
+利用 elasticsearch-head 创建索引“prod”；然后利用 postman 执行以下命令：
+
+```
+PUT  http://localhost:9200/prod
+{
+  "mappings": {
+    "product": {
+    	"properties":{
+	       "code":{"type":"keyword"},
+	       "name":{"type":"text","index":"true","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
+	       "intro":{"type":"text","index":"true","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
+	       "price":{"type":"double"},
+	       "store_no":{"type":"keyword"},
+	       "store_name":{"type":"text","index":"true","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
+	       "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"},
+	       "type_id":{"type":"keyword"},
+		   "type_name":{"type":"text","analyzer":"ik_max_word","search_analyzer":"ik_max_word"},
+		   "params":{
+		   		"type":"nested",
+		   		"properties":{
+		   			"param_name":{"type":"keyword"},
+		   			"param_value":{"type":"text","analyzer":"ik_max_word","search_analyzer":"ik_max_word"}
+		   		}
+		   }
+	    }
+    },
+    "product_user_map": {
+      "properties":{
+	     "user_id":{"type":"keyword"},
+	     "score":{"type":"double"},
+	     "upd_time":{"type": "date","format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}
+	  },
+      "_parent": {
+        "type": "product"
+      }
+    }
+  }
+}
+```
+
 ### 3、安装redis
 
 安装个redis实例即可。
