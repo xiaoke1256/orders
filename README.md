@@ -103,6 +103,9 @@ orders
 
 ### 2、安装Elasticsearch
 
+安装Elasticsearch。
+安装中文词库。
+
 ### 3、安装redis
 
 ### 4、安装zookeeper
