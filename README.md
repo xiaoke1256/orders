@@ -108,6 +108,8 @@ orders
 
 ### 3、安装redis
 
+安装个redis实例即可。
+
 ### 4、安装zookeeper
 
 ### 5、配置各个服务器的域名
