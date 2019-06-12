@@ -103,8 +103,13 @@ orders
 
 ### 2、安装Elasticsearch
 
-安装Elasticsearch。
-安装中文词库。
+安装Elasticsearch-5.6.9。
+
+安装中文ik分词器（5.6.9版本）。
+
+安装elasticsearch-head-5.0.0 。
+
+安装postman。
 
 ### 3、安装redis
 
