@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="../">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>orders welcome!</title>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script type="text/javascript">
+  $(function(){
+	  
+	  //初始化列表
+	  refreshPage();
+	  //搜索数据
+	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
+	  
+	  $('#orderTable').on('click','.accept',function(){
+		  var orderNo = $(this).attr("orderNo");
+		  
+	  })
+	  
+	  var sendingNum = 0;//正在处理的定单数量。
+	  $('#bathSendBtn').click(function(){
+		  var companyCodes = Object.keys(loCompanies);
+		  $('#orderTable>tbody>tr').each(function(){
+			  $btn = $(this).find('a.send');
+			  var subOrderNo = $btn.attr('orderNo');
+			  var companyCode = companyCodes[Math.floor(Math.random()*companyCodes.length)];
+			  var loOrderNo = companyCode.substring(2)+new Date().format('yyyyMMdd')+Math.floor(Math.random()*100000000)
+			  var data = {subOrderNo:subOrderNo,companyCode:companyCode,loOrderNo:loOrderNo};
+			  sendingNum++;
+			  $.ajax({
+				  url:"logistics/submit",
+				  data:JSON.stringify(data),
+				  type:"POST",
+				  contentType: "application/json; charset=utf-8",
+				  headers: {'Content-Type': 'application/json'},  
+				  success:function(ret){
+				      if("00"!=ret.code){
+				    	  $("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");
+				          return;
+				      }
+				      $("#console").append("<font color=\"green\">发货成功，订单号："+subOrderNo+"，物流单号:"+loOrderNo+"</font><br>"); 
+				      sendingNum--;
+				      if(sendingNum<=0)
+				      	refreshPage();//刷新列表
+				  },
+				  error:function(resp,errMsg,errorThrown){
+					  $("#console").append("<font color=\"red\">"+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");
+				  }
+			  });
+		  });
+	  });
+	  
+	  /**自动发货*/
+	  $('#autoSend').click(function(){
+		  if(this.checked){
+			  autoSendIntervalId = setInterval(function(){if(sendingNum>0)return;$('#bathSendBtn').click();},60000);
+		  }else{
+			  if(autoSendIntervalId)
+			  	clearInterval(autoSendIntervalId);
+		  }
+	  });
+	  
+  });
+  
+	  
+  //刷新列表内容
+  function refreshPage(){
+	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo)
+		  pageNo = $('[name=pageNo]').val();
+	  if(!pageNo || isNaN(pageNo) )
+		  pageNo=1;
+	  $('[name=pageNo]').val(pageNo);
+	  var pageSize = $('[name=pageSize]').val();
+
+	  var callee = arguments.callee;
+	  $.ajax({
+		  url:"orders/searchForAccept",
+		  type:"GET",
+		  data:{pageNo:pageNo,pageSize:pageSize,orderNo:$('#orderNo').val(),storeNo:$('#storeNo').val()},
+		  success:function(result){
+			  if(result.code!='00'){
+				  $("#console").append("<font color=\"red\">"+result.code+":"+result.msg+"</font><br>");
+		    	  return;
+		      }
+			  var $tbody = $('#content table tbody').empty();
+			  //列表
+			  for(var i in result.resultList){
+				  var order =result.resultList[i];
+				  var innerHtml = '<tr> ';
+				  innerHtml+='<td>'+order.orderNo+'</td>';
+				  innerHtml+='<td>'+order.productCodes+'</td>';
+				  innerHtml+='<td>￥'+(order.totalAmt/1000)+'</td>';
+				  innerHtml+='<td>'+order.storeNo+'</td>';
+				  innerHtml+='<td></td>';
+				  innerHtml+='<td>';
+				  innerHtml+='<a href="javascript:void(0)" class="accept acceptBtn" orderNo="'+order.orderNo+'">ACCEPT</a>';
+				  innerHtml+='</td>';
+				  innerHtml+='</tr>';
+				  $tbody.append(innerHtml);
+			  }
+			  //分页
+			  $('#pageTd').makePage(result,refreshPage);
+
+		  },
+		  error:function(resp,errMsg,errorThrown){
+			  $("#console").append("<font color=\"red\">查询错误："+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>"); 
+		  }
+      });
+  }
+  
+  </script>
+  
+</head>
+<body>
+	<header>
+		<h1 class="title">卖家受理订单测试页面</h1>
+	</header>
+	<br>
+	<div id="content" class="content">
+		<form action="orders/searchForLo" name="searchForm" >
+		<input type="hidden" name="pageNo" value="1" >
+		订单号：<input type="text" name="orderNo" id="orderNo" >
+		商户号：<input type="text" name="storeNo" id="storeNo" >
+		每页
+		<select id="pageSize" name="pageSize" >
+			<option value="10" >10</option>
+			<option value="50" >50</option>
+			<option value="100" >100</option>
+			<option value="200" >200</option>
+		</select>
+		<button type="button" id="searchBtn" >查询</button>
+		<table id="orderTable" border="1" class="listTable">
+			<thead>
+				<tr>
+					<th>ORDER NO</th>
+					<th>PRODUCTS</th>
+					<th>TOTAL AMT</th>
+					<th>STORE NO</th>
+					<th>MEMO</th>
+					<th>OPER</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td id="pageTd" colspan="7"></td>
+				</tr>
+			</tfoot>
+			
+		</table>
+		<br>
+		<button id="bathSendBtn" type="button">批量受理</button>
+		<input type="checkbox" value="on" id="autoSend" >自动受理(每分钟触发一次受理)。
+		</form>
+		
+		<br>
+		<div id="console" style="width:100%"></div>
+	</div>
+	
+</body>
+</html>
