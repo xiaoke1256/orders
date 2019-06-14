@@ -18,22 +18,35 @@
 	  
 	  $('#orderTable').on('click','.accept',function(){
 		  var orderNo = $(this).attr("orderNo");
+		  url = "logistics/acceptOrder/"+orderNo
+		  $.ajax({
+			  url:url,
+			  type:"POST",
+			  contentType: "application/json; charset=utf-8",
+			  headers: {'Content-Type': 'application/json'},  
+			  success:function(ret){
+			      if("00"!=ret.code){
+			    	  $("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");
+			          return;
+			      }
+			      $("#console").append("<font color=\"green\">受理成功，订单号："+orderNo+"</font><br>"); 
+			      refreshPage();//刷新列表
+			  },
+			  error:function(resp,errMsg,errorThrown){
+				  $("#console").append("<font color=\"red\">"+resp.status+":"+errMsg+(errorThrown?":"+errorThrown:"")+"</font><br>");
+			  }
+		  });
 		  
-	  })
+	  });
 	  
 	  var sendingNum = 0;//正在处理的定单数量。
-	  $('#bathSendBtn').click(function(){
-		  var companyCodes = Object.keys(loCompanies);
+	  $('#bathAcceptBtn').click(function(){
 		  $('#orderTable>tbody>tr').each(function(){
-			  $btn = $(this).find('a.send');
+			  $btn = $(this).find('a.accept');
 			  var subOrderNo = $btn.attr('orderNo');
-			  var companyCode = companyCodes[Math.floor(Math.random()*companyCodes.length)];
-			  var loOrderNo = companyCode.substring(2)+new Date().format('yyyyMMdd')+Math.floor(Math.random()*100000000)
-			  var data = {subOrderNo:subOrderNo,companyCode:companyCode,loOrderNo:loOrderNo};
 			  sendingNum++;
 			  $.ajax({
-				  url:"logistics/submit",
-				  data:JSON.stringify(data),
+				  url:"logistics/acceptOrder/"+subOrderNo,
 				  type:"POST",
 				  contentType: "application/json; charset=utf-8",
 				  headers: {'Content-Type': 'application/json'},  
@@ -42,7 +55,7 @@
 				    	  $("#console").append("<font color=\"red\">"+ret.code+":"+ret.msg+"</font><br>");
 				          return;
 				      }
-				      $("#console").append("<font color=\"green\">发货成功，订单号："+subOrderNo+"，物流单号:"+loOrderNo+"</font><br>"); 
+				      $("#console").append("<font color=\"green\">受理成功，订单号："+subOrderNo+"，</font><br>"); 
 				      sendingNum--;
 				      if(sendingNum<=0)
 				      	refreshPage();//刷新列表
@@ -54,13 +67,13 @@
 		  });
 	  });
 	  
-	  /**自动发货*/
-	  $('#autoSend').click(function(){
+	  /**自动受理*/
+	  $('#autoAccept').click(function(){
 		  if(this.checked){
-			  autoSendIntervalId = setInterval(function(){if(sendingNum>0)return;$('#bathSendBtn').click();},60000);
+			  autoAcceptIntervalId = setInterval(function(){if(sendingNum>0)return;$('#bathAcceptBtn').click();},60000);
 		  }else{
-			  if(autoSendIntervalId)
-			  	clearInterval(autoSendIntervalId);
+			  if(autoAcceptIntervalId)
+			  	clearInterval(autoAcceptIntervalId);
 		  }
 	  });
 	  
@@ -155,8 +168,8 @@
 			
 		</table>
 		<br>
-		<button id="bathSendBtn" type="button">批量受理</button>
-		<input type="checkbox" value="on" id="autoSend" >自动受理(每分钟触发一次受理)。
+		<button id="bathAcceptBtn" type="button">批量受理</button>
+		<input type="checkbox" value="on" id="autoAccept" >自动受理(每分钟触发一次受理)。
 		</form>
 		
 		<br>
