@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.LockMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,5 +99,13 @@ public class AccService {
 		@SuppressWarnings("unchecked")
 		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("dealStatus", dealStatus).getResultList();
 		return list;
+	}
+	
+	public void doHousehold() {
+		List<PaymentTxn> txns = findByStatus(PaymentTxn.DEAL_STATUS_INIT);
+		if(txns==null || txns.isEmpty()) {
+			return;
+		}
+		saveHousehold(txns);
 	}
 }
