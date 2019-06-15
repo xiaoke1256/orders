@@ -157,6 +157,13 @@ PUT  http://localhost:9200/prod
 
 ### 4、安装zookeeper
 
+安装一个zookeeper实例。启动实例后，运行 zkClient.sh ，键入以下命令：
+
+```
+create /zookeeper/3rdpay 3rdpay
+create /zookeeper/3rdpay/expired_order expired_order
+```
+
 ### 5、配置各个服务器的域名
 
 ### 6、启动应用
