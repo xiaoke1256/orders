@@ -162,6 +162,13 @@ PUT  http://localhost:9200/prod
 ```
 create /zookeeper/3rdpay 3rdpay
 create /zookeeper/3rdpay/expired_order expired_order
+
+create /zookeeper/orders orders
+create /zookeeper/orders/sending_expired sending_expired
+
+create /zookeeper/orders/settle settle
+
+create /zookeeper/orders/make_money make_money
 ```
 
 ### 5、配置各个服务器的域名
