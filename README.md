@@ -173,4 +173,21 @@ create /zookeeper/orders/make_money make_money
 
 ### 5、配置各个服务器的域名
 
+修改/etc/hosts文件，添加以下几行:
+```
+# zookeeper所在机器的IP地址
+192.168.xx.100  zk1
+
+# discovery-eureka.war服务所部属的服务器IP地址
+192.168.xx.121  peer1
+192.168.xx.122  peer2
+
+# 3rdpay.war服务所部属的服务器IP地址
+192.168.xx.121	3rdpay
+192.168.xx.122	3rdpay2
+	
+# 安装ElasticSearch 机器的IP地址
+192.168.xx.100	p.es
+```
+
 ### 6、启动应用
