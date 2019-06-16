@@ -157,7 +157,7 @@ PUT  http://localhost:9200/prod
 
 ### 4、安装zookeeper
 
-安装一个zookeeper实例。启动实例后，运行 zkClient.sh ，键入以下命令：
+安装一个zookeeper实例。启动实例后，运行 zkCli.sh ，键入以下命令：
 
 ```
 create /zookeeper/3rdpay 3rdpay
