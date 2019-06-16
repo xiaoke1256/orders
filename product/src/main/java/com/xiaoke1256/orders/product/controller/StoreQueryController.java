@@ -42,6 +42,9 @@ public class StoreQueryController implements StoreQueryService {
 	@Override
 	public Store getStore(@PathVariable("storeNo") String storeNo) {
 		com.xiaoke1256.orders.product.bo.Store bo = storeService.getByStoreNo(storeNo);
+		if(bo == null) {
+			return null;
+		}
 		Store dto = new Store();
 		BeanUtils.copyProperties(bo, dto);
 		return dto;
