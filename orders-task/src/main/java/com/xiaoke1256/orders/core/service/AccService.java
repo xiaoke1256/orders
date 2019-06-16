@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class AccService {
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
+	@Autowired
 	private StoreQueryClient storeQueryService;
 	
 	/**
@@ -52,6 +54,7 @@ public class AccService {
 					srcHousehold.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 					entityManager.merge(srcHousehold);
 				}
+				
 				balance = balance.subtract(txn.getAmt());
 				HouseholdAccTxn payerHousehold = new HouseholdAccTxn();
 				payerHousehold.setAccNo(txn.getPayerNo());
@@ -59,6 +62,7 @@ public class AccService {
 				payerHousehold.setPayOrderNo(txn.getPayOrderNo());
 				payerHousehold.setSubOrderNo(txn.getSubOrderNo());
 				payerHousehold.setIsCurrent("1");
+				payerHousehold.setRemark(txn.getIncident());
 				payerHousehold.setAmt(txn.getAmt());
 				payerHousehold.setCashBalance(balance);
 				payerHousehold.setInsertTime(new Timestamp(System.currentTimeMillis()));
@@ -84,6 +88,7 @@ public class AccService {
 				payeeHousehold.setPayOrderNo(txn.getPayOrderNo());
 				payeeHousehold.setSubOrderNo(txn.getSubOrderNo());
 				payeeHousehold.setIsCurrent("1");
+				payeeHousehold.setRemark(txn.getIncident());
 				payeeHousehold.setAmt(txn.getAmt());
 				payeeHousehold.setCashBalance(balance);
 				payeeHousehold.setInsertTime(new Timestamp(System.currentTimeMillis()));
@@ -99,15 +104,18 @@ public class AccService {
 	
 	private HouseholdAccTxn getCurrHouseholdByAccNo(String accNo) {
 		String hql = "from HouseholdAccTxn where accNo = :accNo and isCurrent = '1'";
-		HouseholdAccTxn household = (HouseholdAccTxn) entityManager.createNativeQuery(hql).setParameter("accNo", accNo).getSingleResult();
-		return household;
+		@SuppressWarnings("unchecked")
+		List<HouseholdAccTxn> list = entityManager.createQuery(hql).setParameter("accNo", accNo).getResultList();
+		if(list!=null&&list.size()>0)
+			return list.get(0);
+		return null;
 	}
 	
 	@Transactional(readOnly=true)
 	public List<PaymentTxn> findByStatus(String dealStatus){
 		String hql = "from PaymentTxn where dealStatus = :dealStatus order by insertTime";
 		@SuppressWarnings("unchecked")
-		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("dealStatus", dealStatus).getResultList();
+		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("dealStatus", dealStatus).setMaxResults(1000).getResultList();
 		return list;
 	}
 	

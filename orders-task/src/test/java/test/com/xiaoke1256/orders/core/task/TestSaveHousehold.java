@@ -1,5 +1,6 @@
 package test.com.xiaoke1256.orders.core.task;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ public class TestSaveHousehold {
 	@Autowired
 	private HouseholdTask householdTask;
 	
+	@Test
 	public void testSaveHousehold() {
 		householdTask.startHousehold();
 	}
