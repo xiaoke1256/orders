@@ -169,6 +169,8 @@ create /zookeeper/orders/sending_expired sending_expired
 create /zookeeper/orders/settle settle
 
 create /zookeeper/orders/make_money make_money
+
+create /zookeeper/orders/household household
 ```
 
 ### 5、配置各个服务器的域名
