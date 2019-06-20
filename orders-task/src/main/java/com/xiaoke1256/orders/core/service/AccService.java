@@ -2,12 +2,14 @@ package com.xiaoke1256.orders.core.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,5 +127,49 @@ public class AccService {
 			return;
 		}
 		saveHousehold(txns);
+	}
+	
+	/**
+	 * 轧差（仅针对冲正）
+	 */
+	private void netting(List<PaymentTxn> txns) {
+		List<PaymentTxn> toNettings = new ArrayList<PaymentTxn>();
+		//从中找出冲正记录
+		for(PaymentTxn txn:txns) {
+			if(txn.getIncident() != null && txn.getIncident().startsWith("冲正记录:")) {
+				toNettings.add(txn);
+			}
+		}
+		
+		for(PaymentTxn txn:toNettings) {
+			PaymentTxn toBeRevers = null;
+			//找到被冲正的记录
+			if(StringUtils.isNotEmpty(txn.getSubOrderNo())) {
+				//先按subOrderNo 查.
+				toBeRevers = filterBySubOrderNo(txn.getSubOrderNo());
+				
+			}
+			if(toBeRevers == null && StringUtils.isNotEmpty(txn.getPayOrderNo())) {
+				// 再按payOrderNo 查.
+				toBeRevers = filterByPayOrderNo(txn.getPayOrderNo());
+			}
+			
+			if(toBeRevers!=null ) {
+				if(toBeRevers.getAmt().abs().equals(txn.getAmt().abs())) {
+					throw new RuntimeException("Revers amt is not equals! txnId is :"+txn.getPaymentId()+" - "+toBeRevers.getPaymentId());
+				}
+				txns.remove(txn);
+				txns.remove(toBeRevers);
+			}
+			
+		}
+	}
+	
+	private PaymentTxn filterBySubOrderNo(String subOrderNo) {
+		return null;
+	}
+	
+	private PaymentTxn filterByPayOrderNo(String payOrderNo) {
+		return null;
 	}
 }
