@@ -60,10 +60,29 @@ public class LogisticsService {
 		//改变订单状态
 		subOrder.setStatus(SubOrder.ORDER_STATUS_SENDING);
 		subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		subOrder.setReceiveTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(subOrder);
 	}
 	
+	/**
+	 * 受理订单.
+	 * @param subOrderNo
+	 */
+	public void acceptOrder(String subOrderNo) {
+		SubOrder subOrder = entityManager.find(SubOrder.class, subOrderNo,LockModeType.PESSIMISTIC_WRITE);
+		if(subOrder==null) {
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order no is not exist!");
+		}
+		if(!SubOrder.ORDER_STATUS_AWAIT_ACCEPT.equals(subOrder.getStatus())) {
+			logger.error("Wrong order status!(order no is {}, order status is {})",subOrder.getOrderNo(),subOrder.getStatus());
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"Wrong order status!","订单处于错误的状态。");
+		}
+		//改变订单状态
+		subOrder.setStatus(SubOrder.ORDER_STATUS_AWAIT_SEND);
+		subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		entityManager.merge(subOrder);
+	}
+	
+	@Transactional(readOnly=true)
 	public LoOrder findByCompanyAndNo(String companyCode,String loOrderNo) {
 		String ql = " from LoOrder where  companyCode = :companyCode and loOrderNo = :loOrderNo";
 		Query query = entityManager.createQuery(ql)
@@ -90,6 +109,7 @@ public class LogisticsService {
 		//改变订单状态
 		subOrder.setStatus(SubOrder.ORDER_STATUS_AWAIT_SETTLE);
 		subOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		subOrder.setReceiveTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(subOrder);
 	}
 }

@@ -295,6 +295,7 @@ public class OrederService {
 	 * @param condition
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public QueryResult<PayOrder> searchPayOrderByCondition(PayOrderCondition condition){
 		String countQl = "";
 		StringBuilder hqlSb =new StringBuilder(" from PayOrder o where 1=1 ");
@@ -342,6 +343,7 @@ public class OrederService {
 	 * @param condition
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public QueryResult<SubOrder> searchOrderByCondition(OrderCondition condition){
 		String countQl = "";
 		StringBuilder hqlSb =new StringBuilder(" from SubOrder o where 1=1 ");

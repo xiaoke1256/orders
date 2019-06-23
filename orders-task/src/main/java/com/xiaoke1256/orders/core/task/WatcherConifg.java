@@ -12,6 +12,7 @@ public class WatcherConifg {
 	public static final String MAKE_MONET_PATH = "/zookeeper/orders/make_money";
 	private static final String SENDING_EXPIRED_PATH = "/zookeeper/orders/sending_expired";
 	public static final String SETTLE_PATH = "/zookeeper/orders/settle";
+	public static final String HOUSEHOLD_PATH = "/zookeeper/orders/household";
 	
 	@Bean
 	public MasterWatcher makeMoneyTaskWatcher() {
@@ -26,6 +27,11 @@ public class WatcherConifg {
 	@Bean
 	public MasterWatcher settlementTaskWatcher() {
 		return new MasterWatcherWithWorkers(SETTLE_PATH);
+	}
+	
+	@Bean
+	public MasterWatcher householdTaskWatcher() {
+		return new MasterWatcher(HOUSEHOLD_PATH);
 	}
 	
 	@Bean

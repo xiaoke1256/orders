@@ -65,7 +65,7 @@ public class RedisUtils {
         
         String password = null;
 		// 创建连接池
-        pool = new JedisPool(config, "192.168.66.100", 6379,10000,password );
+        pool = new JedisPool(config, "192.168.66.100", 6379,10000,password );//FIXME 硬编码需要改掉！
 
 	} 
 	
