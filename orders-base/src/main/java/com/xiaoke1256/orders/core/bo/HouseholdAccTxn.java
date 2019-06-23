@@ -23,6 +23,8 @@ public class HouseholdAccTxn {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long txnId;
 	
+	@Column(name = "PAYMENT_ID")
+	private Long paymentId;	
 	/**
 	 * 账户号（即各个商户号，18个‘0’表示平台方） 
 	 */
@@ -89,6 +91,14 @@ public class HouseholdAccTxn {
 
 	public void setTxnId(Long txnId) {
 		this.txnId = txnId;
+	}
+
+	public Long getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(Long paymentId) {
+		this.paymentId = paymentId;
 	}
 
 	public String getAccNo() {
