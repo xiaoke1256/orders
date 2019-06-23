@@ -237,7 +237,7 @@ public class AccService {
 	}
 	
 	private PaymentTxn findReversBySubOrderNo(String subOrderNo) {
-		String hql = "from PaymentTxn where and subOrderNo = :subOrderNo and reverseFlg = '1'";
+		String hql = "from PaymentTxn where subOrderNo = :subOrderNo and reverseFlg = '1'";
 		@SuppressWarnings("unchecked")
 		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("subOrderNo", subOrderNo).getResultList();
 		if(list != null && list.size()>0)
@@ -246,7 +246,7 @@ public class AccService {
 	}
 	
 	private PaymentTxn findReversByPayOrderNo(String payOrderNo) {
-		String hql = "from PaymentTxn where and payOrderNo = :payOrderNo and reverseFlg = '1'";
+		String hql = "from PaymentTxn where payOrderNo = :payOrderNo and reverseFlg = '1'";
 		@SuppressWarnings("unchecked")
 		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("payOrderNo", payOrderNo).getResultList();
 		if(list != null && list.size()>0)
