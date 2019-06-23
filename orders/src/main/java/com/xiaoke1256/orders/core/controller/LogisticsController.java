@@ -4,8 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,10 +31,28 @@ public class LogisticsController {
 	private LogisticsService logisticsService;
 	
 	/**
+	 * 受理一个订单
+	 * @return
+	 */
+	@RequestMapping(value="/acceptOrder/{orderNo}",method= {RequestMethod.POST})
+	public RespMsg acceptOrder(@PathVariable("orderNo") String orderNo) {
+		try {
+			logisticsService.acceptOrder(orderNo);
+			return RespMsg.SUCCESS;
+		}catch(AppException e) {
+			logger.error(e.getMessage(), e);
+			return new RespMsg(e);
+		}catch(Exception e) {
+			logger.error(e.getMessage(), e);
+			return new RespMsg(e);
+		}
+	}
+	
+	/**
 	 * 提交一个物流单
 	 * @return
 	 */
-	@RequestMapping("/submit")
+	@RequestMapping(value="/submit",method= {RequestMethod.POST})
 	public RespMsg submitLoOrder(@RequestBody LoOrderRequest request) {
 		try {
 			String subOrderNo = request.getSubOrderNo();
@@ -65,7 +85,7 @@ public class LogisticsController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/confirmReceived")
+	@RequestMapping(value="/confirmReceived",method= {RequestMethod.POST})
 	public RespMsg confirmReceived(@RequestParam("subOrderNo") String subOrderNo) {
 		try {
 			if(StringUtils.isEmpty(subOrderNo)) {

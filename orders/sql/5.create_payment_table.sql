@@ -20,6 +20,7 @@ create table PAYMENT_TXN
 create table HOUSEHOLD_ACC_TXN
 (
   TXN_ID BIGINT primary key not null auto_increment comment '流水主键',
+  PAYMENT_ID BIGINT null comment '支付流水主键',
   ACC_NO VARCHAR(18) not null comment '账户号（即各个商户号，18个‘0’表示平台方）',
   ACC_FLG char(1) not null comment '借贷符号(+表示借，-表示贷)',
   pay_order_no VARCHAR(18) comment '支付单号',

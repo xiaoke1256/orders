@@ -62,6 +62,25 @@ public class OrderController {
 	}
 	
 	/**
+	 * 为了确认备货而进行的订单查询
+	 * @param condition
+	 * @return
+	 */
+	@RequestMapping(value="/searchForAccept",method={RequestMethod.GET})
+	@ResponseBody
+	public RespMsg searchOrdersForAccept(OrderCondition condition) {
+		condition.setStatuses(new String[] {SubOrder.ORDER_STATUS_AWAIT_ACCEPT});
+		QueryResult<SubOrder> queryResult = orederService.searchOrderByCondition(condition);
+		List<com.xiaoke1256.orders.core.dto.SubOrder> voList = new ArrayList<com.xiaoke1256.orders.core.dto.SubOrder>();
+		for(SubOrder subOrder:queryResult.getResultList()) {
+			voList.add(covertToVo(subOrder));
+		}
+		QueryResult<com.xiaoke1256.orders.core.dto.SubOrder> voResult = new QueryResult<com.xiaoke1256.orders.core.dto.SubOrder>(queryResult.getPageNo(),queryResult.getPageSize(),queryResult.getTotalCount());
+		voResult.setResultList(voList);
+		return new OrderQueryResultResp(voResult);
+	}
+	
+	/**
 	 * 为了物流而进行的订单查询
 	 * @param condition
 	 * @return
