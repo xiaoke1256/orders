@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
@@ -28,6 +29,7 @@ public class HouseholdTask {
 	/**
 	 * 开始记录分户账
 	 */
+	@Scheduled(cron="${logistics.save_household.task.corn}")
 	public void startHousehold() {
 		try {
 			if(!watcher.toBeMast()) {

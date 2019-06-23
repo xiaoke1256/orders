@@ -149,17 +149,18 @@ public class AccService {
 			//找到被冲正的记录
 			if(StringUtils.isNotEmpty(txn.getSubOrderNo())) {
 				//先按subOrderNo 查.
-				toBeRevers = filterReversBySubOrderNo(txn.getSubOrderNo(),txns);
+				toBeRevers = filterReversBySubOrderNo(txn,txns);
 				
 			}
 			if(toBeRevers == null && StringUtils.isNotEmpty(txn.getPayOrderNo())) {
 				// 再按payOrderNo 查.
-				toBeRevers = filterReversByPayOrderNo(txn.getPayOrderNo(),txns);
+				toBeRevers = filterReversByPayOrderNo(txn,txns);
 			}
 			
 			if(toBeRevers!=null ) {
-				if(toBeRevers.getAmt().abs().equals(txn.getAmt().abs())) {
-					throw new RuntimeException("Revers amt is not equals! txnId is :"+txn.getPaymentId()+" - "+toBeRevers.getPaymentId());
+				if(!toBeRevers.getAmt().abs().equals(txn.getAmt().abs())) {
+					throw new RuntimeException("Revers amt is not equals! txnId is :"+txn.getPaymentId()+" - "+toBeRevers.getPaymentId()
+						+" ; amt: "+txn.getAmt()+" - "+ toBeRevers.getAmt());
 				}
 				txn.setDealStatus(PaymentTxn.DEAL_STATUS_HOUSEHOLD);
 				txn.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -171,12 +172,16 @@ public class AccService {
 				txns.remove(toBeRevers);
 			} else {
 				//此时还找不到就到历史记录里找
-				toBeRevers = findReversBySubOrderNo(txn.getSubOrderNo());
+				toBeRevers = findReversBySubOrderNo(txn);
 				if(toBeRevers == null)
-					toBeRevers = findReversByPayOrderNo(txn.getPayOrderNo());
+					toBeRevers = findReversByPayOrderNo(txn);
 				if(toBeRevers == null) {
 					//此时没找到就按正常记录处理
 					continue;
+				}
+				if(!toBeRevers.getAmt().abs().equals(txn.getAmt().abs())) {
+					throw new RuntimeException("Revers amt is not equals! txnId is :"+txn.getPaymentId()+" - "+toBeRevers.getPaymentId()
+						+" ; amt: "+txn.getAmt()+" - "+ toBeRevers.getAmt());
 				}
 				
 				List<HouseholdAccTxn> households = findHouseholByPaymentId(toBeRevers.getPaymentId());
@@ -210,45 +215,61 @@ public class AccService {
 		}
 	}
 	
-	private PaymentTxn filterReversBySubOrderNo(String subOrderNo,List<PaymentTxn> txns) {
-		if(StringUtils.isEmpty(subOrderNo)) {
+	private PaymentTxn filterReversBySubOrderNo(PaymentTxn orgTxn,List<PaymentTxn> txns) {
+		if(orgTxn==null || StringUtils.isEmpty(orgTxn.getSubOrderNo())) {
 			return null;
 		}
 		for(PaymentTxn txn:txns) {
-			if (subOrderNo.equals(txn.getSubOrderNo())
-					&& "1".equals(txn.getReverseFlg())) {
+			if(txn==orgTxn) {
+				continue;
+			}
+			if (orgTxn.getSubOrderNo().equals(txn.getSubOrderNo())
+					&& "1".equals(txn.getReverseFlg())
+					&& txn.getPayeeNo()!=null && txn.getPayeeNo().equals(orgTxn.getPayeeNo())
+					&& txn.getPayerNo()!=null && txn.getPayerNo().equals(orgTxn.getPayerNo())) {
 				return txn;
 			}
 		}
 		return null;
 	}
 	
-	private PaymentTxn filterReversByPayOrderNo(String payOrderNo,List<PaymentTxn> txns) {
-		if(StringUtils.isEmpty(payOrderNo)) {
+	private PaymentTxn filterReversByPayOrderNo(PaymentTxn orgTxn,List<PaymentTxn> txns) {
+		if(orgTxn==null || StringUtils.isEmpty(orgTxn.getPayOrderNo())) {
 			return null;
 		}
 		for(PaymentTxn txn:txns) {
-			if (payOrderNo.equals(txn.getPayOrderNo())
-					&& "1".equals(txn.getReverseFlg())) {
+			if(txn==orgTxn) {
+				continue;
+			}
+			if (orgTxn.getPayOrderNo().equals(txn.getPayOrderNo())
+					&& "1".equals(txn.getReverseFlg())
+					&& txn.getPayeeNo()!=null && txn.getPayeeNo().equals(orgTxn.getPayeeNo())
+					&& txn.getPayerNo()!=null && txn.getPayerNo().equals(orgTxn.getPayerNo())) {
 				return txn;
 			}
 		}
 		return null;
 	}
 	
-	private PaymentTxn findReversBySubOrderNo(String subOrderNo) {
-		String hql = "from PaymentTxn where subOrderNo = :subOrderNo and reverseFlg = '1'";
+	private PaymentTxn findReversBySubOrderNo(PaymentTxn orgTxn) {
+		String hql = "from PaymentTxn where subOrderNo = :subOrderNo and reverseFlg = '1' and payerNo=:payerNo and payeeNo=:payeeNo ";
 		@SuppressWarnings("unchecked")
-		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("subOrderNo", subOrderNo).getResultList();
+		List<PaymentTxn> list = entityManager.createQuery(hql)
+			.setParameter("subOrderNo", orgTxn.getSubOrderNo())
+			.setParameter("payerNo", orgTxn.getPayerNo())
+			.setParameter("payeeNo", orgTxn.getPayeeNo()).getResultList();
 		if(list != null && list.size()>0)
 			return list.get(0);
 		return null;
 	}
 	
-	private PaymentTxn findReversByPayOrderNo(String payOrderNo) {
-		String hql = "from PaymentTxn where payOrderNo = :payOrderNo and reverseFlg = '1'";
+	private PaymentTxn findReversByPayOrderNo(PaymentTxn orgTxn) {
+		String hql = "from PaymentTxn where payOrderNo = :payOrderNo and reverseFlg = '1' and payerNo=:payerNo and payeeNo=:payeeNo";
 		@SuppressWarnings("unchecked")
-		List<PaymentTxn> list = entityManager.createQuery(hql).setParameter("payOrderNo", payOrderNo).getResultList();
+		List<PaymentTxn> list = entityManager.createQuery(hql)
+			.setParameter("payOrderNo", orgTxn.getPayOrderNo())
+			.setParameter("payerNo", orgTxn.getPayerNo())
+			.setParameter("payeeNo", orgTxn.getPayeeNo()).getResultList();
 		if(list != null && list.size()>0)
 			return list.get(0);
 		return null;
