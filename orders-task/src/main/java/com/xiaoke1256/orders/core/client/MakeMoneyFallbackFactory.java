@@ -12,12 +12,12 @@ import com.xiaoke1256.orders.core.api.MakeMoneyService;
 import com.xiaoke1256.orders.core.dto.PayResp;
 import com.xiaoke1256.orders.core.dto.SettleStatemt;
 
-import feign.hystrix.FallbackFactory;
+//import feign.hystrix.FallbackFactory;
 
 @Component
-public class MakeMoneyFallbackFactory implements FallbackFactory<MakeMoneyClient>{
+public class MakeMoneyFallbackFactory /*implements FallbackFactory<MakeMoneyClient>*/{
 	private static final Logger logger = LoggerFactory.getLogger(MakeMoneyFallbackFactory.class);
-	@Override
+	//@Override
 	public MakeMoneyClient create(Throwable cause) {
 		return new MakeMoneyClient() {
 

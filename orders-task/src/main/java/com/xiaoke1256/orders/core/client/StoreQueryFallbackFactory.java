@@ -10,13 +10,13 @@ import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.product.dto.Store;
 
-import feign.hystrix.FallbackFactory;
+//import feign.hystrix.FallbackFactory;
 
 @Component
-public class StoreQueryFallbackFactory implements FallbackFactory<StoreQueryClient> {
+public class StoreQueryFallbackFactory /*implements FallbackFactory<StoreQueryClient>*/ {
 	private static final Logger logger = LoggerFactory.getLogger(StoreQueryFallbackFactory.class);
 
-	@Override
+	//@Override
 	public StoreQueryClient create(Throwable cause) {
 		return new StoreQueryClient() {
 
