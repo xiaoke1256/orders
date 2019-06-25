@@ -37,7 +37,7 @@ public class SpringbootApplication extends SpringBootServletInitializer {
 	@Deprecated
 	@Bean
 	@Profile({"dev","test"})
-	public RestTemplate restTemplate() {
+	public RestTemplate restTemplate() { 
 		return new RestTemplate();
 	}
 	
