@@ -1,11 +1,8 @@
 package com.xiaoke1256.orders.core.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -49,16 +46,7 @@ public class ProductQueryController {
 		try {
 			int pageNo = condition.getPageNo();
 			int pageSize = condition.getPageSize();
-			Map<String,Object> paramsMap = new HashMap<>();
-			paramsMap.put("pageNo", pageNo);
-			paramsMap.put("pageSize", pageSize);
-			if(StringUtils.isNotBlank(condition.getProductCode())) {
-				paramsMap.put("productCode", condition.getProductCode());
-			}
-			if(StringUtils.isNotBlank(condition.getProductName())) {
-				paramsMap.put("productName", condition.getProductName());
-			}
-			RespMsg respMsg = productQueryService.searchProductByCondition(paramsMap);
+			RespMsg respMsg = productQueryService.searchProductByCondition(condition);
 			if(!RespMsg.SUCCESS.getCode().equals(respMsg.getCode())) {
 				return respMsg;
 			}

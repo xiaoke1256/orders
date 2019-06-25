@@ -88,18 +88,7 @@ public class SecKillController {
 	@RequestMapping(value="/products",method={RequestMethod.GET})
 	public RespMsg queryProduct(ProductCondition condition) {
 		try {
-			int pageNo = condition.getPageNo();
-			int pageSize = condition.getPageSize();
-			Map<String,Object> paramsMap = new HashMap<>();
-			paramsMap.put("pageNo", pageNo);
-			paramsMap.put("pageSize", pageSize);
-			if(StringUtils.isNotBlank(condition.getProductCode())) {
-				paramsMap.put("productCode", condition.getProductCode());
-			}
-			if(StringUtils.isNotBlank(condition.getProductName())) {
-				paramsMap.put("productName", condition.getProductName());
-			}
-			RespMsg respMsg = productQueryService.searchProductByCondition(paramsMap);
+			RespMsg respMsg = productQueryService.searchProductByCondition(condition);
 			if(!RespMsg.SUCCESS.getCode().equals(respMsg.getCode())) {
 				return respMsg;
 			}

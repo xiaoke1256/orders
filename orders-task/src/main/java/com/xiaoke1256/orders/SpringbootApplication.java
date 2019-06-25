@@ -9,11 +9,10 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 //import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 //import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
 //@EnableCircuitBreaker
-//@EnableFeignClients
+//@EnableFeignClientsr
 @SpringBootApplication
 //@EnableDiscoveryClient
 public class SpringbootApplication extends SpringBootServletInitializer {
@@ -24,20 +23,7 @@ public class SpringbootApplication extends SpringBootServletInitializer {
     }
 	
 	@Bean
-	//@LoadBalanced
-	@Profile("prod")
 	public RestTemplate balancedRestTemplate() {
-		return new RestTemplate();
-	}
-	
-	/**
-	 * @deprecated 用feign 后此bean就失效了。
-	 * @return
-	 */
-	@Deprecated
-	@Bean
-	@Profile({"dev","test"})
-	public RestTemplate restTemplate() { 
 		return new RestTemplate();
 	}
 	
