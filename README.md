@@ -196,4 +196,7 @@ create /zookeeper/orders/household household
 
 本项目编译后产生以下几个war包：orders.war、search.war、product.war、orders-task.war、3rdpay.war。他们的作用分别是：
 * orders.war : 订单管理主应用。 
-
+* orders-task.war : 订单管理定时任务。
+* product.war : 商品管理子系统。
+* search.war : 商品搜索系统。
+* 3rdpay.war : 用来模拟第三方支付系统。
