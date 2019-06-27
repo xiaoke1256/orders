@@ -193,3 +193,5 @@ create /zookeeper/orders/household household
 ```
 
 ### 6、启动应用
+
+本项目编译后产生以下几个war包：orders.war,search.war,product.war,orders-task.war,3rdpay.war。
