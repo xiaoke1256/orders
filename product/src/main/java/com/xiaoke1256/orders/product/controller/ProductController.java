@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.dto.ProductType;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
@@ -25,6 +26,7 @@ import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.ProductService;
 
 @RestController
+@Service
 public class ProductController implements ProductQueryService {
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
