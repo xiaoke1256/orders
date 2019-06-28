@@ -13,11 +13,14 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
+import com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan;
+
 //@EnableCircuitBreaker
 //@EnableFeignClients
 @SpringBootApplication
 //@EnableDiscoveryClient
 @ImportResource(value = "classpath:config/dubbo-config.xml")
+@DubboComponentScan(basePackages = "com.xiaoke1256.orders.core")
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
 	@Override

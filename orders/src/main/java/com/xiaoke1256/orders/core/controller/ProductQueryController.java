@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.core.bo.OStorage;
@@ -18,6 +19,7 @@ import com.xiaoke1256.orders.core.client.ProductQueryClient;
 import com.xiaoke1256.orders.core.dto.ProductWithStorage;
 import com.xiaoke1256.orders.core.dto.ProductWithStorageQueryResult;
 import com.xiaoke1256.orders.core.service.OStorageService;
+import com.xiaoke1256.orders.product.api.ProductQueryService;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
@@ -31,8 +33,8 @@ import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 public class ProductQueryController {
 	private static  final Logger logger = LoggerFactory.getLogger(ProductQueryController.class);
 	
-	@Autowired
-	private ProductQueryClient productQueryService;
+	@Reference
+	private ProductQueryService productQueryService;
 	
 	@Autowired
 	private OStorageService oStorageService;
