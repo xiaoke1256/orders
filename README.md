@@ -194,7 +194,8 @@ create /zookeeper/orders/household household
 
 ### 6、启动应用
 
-本项目编译后产生以下几个war包：orders.war、search.war、product.war、orders-task.war、3rdpay.war。他们的作用分别是：
+本项目编译后产生以下几个war包：orders.war、search.war、product.war、orders-task.war、3rdpay.war、discovery-eureka.war。他们的作用分别是：
+* discovery-eureka.war : 服务发现的注册中心。
 * orders.war : 订单管理主应用。 
 * orders-task.war : 订单管理定时任务。
 * product.war : 商品管理子系统。
