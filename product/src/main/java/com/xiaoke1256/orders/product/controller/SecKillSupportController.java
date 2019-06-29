@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.product.api.SecKillSupportService;
@@ -19,6 +20,7 @@ import com.xiaoke1256.orders.product.service.ProductService;
  */
 @RestController
 @RequestMapping("/secKill")
+@Service
 public class SecKillSupportController implements SecKillSupportService {
 	@Autowired
 	private ProductService productService;

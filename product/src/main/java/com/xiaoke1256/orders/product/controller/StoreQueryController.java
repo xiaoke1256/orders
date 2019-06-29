@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.xiaoke1256.orders.product.api.StoreQueryService;
 import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.StoreService;
 
 @RestController
 @RequestMapping("/store")
+@Service
 public class StoreQueryController implements StoreQueryService {
 	
 	@Autowired
