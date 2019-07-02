@@ -19,7 +19,7 @@ import com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan;
 //@EnableFeignClients
 @SpringBootApplication
 //@EnableDiscoveryClient
-@ImportResource(value = "classpath:config/dubbo-config.xml")
+@ImportResource(value = "classpath:dubbo-config.xml")
 @DubboComponentScan(basePackages = "com.xiaoke1256.orders.core")
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
