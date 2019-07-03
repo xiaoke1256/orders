@@ -12,6 +12,11 @@ import com.xiaoke1256.orders.product.api.StoreQueryService;
 import com.xiaoke1256.orders.product.dto.Store;
 
 //@FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory=StoreQueryFallbackFactory.class,path="product")
+/**
+ * @deprecated 采用dubbo后就不用此组建了
+ * @author Administrator
+ *
+ */
 @Component
 public class StoreQueryClient implements StoreQueryService {
 

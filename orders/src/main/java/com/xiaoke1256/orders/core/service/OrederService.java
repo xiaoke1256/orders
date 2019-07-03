@@ -23,20 +23,20 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.common.util.Base32;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.bo.OrderItem;
 import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.SubOrder;
-import com.xiaoke1256.orders.core.client.ProductQueryClient;
 import com.xiaoke1256.orders.core.dto.OrderCondition;
 import com.xiaoke1256.orders.core.dto.PayOrderCondition;
+import com.xiaoke1256.orders.product.api.ProductQueryService;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
@@ -47,8 +47,8 @@ public class OrederService {
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
-	@Autowired
-	private ProductQueryClient productQueryClient;
+	@Reference
+	private ProductQueryService productQueryService;
 	
 	@Value("${remote.api.product.uri}")
 	private String productApiUri;
@@ -69,7 +69,7 @@ public class OrederService {
 		List<SimpleProduct> products = new ArrayList<SimpleProduct>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			SimpleProduct product = productQueryClient.getSimpleProductByCode(productCode);
+			SimpleProduct product = productQueryService.getSimpleProductByCode(productCode);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}

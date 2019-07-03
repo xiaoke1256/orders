@@ -8,10 +8,10 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.common.zookeeper.Client;
 import com.xiaoke1256.orders.common.zookeeper.MasterWatcher;
@@ -27,7 +27,7 @@ import com.xiaoke1256.orders.product.dto.Store;
 public class SettlementTask {
 	private static final Logger logger = LoggerFactory.getLogger(SendingExpiredTask.class);
 	
-	@Autowired
+	@Reference
 	private StoreQueryService storeQueryService;
 	
 	@Resource(name="settlementTaskWatcher")

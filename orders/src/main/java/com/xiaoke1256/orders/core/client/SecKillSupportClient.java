@@ -9,6 +9,11 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.product.api.SecKillSupportService;
 
 //@FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory=SecKillSupportFallbackFactory.class,path="product")
+/**
+ * @deprecated 采用dubbo后就不用此组建了
+ * @author Administrator
+ *
+ */
 @Component
 public class SecKillSupportClient implements SecKillSupportService {
 

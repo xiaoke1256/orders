@@ -16,17 +16,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.orders.core.api.MakeMoneyService;
 import com.xiaoke1256.orders.core.bo.SettleStatemt;
-import com.xiaoke1256.orders.core.client.StoreQueryClient;
 import com.xiaoke1256.orders.core.dto.PayResp;
 import com.xiaoke1256.orders.core.dto.SettleStatemtCondition;
 import com.xiaoke1256.orders.core.dto.SettleStatemtQueryResultResp;
 import com.xiaoke1256.orders.core.service.SettleService;
 import com.xiaoke1256.orders.pay.service.PayService;
+import com.xiaoke1256.orders.product.api.StoreQueryService;
 import com.xiaoke1256.orders.product.dto.Store;
 
 /**
@@ -43,8 +44,8 @@ public class MakeMoneyController implements MakeMoneyService {
 	@Autowired
 	private SettleService settleService;
 	
-	@Autowired
-	private StoreQueryClient storeQueryClient;
+	@Reference
+	private StoreQueryService storeQueryService;
 	
 	/**平台方的支付账号*/
 	@Value("${platform.payment.thirdpay.account}")
@@ -79,7 +80,7 @@ public class MakeMoneyController implements MakeMoneyService {
 		
 		String storeNo = settle.getStoreNo();
 		//调用product服务，查询商铺的收款账号和支付方式。
-		Store store = storeQueryClient.getStore(storeNo);
+		Store store = storeQueryService.getStore(storeNo);
 		String payerNo = pateformPayAccount;//付款方
 		String payeeNo = store.getPayAccountNo();//收款方
 		//String payType = store.getPayType();//支付方式

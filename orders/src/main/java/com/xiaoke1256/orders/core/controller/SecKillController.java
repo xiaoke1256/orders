@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.xiaoke1256.common.utils.RedisUtils;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.QueryResultResp;
@@ -38,6 +39,7 @@ import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.ProductService;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
+import com.xiaoke1256.orders.product.api.ProductQueryService;
 import com.xiaoke1256.orders.product.api.SecKillSupportService;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 
@@ -63,10 +65,10 @@ public class SecKillController {
 	@Autowired
 	private OStorageService oStorageService;
 	
-	@Autowired
-	private ProductQueryClient productQueryService;
+	@Reference
+	private ProductQueryService productQueryService;
 	
-	@Autowired
+	@Reference
 	private SecKillSupportService secKillSupportService;
 
 	

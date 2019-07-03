@@ -14,6 +14,11 @@ import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 
 //@FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory=ProductQueryFallbackFactory.class,path="product")
+/**
+ * @deprecated 采用dubbo后就不用此组建了
+ * @author Administrator
+ *
+ */
 @Component
 public class ProductQueryClient implements ProductQueryService {
 
