@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
+		http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd"
+		>
+		
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"></property>
+		<property name="location" value="classpath:dubbo.properties"></property>
+	</bean>
+	
+	<bean id="monitorService" class="com.alibaba.dubbo.monitor.dubbo.DubboMonitor">
+	</bean>
+	
+    <dubbo:application name="monitor"  />   
+    <dubbo:registry address="zookeeper://zk1:2181?client=zkclient" />  
+    <dubbo:protocol name="dubbo" port="20880" /> 
+    
+    <dubbo:service interface="com.alibaba.dubbo.monitor.MonitorService" ref="monitorService" delay="-1"></dubbo:service>
+    
+    <dubbo:reference id="registryService" interface="com.alibaba.dubbo.registry.RegistryService"></dubbo:reference>
+</beans>
