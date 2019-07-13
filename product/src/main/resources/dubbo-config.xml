@@ -6,6 +6,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
 		http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd"
 		>
+	<dubbo:monitor protocol="registry"></dubbo:monitor>
     <dubbo:application name="api-orders"  />   
     <dubbo:registry address="zookeeper://zk1:2181?client=zkclient" />  
     <dubbo:protocol name="dubbo" port="20880" /> 
