@@ -9,13 +9,17 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
+
+import com.xiaoke1256.common.utils.RedisConfig;
 
 @EnableCircuitBreaker
 @EnableFeignClients
 @SpringBootApplication
 @EnableDiscoveryClient
+@Import(RedisConfig.class)
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
 	@Override

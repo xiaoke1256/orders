@@ -2,8 +2,10 @@ package com.xiaoke1256.common.utils;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -15,7 +17,34 @@ public class RedisUtils {
 	private static  final Logger logger = LoggerFactory.getLogger(RedisUtils.class);
 	
 	private static JedisPool pool;
-	 
+	
+	private static String host;
+	private static int port;
+	private static int timeout;
+	private static String password;
+	
+	
+	@Value("${redisconfig.host}")
+	public void setHost(String host) {
+		RedisUtils.host = host;
+	}
+
+	@Value("${redisconfig.port}")
+	public void setPort(int port) {
+		RedisUtils.port = port;
+	}
+
+	@Value("${redisconfig.timeout}")
+	public void setTimeout(int timeout) {
+		RedisUtils.timeout = timeout;
+	}
+
+	@Value("${redisconfig.password}")
+	public void setPassword(String password) {
+		if(StringUtils.isNotEmpty(password))
+			RedisUtils.password = password;
+	}
+
 	private static void createPool() {
 		// 建立连接池配置参数
         JedisPoolConfig config = new JedisPoolConfig();
@@ -63,9 +92,9 @@ public class RedisUtils {
         //逐出扫描的时间间隔(毫秒) 如果为负数,则不运行逐出线程, 默认-1
         config.setTimeBetweenEvictionRunsMillis(100);
         
-        String password = null;
+        //String password = null;
 		// 创建连接池
-        pool = new JedisPool(config, "192.168.66.100", 6379,10000,password );//FIXME 硬编码需要改掉！
+        pool = new JedisPool(config, host, port,timeout,password );
 
 	} 
 	
