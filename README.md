@@ -207,4 +207,4 @@ create /zookeeper/orders/household household
 
 分别安装Tomcat，以运行这些war包。其中discovery-eureka.war需运行在端口号8761和8762上；orders.war需运行在8081端口上；3rdpay.war需运行在8082端口上。
 
-Tomcat运行起来后，在浏览器上地址栏输入http://ip:8081/orders/，就可以访问本系统的各项功能了。
+Tomcat运行起来后，在浏览器上地址栏输入 http://ip:8081/orders/ 后就可以访问本系统的各项功能了。
