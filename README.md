@@ -190,6 +190,9 @@ create /zookeeper/orders/household household
 	
 # 安装ElasticSearch 机器的IP地址
 192.168.xx.100	p.es
+
+# 安装redis 机器的IP地址
+192.168.xx.100	redis
 ```
 
 ### 6、启动应用
