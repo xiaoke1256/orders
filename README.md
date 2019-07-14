@@ -204,3 +204,4 @@ create /zookeeper/orders/household household
 * product.war : 商品管理子系统。
 * search.war : 商品搜索系统。
 * 3rdpay.war : 用来模拟第三方支付系统。
+分别安装Tomcat，以运行这些war包。其中discovery-eureka.war需运行在端口号8761和8762上；orders.war需运行在8081端口上；3rdpay.war需运行在8082端口上。
