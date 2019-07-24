@@ -1,5 +1,5 @@
 FROM tomcat:8
 VOLUME /logs
 ADD product.war /usr/local/tomcat/webapps/product.war
-RUN bash -c 'touch /usr/local/tomcat/webapps/product.war'
-ENV spring.profiles.active=prod
+ADD context.xml /usr/local/tomcat/conf/context.xml
+ENV -Dspring.profiles.active=prod
