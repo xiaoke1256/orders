@@ -2,4 +2,5 @@ FROM tomcat:8
 #VOLUME /logs
 ADD product.war /usr/local/tomcat/webapps/product.war
 ADD context.xml /usr/local/tomcat/conf/context.xml
-ENV JAVA_OPTS='-server -Xms64m -Xmx512m -Dspring.profiles.active=prod'
+ENV JAVA_OPTS='-server -Xms64m -Xmx512m -Dspring.profiles.active=prod $EXT_JAVA_OPTS'
+ENV EXT_JAVA_OPTS=''
