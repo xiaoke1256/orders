@@ -1,4 +1,4 @@
-FROM base_web:latest
+FROM repo.orders.com:5000/orders/base_web:latest
 #VOLUME /logs
 ADD product.war /usr/local/tomcat/webapps/product.war
 ADD context.xml /usr/local/tomcat/conf/context.xml
