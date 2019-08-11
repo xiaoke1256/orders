@@ -28,16 +28,6 @@
     <!--
     <Manager pathname="" />
     -->
-    <Resource name="jdbc/thirdpay"
-           type="javax.sql.DataSource"
-           driverClassName="com.mysql.jdbc.Driver"
-           url="jdbc:mysql://db1.orders.com:3306/thirdpay?characterEncoding=utf-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
-           username="thirdpayUser"
-           password="xiaoke_1256"
-           maxActive="400"
-           maxIdle="-1"
-           maxWait="-1"
-     />
      <Resource name="jdbc/product"
 	    type="javax.sql.DataSource"
             driverClassName="com.mysql.jdbc.Driver"
