@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xiaoke_1256.3rdPay</groupId>
   <artifactId>3rdpay</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.3-SNAPSHOT</version>
   <packaging>war</packaging>
   
   <parent>
@@ -112,13 +112,13 @@
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
-       <version>1.1.2-SNAPSHOT</version>
+       <version>1.1.3-SNAPSHOT</version>
     </dependency>
     
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common-zookeeper</artifactId>
-       <version>1.1.2-SNAPSHOT</version>
+       <version>1.1.3-SNAPSHOT</version>
     </dependency>
     
   </dependencies>
@@ -156,7 +156,7 @@
 	       	</execution>
 	      </executions>
 	      <configuration>
-	        <imageName>itmuch/product:1.1.2-SNAPSHOT</imageName>
+	        <imageName>itmuch/product:1.1.3-SNAPSHOT</imageName>
 	       	<defaultProfile>${project.basedir}/src/main/docker</defaultProfile>
 	       	<resources>
 	       	  <resource>
