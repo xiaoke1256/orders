@@ -194,7 +194,7 @@ create /zookeeper/orders/household household
 # 安装redis 机器的IP地址
 192.168.xx.100	redis
 
-# docker 本地镜像库地址
+# docker 本地docker镜像库地址
 192.168.xx.100	repo.orders.com
 ```
 
