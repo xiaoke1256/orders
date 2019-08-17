@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.search.task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.xiaoke1256.orders.search.service.EsCollectService;
@@ -17,6 +18,7 @@ public class ImportDataTask {
 	@Autowired
 	private ZookeeperWatcher zookeeperWatcher;
 	
+	@Scheduled(cron="${search.product.import_data.task.corn}")
 	public void collectProduct() {
 		try {
 			if(zookeeperWatcher.toBeMast()) {

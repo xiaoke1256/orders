@@ -11,12 +11,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.xiaoke1256.orders.search.SpringApplication;
+import com.xiaoke1256.orders.search.SpringbootApplication;
 import com.xiaoke1256.orders.search.bo.ProductType;
 import com.xiaoke1256.orders.search.dao.ProductTypeDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=SpringApplication.class)
+@ContextConfiguration(classes=SpringbootApplication.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class ProductTypeDaoTest {
