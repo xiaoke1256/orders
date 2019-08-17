@@ -8,8 +8,8 @@ import java.util.Map;
 
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -97,7 +97,7 @@ public class SearchController {
         	String storeName = getValueWithHighlight("store_name", hightlingFields,values);
         	Date updTime = null;
         	if(values.get("upd_time") instanceof String)
-        		updTime = DateUtils.parseDate((String)values.get("upd_time"), "yyyy-MM-dd HH:mm:ss");
+        		updTime = DateUtils.parseDate((String)values.get("upd_time"), new String[] {"yyyy-MM-dd HH:mm:ss"});
         	if(values.get("upd_time") instanceof Long)
         		updTime = new Date((Long)values.get("upd_time"));
         	if(values.get("upd_time") instanceof Date)
