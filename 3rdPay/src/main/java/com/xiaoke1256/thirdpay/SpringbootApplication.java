@@ -13,9 +13,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author Administrator
  *
  */
+@EnableDiscoveryClient
 @SpringBootApplication(exclude={HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration
-@EnableDiscoveryClient
 @MapperScan("com.xiaoke1256.thirdpay.payplatform.dao")
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
