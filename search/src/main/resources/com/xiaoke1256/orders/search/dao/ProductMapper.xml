@@ -27,9 +27,9 @@
    <select parameterType="map" id="queryModifed" resultMap="productMap">
       select product_code, product_name, product_price, store_no, product_status, product_intro, insert_time, update_time
        from PRODUCT 
-       where product_status = #{productStatus}
-       <if test="lastTime != null">
-       		and update_time > #{lastTime}
+       where product_status = #{param2}
+       <if test="param1 != null">
+       		and update_time > #{param1}
        </if>
    </select>
 </mapper>
