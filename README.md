@@ -7,11 +7,13 @@ orders
 1. 高并发环境下订单的受理。
 2. 商品搜索(ES)。
 3. 高吞吐量的订单流转。  
+4. 用Docker发布应用。
 
 **This is a simple e-commerce platform.We discuss these topics:**
 1. Receiving orders in high concurrency environment.
 2. Searching porducts(ES).
 3. Order circulation in high throughput capacity.
+4. Use docker.
 
 ## 二、流程图
 
