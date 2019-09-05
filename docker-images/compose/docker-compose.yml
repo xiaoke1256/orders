@@ -1,0 +1,17 @@
+version: "3"
+services:
+    discovery-eureka-peer1:
+        image: repo.orders.com:5000/orders/discovery:latest
+        deploy: 
+            replicas: 1
+            resources: 
+                cpus: "0.2"
+                memory: 100M
+            restart_plicy:
+                condition: on-failure
+        ports:
+            - "8762:8762"
+        networks:
+            - mynet
+networks: 
+    mynet: 
