@@ -10,7 +10,7 @@ services:
             restart_plicy:
                 condition: on-failure
         ports:
-            - "8762:8762"
+            - "8762:8080"
         networks:
             - mynet
 networks: 
