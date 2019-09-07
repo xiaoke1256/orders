@@ -1,17 +1,19 @@
 version: "3"
 services:
-    discovery-eureka-peer1:
-        image: repo.orders.com:5000/orders/discovery:latest
-        deploy: 
-            replicas: 1
-            resources: 
-                cpus: "0.2"
-                memory: 100M
-            restart_plicy:
-                condition: on-failure
-        ports:
-            - "8762:8080"
-        networks:
-            - mynet
+  discovery-eureka-peer1:
+    image: repo.orders.com:5000/orders/discovery:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 100M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8762:8080"
 networks: 
-    mynet: 
+  default:
+    external: true
+      
+         
