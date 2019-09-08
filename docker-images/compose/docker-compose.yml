@@ -1,6 +1,7 @@
 version: "3"
 services:
-  discovery-eureka-peer1:
+  #discovey-eureka-8762
+  peer2:
     image: repo.orders.com:5000/orders/discovery:latest
     deploy: 
       replicas: 1
@@ -12,8 +13,10 @@ services:
         condition: on-failure
     ports:
       - "8762:8080"
-networks: 
-  default:
-    external: true
+    environment:
+      - spring.profiles.active=peer2
+#networks: 
+#  default:
+#    external: true
       
          
