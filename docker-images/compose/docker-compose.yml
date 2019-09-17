@@ -11,8 +11,9 @@ services:
           memory: 512M
       restart_policy:
         condition: on-failure
+    command: sed -i /port=8080/port=8761/g /usr/local/tomcat/conifg/service.xml
     ports:
-      - "8761:8080"
+      - "8761:8761"
     environment:
       EXT_JAVA_OPTS: "-Dspring.profiles.active=peer1"
   #discovey-eureka-8762
@@ -26,8 +27,9 @@ services:
           memory: 512M
       restart_policy:
         condition: on-failure
+    command: sed -i /port=8080/port=8762/g /usr/local/tomcat/conifg/service.xml
     ports:
-      - "8762:8080"
+      - "8762:8762"
     environment:
       EXT_JAVA_OPTS: "-Dspring.profiles.active=peer2"
 #networks: 
