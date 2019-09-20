@@ -21,6 +21,7 @@ services:
       - "8761:8761"
     environment:
       EXT_JAVA_OPTS: "-Dspring.profiles.active=peer1"
+      
   #discovey-eureka-8762
   peer2:
     image: repo.orders.com:5000/orders/discovery:latest
@@ -42,6 +43,26 @@ services:
       - "8762:8762"
     environment:
       EXT_JAVA_OPTS: "-Dspring.profiles.active=peer2"
+      
+  product:
+    image: repo.orders.com:5000/orders/product:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    #ports:
+    environment:
+      EXT_JAVA_OPTS: "-Dserver.port=8080"
+    extra_hosts:
+      - "db1.orders.com:192.168.66.1"
+      - "redis:192.168.66.100"
+      - "p.es:192.168.66.100"
+      - "zk1:192.168.66.100"
+      
 #networks: 
 #  default:
 #    external: true
