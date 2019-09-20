@@ -11,7 +11,12 @@ services:
           memory: 512M
       restart_policy:
         condition: on-failure
-    command: sed -i /port=8080/port=8761/g /usr/local/tomcat/conifg/service.xml && /usr/tomcat/bin/catalina.sh
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        sed -i 's/port="8080"/port="8761"/g' /usr/local/tomcat/conf/server.xml 
+        /usr/local/tomcat/bin/catalina.sh run
     ports:
       - "8761:8761"
     environment:
@@ -27,7 +32,12 @@ services:
           memory: 512M
       restart_policy:
         condition: on-failure
-    command: sed -i /port=8080/port=8762/g /usr/local/tomcat/conifg/service.xml && /usr/tomcat/bin/catalina.sh
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        sed -i 's/port="8080"/port="8762"/g' /usr/local/tomcat/conf/server.xml 
+        /usr/local/tomcat/bin/catalina.sh run
     ports:
       - "8762:8762"
     environment:
