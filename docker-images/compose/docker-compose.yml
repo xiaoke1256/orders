@@ -103,6 +103,26 @@ services:
       - "p.es:192.168.66.100"
       - "zk1:192.168.66.100"
       
+  3rdpay: 
+    image: repo.orders.com:5000/3rdpay/3rdpay:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8082:8080"
+    environment:
+      EXT_JAVA_OPTS: "-Dserver.port=8080"
+    extra_hosts:
+      - "db1.orders.com:192.168.66.1"
+      - "redis:192.168.66.100"
+      - "p.es:192.168.66.100"
+      - "zk1:192.168.66.100"
+            
 #networks: 
 #  default:
 #    external: true
