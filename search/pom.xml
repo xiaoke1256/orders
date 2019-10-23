@@ -6,15 +6,16 @@
   <artifactId>orders-search</artifactId>
   <name>orders</name>
   <packaging>war</packaging>
-  <version>1.1.2</version>
+  <version>1.2.0-SNAPSHOT</version>
   
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<maven.compiler.source>1.8</maven.compiler.source>  
     <maven.compiler.target>1.8</maven.compiler.target>  
+    <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>  
 	<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
   </properties>
-  
+
   <dependencies>
      
 <!--     <dependency>
@@ -202,7 +203,7 @@
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
-       <version>1.1.2</version>
+       <version>1.2.0-SNAPSHOT</version>
     </dependency>
      
      
@@ -223,7 +224,15 @@
                </excludes>
             </configuration>
         </plugin>
+        <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-compiler-plugin</artifactId>
+             <version>2.3.2</version>
+             <configuration>
+                 <source>1.8</source>
+                 <target>1.8</target>
+             </configuration>
+        </plugin>
   	</plugins>
   </build>
-
 </project>
