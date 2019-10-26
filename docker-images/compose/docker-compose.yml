@@ -123,8 +123,8 @@ services:
       - "p.es:192.168.66.100"
       - "zk1:192.168.66.100"
             
-#networks: 
-#  default:
-#    external: true
+networks: 
+  default:
+    external: true
       
          
