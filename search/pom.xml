@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xiaoke_1256.orders</groupId>
   <artifactId>product-search</artifactId>
-  <version>1.1.3-SNAPSHOT</version>
+  <version>1.1.3</version>
   <packaging>war</packaging>
   
   <parent>
@@ -149,7 +149,7 @@
     <dependency>
        <groupId>com.xiaoke_1256.orders</groupId>
        <artifactId>orders-common</artifactId>
-       <version>1.1.3-SNAPSHOT</version>
+       <version>1.1.3</version>
     </dependency>
      
      
