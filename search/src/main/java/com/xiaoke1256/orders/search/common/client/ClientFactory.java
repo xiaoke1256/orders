@@ -2,7 +2,7 @@ package com.xiaoke1256.orders.search.common.client;
 
 import java.net.InetAddress;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;

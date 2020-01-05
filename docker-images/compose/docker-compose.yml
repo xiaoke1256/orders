@@ -1,0 +1,130 @@
+version: "3"
+services:
+  #discovey-eureka-8761
+  peer1:
+    image: repo.orders.com:5000/orders/discovery:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        sed -i 's/port="8080"/port="8761"/g' /usr/local/tomcat/conf/server.xml 
+        /usr/local/tomcat/bin/catalina.sh run
+    ports:
+      - "8761:8761"
+    environment:
+      EXT_JAVA_OPTS: "-Dspring.profiles.active=peer1"
+      
+  #discovey-eureka-8762
+#  peer2:
+#    image: repo.orders.com:5000/orders/discovery:latest
+#    deploy: 
+#      replicas: 1
+#      resources:  
+#        limits: 
+#          cpus: "0.2"
+#          memory: 512M
+#      restart_policy:
+#        condition: on-failure
+#    command: 
+#      - /bin/sh
+#      - -c
+#      - |
+#        sed -i 's/port="8080"/port="8762"/g' /usr/local/tomcat/conf/server.xml 
+#        /usr/local/tomcat/bin/catalina.sh run
+#    ports:
+#      - "8762:8762"
+#    environment:
+#     EXT_JAVA_OPTS: "-Dspring.profiles.active=peer2"
+      
+  product:
+    image: repo.orders.com:5000/orders/product:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    #ports:
+    environment:
+      EXT_JAVA_OPTS: "-Dserver.port=8080"
+    extra_hosts:
+      - "db1.orders.com:192.168.66.1"
+      - "redis:192.168.66.100"
+      - "p.es:192.168.66.100"
+      - "zk1:192.168.66.100"
+      
+  orders:
+    image: repo.orders.com:5000/orders/orders:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8081:8080"
+    environment:
+      EXT_JAVA_OPTS: "-Dserver.port=8080"
+    extra_hosts:
+      - "db1.orders.com:192.168.66.1"
+      - "redis:192.168.66.100"
+      - "p.es:192.168.66.100"
+      - "zk1:192.168.66.100"
+      
+  orders-task:
+    image: repo.orders.com:5000/orders/orders-task:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+#    ports:
+#      - "8081:8080"
+    environment:
+      EXT_JAVA_OPTS: "-Dserver.port=8080"
+    extra_hosts:
+      - "db1.orders.com:192.168.66.1"
+      - "redis:192.168.66.100"
+      - "p.es:192.168.66.100"
+      - "zk1:192.168.66.100"
+      
+  3rdpay: 
+    image: repo.orders.com:5000/3rdpay/3rdpay:latest
+    deploy: 
+      replicas: 1
+      resources:  
+        limits: 
+          cpus: "0.2"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8082:8080"
+    environment:
+      EXT_JAVA_OPTS: "-Dserver.port=8080"
+    extra_hosts:
+      - "db1.orders.com:192.168.66.1"
+      - "redis:192.168.66.100"
+      - "p.es:192.168.66.100"
+      - "zk1:192.168.66.100"
+            
+networks: 
+  default:
+    external: 
+      name: my_overlay
+         
