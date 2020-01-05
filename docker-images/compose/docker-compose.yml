@@ -126,5 +126,5 @@ services:
 networks: 
   default:
     external: 
-      name: my-overlay
+      name: my_overlay
          
