@@ -1,7 +1,7 @@
 
-new Vue({
+var App = new Vue({
   el: '#app',
-//  router,
+  router:router
 //  store,
 //  axiosReq,
 //  components: {App},

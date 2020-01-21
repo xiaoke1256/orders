@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>ORDERS-ÉÌ»§¶Ë</title>
-	</head>
-	<body>
-		<div id="#app" class="center">
-			<select  >
-				<option>-ÇëÑ¡Ôñ-</option>
-			</select>
-			<button>µÇÂ¼</button>
-		</div>
-	</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>ç™»å½•ç»„ä»¶</title>
+  </head>
+  <body>
+    <template id="login">
+      <div >
+        <select  >
+	      <option>-è¯·é€‰æ‹©-</option>
+	    </select>
+	    <button>ç™»å½•</button>
+      </div>
+    </template>
+    <script>
+	  //æ³¨å†Œç»„ä»¶
+	  Vue.component('templatec',{
+        props:["message"],
+        template:"#login"
+      })
+    </script>
+  </body>
 </html>
-<script src="js/vue.js"></script>
-<script type="module">
-	//import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
-	var VM= new Vue({
-		el: '#app',
-		data:{
-			stors:[]
-		}
-	})
-</script>

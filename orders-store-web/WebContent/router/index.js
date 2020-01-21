@@ -1,3 +1,4 @@
+//Vue.use(Router);
 var router = new VueRouter({
 	routes:[{
 		path: '/',

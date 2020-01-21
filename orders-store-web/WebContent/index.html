@@ -21,13 +21,19 @@
     }
   </style>
   <script src="js/vue.js"></script>
+  <script src="components/login.js"></script>
   <script src="js/vue-router.js"></script>
   <script src="router/index.js"></script>
 </head>
 
 <body>
-<div id="app">商户端</div>
-<!-- built files will be auto injected -->
+  <div id="app">商户端</div>
+  <!-- built files will be auto injected -->
+  <rounter-view></rounter-view>
 </body>
 </html>
 <script src="js/main.js"></script>
+<script>
+  //routes= this.$router.options.routes;
+  router.push({"name":"login"});
+</script>
