@@ -11,8 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-    	'product/api': {
-    		target: 'http://127.0.0.1/product/'
+    	'/api': {
+    		target: 'http://127.0.0.1/product/',
     		changeOrigin: false, //不允许跨域
             pathRewrite: {
               '^/product/api': '/'
