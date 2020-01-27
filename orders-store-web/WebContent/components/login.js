@@ -1,6 +1,10 @@
 login = Vue.component("login",{
     props:[],
-    template :'<div > \
+    template :
+     '<div > \
     	<select  > \
-    	<option>-请选择-</option></select><button>登录</button></div>'
+    	  <option>-请选择-</option>  \
+    	</select>  \
+    	<button>登录</button>  \
+      </div>'
 });

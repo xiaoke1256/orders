@@ -1,9 +1,17 @@
 //Vue.use(Router);
 var router = new VueRouter({
 	routes:[{
-		path: '/',
+		path: '/login',
         name: 'login',
-		component: login
-	 }
+		component: {
+		  template :
+		    '<div > \
+	    	  <select  > \
+	    	    <option>-请选择-</option>  \
+	    	  </select>  \
+	    	  <button>登录</button>  \
+	        </div>'
+	      }
+	   }
 	]
 });
