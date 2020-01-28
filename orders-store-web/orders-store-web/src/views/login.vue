@@ -5,6 +5,7 @@
       <option v-for="x in stores" :value="x.storeNo">{{x.storeName}}</option>
     </select>
     <button>登录</button>
+    <button>注册新账号</button>
   </div>
 </template>
 <script>

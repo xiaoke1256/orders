@@ -13,9 +13,9 @@ module.exports = {
     proxyTable: {
     	'/api': {
     		target: 'http://127.0.0.1/product/',
-    		changeOrigin: false, //不允许跨域
+    		changeOrigin: true, //允许跨域
             pathRewrite: {
-              '^/product/api': '/'
+              '^/api': '/'
             }
     	}
     },
