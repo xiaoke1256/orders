@@ -24,7 +24,7 @@ export default {
         return false;
       }
       //把token放到sessionStorage.
-      
+      window.sessionStorage.setItem("storeNo", this.storeNo);
       this.$router.push('/home');
     }
   },
