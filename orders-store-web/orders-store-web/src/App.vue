@@ -4,10 +4,6 @@
   </div>
 </template>
 
-<script scoped>
-@import 'assets/bootstrap/css/bootstrap.min.css';
-</script>
-
 <script>
 export default {
   name: 'App'
