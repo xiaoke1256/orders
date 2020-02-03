@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import login from '@/views/login'
 import home from '@/views/home'
 import test from '@/views/test'
+import testModalContent from '@/views/testModalContent'
 
 Vue.use(Router);
 
@@ -21,7 +22,14 @@ export default new Router({
     	{
     	  path: '/test',
     	  name: 'test',
-    	  component: test 
+    	  component: test, 
+    	  children :[
+    		{
+    			path:'/',
+    		    name: 'testModalContent',
+    		    components:{modalContent:testModalContent}
+    		}
+    	  ]
     	}
       ]
     }
