@@ -3,8 +3,8 @@
   <div class="modal-wrap" v-if="visible">
     <div class="modal">
       <div class="hd">
-        {{title}}
-        <i class="btn-close iconfont icon-close" @click="close"></i>
+        <span>{{title}}</span>
+        <i class="btn-close iconfont icon-close" @click="close">X</i>
       </div>
       <div class="bd">
         <slot name="content"></slot>
@@ -16,7 +16,7 @@
         </div>-->
       </slot>
     </div>
-    <div class="backdrop" @click="close"></div>
+    <div class="backdrop" ></div>
   </div>
   </transition>
 </template>
@@ -37,6 +37,7 @@
       }
     },
     watch:{
+      /*
       visible:function(curVal) {
         if(curVal&&document.body.scrollHeight > window.innerHeight){
           classUtil.addClass(document.body,'backdrop-open')
@@ -44,6 +45,7 @@
           classUtil.removeClass(document.body,'backdrop-open');
         }
       }
+      */
     },
     methods: {
       close() {
@@ -64,10 +66,24 @@
   .modal {
     background: #fff;
     width: 300px;
-  height: 120px;
+    height: 120px;
     z-index: 10;
     position: relative;
     border-radius: 10px;
     margin: 0 auto;
-  };
+  }
+  .hd {
+    margin: 15px 10px;
+    text-align: justify; 
+  }
+  .hd:after { 
+    content: ""; 
+    display: inline-block; 
+    overflow: hidden; 
+    width: 100%; 
+  } 
+  .hd span {
+    
+    display: inline-block; 
+  }
 </style>
