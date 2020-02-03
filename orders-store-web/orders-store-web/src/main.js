@@ -4,8 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+import Modal from '@/components/modal'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+Vue.component(Modal.name,Modal)
 
 Vue.use(VueResource);
 
