@@ -24,7 +24,21 @@
 	  	this.testModal.isVisible=true;
 	  	this.testModal.url='testModalContent?userName=John';
 	  	this.testModal.width=500;
+	  },
+	  closeWindow(){
+	    this.testModal.isVisible=false;
 	  }
-	}
-  }
+	},
+	mounted(){
+	  
+	},
+	created(){
+        let self = this;
+        console.log("this.vueId:"+this.vueId);
+        window.closeWindow = (infojson)=>{
+             self.closeWindow(infojson)        
+        }
+    }    
+  };
+  
 </script>
