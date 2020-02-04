@@ -22,16 +22,14 @@ export default new Router({
     	{
     	  path: '/test',
     	  name: 'test',
-    	  component: test, 
-    	  children :[
-    		{
-    			path:'/',
-    		    name: 'testModalContent',
-    		    components:{modalContent:testModalContent}
-    		}
-    	  ]
+    	  component: test
     	}
       ]
+    },
+    {
+      path:'/testModalContent',
+	  name: 'testModalContent',
+	  component:testModalContent
     }
   ]
 })

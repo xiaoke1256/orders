@@ -1,7 +1,7 @@
 <template>
-  <dev>
+  <div>
     这里是模态对话框的内容
-  </dev>
+  </div>
 </template>
 <script>
 import Vue from 'vue';

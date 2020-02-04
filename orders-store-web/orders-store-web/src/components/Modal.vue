@@ -1,13 +1,15 @@
 <template>
   <transition name="fade">
   <div class="modal-wrap" v-if="visible">
-    <div class="modal">
+    <div class="modal" ref="modal" :style="sizeChange">
       <div class="hd">
         <span>{{title}}</span>
         <i class="btn-close iconfont icon-close" @click="close">X</i>
       </div>
       <div class="bd">
-        <slot name="content"></slot>
+        <slot name="content">
+          <iframe width="98%" height="90%" frameborder="0" v-bind:src="'/#/'+url" />
+        </slot>
       </div>
       <slot name="ft">
         <!--<div class="ft" slot="ft">
@@ -34,6 +36,23 @@
       title: {
         type: String,
         default: '',
+      },
+      url:{
+        type: String,
+        default: '',
+      },
+      height:{
+        type: Number,
+        default: 200,
+      },
+      width:{
+        type: Number,
+        default: 250,
+      }
+    },
+    computed:{
+      sizeChange(){
+        return {height:this.height+'px',width:this.width+'px'};
       }
     },
     watch:{
@@ -65,16 +84,15 @@
   }
   .modal {
     background: #fff;
-    width: 300px;
-    height: 120px;
     z-index: 10;
     position: relative;
     border-radius: 10px;
     margin: 0 auto;
   }
   .hd {
-    margin: 15px 10px;
+    padding: 10px 10px;
     text-align: justify; 
+    height:15px
   }
   .hd:after { 
     content: ""; 
@@ -83,7 +101,16 @@
     width: 100%; 
   } 
   .hd span {
-    
     display: inline-block; 
+  }
+  .hd .icon-close {
+    cursor:default;
+  }
+  .bd{
+    width: 100%; 
+    height: 75%;
+  }
+  .bd iframe {
+    _width: 100%; 
   }
 </style>
