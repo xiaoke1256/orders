@@ -22,7 +22,7 @@
 	methods:{
 	  showModal(){
 	  	this.testModal.isVisible=true;
-	  	this.testModal.url='testModalContent';
+	  	this.testModal.url='testModalContent?userName=John';
 	  	this.testModal.width=500;
 	  }
 	}
