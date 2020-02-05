@@ -4,8 +4,9 @@
     </header>
     <aside class="nav">
       <ul>
-        <li><router-link to="/test">店铺管理</router-link></li>
+        <li><a>店铺管理</a></li>
         <li><a>商品管理</a></li>
+        <li><router-link to="/test">测试</router-link></li>
       </ul>
     </aside>
     
@@ -23,7 +24,7 @@
   import '../assets/css/style.css';
 
   export default {
-    name: 'root'
+    name: 'home'
   }
 </script>
 

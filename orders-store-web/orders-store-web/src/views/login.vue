@@ -28,7 +28,7 @@ export default {
       this.$router.push('/home');
     },
     toRegister(){
-      this.$router.push('/register');
+      this.$router.push('/regist');
     }
   },
   mounted () {
