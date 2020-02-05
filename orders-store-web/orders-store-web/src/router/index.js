@@ -4,6 +4,7 @@ import login from '@/views/login'
 import home from '@/views/home'
 import test from '@/views/test'
 import testModalContent from '@/views/testModalContent'
+import register from '@/views/register'
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       path:'/testModalContent',
 	  name: 'testModalContent',
 	  component:testModalContent
+    },
+    {
+      path:'/register',
+  	  name: 'register',
+  	  component:register
     }
   ]
 })

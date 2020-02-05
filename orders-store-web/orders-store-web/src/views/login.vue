@@ -4,7 +4,7 @@
       <option v-for="x in stores" :value="x.storeNo">{{x.storeName}}</option>
     </select>
     <button v-on:click="doLogin">登录</button>
-    <button>注册新账号</button>
+    <button v-on:click="toRegister">注册新账号</button>
   </div>
 </template>
 <script>
@@ -26,6 +26,9 @@ export default {
       //把token放到sessionStorage.
       window.sessionStorage.setItem("storeNo", this.storeNo);
       this.$router.push('/home');
+    },
+    toRegister(){
+      this.$router.push('/register');
     }
   },
   mounted () {
