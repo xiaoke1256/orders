@@ -2,6 +2,10 @@
   <div>
           测试页面<br>
     <button v-on:click="showModal">模态弹窗</button>
+    
+    <div>
+    {{msgText}}
+    </div>
     <my-modal title="消息" :visible.sync="testModal.isVisible" :url="testModal.url" :width="testModal.width"  >
 	</my-modal>
   </div>
@@ -16,7 +20,8 @@
 	      isVisible: false,
 	      url:'',
 	      width:10
-	    }
+	    },
+	    msgText:''
 	  }
 	},
 	methods:{
@@ -27,6 +32,11 @@
 	  },
 	  closeWindow(){
 	    this.testModal.isVisible=false;
+	  },
+	  sendMsg(msgObj){
+	    let text = msgObj.userName+'对大家说：“'+msgObj.msg+'”';
+	    this.msgText = text;
+	    this.closeWindow();
 	  }
 	},
 	mounted(){
@@ -37,6 +47,9 @@
         console.log("this.vueId:"+this.vueId);
         window.closeWindow = (infojson)=>{
              self.closeWindow(infojson)        
+        };
+        window.sendMsg = (infojson)=>{
+             self.sendMsg(infojson)        
         }
     }    
   };
