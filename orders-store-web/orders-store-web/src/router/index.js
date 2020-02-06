@@ -6,6 +6,7 @@ import test from '@/views/test'
 import testModalContent from '@/views/testModalContent'
 import register from '@/views/regist/register'
 import baseInfo from '@/views/regist/baseInfo'
+import stuff from '@/views/regist/stuff'
 
 Vue.use(Router);
 
@@ -42,7 +43,12 @@ export default new Router({
   	      path: 'baseInfo',
       	  name: 'baseInfo',
       	  component: baseInfo
-  		}
+  		},
+  		{
+	      path: 'stuff',
+    	  name: 'stuff',
+    	  component: stuff
+		}
   	  ]
     }
   ]

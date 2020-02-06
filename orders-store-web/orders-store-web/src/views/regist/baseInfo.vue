@@ -28,6 +28,10 @@
       <span>工商注册号</span>
       <span><input type="text" v-model="baseInfo.regNo" >*与营业执照上的内容一致。</span>
     </div>
+    <div>
+      <span>经营商品主要类别</span>
+      <span><textarea v-model="baseInfo.productTypes" ></textarea></span>
+    </div>
   </form>
 </template>
 <script>
@@ -47,28 +51,3 @@ export default {
   }
 }
 </script>
-<style>
-form.mForm {
- width: 700px;
- margin:0 auto;
-}
-form.mForm div{
-  width: 100%;
-  text-align: justify;
-  margin:10px 0;
-}
-form.mForm div span{
-  display: block;
-}
-form.mForm div span:first-child {
-   width: 12%;
-   float:left
-}
-form.mForm div span:last-child {
-   width: 90%
-}
-form.mForm input[type=text] {
-  width: 240px
-}
-
-</style>
