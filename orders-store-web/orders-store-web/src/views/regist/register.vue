@@ -9,7 +9,9 @@
         <span><router-link to="/regist/stuff">证明材料</router-link></span>
         <span><router-link to="/regist/commitment">承诺书</router-link></span>
       </div>
-      <router-view @baseInfoChange="getBaseInfo" />
+      <router-view 
+         @baseInfoChange="getBaseInfo"
+         @promisedChange="getPromised" />
       <div>
         <button>暂存</button>
         <button>提交</button>
@@ -33,6 +35,10 @@ export default {
       let baseInfo = JSON.parse(JSON.stringify(newBaseInfo));
       //console.log(JSON.stringify(newBaseInfo));
       this.registApply.baseInfo = baseInfo;
+    },
+    getPromised(newCommitment){
+      let commitment = JSON.parse(JSON.stringify(newCommitment));
+      this.registApply.commitment = commitment;
     }
   },
   mounted() {

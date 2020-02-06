@@ -13,7 +13,7 @@
       </p>
     </div>
     <div>
-      <input type="checkbox" v-model="commitment.promised" value="1" v-on:change="promisedChange" > 我已仔细阅读上述承诺，并已完全同意上述内容。
+      <input type="checkbox" v-model="commitment.promised" v-on:change="promisedChange" > 我已仔细阅读上述承诺，并已完全同意上述内容。
     </div>
   </form>
 </template>
@@ -31,11 +31,13 @@ export default {
   methods:{ 
     promisedChange(){
       console.log(JSON.stringify(this.commitment));
+      this.$emit('promisedChange',this.commitment);
     }
   },
   mounted(){
     //向父组件请求数据
     let registApply = JSON.parse(JSON.stringify(this.$parent.$data.registApply));
+    console.log(JSON.stringify(registApply));
     if(registApply.commitment){
       this.commitment = registApply.commitment;
     }
