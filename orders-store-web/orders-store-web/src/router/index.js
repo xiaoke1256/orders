@@ -7,6 +7,7 @@ import testModalContent from '@/views/testModalContent'
 import register from '@/views/regist/register'
 import baseInfo from '@/views/regist/baseInfo'
 import stuff from '@/views/regist/stuff'
+import commitment from '@/views/regist/commitment'
 
 Vue.use(Router);
 
@@ -48,6 +49,11 @@ export default new Router({
 	      path: 'stuff',
     	  name: 'stuff',
     	  component: stuff
+		},
+		{
+	      path: 'commitment',
+    	  name: 'commitment',
+    	  component: commitment
 		}
   	  ]
     }

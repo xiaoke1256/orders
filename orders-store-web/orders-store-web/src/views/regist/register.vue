@@ -7,7 +7,7 @@
       <div class="steps">
         <span><router-link to="/regist/baseInfo">基本信息</router-link></span>
         <span><router-link to="/regist/stuff">证明材料</router-link></span>
-        <span><router-link to="/baseInfo">承诺书</router-link></span>
+        <span><router-link to="/regist/commitment">承诺书</router-link></span>
       </div>
       <router-view/>
       <div>
