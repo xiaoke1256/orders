@@ -1,7 +1,7 @@
 <template>
   <div >
     <header class="banner">
-              注册页面
+      <h3>注册页面</h3>
     </header>
     <div class="content">
       <div class="steps">
@@ -10,6 +10,10 @@
         <span><router-link to="/baseInfo">承诺书</router-link></span>
       </div>
       <router-view/>
+      <div>
+        <button>暂存</button>
+        <button>提交</button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,3 +34,8 @@ export default {
   }
 }
 </script>
+<style>
+div.steps {
+  margin:10px;
+}
+</style>
