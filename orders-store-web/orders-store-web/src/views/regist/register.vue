@@ -9,7 +9,7 @@
         <span><router-link to="/regist/stuff">证明材料</router-link></span>
         <span><router-link to="/regist/commitment">承诺书</router-link></span>
       </div>
-      <router-view/>
+      <router-view @baseInfoChange="getBaseInfo" />
       <div>
         <button>暂存</button>
         <button>提交</button>
@@ -25,12 +25,26 @@ export default {
   name: 'regist',
   data () {
     return {
+      registApply:{}
     }
   },
   methods:{
+    getBaseInfo(newBaseInfo){
+      let baseInfo = JSON.parse(JSON.stringify(newBaseInfo));
+      //console.log(JSON.stringify(newBaseInfo));
+      this.registApply.baseInfo = baseInfo;
+    }
   },
   mounted() {
     this.$router.push({name:'baseInfo'});
+    
+    //从后台查询有无暂存的注册申请.
+    this.registApply = {
+      baseInfo:{
+        leaderName:'张三',
+        storeName:'某某杂货店'
+      }
+    };
   }
 }
 </script>

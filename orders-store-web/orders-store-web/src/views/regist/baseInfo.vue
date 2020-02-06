@@ -2,11 +2,11 @@
   <form class="mForm" >
     <div>
       <span>关联账号</span>
-      <span><input type="text" v-model="baseInfo.accountNo" ></span>
+      <span>{{accountNo}}</span>
     </div>
     <div>
-      <span>姓名</span>
-      <span><input type="text" v-model="baseInfo.leaderName" >*本平台采用实名制请填写真实姓名。</span>
+      <span>店长姓名</span>
+      <span><input type="text" v-model="baseInfo.leaderName" >*本平台采用实名制，请填写真实姓名。</span>
     </div>
     <div>
       <span>身份证号</span>
@@ -43,11 +43,27 @@ export default {
   data(){
     return {
       baseInfo:{
-      }
+      },
+      accountNo:''
     }
   },
+  watch:{
+    baseInfo: {
+　　　　handler(newValue, oldValue) {
+　　　　　　//console.log(JSON.stringify(newValue));
+		  this.$emit('baseInfoChange',newValue);
+　　　　},
+　　　　deep: true
+　　}
+  },
   mounted(){
-    Vue.set(this.baseInfo,"accountNo",'xxss@orders.com');
+    //从后台查到关联账号.
+    this.accountNo='xxss@orders.com';
+    //向父组件请求数据
+    let registApply = JSON.parse(JSON.stringify(this.$parent.$data.registApply));
+    if(registApply.baseInfo){
+      this.baseInfo = registApply.baseInfo;
+    }
   }
 }
 </script>

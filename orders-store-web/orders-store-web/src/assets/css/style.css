@@ -18,7 +18,7 @@ form.mForm div span{
   display: block;
 }
 form.mForm div span:first-child {
-   width: 12%;
+   width: 20%;
    float:left
 }
 form.mForm input[type=text] {
