@@ -1,0 +1,30 @@
+aside.nav {width:200px;min-height:300px;float:left}
+
+header {height:80px}
+
+footer {clear:both}
+
+
+form.mForm {
+ width: 700px;
+ margin:0 auto;
+}
+form.mForm div{
+  width: 100%;
+  text-align: justify;
+  margin:10px 0;
+}
+form.mForm div span{
+  display: block;
+}
+form.mForm div span:first-child {
+   width: 20%;
+   float:left
+}
+form.mForm input[type=text] {
+  width: 240px
+}
+form.mForm textarea {
+  width: 240px;
+  height: 80px
+}
