@@ -56,3 +56,12 @@ create table type_product_map(
 )comment = '商品与类型的映射关系';
 
 CREATE UNIQUE INDEX idx_type_product_map ON type_product_map(type_id,product_code); 
+
+create table member(
+  member_id BIGINT primary key not null comment '会员主键',
+  member_no VARCHAR(32) not null comment '会员号',
+  nick_name VARCHAR(128) comment '昵称',
+  insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
+  update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
+)comment = '会员表';
+CREATE UNIQUE INDEX idx_member_no ON member(tmember_no); 
