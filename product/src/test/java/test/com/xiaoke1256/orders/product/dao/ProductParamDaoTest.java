@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.xiaoke1256.orders.product.SpringbootApplication;
+import com.xiaoke1256.orders.SpringbootApplication;
 import com.xiaoke1256.orders.product.bo.ProductParam;
 import com.xiaoke1256.orders.product.dao.ProductParamDao;
 

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.product;
+package com.xiaoke1256.orders;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

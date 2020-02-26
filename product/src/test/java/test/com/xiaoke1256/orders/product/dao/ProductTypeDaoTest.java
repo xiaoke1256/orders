@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.xiaoke1256.orders.product.SpringbootApplication;
+import com.xiaoke1256.orders.SpringbootApplication;
 import com.xiaoke1256.orders.product.bo.ProductType;
 import com.xiaoke1256.orders.product.dao.ProductTypeDao;
 
