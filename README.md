@@ -214,4 +214,4 @@ create /zookeeper/orders/household household
 
 Tomcat运行起来后，在浏览器上地址栏输入 http://localhost:8081/orders/ 后就可以访问本系统的各项功能了。
 
-### 7、用Docker运行本系统
+### 7、利用Docker运行本系统
