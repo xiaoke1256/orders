@@ -59,9 +59,13 @@ CREATE UNIQUE INDEX idx_type_product_map ON type_product_map(type_id,product_cod
 
 create table member(
   member_id BIGINT primary key not null comment '会员主键',
-  member_no VARCHAR(32) not null comment '会员号',
+  account_no VARCHAR(32) not null comment '会员账号（登录时用）',
   nick_name VARCHAR(128) comment '昵称',
+  gender char(1) comment '性别',
+  intro VARCHAR(500) comment '自我介绍',
+  email VARCHAR(256) comment '绑定邮箱',
+  mobile_phone VARCHAR(32) comment '移动电话号',
   insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 )comment = '会员表';
-CREATE UNIQUE INDEX idx_member_no ON member(tmember_no); 
+CREATE UNIQUE INDEX idx_member_no ON member(account_no); 
