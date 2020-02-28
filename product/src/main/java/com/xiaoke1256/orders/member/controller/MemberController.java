@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoke1256.orders.member.dto.Member;
@@ -17,7 +18,7 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@GetMapping("/member/{accountNo}")
-	public Member getMember(String accountNo) {
+	public Member getMember(@PathVariable("accountNo") String accountNo) {
 		com.xiaoke1256.orders.member.bo.Member bo = memberService.getMemberByAccountNo(accountNo);
 		if(bo==null)
 			return null;
