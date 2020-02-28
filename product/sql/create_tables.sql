@@ -58,10 +58,10 @@ create table type_product_map(
 CREATE UNIQUE INDEX idx_type_product_map ON type_product_map(type_id,product_code); 
 
 create table member(
-  member_id BIGINT primary key not null comment '会员主键',
+  member_id BIGINT primary key auto_increment comment '会员主键',
   account_no VARCHAR(32) not null comment '会员账号（登录时用）',
   nick_name VARCHAR(128) comment '昵称',
-  gender char(1) comment '性别',
+  gender char(1) comment '性别：M 男；F 女',
   intro VARCHAR(500) comment '自我介绍',
   email VARCHAR(256) comment '绑定邮箱',
   mobile_phone VARCHAR(32) comment '移动电话号',
