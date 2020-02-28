@@ -12,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication(exclude={HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration
-@MapperScan("com.xiaoke1256.orders.product.dao")
+@MapperScan("com.xiaoke1256.orders.*.dao")
 public class SpringbootApplication extends SpringBootServletInitializer {
 	
 	@Override
