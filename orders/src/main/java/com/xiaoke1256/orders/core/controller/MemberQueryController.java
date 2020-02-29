@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.core.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import com.xiaoke1256.orders.member.dto.Member;
 
 @RestController
 public class MemberQueryController implements MemberQueryService {
-
+	@Autowired
 	private MemberQueryClient memberQueryClient;
 	
 	@Override
