@@ -28,6 +28,8 @@
 		  //submitOrder();
 	  });//
 	  
+	  //初始化用户账号.
+	  
 	  //初始化列表
 	  refreshPage();
 	  
@@ -126,7 +128,7 @@
 	  }
 	  
 	  var carriageAmt = Math.ceil(Math.random()*10);
-	  var payerNo = "PT"+Math.floor(Math.random()*10000);
+	  var payerNo = "PT"+Math.floor(Math.random()*10000);//TODO 随机抽取一个用户账号
 	  
 	  var data = {"payerNo":payerNo,"carriageAmt":carriageAmt,"productMap":productMap};
 
