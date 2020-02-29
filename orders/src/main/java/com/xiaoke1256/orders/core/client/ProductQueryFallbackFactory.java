@@ -17,7 +17,7 @@ import feign.hystrix.FallbackFactory;
 @Component
 public class ProductQueryFallbackFactory implements FallbackFactory<ProductQueryClient> {
 
-	private static final Logger logger = LoggerFactory.getLogger(SecKillSupportFallbackFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductQueryFallbackFactory.class);
 	@Override
 	public ProductQueryClient create(Throwable cause) {
 		
