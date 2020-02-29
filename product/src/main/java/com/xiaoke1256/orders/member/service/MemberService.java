@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.member.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,5 +18,9 @@ public class MemberService {
 	@Transactional(readOnly = true)
 	public Member getMemberByAccountNo(String accountNo) {
 		return memberDao.getMemberByAccountNo(accountNo);
+	}
+	
+	public List<Member> findAll(){
+		return memberDao.findAll();
 	}
 }

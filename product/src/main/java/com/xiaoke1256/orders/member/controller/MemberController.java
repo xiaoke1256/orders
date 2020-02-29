@@ -1,5 +1,6 @@
 package com.xiaoke1256.orders.member.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -29,6 +30,15 @@ public class MemberController {
 	
 	@GetMapping("/members")
 	public List<Member> findAll() {
-		return null;
+		List<com.xiaoke1256.orders.member.bo.Member> bos = memberService.findAll();
+		if(bos==null || bos.isEmpty())
+			return new ArrayList<>();
+		List<Member> dtos = new ArrayList<>();
+		for(com.xiaoke1256.orders.member.bo.Member bo:bos) {
+			Member dto = new  Member();
+			BeanUtils.copyProperties(bo, dto);
+			dtos.add(dto);
+		}
+		return dtos;
 	}
 }

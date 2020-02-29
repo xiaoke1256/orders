@@ -4,11 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaoke1256.orders.member.dao.MemberDao">
 
-   
-
    <select parameterType="string" id="getMemberByAccountNo" resultMap="memberMap">
       select member_id, account_no, nick_name, gender,intro, email, mobile_phone, insert_time, update_time
        from member where account_no = #{accountNo}
+   </select>
+   
+   <select id="findAll" resultMap="memberMap">
+      select member_id, account_no, nick_name, gender,intro, email, mobile_phone, insert_time, update_time
+       from member 
    </select>
    
 </mapper>
