@@ -219,3 +219,6 @@ Tomcat运行起来后，在浏览器上地址栏输入 http://localhost:8081/ord
 先从“/docker-images/base_web/Dockerfile”文件，制作base_web的镜像，并把镜像上传至本地Docker镜像库的 “repo.orders.com:5000/orders/base_web” 位置。
 
 几乎每一个应用都有一个Dockerfile文件位于 “/\*/src/main/docker/” 目录。将他编译成镜像上传至本地镜像库。然后以“/docker-images/compose/docker-compose.yml”文件作为配置文件运行docker-compose，则可以将所有应用都运行起来。
+
+具体可以查考[Docker基础笔记](https://github.com/xiaoke1256/orders/wiki/Docker%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0)
+和[dockerCompose笔记](https://github.com/xiaoke1256/orders/wiki/dockerCompose%E7%AC%94%E8%AE%B0)
