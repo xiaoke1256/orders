@@ -215,3 +215,7 @@ create /zookeeper/orders/household household
 Tomcat运行起来后，在浏览器上地址栏输入 http://localhost:8081/orders/ 后就可以访问本系统的各项功能了。
 
 ### 7、利用Docker运行本系统
+
+先从“/docker-images/base_web/Dockerfile”文件，制作base_web的镜像，并把镜像上传至本地Docker镜像库的 “repo.orders.com:5000/orders/base_web” 位置。
+
+几乎每一个应用都有一个Dockerfile文件位于 “/\*/src/main/docker/” 目录。将他编译成镜像上传至本地镜像库。
