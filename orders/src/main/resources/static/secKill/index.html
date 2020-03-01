@@ -16,6 +16,8 @@
   var costTime = 0;
   var startTimeAll = 0;
   var endTimeAll = 0;
+  
+  var accountNos = [];
   $(function(){
 	  //开启或关闭秒杀业务
 	  $('#content').on('click','.openBtn,.closeBtn',
@@ -55,10 +57,30 @@
 		  //submitOrder();
 	  });//
 	  
+	  initAccountNo();
+	  
 	  //初始化列表
 	  refreshPage();
 	  
   });
+  
+  function initAccountNo(){
+	  $.ajax({
+		  url:"members",
+		  type:"GET",
+		  async: false,
+		  success:function(result){
+			  for(var i in result){
+				  if(Math.random()*5<1){//只有5分之一的accoutNo可以被选中
+				      accountNos.push(result[i].accountNo);
+				  }
+			  }
+		  },
+		  error:function(resp,errMsg,err){
+			  alert("error:"+resp);
+		  }
+	  });
+  }
   
   //刷新列表内容
   function refreshPage(){
@@ -129,7 +151,8 @@
   function submitOrder(){
 	  var productCode = $("[name=productCode]").val();
 	  var carriageAmt = Math.ceil(Math.random()*10);
-	  var payerNo = "QE"+Math.floor(Math.random()*10000);
+	  //var payerNo = "QE"+Math.floor(Math.random()*10000);
+	  var payerNo = accountNos[Math.floor(Math.random()*accountNos.length)]; //随机抽取一个用户账号
 	  var productMap = {};
 	  productMap[productCode]=1;
 	  var data = {"payerNo":payerNo,"carriageAmt":carriageAmt,"productMap":productMap};
