@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/xiaoke1256/orders.svg?branch=master)](https://travis-ci.org/xiaoke1256/orders)
+
 orders
 =
 
