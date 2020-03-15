@@ -1,6 +1,8 @@
 <!--
 [![Build Status](https://travis-ci.org/xiaoke1256/orders.svg?branch=master)](https://travis-ci.org/xiaoke1256/orders)
 -->
+[![License](https://img.shields.io/github/license/xiaoke1256/orders?style=plastic)](https://img.shields.io/github/license/xiaoke1256/orders?style=plastic)
+
 orders
 =
 
