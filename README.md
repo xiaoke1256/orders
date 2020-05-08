@@ -1,6 +1,10 @@
 <!--
 [![Build Status](https://travis-ci.org/xiaoke1256/orders.svg?branch=master)](https://travis-ci.org/xiaoke1256/orders)
 -->
+[![License](https://img.shields.io/github/license/xiaoke1256/orders?style=plastic)](https://github.com/xiaoke1256/orders/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-anti996-green.svg)](https://github.com/wanlinus/Anti996-License/blob/master/LICENSE)
+
+
 orders
 =
 
