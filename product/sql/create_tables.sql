@@ -6,7 +6,7 @@ create table product
   store_no      VARCHAR(32) comment '店铺号',
   product_status  CHAR(1) not null comment '状态：0=下架，1=上架',
   on_sale_time TIMESTAMP comment '上架时间，用于搜索引擎采集过滤(废除，靠update_time字段判断)',
-  product_intro	VARCHAR(500) comment '简介',
+  product_intro VARCHAR(500) comment '简介',
   brand VARCHAR(128) comment '品牌',
   insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
@@ -16,18 +16,18 @@ create table product_type(
 	type_id VARCHAR(12) primary key not null comment '类型编号，主键',
 	type_name VARCHAR(256) comment '类型名称',
 	parent_type_id VARCHAR(12) comment '父类型编号',
-	type_desc	VARCHAR(500) comment '类型描述',
-	show_order INT comment '显示顺序',
+	type_desc VARCHAR(500) comment '类型描述',
+    show_order INT comment '显示顺序',
 	insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
     update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 ) comment = '商品分类';
 
 create table product_param(
-	param_id	BIGINT primary key auto_increment comment '主键',
+	param_id BIGINT primary key auto_increment comment '主键',
 	product_code    CHAR(10) not null comment '商品编号，外键',
 	param_name   VARCHAR(128) comment '参数名',
 	param_value  VARCHAR(256) comment '参数值',
-	param_desc	VARCHAR(500) comment '参数描述',
+	param_desc VARCHAR(500) comment '参数描述',
 	show_order INT comment '显示顺序'
 ) comment = '商品参数';
 
@@ -44,8 +44,8 @@ create table product_attached_option(
 create table store
 (
   store_no      VARCHAR(32) primary key not null comment '商铺编号，主键',
-  store_name	VARCHAR(256) comment '商铺名称',
-  store_intro	VARCHAR(500) comment '商铺简介',
+  store_name    VARCHAR(256) comment '商铺名称',
+  store_intro   VARCHAR(500) comment '商铺简介',
   insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 )comment = '商铺';
