@@ -46,11 +46,10 @@ create table ORDER_ITEM
 	pay_order_id BIGINT comment '支付单号',
 	order_no VARCHAR(22)  not null comment '订单单号',
 	product_code CHAR(10)  not null comment '商品编号',
-	option_code	VARCHAR(12) comment '附加选项编码',
+	option_code VARCHAR(12) comment '附加选项编码',
 	product_price DECIMAL(22) not null comment '单价',
 	product_num   DECIMAL(10) not null comment '商品数量'
-	
-) comment='订单项' ;
+) comment='订单项';
 
 --create index
 CREATE INDEX IDX_STORE_PRODUCT_NO ON O_STORAGE(product_code);
