@@ -5,6 +5,7 @@
     position: relative;
     border-radius: 4px;
     overflow: hidden;
+    height: 100%;
 }
 .layout-logo{
     width: 100px;
@@ -27,7 +28,7 @@
 </style>
 <template>
   <div class="layout">
-    <Layout :style="{minHeight: '99vh'}" >
+    <Layout :style="{minHeight: '100vh'}" >
         <Header>
           <Menu mode="horizontal" theme="dark" active-name="1">
             <div class="layout-logo"></div>
