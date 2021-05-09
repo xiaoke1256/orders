@@ -10,9 +10,8 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Input,Row,Col } from 'iview'; 
 
-@Component({components:{Input,Row,Col}})
+@Component({components:{}})
 export default class Login extends Vue {
   public msg='这是登录页面';
   public userName:string="";
