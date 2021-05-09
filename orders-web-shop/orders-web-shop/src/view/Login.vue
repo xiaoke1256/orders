@@ -27,7 +27,7 @@
 </style>
 <template>
   <div class="layout">
-    <Layout>
+    <Layout :style="{minHeight: '99vh'}" >
         <Header>
           <Menu mode="horizontal" theme="dark" active-name="1">
             <div class="layout-logo"></div>
