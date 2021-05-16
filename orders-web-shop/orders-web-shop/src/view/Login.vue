@@ -54,8 +54,17 @@
         </Header>
         <Content :style="{padding: '20px 50px'}">
           <Card>
-            <div style="min-height: 200px;">
-              Content
+            <div style="min-height:300px;">
+              <div style="display:inline-block;vertical-align:top">
+                <img src="~@/assets/login.jpg" >
+              </div>
+              <div style="display:inline-block;vertical-align:top;height:413px"> 
+                <Form>
+                  <Form-Item>
+                    <Input  />
+                  </Form-Item>
+                </Form>
+              </div>
             </div>
           </Card>
         </Content>
