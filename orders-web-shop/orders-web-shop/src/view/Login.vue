@@ -15,7 +15,7 @@
     top: 15px;
     left: 20px;
     color:lightsteelblue;
-    font:italic bold 40px  "sans-serif" ;
+    font:italic bold 40px  "Arial" ;
 
 }
 .layout-nav{
