@@ -57,6 +57,7 @@
           </Menu>
         </Header>
         <Content :style="{padding: '20px 50px'}">
+          <div>——欢迎访问商户端</div>
           <Card>
             <div style="min-height:300px;">
               <div style="display:inline-block;vertical-align:top">
