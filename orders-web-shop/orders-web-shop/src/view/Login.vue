@@ -1,4 +1,8 @@
 <style scoped>
+	@font-face {
+		font-family:'Lucida Calligraphy Italic';
+		src: url('~/static/font/Lucida_Calligraphy_Italic.TTF');
+	}
 .layout{
     border: 1px solid #d7dde4;
     background: #f5f7f9;
@@ -15,8 +19,8 @@
     top: 15px;
     left: 20px;
     color:lightsteelblue;
-    font:italic bold 40px  "Arial" ;
-
+    font:italic bold 40px  "Lucida Calligraphy Italic" ;
+    letter-spacing:3px
 }
 .layout-nav{
     width: 420px;
