@@ -19,7 +19,7 @@
     top: 15px;
     left: 20px;
     color:lightsteelblue;
-    font:italic bold 40px  "Lucida Calligraphy Italic" ;
+    font:italic bold 50px  "Lucida Calligraphy Italic" ;
     letter-spacing:3px
 }
 .layout-nav{
@@ -29,6 +29,12 @@
 }
 .layout-footer-center{
     text-align: center;
+}
+.welcomeMsg{
+  padding:0 50px;
+  text-align: right;
+  font:italic bolder 16px "yahei";
+  color:lightsteelblue
 }
 </style>
 <template>
@@ -57,17 +63,21 @@
           </Menu>
         </Header>
         <Content :style="{padding: '20px 50px'}">
-          <div>——欢迎访问商户端</div>
+          <div class="welcomeMsg">{{welcomeMsg}}</div>
           <Card>
             <div style="min-height:300px;">
               <div style="display:inline-block;vertical-align:top">
                 <img src="~@/assets/login.jpg" >
               </div>
               <div style="display:inline-block;vertical-align:top;height:413px"> 
-                <Form>
+                <Form style="margin:140px 0">
                   <Form-Item>
-                    <Input  />
+                    <Input prefix="ios-contact" placeholder="用户名" />
                   </Form-Item>
+                  <Form-Item>
+                    <Input prefix="md-key" placeholder="密码" />
+                  </Form-Item>
+                  <Button type="success" long>登陆</Button>
                 </Form>
               </div>
             </div>
@@ -82,7 +92,7 @@ import { Vue, Component } from 'vue-property-decorator'
 
 @Component({components:{}})
 export default class Login extends Vue {
-  public msg='这是登录页面';
+  public welcomeMsg='——欢迎访问商户端';
   public userName:string="";
 }
 </script>
