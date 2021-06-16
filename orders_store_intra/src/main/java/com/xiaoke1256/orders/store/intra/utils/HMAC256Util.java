@@ -18,14 +18,14 @@ public class HMAC256Util {
     //token秘钥
     private static final String TOKEN_SECRET = "XIAOKE1256JBFJH2021BQWE";
 
-    public static String token (String username,String password){
+    public static String token (String username,String password,String secret){
 
         String token = "";
         try {
             //过期时间
             Date date = new Date(System.currentTimeMillis()+EXPIRE_DATE);
             //秘钥及加密算法
-            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             //设置头部信息
             Map<String,Object> header = new HashMap<>();
             header.put("typ","JWT");
@@ -34,7 +34,9 @@ public class HMAC256Util {
             token = JWT.create()
                     .withHeader(header)
                     .withClaim("username",username)
-                    .withClaim("password",password).withExpiresAt(date)
+                    .withClaim("password",password)
+                    .withIssuedAt(new Date())
+                    .withExpiresAt(date)
                     .sign(algorithm);
         }catch (Exception e){
             e.printStackTrace();
@@ -48,9 +50,9 @@ public class HMAC256Util {
      * @param **token**
      * @return
      */
-    public static boolean verify(String token){
+    public static boolean verify(String token,String secret){
         try {
-            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm).build();
             @SuppressWarnings("unused")
             DecodedJWT jwt = verifier.verify(token);
@@ -66,9 +68,9 @@ public class HMAC256Util {
      * @param **token**
      * @return
      */
-    public static String getUserName(String token){
+    public static String getUserName(String token,String secret){
         try {
-            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm).build();
             @SuppressWarnings("unused")
             DecodedJWT jwt = verifier.verify(token);
