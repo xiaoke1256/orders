@@ -14,7 +14,7 @@ import java.util.Map;
 public class HMAC256Util {
 
     //设置过期时间
-    private static final long EXPIRE_DATE=30*60*100000;
+    private static final long EXPIRE_DATE=30*60*1000;
     //token秘钥
     private static final String TOKEN_SECRET = "XIAOKE1256JBFJH2021BQWE";
 
@@ -68,8 +68,11 @@ public class HMAC256Util {
      */
     public static String getUserName(String token){
         try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("loginName").asString();
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            @SuppressWarnings("unused")
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getClaim("username").asString();
         } catch (JWTDecodeException e){
             e.printStackTrace();
             return null;
