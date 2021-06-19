@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.store.intra;
 
 //import org.mybatis.spring.annotation.MapperScan;
 import com.xiaoke1256.orders.store.intra.encrypt.HMAC256;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,13 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class SpringbootApplication extends SpringBootServletInitializer {
-	
+
+//    @Value("login.token.secret")
+//    private String loginSecret;
+
+//    @Value("login.token.secret")
+//    private Long loginExpire;
+
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(SpringbootApplication.class);
@@ -27,8 +34,11 @@ public class SpringbootApplication extends SpringBootServletInitializer {
 	    SpringApplication.run(SpringbootApplication.class, args);
     }
 
+    /*
     @Bean
     public HMAC256 loginTokenGenerator(){
-	    return new HMAC256();
+	    return new HMAC256(loginExpire,loginSecret);
     }
+    */
+
 }
