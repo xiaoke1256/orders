@@ -31,7 +31,11 @@ public class SpringbootApplication extends SpringBootServletInitializer {
     }
 	
 	public static void main(String[] args) {
-	    SpringApplication.run(SpringbootApplication.class, args);
+	    try {
+            SpringApplication.run(SpringbootApplication.class, args);
+        }catch(Throwable t){
+	        t.printStackTrace();
+        }
     }
 
     /*

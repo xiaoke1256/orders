@@ -25,7 +25,7 @@
     </appender>  
 
 	<!-- 指定具体的 某个类 -->
-	<logger name="org.springframework" level="DEBUG" additivity="false">
+	<logger name="org.springframework.web" level="DEBUG" additivity="false">
     	<appender-ref ref="STDOUT"/>  
     	<appender-ref ref="file_log"/>  
   	</logger> 
