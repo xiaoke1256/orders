@@ -12,23 +12,23 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-//    @Resource(name = "loginTokenGenerator")
-//    private HMAC256 loginTokenGenerator;
-//
-//    @PostMapping("login")
-//    public String login(String loginName,String password){
-//        //TODO 校验用户名密码
-//        //发放token
-//        return loginTokenGenerator.token(loginName);
-//    }
-//
-//    @GetMapping("verify")
-//    public Boolean verify(String token){
-//        return loginTokenGenerator.verify(token);
-//    }
-//
-//    @GetMapping("loginName")
-//    public String getLoginNameFromToken(String token){
-//        return loginTokenGenerator.getContent(token);
-//    }
+    @Resource(name = "loginTokenGenerator")
+    private HMAC256 loginTokenGenerator;
+
+    @PostMapping("login")
+    public String login(String loginName,String password){
+        //TODO 校验用户名密码
+        //发放token
+        return loginTokenGenerator.token(loginName);
+    }
+
+    @GetMapping("verify")
+    public Boolean verify(String token){
+        return loginTokenGenerator.verify(token);
+    }
+
+    @GetMapping("loginName")
+    public String getLoginNameFromToken(String token){
+        return loginTokenGenerator.getContent(token);
+    }
 }

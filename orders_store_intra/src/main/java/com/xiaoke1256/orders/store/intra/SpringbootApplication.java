@@ -19,11 +19,11 @@ import org.springframework.context.annotation.Bean;
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class SpringbootApplication extends SpringBootServletInitializer {
 
-//    @Value("login.token.secret")
-//    private String loginSecret;
+    @Value("login.token.secret")
+    private String loginSecret;
 
-//    @Value("login.token.secret")
-//    private Long loginExpire;
+    @Value("login.token.secret")
+    private Long loginExpire;
 
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -38,11 +38,9 @@ public class SpringbootApplication extends SpringBootServletInitializer {
         }
     }
 
-    /*
     @Bean
     public HMAC256 loginTokenGenerator(){
 	    return new HMAC256(loginExpire,loginSecret);
     }
-    */
 
 }

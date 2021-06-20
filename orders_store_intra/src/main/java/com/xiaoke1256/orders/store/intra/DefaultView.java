@@ -10,7 +10,6 @@ public class DefaultView implements WebMvcConfigurer  {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-        //super.addResourceHandlers(registry);
     }
 
     @Override
