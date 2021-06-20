@@ -19,11 +19,11 @@ import org.springframework.context.annotation.Bean;
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class SpringbootApplication extends SpringBootServletInitializer {
 
-    @Value("login.token.secret")
+    @Value("${login.token.secret}")
     private String loginSecret;
 
-    @Value("login.token.secret")
-    private Long loginExpire;
+    @Value("${login.session.expired}")
+    private String loginExpireExp;
 
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -40,7 +40,13 @@ public class SpringbootApplication extends SpringBootServletInitializer {
 
     @Bean
     public HMAC256 loginTokenGenerator(){
-	    return new HMAC256(loginExpire,loginSecret);
+	    //目前只支持计算乘法
+        String[] eles = loginExpireExp.replace(" ", "").split("\\*");
+        long result = 1l;
+        for(String ele:eles){
+            result *= Integer.parseInt(ele);
+        }
+	    return new HMAC256(result,loginSecret);
     }
 
 }
