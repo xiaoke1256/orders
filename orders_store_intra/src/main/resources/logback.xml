@@ -11,7 +11,7 @@
 	
   	<!-- 文件输出()每天保存一个文件，保存7天，超过1M的轮回 -->  
     <appender name="file_log" class="ch.qos.logback.core.rolling.RollingFileAppender">  
-        <file>/logs/store_intra/product.log</file>
+        <file>/logs/store_intra/store_intra.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
             <fileNamePattern>/logs/store_intra/store_intra-%d{yyyy-MM-dd_HH-mm}_%i.log</fileNamePattern>
             <maxHistory>7</maxHistory>  
