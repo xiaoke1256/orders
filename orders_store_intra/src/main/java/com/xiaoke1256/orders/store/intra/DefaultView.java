@@ -7,11 +7,6 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 public class DefaultView implements WebMvcConfigurer  {
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**");
-//    }
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
