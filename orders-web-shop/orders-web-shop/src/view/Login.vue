@@ -66,11 +66,14 @@
           <div class="welcomeMsg">{{welcomeMsg}}</div>
           <Card>
             <div style="min-height:300px;">
-              <div style="display:inline-block;vertical-align:top">
+              <div style="display:inline-block;vertical-align:middle">
                 <img src="~@/assets/login.jpg" >
               </div>
-              <div style="display:inline-block;vertical-align:top;height:413px"> 
-                <Form style="margin:140px 0">
+              <div style="display:inline-block;vertical-align:middle;"> 
+                <div style="text-align:left">
+                  请您登陆：
+                </div>
+                <Form >
                   <Form-Item>
                     <Input prefix="ios-contact" placeholder="用户名" />
                   </Form-Item>
