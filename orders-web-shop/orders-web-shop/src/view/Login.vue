@@ -30,6 +30,13 @@
 .layout-footer-center{
     text-align: center;
 }
+.loginWelcome{
+  text-align:left;
+  font:italic bolder 16px;
+  color:lightsteelblue;
+  border-bottom:cornflowerblue solid 2px;
+  margin-bottom: 15px;
+}
 .welcomeMsg{
   padding:0 50px;
   text-align: right;
@@ -69,8 +76,8 @@
               <div style="display:inline-block;vertical-align:middle">
                 <img src="~@/assets/login.jpg" >
               </div>
-              <div style="display:inline-block;vertical-align:middle;"> 
-                <div style="text-align:left">
+              <div style="display:inline-block;vertical-align:middle;margin-bottom:70px"> 
+                <div class="loginWelcome">
                   请您登陆：
                 </div>
                 <Form >
