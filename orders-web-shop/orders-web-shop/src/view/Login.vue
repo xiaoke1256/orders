@@ -76,19 +76,21 @@
               <div style="display:inline-block;vertical-align:middle">
                 <img src="~@/assets/login.jpg" >
               </div>
-              <div style="display:inline-block;vertical-align:middle;margin-bottom:70px"> 
-                <div class="loginWelcome">
-                  请您登陆：
-                </div>
-                <Form >
-                  <Form-Item>
-                    <Input prefix="ios-contact" placeholder="用户名" />
-                  </Form-Item>
-                  <Form-Item>
-                    <Input prefix="md-key" placeholder="密码" />
-                  </Form-Item>
-                  <Button type="success" long>登陆</Button>
-                </Form>
+              <div style="display:inline-block;vertical-align:middle;width:320px"> 
+                <Card style="height:413px;vertical-align:middle;padding:60px 0">
+                  <div class="loginWelcome">
+                    请您登陆：
+                  </div>
+                  <Form >
+                    <Form-Item>
+                      <Input prefix="ios-contact" placeholder="用户名" />
+                    </Form-Item>
+                    <Form-Item>
+                      <Input prefix="md-key" placeholder="密码" />
+                    </Form-Item>
+                    <Button type="success" long>登陆</Button>
+                  </Form>
+                </Card>
               </div>
             </div>
           </Card>
