@@ -83,10 +83,10 @@
                   </div>
                   <Form >
                     <Form-Item>
-                      <Input prefix="ios-contact" placeholder="用户名" />
+                      <Input prefix="ios-contact" placeholder="用户名" v-model="loginName" />
                     </Form-Item>
                     <Form-Item>
-                      <Input prefix="md-key" placeholder="密码" />
+                      <Input prefix="md-key" type="password" placeholder="密码" v-model="password" />
                     </Form-Item>
                     <Button type="success" long>登陆</Button>
                   </Form>
@@ -101,11 +101,17 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import {login} from '@/api/login'
 
 @Component({components:{}})
 export default class Login extends Vue {
   public welcomeMsg='——欢迎访问商户端';
-  public userName:string="";
+  public loginName:string="";
+  public password:string="";
+
+  public login(){
+    const token = login(this.loginName,this.password);
+  }
 }
 </script>
 
