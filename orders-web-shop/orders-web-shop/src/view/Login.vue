@@ -111,6 +111,9 @@ export default class Login extends Vue {
 
   public login(){
     const token = login(this.loginName,this.password);
+    if(typeof token !== 'string'){
+      throw new Error("登陆错误");
+    }
   }
 }
 </script>
