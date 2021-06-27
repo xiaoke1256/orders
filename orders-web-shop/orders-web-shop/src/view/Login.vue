@@ -109,11 +109,16 @@ export default class Login extends Vue {
   public loginName:string="";
   public password:string="";
 
-  public login(){
-    const token = login(this.loginName,this.password);
-    if(typeof token !== 'string'){
+  public async login(){
+    const result = await login(this.loginName,this.password);
+    const token = result.token;
+    if(typeof token !== 'string' || !token){
       throw new Error("登陆错误");
     }
+    sessionStorage.setItem("token",token);
+    this.$router.push({
+          name: 'Home'
+        });
   }
 }
 </script>
