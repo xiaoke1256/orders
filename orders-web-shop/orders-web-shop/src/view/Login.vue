@@ -88,7 +88,7 @@
                     <Form-Item>
                       <Input prefix="md-key" type="password" placeholder="密码" v-model="password" />
                     </Form-Item>
-                    <Button type="success" long>登陆</Button>
+                    <Button type="success" long @click="login">登陆</Button>
                   </Form>
                 </Card>
               </div>
@@ -115,6 +115,7 @@ export default class Login extends Vue {
     if(typeof token !== 'string' || !token){
       throw new Error("登陆错误");
     }
+    console.log("token:"+token);
     sessionStorage.setItem("token",token);
     this.$router.push({
           name: 'Home'
