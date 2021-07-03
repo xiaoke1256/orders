@@ -58,12 +58,12 @@ const errorHandle = (status: number, other: string) => {
 const axiosInst = axios.create({
   headers: {
     //php 的 post 传输请求头一定要这个 不然报错 接收不到值
-    "Content-Type": "application/x-www-form-urlencoded", 
+    //"Content-Type": "application/x-www-form-urlencoded", 
   },
   // 请求时长
   timeout: 1000 * 30,
   // 请求的base地址 TODO:这块以后根据不同的模块调不同的api
-  baseURL:'http://localhost/store_intra',
+  baseURL:'api',
     // baseURL:
     //   process.env.NODE_ENV === "development"
     //     ? "测试"
@@ -89,7 +89,7 @@ axiosInst.interceptors.request.use(
     // error => Promise.error(error)
 )
 
-  
+ /* 
   // 响应拦截器
 axiosInst.interceptors.response.use(
   // 请求成功
@@ -110,7 +110,7 @@ axiosInst.interceptors.response.use(
         }
   }
 )    
-
+*/
 
 // 只需要考虑单一职责，这块只封装axios
 export default axiosInst;
