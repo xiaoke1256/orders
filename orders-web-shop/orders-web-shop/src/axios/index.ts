@@ -93,7 +93,7 @@ axiosInst.interceptors.request.use(
   // 响应拦截器
 axiosInst.interceptors.response.use(
   // 请求成功
-  res => Promise.reject(res),
+  res => Promise.resolve(res),
   // 请求失败
   error => {
         const { response } = error;
