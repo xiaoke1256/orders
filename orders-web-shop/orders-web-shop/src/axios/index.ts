@@ -89,11 +89,11 @@ axiosInst.interceptors.request.use(
     // error => Promise.error(error)
 )
 
- /* 
+ 
   // 响应拦截器
 axiosInst.interceptors.response.use(
   // 请求成功
-  res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
+  res => Promise.reject(res),
   // 请求失败
   error => {
         const { response } = error;
@@ -110,7 +110,5 @@ axiosInst.interceptors.response.use(
         }
   }
 )    
-*/
 
-// 只需要考虑单一职责，这块只封装axios
 export default axiosInst;
