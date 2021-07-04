@@ -58,7 +58,7 @@ const errorHandle = (status: number, other: string) => {
 const axiosInst = axios.create({
   headers: {
     //php 的 post 传输请求头一定要这个 不然报错 接收不到值
-    //"Content-Type": "application/x-www-form-urlencoded", 
+    "Content-Type": "application/x-www-form-urlencoded", 
   },
   // 请求时长
   timeout: 1000 * 30,
@@ -83,10 +83,23 @@ axiosInst.interceptors.request.use(
       // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。        
     const token = '';//store.state.token;
     localStorage.setItem('token', token);
-      token && (config.headers.Authorization = token)
-      return config;
-    },    
-    // error => Promise.error(error)
+    token && (config.headers.Authorization = token)
+    return config;
+  },    
+  // error => Promise.error(error)
+)
+
+axiosInst.interceptors.request.use(
+  config => {
+    if(config.method === 'POST'||config.method === 'PUT'){
+      const data ={} as FormData;
+      for(const key of Object.keys(config.data) ){
+        data.append(key,config.data[key]);
+      }
+      config.data = data;
+    }
+    return config;
+  },
 )
 
  
