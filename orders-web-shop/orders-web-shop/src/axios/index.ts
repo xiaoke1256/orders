@@ -76,7 +76,7 @@ const axiosInst = axios.create({
  * 每次请求前，如果存在token则在请求头中携带token 
  */ 
 axiosInst.interceptors.request.use(
-  config => {        
+  config => { 
       // 登录流程控制中，根据本地是否存在token判断用户的登录情况        
       // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token        
       // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码        
@@ -91,9 +91,10 @@ axiosInst.interceptors.request.use(
 
 axiosInst.interceptors.request.use(
   config => {
-    if(config.method === 'POST'||config.method === 'PUT'){
+    if(config.method?.toLowerCase() === 'post'||config.method?.toLowerCase() === 'put'){
       const data ={} as FormData;
       for(const key of Object.keys(config.data) ){
+        console.log("key:"+key+" value:"+config.data[key])
         data.append(key,config.data[key]);
       }
       config.data = data;
