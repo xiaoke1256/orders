@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "@/router/index";
+import qs from "qs";
 //import store from "@/store";
 
 const message = (msg: string,type?: any) => { 
@@ -92,12 +93,9 @@ axiosInst.interceptors.request.use(
 axiosInst.interceptors.request.use(
   config => {
     if(config.method?.toLowerCase() === 'post'||config.method?.toLowerCase() === 'put'){
-      const data ={} as FormData;
-      for(const key of Object.keys(config.data) ){
-        console.log("key:"+key+" value:"+config.data[key])
-        data.append(key,config.data[key]);
+      if(!(config.data instanceof FormData)){
+        config.data = qs.stringify(config.data);
       }
-      config.data = data;
     }
     return config;
   },
