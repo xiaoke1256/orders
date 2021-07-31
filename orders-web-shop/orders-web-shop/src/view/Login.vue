@@ -1,55 +1,3 @@
-<style scoped>
-	@font-face {
-		font-family:'Lucida Calligraphy Italic';
-		src: url('~/static/font/Lucida_Calligraphy_Italic.TTF');
-	}
-.layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-}
-.layout-logo{
-    width: 150px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-    color:lightsteelblue;
-    font:italic bold 50px  "Lucida Calligraphy Italic" ;
-    letter-spacing:3px
-}
-.layout-nav{
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-}
-.layout-footer-center{
-    text-align: center;
-}
-.loginWelcome{
-  text-align:left;
-  font:italic bolder 16px;
-  color:lightsteelblue;
-  border-bottom:cornflowerblue solid 2px;
-  margin-bottom: 15px;
-}
-.welcomeMsg{
-  padding:0 50px;
-  text-align: right;
-  font:italic bolder 16px "yahei";
-  color:lightsteelblue
-}
-.ivu-layout{
-  min-height: 99.6vh
-}
-.ivu-layout-content{
-  padding: 20px 50px
-}
-</style>
 <template>
   <div class="layout">
     <Layout  >
@@ -75,15 +23,15 @@
             <!--欢迎访问商户端-->
           </Menu>
         </Header>
-        <Content :style="{padding: '20px 50px'}">
+        <Content>
           <div class="welcomeMsg">{{welcomeMsg}}</div>
           <Card>
-            <div style="min-height:300px;">
-              <div style="display:inline-block;vertical-align:middle">
+            <div class="loginMain" >
+              <div >
                 <img src="~@/assets/login.jpg" >
               </div>
-              <div style="display:inline-block;vertical-align:middle;width:320px"> 
-                <Card style="height:413px;vertical-align:middle;padding:60px 0">
+              <div style="width:320px"> 
+                <Card>
                   <div class="loginWelcome">
                     请您登陆：
                   </div>
