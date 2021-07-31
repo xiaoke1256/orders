@@ -43,10 +43,16 @@
   font:italic bolder 16px "yahei";
   color:lightsteelblue
 }
+.ivu-layout{
+  min-height: 99.6vh
+}
+.ivu-layout-content{
+  padding: 20px 50px
+}
 </style>
 <template>
   <div class="layout">
-    <Layout :style="{minHeight: '99.6vh'}" >
+    <Layout  >
         <Header>
           <Menu mode="horizontal" theme="dark" active-name="1">
             <div class="layout-logo">Orders</div>
