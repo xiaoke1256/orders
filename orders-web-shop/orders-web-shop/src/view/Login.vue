@@ -23,7 +23,7 @@
             <!--欢迎访问商户端-->
           </Menu>
         </Header>
-        <Content>
+        <Content class="loginContent">
           <div class="welcomeMsg">{{welcomeMsg}}</div>
           <Card>
             <div class="loginMain" >

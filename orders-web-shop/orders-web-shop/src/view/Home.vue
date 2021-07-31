@@ -24,7 +24,7 @@
         </Menu>
       </Header>
       <Layout>
-        <Sider hide-trigger :style="{background: '#fff'}">
+        <Sider hide-trigger class="leftMenu">
           <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
             <Submenu name="1">
                 <template slot="title">
@@ -53,13 +53,13 @@
             </Submenu>
           </Menu>
         </Sider>
-        <Layout :style="{padding: '0 24px 24px'}">
-          <Breadcrumb :style="{margin: '24px 0'}">
+        <Layout class="mainLayout" >
+          <Breadcrumb>
               <BreadcrumbItem>Home</BreadcrumbItem>
               <BreadcrumbItem>Components</BreadcrumbItem>
               <BreadcrumbItem>Layout</BreadcrumbItem>
           </Breadcrumb>
-          <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+          <Content>
               Content
           </Content>
           <Footer class="layout-footer-center">2021 &copy; xiaoke1256</Footer>

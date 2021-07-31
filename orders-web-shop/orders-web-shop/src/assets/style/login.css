@@ -1,4 +1,4 @@
-@font-face {
+  @font-face {
     font-family:'Lucida Calligraphy Italic';
     src: url('~/static/font/Lucida_Calligraphy_Italic.TTF');
   }
@@ -9,7 +9,7 @@
       border-radius: 4px;
   }
   .layout-logo{
-      width: 150px;
+      width: 200px;
       height: 30px;
       background: #5b6270;
       border-radius: 3px;
@@ -19,7 +19,7 @@
       left: 20px;
       color:lightsteelblue;
       font:italic bold 50px  "Lucida Calligraphy Italic" ;
-      letter-spacing:3px
+      letter-spacing:3px;
   }
   .layout-nav{
       width: 420px;
@@ -45,7 +45,7 @@
   .ivu-layout.top{
     min-height: 99.6vh
   }
-  .ivu-layout-content{
+  .ivu-layout-content.loginContent{
     padding: 20px 50px
   }
 
