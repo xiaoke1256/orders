@@ -1,12 +1,12 @@
 .layout-nav{
-    width: 520px;
+    width: 80%;
     height: 2px;
     margin: 0 auto;
     margin-right: 20px;
 }
 
 .layout-nav .ivu-menu-item{
-    float: right;
+    float: right !important;
 }
 
 .leftMenu .ivu-menu {

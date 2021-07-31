@@ -8,7 +8,10 @@
           <div class="layout-nav">
             <MenuItem name="9">
               <Icon type="ios-log-out" />
-              注销
+            </MenuItem>
+            <MenuItem name="8">
+              <Icon type="md-person" />
+              admin
             </MenuItem>
           </div>
           <!--欢迎访问商户端-->
