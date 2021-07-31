@@ -1,0 +1,17 @@
+
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "paths": {
+          "@/*": ["src/*"]
+        },
+        "experimentalDecorators": true,              /* Enables experimental support for ES7 decorators. */
+    },
+    "include": ["./src/**/*.vue", "./src/**/*.js"], 
+    "exclude": [
+        "node_modules", "dist"
+    ]
+}

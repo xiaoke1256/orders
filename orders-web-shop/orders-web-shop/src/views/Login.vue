@@ -1,8 +1,10 @@
 <style scoped>
+/*
 	@font-face {
 		font-family:'Lucida Calligraphy Italic';
-		src: url('~/static/font/Lucida_Calligraphy_Italic.TTF');
+		src: url('~@/static/font/Lucida_Calligraphy_Italic.TTF');
 	}
+  */
 .layout{
     border: 1px solid #d7dde4;
     background: #f5f7f9;
