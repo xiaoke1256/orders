@@ -21,11 +21,6 @@
       font:italic bold 50px  "Lucida Calligraphy Italic" ;
       letter-spacing:3px;
   }
-  .layout-nav{
-      width: 420px;
-      margin: 0 auto;
-      margin-right: 20px;
-  }
   .layout-footer-center{
       text-align: center;
   }

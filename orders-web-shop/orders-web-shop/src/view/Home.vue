@@ -4,22 +4,13 @@
       <Header>
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-logo">Orders</div>
-          <!--
+          
           <div class="layout-nav">
-            <MenuItem name="1">
-              <Icon type="ios-navigate"></Icon>
-              公司首页
-            </MenuItem>
-            <MenuItem name="2">
-              <Icon type="ios-keypad"></Icon>
-              网站地图
-            </MenuItem>
-            <MenuItem name="3">
-              <Icon type="ios-analytics"></Icon>
-              意见与建议
+            <MenuItem name="9">
+              <Icon type="ios-log-out" />
+              注销
             </MenuItem>
           </div>
-          -->
           <!--欢迎访问商户端-->
         </Menu>
       </Header>
