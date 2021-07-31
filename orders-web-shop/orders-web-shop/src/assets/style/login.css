@@ -42,7 +42,7 @@
     font:italic bolder 16px "yahei";
     color:lightsteelblue
   }
-  .ivu-layout{
+  .ivu-layout.top{
     min-height: 99.6vh
   }
   .ivu-layout-content{

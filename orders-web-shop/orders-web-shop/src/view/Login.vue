@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Layout  >
+    <Layout class="top" >
         <Header>
           <Menu mode="horizontal" theme="dark" active-name="1">
             <div class="layout-logo">Orders</div>
