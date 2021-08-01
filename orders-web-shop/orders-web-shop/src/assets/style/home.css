@@ -30,3 +30,7 @@
     min-height: 280px;
     background:#fff;
 }
+
+.mainWithMenu.ivu-layout-has-sider{
+    margin-top: 10px;
+}

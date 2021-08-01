@@ -6,18 +6,18 @@
           <div class="layout-logo">Orders</div>
           
           <div class="layout-nav">
-            <MenuItem name="9">
+            <MenuItem name="9" @click="logout">
               <Icon type="ios-log-out" />
             </MenuItem>
             <MenuItem name="8">
               <Icon type="md-person" />
-              admin
+              {{nickName}}
             </MenuItem>
           </div>
           <!--欢迎访问商户端-->
         </Menu>
       </Header>
-      <Layout>
+      <Layout class="mainWithMenu">
         <Sider hide-trigger class="leftMenu">
           <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
             <Submenu name="1">
@@ -67,6 +67,17 @@ import { Vue, Component } from 'vue-property-decorator'
 
 @Component({components:{}})
 export default class Home extends Vue {
-    
+  public nickName:string|null = '';
+
+  public mounted(){
+    this.nickName = sessionStorage.getItem('nickName');
+  }
+
+  public logout(){
+    sessionStorage.clear();
+     this.$router.push({
+          name: '/'
+        });
+  }
 }
 </script>
