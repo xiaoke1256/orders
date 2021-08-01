@@ -19,7 +19,10 @@
   }
   .layout-footer-center{
       text-align: center;
+      background: #2c3e50 !important;
+      color:#fff !important;
   }
+
   .loginWelcome{
     text-align:left;
     font:italic bolder 16px;

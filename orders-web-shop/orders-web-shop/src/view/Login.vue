@@ -73,7 +73,7 @@ export default class Login extends Vue {
     console.log("token:"+token);
     sessionStorage.setItem("token",token);
     sessionStorage.setItem("nickName",user.nickName);
-    sessionStorage.setItem("loginName",user.loginName);
+    sessionStorage.setItem("loginName",this.loginName);
     this.$router.push({
           name: 'Home'
         });

@@ -6,7 +6,7 @@
           <div class="layout-logo">Orders</div>
           
           <div class="layout-nav">
-            <MenuItem name="9" @click="logout">
+            <MenuItem name="9" to="/login">
               <Icon type="ios-log-out" />
             </MenuItem>
             <MenuItem name="8">
@@ -56,9 +56,9 @@
           <Content>
               Content
           </Content>
-          <Footer class="layout-footer-center">2021 &copy; xiaoke1256</Footer>
         </Layout>
       </Layout>
+      <Footer class="layout-footer-center">2021 &copy; xiaoke1256</Footer>
     </Layout>
   </div>
 </template>
@@ -70,14 +70,9 @@ export default class Home extends Vue {
   public nickName:string|null = '';
 
   public mounted(){
-    this.nickName = sessionStorage.getItem('nickName');
+    this.nickName = sessionStorage.getItem('loginName');
   }
 
-  public logout(){
-    sessionStorage.clear();
-     this.$router.push({
-          name: '/'
-        });
-  }
+  
 }
 </script>
