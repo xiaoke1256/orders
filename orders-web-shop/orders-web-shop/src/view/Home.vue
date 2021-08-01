@@ -2,17 +2,15 @@
   <div class="layout">
     <Layout class="top" >
       <Header>
-        <Menu mode="horizontal" theme="dark" active-name="1">
+        <Menu mode="horizontal" theme="dark" active-name="1" @on-select="onSelect()" >
           <div class="layout-logo">Orders</div>
           
           <div class="layout-nav">
-            <MenuItem name="9" to="/login">
-              <Icon type="ios-log-out" />
-            </MenuItem>
-            <MenuItem name="8">
+            <span>
               <Icon type="md-person" />
               {{nickName}}
-            </MenuItem>
+            </span>
+            <a @click="logout"><Icon type="ios-log-out"></Icon></a>
           </div>
           <!--欢迎访问商户端-->
         </Menu>
@@ -73,6 +71,10 @@ export default class Home extends Vue {
     this.nickName = sessionStorage.getItem('loginName');
   }
 
-  
+  public logout(){
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('loginName');
+    this.$router.push('/');
+  }
 }
 </script>
