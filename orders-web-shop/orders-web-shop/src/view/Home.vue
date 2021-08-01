@@ -6,11 +6,11 @@
           <div class="layout-logo">Orders</div>
           
           <div class="layout-nav">
-            <span>
+            <a @click="logout"><Icon type="ios-log-out"></Icon></a>
+            <a>
               <Icon type="md-person" />
               {{nickName}}
-            </span>
-            <a @click="logout"><Icon type="ios-log-out"></Icon></a>
+            </a>
           </div>
           <!--欢迎访问商户端-->
         </Menu>
