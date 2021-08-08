@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: peer1,dev
   application:
     name: discovery-eureka
 server:
