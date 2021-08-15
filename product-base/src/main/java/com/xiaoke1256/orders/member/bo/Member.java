@@ -32,6 +32,8 @@ public class Member implements Serializable {
 	
 	private Timestamp updateTime;
 
+	private String password;
+
 	public Long getMemberId() {
 		return memberId;
 	}
@@ -103,7 +105,12 @@ public class Member implements Serializable {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
-	
-	
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
