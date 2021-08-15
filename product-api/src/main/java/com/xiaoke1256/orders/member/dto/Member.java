@@ -27,6 +27,8 @@ public class Member implements Serializable {
 	private String email;
 	
 	private String mobilePhone;
+
+	private String password;
 	
 	private Timestamp insertTime;
 	
@@ -103,7 +105,12 @@ public class Member implements Serializable {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
-	
-	
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

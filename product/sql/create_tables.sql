@@ -65,6 +65,7 @@ create table member(
   intro VARCHAR(500) comment '自我介绍',
   email VARCHAR(256) comment '绑定邮箱',
   mobile_phone VARCHAR(32) comment '移动电话号',
+  password VARCHAR(128) comment '密码',
   insert_time TIMESTAMP not null  DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 )comment = '会员表';
