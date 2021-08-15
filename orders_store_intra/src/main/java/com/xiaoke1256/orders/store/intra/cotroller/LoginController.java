@@ -38,6 +38,7 @@ public class LoginController {
         retMap.put("token",token);
         UserInfo user = new UserInfo();
         user.setLoginName(loginName);
+        user.setNickName(member.getNickName());
         retMap.put("user",user);
         return retMap;
     }
