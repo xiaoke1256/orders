@@ -4,6 +4,7 @@ import com.xiaoke1256.orders.member.api.MemberQueryService;
 import com.xiaoke1256.orders.member.dto.Member;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ public interface MemberQueryClient extends MemberQueryService {
 
     @GetMapping("/members")
     public List<Member> findAll();
+
+    @GetMapping("/member/{accountNo}")
+    public Member getMember(@PathVariable("accountNo") String accountNo);
 }
