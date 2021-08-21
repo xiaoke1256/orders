@@ -89,6 +89,7 @@ axiosInst.interceptors.request.use(
   // error => Promise.error(error)
 )
 
+/**数据格式化 */
 axiosInst.interceptors.request.use(
   config => {
     if(config.method?.toLowerCase() === 'post'||config.method?.toLowerCase() === 'put'){
@@ -100,26 +101,37 @@ axiosInst.interceptors.request.use(
   },
 )
 
+axiosInst.interceptors.request.use(
+  config => {
+    Vue.prototype.$Loading.start();
+    return config;
+  },
+)
+
  
   // 响应拦截器
 axiosInst.interceptors.response.use(
   // 请求成功
-  res => Promise.resolve(res),
+  res => {
+    Vue.prototype.$Loading.finish();
+    return Promise.resolve(res);
+  },
   // 请求失败
   error => {
-        const { response } = error;
-        if (response) {
-          // 请求已发出，但是不在2xx的范围 
-          errorHandle(response.status, response.data.message);
-          return Promise.reject(response);
-        } else {
-            // 处理断网的情况
-          message('与服务器失去连接');
-            // eg:请求超时或断网时，更新state的network状态
-            // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
-            // 后续增加断网情况下做的一些操作
-            //store.commit('networkState', false);
-        }
+    Vue.prototype.$Loading.error();
+    const { response } = error;
+    if (response) {
+      // 请求已发出，但是不在2xx的范围 
+      errorHandle(response.status, response.data.message);
+      return Promise.reject(response);
+    } else {
+      // 处理断网的情况
+      message('与服务器失去连接');
+      // eg:请求超时或断网时，更新state的network状态
+      // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
+      // 后续增加断网情况下做的一些操作
+      //store.commit('networkState', false);
+    }
   }
 )    
 
