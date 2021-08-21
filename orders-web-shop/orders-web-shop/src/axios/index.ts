@@ -114,6 +114,7 @@ axiosInst.interceptors.response.use(
           return Promise.reject(response);
         } else {
             // 处理断网的情况
+          message('与服务器失去连接');
             // eg:请求超时或断网时，更新state的network状态
             // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
             // 后续增加断网情况下做的一些操作
