@@ -35,12 +35,16 @@
                   <div class="loginWelcome">
                     请您登陆：
                   </div>
-                  <Form >
-                    <Form-Item>
-                      <Input prefix="ios-contact" placeholder="用户名" v-model="loginName" />
+                  <Form ref="logForm" :model="loginForm" >
+                    <Form-Item prop="loginName" :rules="[{required: true, message: '用户名不能为空'}]" >
+                      <Input placeholder="用户名" v-model="loginForm.loginName" >
+                        <Icon type="md-person" slot="prepend"></Icon>
+                      </Input>
                     </Form-Item>
-                    <Form-Item>
-                      <Input prefix="md-key" type="password" placeholder="密码" v-model="password" />
+                    <Form-Item prop="password" :rules="[{required: true, message: '密码不能为空'}]">
+                      <Input type="password" placeholder="密码" v-model="loginForm.password" >
+                        <Icon type="md-lock" slot="prepend"></Icon>
+                      </Input>
                     </Form-Item>
                     <Button type="success" long @click="login">登陆</Button>
                   </Form>
@@ -55,29 +59,40 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import {login} from '@/api/login'
+import { Form } from 'iview'
+import { login } from '@/api/login'
+import { LoginForm } from '@/types/login';
 
 @Component({components:{}})
 export default class Login extends Vue {
   public welcomeMsg='——欢迎访问商户端';
-  public loginName:string="";
-  public password:string="";
+
+  public loginForm: LoginForm = {} as LoginForm;
 
   public async login(){
-    const result = await login(this.loginName,this.password);
-    const token = result.token;
-    const user = result.user;
-    if(typeof token !== 'string' || !token){
-      throw new Error("登陆错误");
-    }
-    console.log("token:"+token);
-    sessionStorage.setItem("token",token);
-    sessionStorage.setItem("nickName",user.nickName);
-    sessionStorage.setItem("loginName",this.loginName);
-    this.$router.push({
-          name: 'Home'
-        });
+    console.log("this.$refs.logForm.validate:"+(<Form>this.$refs.logForm).validate);
+    (this.$refs.logForm as Form).validate(async(valid)=>{
+      console.log("valid");
+      if(valid!=true){
+        return;
+      }
+      const result = await login(this.loginForm.loginName,this.loginForm.password);
+      const token = result.token;
+      const user = result.user;
+      if(typeof token !== 'string' || !token){
+        throw new Error("登陆错误");
+      }
+      console.log("token:"+token);
+      sessionStorage.setItem("token",token);
+      sessionStorage.setItem("nickName",user.nickName);
+      sessionStorage.setItem("loginName",this.loginForm.loginName);
+      this.$router.push({
+            name: 'Home'
+          });
+    
+    });
   }
+    
 }
 </script>
 
