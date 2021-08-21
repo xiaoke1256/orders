@@ -1,16 +1,11 @@
+import Vue from 'vue'
 import axios from "axios";
 import router from "@/router/index";
 import qs from "qs";
 //import store from "@/store";
 
-const message = (msg: string,type?: any) => { 
-    /*   
-    Message({
-      message: msg,
-      type: type || 'warning',
-      duration:1500,
-    });
-    */
+const message = (msg: string,type?: any) => {    
+    Vue.prototype.$Message.error(msg);
 }
 
 /** 
@@ -47,6 +42,10 @@ const errorHandle = (status: number, other: string) => {
     // 404请求不存在
     case 404:
       message('请求的资源不存在');
+      break;
+    case 504:
+      console.log('here');
+      message('与服务器失去连接');
       break;
     default:
       message(other);
@@ -110,9 +109,9 @@ axiosInst.interceptors.response.use(
   error => {
         const { response } = error;
         if (response) {
-            // 请求已发出，但是不在2xx的范围 
-            errorHandle(response.status, response.data.message);
-            return Promise.reject(response);
+          // 请求已发出，但是不在2xx的范围 
+          errorHandle(response.status, response.data.message);
+          return Promise.reject(response);
         } else {
             // 处理断网的情况
             // eg:请求超时或断网时，更新state的network状态

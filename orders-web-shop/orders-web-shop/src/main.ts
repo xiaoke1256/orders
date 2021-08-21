@@ -13,6 +13,11 @@ Vue.use(iView);
 
 Vue.config.productionTip = false
 
+Vue.prototype.$Message.config({
+    top: 50,
+    duration: 3
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
