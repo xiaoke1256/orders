@@ -25,6 +25,12 @@ public class SpringbootApplication extends SpringBootServletInitializer {
     @Value("${login.session.expired}")
     private String loginExpireExp;
 
+    @Value("${login.token.refresh_secret}")
+    private String refreshSecret;
+
+    @Value("${login.session.refresh_expired}")
+    private String refreshExpireExp;
+
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(SpringbootApplication.class);
@@ -47,6 +53,17 @@ public class SpringbootApplication extends SpringBootServletInitializer {
             result *= Integer.parseInt(ele);
         }
 	    return new HMAC256(result,loginSecret);
+    }
+
+    @Bean
+    public HMAC256 refreshTokenGenerator(){
+        //目前只支持计算乘法
+        String[] eles = refreshExpireExp.replace(" ", "").split("\\*");
+        long result = 1l;
+        for(String ele:eles){
+            result *= Integer.parseInt(ele);
+        }
+        return new HMAC256(result,refreshSecret);
     }
 
 }

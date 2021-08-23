@@ -78,12 +78,14 @@ export default class Login extends Vue {
       }
       const result = await login(this.loginForm.loginName,this.loginForm.password);
       const token = result.token;
+      const refreshToken = result.refreshToken;
       const user = result.user;
       if(typeof token !== 'string' || !token){
         throw new Error("登陆错误");
       }
       console.log("token:"+token);
       sessionStorage.setItem("token",token);
+      sessionStorage.setItem("refreshToken",refreshToken);
       sessionStorage.setItem("nickName",user.nickName);
       sessionStorage.setItem("loginName",this.loginForm.loginName);
       this.$router.push({

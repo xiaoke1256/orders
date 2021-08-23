@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.store.intra.cotroller;
 
 import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.member.dto.Member;
 import com.xiaoke1256.orders.store.intra.bo.UserInfo;
 import com.xiaoke1256.orders.store.intra.client.MemberQueryClient;
@@ -20,6 +21,9 @@ public class LoginController {
     @Resource(name = "loginTokenGenerator")
     private HMAC256 loginTokenGenerator;
 
+    @Resource(name = "refreshTokenGenerator")
+    private HMAC256 refreshTokenGenerator;
+
     private MemberQueryClient memberQueryClient;
 
     @PostMapping("login")
@@ -35,7 +39,12 @@ public class LoginController {
         //发放token
         Map<String,Object> retMap = new HashMap<>();
         String token = loginTokenGenerator.token(loginName);
+        Map<String,String> tokenParam = new HashMap<>();
+        tokenParam.put("loginName",loginName);
+        tokenParam.put("LOGTK_ENCODE", MD5Util.getMD5(token).substring(0,8));
+        String refreshToken = refreshTokenGenerator.token(tokenParam);
         retMap.put("token",token);
+        retMap.put("refreshToken",refreshToken);
         UserInfo user = new UserInfo();
         user.setLoginName(loginName);
         user.setNickName(member.getNickName());
