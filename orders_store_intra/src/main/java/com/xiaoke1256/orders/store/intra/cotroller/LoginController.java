@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,34 @@ public class LoginController {
         user.setLoginName(loginName);
         user.setNickName(member.getNickName());
         retMap.put("user",user);
+        return retMap;
+    }
+
+    @PostMapping("refresh")
+    public Map<String,Object> refresh(HttpServletRequest request, String refreshToken){
+        if(!refreshTokenGenerator.verify(refreshToken)){
+            throw new RuntimeException("校验不通过。");
+        }
+        String token = request.getHeader("Authorization");
+        String loginName = refreshTokenGenerator.getValue(refreshToken,"loginName");
+        String orgLoginName = loginTokenGenerator.getContent(token);
+        if(!orgLoginName.equals(loginName)){
+            throw new RuntimeException("校验不通过。");
+        }
+        if(MD5Util.getMD5(token).substring(0,8).equals(refreshTokenGenerator.getValue(refreshToken,"LOGTK_ENCODE"))){
+            throw new RuntimeException("校验不通过。");
+        }
+
+        //重新发放token对
+        Map<String,Object> retMap = new HashMap<>();
+        String newToken = loginTokenGenerator.token(loginName);
+        Map<String,String> tokenParam = new HashMap<>();
+        tokenParam.put("loginName",loginName);
+        tokenParam.put("LOGTK_ENCODE", MD5Util.getMD5(newToken).substring(0,8));
+        String newRefreshToken = refreshTokenGenerator.token(tokenParam);
+        retMap.put("token",newToken);
+        retMap.put("refreshToken",newRefreshToken);
+
         return retMap;
     }
 

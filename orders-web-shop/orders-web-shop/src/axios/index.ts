@@ -32,6 +32,8 @@ const errorHandle = (status: number, other: string) => {
     // 403 token过期
     // 清除token并跳转登录页
     case 403:
+      //调用refresh 获取新的tonken
+      //得到新的token后重新发送请求。
       message('登录过期，请重新登录');
       localStorage.removeItem('token');
       //store.commit('token', null);
@@ -44,7 +46,6 @@ const errorHandle = (status: number, other: string) => {
       message('请求的资源不存在');
       break;
     case 504:
-      console.log('here');
       message('与服务器失去连接');
       break;
     default:
