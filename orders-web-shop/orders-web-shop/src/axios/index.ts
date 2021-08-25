@@ -32,14 +32,7 @@ const errorHandle = (status: number, other: string) => {
     // 403 token过期
     // 清除token并跳转登录页
     case 403:
-      //调用refresh 获取新的tonken
-      //得到新的token后重新发送请求。
-      message('登录过期，请重新登录');
-      localStorage.removeItem('token');
-      //store.commit('token', null);
-      setTimeout(() => {
-        toLogin();
-      }, 1000);
+      message('你无权限访问该资源');
       break;
     // 404请求不存在
     case 404:
@@ -82,8 +75,7 @@ axiosInst.interceptors.request.use(
       // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token        
       // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码        
       // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。        
-    const token = '';//store.state.token;
-    localStorage.setItem('token', token);
+    const token = localStorage.getItem('token');
     token && (config.headers.Authorization = token)
     return config;
   },    
@@ -118,12 +110,27 @@ axiosInst.interceptors.response.use(
     return Promise.resolve(res);
   },
   // 请求失败
-  error => {
+  async error => {
     Vue.prototype.$Loading.error();
     const { response } = error;
     if (response) {
       // 请求已发出，但是不在2xx的范围 
-      errorHandle(response.status, response.data.message);
+      if(response.status === 401){  //401
+        if(!localStorage.getItem('token') ||  response.config.url.indexOf('/login/refresh?refreshToken=')>0 ){
+          setTimeout(() => {
+            toLogin();
+          }, 1000);
+          return;
+        }
+        //调用refresh 获取新的tonken
+        let {refreshToken,token} = await getRefreshToken(localStorage.getItem('refreshToken') as string);
+        //得到新的token后重新发送请求。
+        sessionStorage.setItem('token',token);
+        sessionStorage.setItem('refreshToken',refreshToken);
+        return axiosInst.request(response.config);
+      }else {
+        errorHandle(response.status, response.data.message);
+      }
       return Promise.reject(response);
     } else {
       // 处理断网的情况
@@ -135,5 +142,9 @@ axiosInst.interceptors.response.use(
     }
   }
 )    
+
+const getRefreshToken:(refreshToken:string) => Promise<{token:string;refreshToken:string}> = (refreshToken)=>{
+  return axiosInst.post(`/login/refresh?refreshToken=${refreshToken}`).then((resp)=>resp.data);
+}
 
 export default axiosInst;
