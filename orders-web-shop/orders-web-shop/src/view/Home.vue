@@ -21,27 +21,31 @@
             <Submenu name="1">
                 <template slot="title">
                     <Icon type="ios-navigate"></Icon>
-                    Item 1
+                    店铺设置
                 </template>
-                <MenuItem name="1-1">Option 1</MenuItem>
-                <MenuItem name="1-2">Option 2</MenuItem>
-                <MenuItem name="1-3">Option 3</MenuItem>
+                <MenuItem name="1-1">我的店铺</MenuItem>
             </Submenu>
             <Submenu name="2">
                 <template slot="title">
                     <Icon type="ios-keypad"></Icon>
-                    Item 2
+                    我的商品
                 </template>
-                <MenuItem name="2-1">Option 1</MenuItem>
-                <MenuItem name="2-2">Option 2</MenuItem>
+                <MenuItem name="4-1">商品列表</MenuItem>
             </Submenu>
             <Submenu name="3">
                 <template slot="title">
-                    <Icon type="ios-analytics"></Icon>
-                    Item 3
+                    <Icon type="ios-keypad"></Icon>
+                    我的订单
                 </template>
-                <MenuItem name="3-1">Option 1</MenuItem>
-                <MenuItem name="3-2">Option 2</MenuItem>
+                <MenuItem name="4-1">订单中心</MenuItem>
+            </Submenu>
+            <Submenu name="4">
+                <template slot="title">
+                    <Icon type="ios-analytics"></Icon>
+                    小数据
+                </template>
+                <MenuItem name="4-1">图表 1</MenuItem>
+                <MenuItem name="4-2">图表 2</MenuItem>
             </Submenu>
           </Menu>
         </Sider>
