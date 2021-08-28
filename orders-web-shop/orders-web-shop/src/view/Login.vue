@@ -46,7 +46,7 @@
                         <Icon type="md-lock" slot="prepend"></Icon>
                       </Input>
                     </Form-Item>
-                    <Button type="success" long @click="login">登陆</Button>
+                    <Button type="success" long @click="login">登录</Button>
                   </Form>
                 </Card>
               </div>
@@ -81,7 +81,7 @@ export default class Login extends Vue {
       const refreshToken = result.refreshToken;
       const user = result.user;
       if(typeof token !== 'string' || !token){
-        throw new Error("登陆错误");
+        throw new Error("登录异常");
       }
       console.log("token:"+token);
       sessionStorage.setItem("token",token);
