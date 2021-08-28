@@ -13,7 +13,10 @@
        <result property="email" column="email" />
        <result property="mobilePhone" column="mobile_phone" />
        <result property="insertTime" column="insert_time" />
-       <result property="updateTime" column="update_time" />
+       <result property="updateTime" column="update_time"/>
+       <!--
+       <result property="password" column="password" />
+       -->
    </resultMap>
-   
+
 </mapper>
