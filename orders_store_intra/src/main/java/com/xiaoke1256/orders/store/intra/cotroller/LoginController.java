@@ -6,6 +6,7 @@ import com.xiaoke1256.orders.member.dto.Member;
 import com.xiaoke1256.orders.store.intra.bo.UserInfo;
 import com.xiaoke1256.orders.store.intra.client.MemberQueryClient;
 import com.xiaoke1256.orders.store.intra.encrypt.HMAC256;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class LoginController {
     @Resource(name = "refreshTokenGenerator")
     private HMAC256 refreshTokenGenerator;
 
+    @Autowired
     private MemberQueryClient memberQueryClient;
 
     @PostMapping("login")

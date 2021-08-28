@@ -11,10 +11,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
+@EnableCircuitBreaker
 @EnableDiscoveryClient
+@EnableFeignClients
 @SpringBootApplication(scanBasePackages="com.xiaoke1256.orders.store.intra",exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class SpringbootApplication extends SpringBootServletInitializer {
