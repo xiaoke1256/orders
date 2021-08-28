@@ -2,3 +2,8 @@
   font-family:'Lucida Calligraphy Italic';
   src: url('~/static/font/Lucida_Calligraphy_Italic.TTF');
 }
+
+@font-face {
+  font-family:'Acadian';
+  src: url('~/static/font/Acadian.TTF');
+}
