@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-    @Autowired
+
     private ProductQueryClient productQueryService;
 
     @RequestMapping(value="/product/search",method= RequestMethod.GET)
