@@ -89,7 +89,7 @@ export default class Login extends Vue {
       sessionStorage.setItem("nickName",user.nickName);
       sessionStorage.setItem("loginName",this.loginForm.loginName);
       this.$router.push({
-            name: 'home/index'
+            path: 'home/index'
           });
     
     });

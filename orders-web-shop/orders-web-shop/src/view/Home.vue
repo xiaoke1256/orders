@@ -56,7 +56,7 @@
               <BreadcrumbItem>Layout</BreadcrumbItem>
           </Breadcrumb>
           <Content>
-              Content
+            <router-view></router-view>
           </Content>
         </Layout>
       </Layout>

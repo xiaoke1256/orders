@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div id="content" >
       首页欢迎
   </div>
 </template>

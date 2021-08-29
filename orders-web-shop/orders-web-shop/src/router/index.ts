@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/view/Login.vue'
 import Home from '@/view/Home.vue'
-import Index from '@/view/home/Index.vue'
+import HomeIndex from '@/view/home/Index.vue'
 
 Vue.use(Router)
 
@@ -24,9 +24,9 @@ export default new Router({
       component: Home,
       children:[
         {
-          path: '/index',
-          name: 'Index',
-          component: Index
+          path: 'index',
+          name: 'HomeIndex',
+          component: HomeIndex
         }
       ]
     }
