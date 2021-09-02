@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.utils;
+package com.xiaoke1256.orders.store.intra.common.utils;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.utils;
+package com.xiaoke1256.orders.store.intra.common.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -1,7 +1,7 @@
 package com.xiaoke1256.orders.store.intra;
 
 //import org.mybatis.spring.annotation.MapperScan;
-import com.xiaoke1256.orders.store.intra.encrypt.HMAC256;
+import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.bo;
+package com.xiaoke1256.orders.store.intra.login.bo;
 
 /**
  * 用户信息

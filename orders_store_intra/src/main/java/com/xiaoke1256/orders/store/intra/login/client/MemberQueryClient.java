@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.client;
+package com.xiaoke1256.orders.store.intra.login.client;
 
 import com.xiaoke1256.orders.member.api.MemberQueryService;
 import com.xiaoke1256.orders.member.dto.Member;

@@ -1,11 +1,11 @@
-package com.xiaoke1256.orders.store.intra.cotroller;
+package com.xiaoke1256.orders.store.intra.login.cotroller;
 
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.member.dto.Member;
-import com.xiaoke1256.orders.store.intra.bo.UserInfo;
-import com.xiaoke1256.orders.store.intra.client.MemberQueryClient;
-import com.xiaoke1256.orders.store.intra.encrypt.HMAC256;
+import com.xiaoke1256.orders.store.intra.login.bo.UserInfo;
+import com.xiaoke1256.orders.store.intra.login.client.MemberQueryClient;
+import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

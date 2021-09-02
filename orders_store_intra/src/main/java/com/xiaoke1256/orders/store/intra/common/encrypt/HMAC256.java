@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.encrypt;
+package com.xiaoke1256.orders.store.intra.common.encrypt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

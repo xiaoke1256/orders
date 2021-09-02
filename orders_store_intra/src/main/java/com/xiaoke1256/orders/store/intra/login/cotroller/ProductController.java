@@ -1,8 +1,8 @@
-package com.xiaoke1256.orders.store.intra.cotroller;
+package com.xiaoke1256.orders.store.intra.login.cotroller;
 
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
-import com.xiaoke1256.orders.store.intra.client.ProductQueryClient;
+import com.xiaoke1256.orders.store.intra.login.client.ProductQueryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
