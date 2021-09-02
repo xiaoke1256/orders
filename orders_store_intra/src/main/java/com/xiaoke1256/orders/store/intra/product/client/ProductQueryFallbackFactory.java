@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.login.client;
+package com.xiaoke1256.orders.store.intra.product.client;
 
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;

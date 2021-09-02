@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.login.cotroller;
+package com.xiaoke1256.orders.store.intra.login.controller;
 
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.security.MD5Util;
