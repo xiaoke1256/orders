@@ -88,7 +88,13 @@ public class RespCode implements Serializable {
 	
 	/**错误代码:格式错误 */
 	public static final RespCode FORMAT_ERROR = new RespCode("31","Format error!");
-	
+
+	/**错误代码:登录异常 */
+	public static final RespCode LOGIN_ERROR = new RespCode("41","Has not login!");
+
+	/**错误代码:权限异常 */
+	public static final RespCode AUTH_ERROR = new RespCode("42","Auth exception!");
+
 	/**错误代码:其他未知异常 */
 	public static final RespCode OTHER_ERROR = new RespCode("99","Not described exception!");
 	

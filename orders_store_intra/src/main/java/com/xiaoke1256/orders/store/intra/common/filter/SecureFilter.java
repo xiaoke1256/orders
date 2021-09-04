@@ -1,13 +1,16 @@
 package com.xiaoke1256.orders.store.intra.common.filter;
 
+import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.InvalidAuthorizationException;
 import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
@@ -26,10 +29,16 @@ public class SecureFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String token = request.getHeader("Authorization");
         if(StringUtils.isEmpty(token)){
-            throw new InvalidAuthorizationException("未登录");
+            HttpServletResponse response = (HttpServletResponse)servletResponse;
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().print("{code:'"+ RespCode.LOGIN_ERROR.getCode()+"',msg:'尚未登录'}");
+            return;
         }
         if(loginTokenGenerator.verify(token)){
-            throw new InvalidAuthorizationException("token失效");
+            HttpServletResponse response = (HttpServletResponse)servletResponse;
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().print("{code:'"+ RespCode.LOGIN_ERROR.getCode()+"',msg:'token失效'}");
+            return;
         }
         filterChain.doFilter(servletRequest,servletResponse);
     }
