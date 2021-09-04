@@ -1,7 +1,6 @@
 package com.xiaoke1256.orders.store.intra.common.filter;
 
 import com.xiaoke1256.orders.common.RespCode;
-import com.xiaoke1256.orders.common.exception.InvalidAuthorizationException;
 import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
