@@ -44,7 +44,7 @@ public class SecureFilter implements Filter {
             response.getWriter().print("{code:'"+ RespCode.LOGIN_ERROR.getCode()+"',msg:'尚未登录'}");
             return;
         }
-        if(loginTokenGenerator.verify(token)){
+        if(!loginTokenGenerator.verify(token)){
             HttpServletResponse response = (HttpServletResponse)servletResponse;
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setCharacterEncoding("Utf-8");
