@@ -27,6 +27,17 @@ export default new Router({
           path: 'index',
           name: 'HomeIndex',
           component: HomeIndex
+        },
+      ]
+    },
+    {
+      path: '/product',
+      component: Home,
+      children:[
+        {
+          path: 'index',
+          name: 'ProductIndex',
+          component: ()=>import('@/view/product/Table.vue')
         }
       ]
     }

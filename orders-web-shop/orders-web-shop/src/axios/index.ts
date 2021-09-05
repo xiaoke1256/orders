@@ -115,7 +115,7 @@ axiosInst.interceptors.response.use(
     const { response } = error;
     if (response) {
       // 请求已发出，但是不在2xx的范围 
-      if(response.status === 401){  //401
+      if(response.status === 401){  //401特殊处理
         if(!localStorage.getItem('token') ||  response.config.url.indexOf('/login/refresh?refreshToken=')>0 ){
           setTimeout(() => {
             toLogin();

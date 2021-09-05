@@ -3,6 +3,8 @@ package com.xiaoke1256.orders.store.intra.common.filter;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,8 @@ import java.io.IOException;
 @Component
 public class SecureFilter implements Filter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SecureFilter.class);
+
     @Resource(name = "loginTokenGenerator")
     private HMAC256 loginTokenGenerator;
 
@@ -26,7 +30,8 @@ public class SecureFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        if(request.getPathInfo().startsWith("/login")){
+        LOG.info("RequestURI:"+request.getRequestURI());
+        if(request.getRequestURI() != null && request.getRequestURI().replaceFirst(request.getContextPath(),"").startsWith("/login")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }

@@ -15,7 +15,7 @@ public class ProductController {
     @Autowired
     private ProductQueryClient productQueryService;
 
-    @RequestMapping(value="/product/search",method= RequestMethod.GET)
+    @RequestMapping(method= RequestMethod.GET)
     public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition){
         return productQueryService.searchProductByCondition(condition);
     }
