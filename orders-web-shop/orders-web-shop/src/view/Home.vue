@@ -30,7 +30,7 @@
                     <Icon type="ios-keypad"></Icon>
                     我的商品
                 </template>
-                <MenuItem name="4-1"><router-link ref="/product/index">商品列表</router-link></MenuItem>
+                <MenuItem name="4-1"><router-link to="/product/index">商品列表</router-link></MenuItem>
             </Submenu>
             <Submenu name="3">
                 <template slot="title">
