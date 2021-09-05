@@ -14,7 +14,7 @@ const message = (msg: string,type?: any) => {
  */
 const toLogin = () => {
     router.replace({
-      name: 'LoginPage',
+      name: 'Login',
     });
 }
 
@@ -120,18 +120,18 @@ axiosInst.interceptors.response.use(
           setTimeout(() => {
             toLogin();
           }, 1000);
-          return;
+          return await Promise.reject(response);
         }
         //调用refresh 获取新的tonken
         let {refreshToken,token} = await getRefreshToken(localStorage.getItem('refreshToken') as string);
         //得到新的token后重新发送请求。
         sessionStorage.setItem('token',token);
         sessionStorage.setItem('refreshToken',refreshToken);
-        return axiosInst.request(response.config);
+        return await axiosInst.request(response.config);
       }else {
         errorHandle(response.status, response.data.message);
       }
-      return Promise.reject(response);
+      return await Promise.reject(response);
     } else {
       // 处理断网的情况
       message('与服务器失去连接');
@@ -139,6 +139,7 @@ axiosInst.interceptors.response.use(
       // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
       // 后续增加断网情况下做的一些操作
       //store.commit('networkState', false);
+      return await Promise.reject(response);
     }
   }
 )    
