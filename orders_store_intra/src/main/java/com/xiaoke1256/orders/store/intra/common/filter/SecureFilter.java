@@ -26,6 +26,10 @@ public class SecureFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        if(request.getPathInfo().startsWith("/login")){
+            filterChain.doFilter(servletRequest,servletResponse);
+            return;
+        }
         String token = request.getHeader("Authorization");
         if(StringUtils.isEmpty(token)){
             HttpServletResponse response = (HttpServletResponse)servletResponse;
