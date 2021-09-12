@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.store.intra.login.controller;
 
 import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.exception.InvalidAuthorizationException;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.member.dto.Member;
 import com.xiaoke1256.orders.store.intra.login.bo.UserInfo;
@@ -58,16 +59,13 @@ public class LoginController {
     @PostMapping("refresh")
     public Map<String,Object> refresh(HttpServletRequest request, String refreshToken){
         if(!refreshTokenGenerator.verify(refreshToken)){
-            throw new RuntimeException("校验不通过。");
+            throw new InvalidAuthorizationException("校验不通过。");
         }
         String token = request.getHeader("Authorization");
         String loginName = refreshTokenGenerator.getValue(refreshToken,"loginName");
-        String orgLoginName = loginTokenGenerator.getContent(token);
-        if(!orgLoginName.equals(loginName)){
-            throw new RuntimeException("校验不通过。");
-        }
+
         if(MD5Util.getMD5(token).substring(0,8).equals(refreshTokenGenerator.getValue(refreshToken,"LOGTK_ENCODE"))){
-            throw new RuntimeException("校验不通过。");
+            throw new InvalidAuthorizationException("校验不通过。");
         }
 
         //重新发放token对

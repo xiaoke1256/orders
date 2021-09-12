@@ -117,14 +117,18 @@ axiosInst.interceptors.response.use(
     if (response) {
       // 请求已发出，但是不在2xx的范围 
       if(response.status === 401){  //401特殊处理
-        if(!localStorage.getItem('token') ||  response.config.url.indexOf('/login/refresh?refreshToken=')>0 ){
+        console.log("refresh url:"+response.config.url);
+        console.log("refresh url:"+(response.config.url.indexOf('/login/refresh')>=0));
+        if(!sessionStorage.getItem('token') ||  response.config.url.indexOf('/login/refresh')>=0 ){
+          console.log("refresh url"+response.config.url);
           setTimeout(() => {
             toLogin();
           }, 1000);
           return await Promise.reject(response);
         }
+       
         //调用refresh 获取新的tonken
-        let {refreshToken,token} = await getRefreshToken(localStorage.getItem('refreshToken') as string);
+        let {refreshToken,token} = await getRefreshToken(sessionStorage.getItem('refreshToken') as string);
         //得到新的token后重新发送请求。
         sessionStorage.setItem('token',token);
         sessionStorage.setItem('refreshToken',refreshToken);

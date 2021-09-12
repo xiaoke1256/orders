@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.store.intra.common;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.BusinessException;
+import com.xiaoke1256.orders.common.exception.InvalidAuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseBody
 public class GlobalExceptionHandle {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandle.class);
+
+    @ExceptionHandler(InvalidAuthorizationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public RespMsg handleException(InvalidAuthorizationException e){
+        LOG.error(e.getMessage(),e);
+        return new RespMsg(RespCode.LOGIN_ERROR,e.getMessage());
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
