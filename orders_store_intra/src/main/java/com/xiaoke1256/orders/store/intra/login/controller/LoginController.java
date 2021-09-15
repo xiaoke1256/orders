@@ -64,7 +64,7 @@ public class LoginController {
         String token = request.getHeader("Authorization");
         String loginName = refreshTokenGenerator.getValue(refreshToken,"loginName");
 
-        if(MD5Util.getMD5(token).substring(0,8).equals(refreshTokenGenerator.getValue(refreshToken,"LOGTK_ENCODE"))){
+        if(!MD5Util.getMD5(token).substring(0,8).equals(refreshTokenGenerator.getValue(refreshToken,"LOGTK_ENCODE"))){
             throw new InvalidAuthorizationException("校验不通过。");
         }
 
