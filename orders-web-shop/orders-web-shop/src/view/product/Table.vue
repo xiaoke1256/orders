@@ -1,6 +1,6 @@
 <template>
   <div id="content" >
-    商品列表
+    <Table :columns="productCols" :data="porductList"></Table>
   </div>
 </template>
 <script lang="ts" >
@@ -12,7 +12,21 @@ import {getPorductList} from '@/api/product';
 export default class ProductTable extends Vue {
     public porductList = [] as Product[];
     public async mounted(){
-        this.porductList = await getPorductList();
+      let {resultList} = await getPorductList();
+      this.porductList = resultList;
+    }
+
+    public get productCols(){
+      return [ {
+                title: '商品代码',
+                key: 'productCode'
+            },{
+                title: '商品名称',
+                key: 'productName'
+            },{
+              title: '品牌',
+              key: 'brand'
+            }];
     }
 }
 </script>
