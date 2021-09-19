@@ -1,3 +1,5 @@
+import SearchParms from './index';
+
 export interface Product{
     public productCode:string;
 	public productName:string;
@@ -7,4 +9,10 @@ export interface Product{
 	public productStatus:string;
 	public productIntro:string;
 	public brand:string;
+  }
+
+  export interface ProductSearchParms extends SearchParms{
+	productCode?:string;
+	productName?:string;
+	productTypeName?:string;
   }

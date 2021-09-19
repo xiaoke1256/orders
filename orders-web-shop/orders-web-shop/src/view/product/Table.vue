@@ -6,7 +6,7 @@
 </template>
 <script lang="ts" >
 import { Vue, Component } from 'vue-property-decorator'
-import {Product} from '@/types/product';
+import {Product, ProductSearchParms} from '@/types/product';
 import {getPorductList} from '@/api/product';
 
 @Component({components:{}})
@@ -21,13 +21,16 @@ export default class ProductTable extends Vue {
     }
 
     public async search(){
-      let {totalCount,resultList} = await getPorductList();
+      const parms = {pageNo:this.pageNo,pageSize:this.pageSize} as ProductSearchParms;
+      let {totalCount,resultList} = await getPorductList(parms);
       this.porductList = resultList;
       this.totalCount = totalCount;
     }
 
     public onPageChange(pageNo:number){
+      console.log("pageNo："+pageNo);
       this.pageNo = pageNo;
+      console.log("this.pageNo："+this.pageNo);
       this.search();
     }
 
@@ -38,15 +41,15 @@ export default class ProductTable extends Vue {
 
     public get productCols(){
       return [ {
-                title: '商品代码',
-                key: 'productCode'
-            },{
-                title: '商品名称',
-                key: 'productName'
-            },{
-              title: '品牌',
-              key: 'brand'
-            }];
+            title: '商品代码',
+            key: 'productCode'
+        },{
+            title: '商品名称',
+            key: 'productName'
+        },{
+          title: '品牌',
+          key: 'brand'
+        }];
     }
 }
 </script>
