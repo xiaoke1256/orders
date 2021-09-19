@@ -134,7 +134,7 @@ axiosInst.interceptors.response.use(
         sessionStorage.setItem('refreshToken',refreshToken);
         return await axiosInst.request(response.config);
       }else {
-        errorHandle(response.status, response.data.message);
+        errorHandle(response.status, response.data.msg);
       }
       return await Promise.reject(response);
     } else {
