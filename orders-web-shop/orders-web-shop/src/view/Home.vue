@@ -23,7 +23,7 @@
                     <Icon type="ios-navigate"></Icon>
                     店铺设置
                 </template>
-                <MenuItem name="1-1">我的店铺</MenuItem>
+                <MenuItem name="1-1"><router-link to="/store/index">我的店铺</router-link></MenuItem>
             </Submenu>
             <Submenu name="2">
                 <template slot="title">

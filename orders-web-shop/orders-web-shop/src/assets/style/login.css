@@ -44,7 +44,8 @@
   }
 
   .loginMain{
-    min-height:300px
+    min-height:300px;
+    text-align: center;
   }
 
   .loginMain > div{

@@ -1,5 +1,5 @@
 <template>
-  <div id="content" >
+  <div >
     <Table :columns="productCols" :data="porductList"></Table>
     <Page :total="totalCount" :page-size="pageSize" @on-change="onPageChange" show-sizer show-total transfer />
   </div>
