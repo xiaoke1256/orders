@@ -7,11 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.dto.ProductType;
@@ -49,7 +45,7 @@ public class ProductController implements ProductQueryService {
 	}
 	
 	@RequestMapping(value="/product/search",method=RequestMethod.GET,consumes = "application/json")
-	public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition){
+	public SimpleProductQueryResultResp searchProductByCondition(@RequestBody ProductCondition condition){
 		try {
 			QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
 			ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();

@@ -5,15 +5,12 @@ import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory= ProductQueryFallbackFactory.class,path="product")
 public interface ProductQueryClient extends ProductQueryService {
     @RequestMapping(value="/product/search",method = {RequestMethod.GET},consumes = "application/json")
-    public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition);
+    public SimpleProductQueryResultResp searchProductByCondition(@RequestBody ProductCondition condition);
 
     @GetMapping("/simpleProduct/{productCode}")
     public SimpleProduct getSimpleProductByCode(@PathVariable String productCode);
