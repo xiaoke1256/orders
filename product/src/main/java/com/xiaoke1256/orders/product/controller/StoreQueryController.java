@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.product.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaoke1256.orders.product.bo.StoreMember;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +50,5 @@ public class StoreQueryController implements StoreQueryService {
 		BeanUtils.copyProperties(bo, dto);
 		return dto;
 	}
-	
-	
 
 }

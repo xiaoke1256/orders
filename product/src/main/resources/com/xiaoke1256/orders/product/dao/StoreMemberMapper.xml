@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoke1256.orders.product.dao.StoreMemberDao">
+    <resultMap type="com.xiaoke1256.orders.product.bo.StoreMember" id="storeMemberMap">
+        <id property="storeNo" column="store_no" />
+        <id property="accountNo" column="account_no" />
+        <result property="role" column="role" />
+        <result property="isDefaultStore" column="is_default_store" />
+        <result property="insertTime" column="insert_time" />
+        <result property="updateTime" column="update_time" />
+        <association property="store" column="store_no" select="com.xiaoke1256.orders.product.dao.StoreDaoDao.getByStoreNo"  >
+        </association>
+    </resultMap>
+    
+    <select id="selectByAccountNo" resultMap="storeMemberMap">
+        select store_no,account_no,role,is_default_store,insert_time,update_time from store_member_map
+        where account_no=#{accountNo} order by insert_time
+    </select>
+</mapper>
