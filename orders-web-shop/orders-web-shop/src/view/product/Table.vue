@@ -21,7 +21,7 @@ export default class ProductTable extends Vue {
     }
 
     public async search(){
-      const parms = {pageNo:this.pageNo,pageSize:this.pageSize} as ProductSearchParms;
+      const parms = {pageNo:this.pageNo,pageSize:this.pageSize,needFullTypeName:true} as ProductSearchParms;
       let {totalCount,resultList} = await getPorductList(parms);
       this.porductList = resultList;
       this.totalCount = totalCount;
@@ -49,6 +49,9 @@ export default class ProductTable extends Vue {
         },{
           title: '品牌',
           key: 'brand'
+        },{
+          title: '分类',
+          key: 'fullProductTypeName'
         }];
     }
 }

@@ -15,4 +15,5 @@ export interface Product{
 	productCode?:string;
 	productName?:string;
 	productTypeName?:string;
+	needFullTypeName?:boolean;
   }
