@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.product.controller;
 
 
+import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.dto.StoreMember;
 import com.xiaoke1256.orders.product.service.StoreMemberService;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,8 @@ public class StoreMemberController implements com.xiaoke1256.orders.product.api.
         for(com.xiaoke1256.orders.product.bo.StoreMember bo:bos){
             StoreMember dto = new StoreMember();
             BeanUtils.copyProperties(bo, dto);
+            dto.setStore(new Store());
+            BeanUtils.copyProperties(bo.getStore(),dto.getStore());
             dtos.add(dto);
         }
         return dtos;

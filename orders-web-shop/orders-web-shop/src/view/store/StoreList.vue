@@ -1,8 +1,8 @@
 <template>
   <div >
-    <Collapse v-if="storeWithMembers && storeWithMembers.length>0" v-model="defaultNo">
-      <Panel v-for="storeWithMember in storeWithMembers" :name="storeWithMember.storeNo" :key="storeWithMember.storeNo">
-            {{storeWithMember.store.storeName}}
+    <Collapse v-if="storeMembers && storeMembers.length>0" v-model="defaultNo">
+      <Panel v-for="storeMember in storeMembers" :name="storeMember.storeNo" :key="storeMember.storeNo">
+            {{storeMember.store.storeName}}
             <p slot="content">创建于：2021年10月；店长xxx;您于xxxx年xx月加入本店。</p>
       </Panel>
     </Collapse>
@@ -14,16 +14,16 @@
 <script lang="ts" >
 import { Vue, Component } from 'vue-property-decorator'
 import {getStoresByAccountNo} from '@/api/store'
-import {StoreWithMember} from '@/types/store'
+import {StoreMember} from '@/types/store'
 
 @Component({})
 export default class StoreList extends Vue {
   public defaultNo='';
-  public storeWithMembers:StoreWithMember[]=[];
+  public storeMembers:StoreMember[]=[];
 
   public async mounted(){
       const accountNo = sessionStorage.getItem('loginName')
-      this.storeWithMembers = await getStoresByAccountNo(accountNo as string);
+      this.storeMembers = await getStoresByAccountNo(accountNo as string);
   }
 }
 </script>

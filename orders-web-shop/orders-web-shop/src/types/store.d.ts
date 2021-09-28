@@ -8,7 +8,8 @@ export interface Store{
 	updateTime:string;
 }
 
-export interface StoreWithMember{
+export interface StoreMember{
+	storeMemberId:number;
     storeNo:string;
 	accountNo:string;
 	role:string;

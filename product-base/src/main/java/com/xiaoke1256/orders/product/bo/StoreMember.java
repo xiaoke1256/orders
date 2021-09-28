@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.product.bo;
 import java.sql.Timestamp;
 
 public class StoreMember {
+    private Long storeMemberId;
     private String storeNo;
     private String accountNo;
     private String role;
@@ -10,6 +11,14 @@ public class StoreMember {
     private Timestamp createTime;
     private Timestamp updateTime;
     private Store store;
+
+    public Long getStoreMemberId() {
+        return storeMemberId;
+    }
+
+    public void setStoreMemberId(Long storeMemberId) {
+        this.storeMemberId = storeMemberId;
+    }
 
     public String getStoreNo() {
         return storeNo;

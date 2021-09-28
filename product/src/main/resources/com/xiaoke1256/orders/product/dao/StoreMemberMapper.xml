@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaoke1256.orders.product.dao.StoreMemberDao">
     <resultMap type="com.xiaoke1256.orders.product.bo.StoreMember" id="storeMemberMap">
-        <id property="storeNo" column="store_no" />
-        <id property="accountNo" column="account_no" />
+        <id property="storeMemberId" column="store_member_id" />
+        <result property="storeNo" column="store_no" />
+        <result property="accountNo" column="account_no" />
         <result property="role" column="role" />
         <result property="isDefaultStore" column="is_default_store" />
         <result property="insertTime" column="insert_time" />
