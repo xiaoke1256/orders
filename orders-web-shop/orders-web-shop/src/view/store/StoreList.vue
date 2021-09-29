@@ -9,10 +9,13 @@
     <div v-else>
         你还没有属于你自己的网店。
     </div>
+    <div >
+      <Button @click="add">新开网店</Button>
+    </div>
   </div>
 </template> 
 <script lang="ts" >
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Emit } from 'vue-property-decorator'
 import {getStoresByAccountNo} from '@/api/store'
 import {StoreMember} from '@/types/store'
 
@@ -24,6 +27,11 @@ export default class StoreList extends Vue {
   public async mounted(){
       const accountNo = sessionStorage.getItem('loginName')
       this.storeMembers = await getStoresByAccountNo(accountNo as string);
+  }
+
+  @Emit("exit")
+  public add(){
+
   }
 }
 </script>
