@@ -16,7 +16,11 @@
             </Form-item>
    
             <Form-item label="支付类型">
-              <Select  v-model="store.payType"></Select>
+              <Select  v-model="store.payType">
+                <Option value="001" >支付宝</Option>
+                <Option value="002" >微信支付</Option>
+                <Option value="003" >3rdpay</Option>
+              </Select>
             </Form-item>
 
             <Form-item label="支付账号">
@@ -25,8 +29,8 @@
 
       </Form>
     </div>
-    <div>
-      <Button>保存</Button>
+    <div class="btn-div">
+      <Button type="primary" >保存</Button>
       <Button @click="cancel">返回</Button>
     </div>
   </div>
