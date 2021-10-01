@@ -5,7 +5,7 @@ create table store_member (
     account_no VARCHAR(32) not null comment '会员账号（登录时用）',
     role CHAR(2) comment '角色（1：店长；2：店员）',
     is_default_store CHAR(1) comment '是否默认商店',
-    create_time TIMESTAMP not null  DEFAULT NOW() comment '创建时间',
+    insert_time TIMESTAMP not null  DEFAULT NOW() comment '创建时间',
     update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间',
     primary key(store_member_id)
 ) comment = '店员表';

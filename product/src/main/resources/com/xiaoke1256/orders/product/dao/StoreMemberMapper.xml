@@ -16,7 +16,7 @@
     </resultMap>
     
     <select id="selectByAccountNo" resultMap="storeMemberMap">
-        select store_no,account_no,role,is_default_store,insert_time,update_time from store_member_map
+        select store_no,account_no,role,is_default_store,insert_time,update_time from store_member
         where account_no=#{accountNo} order by insert_time
     </select>
 </mapper>
