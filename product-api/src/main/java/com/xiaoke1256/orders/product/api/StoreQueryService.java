@@ -3,9 +3,11 @@ package com.xiaoke1256.orders.product.api;
 import java.util.List;
 
 import com.xiaoke1256.orders.product.dto.Store;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * 与商铺有关的查询
+ * 与商铺有关的业务
+ * @deprecated  相关业务迁移到 StoreService 中去
  * @author Administrator
  *
  */
@@ -22,4 +24,5 @@ public interface StoreQueryService {
 	 * @return
 	 */
 	public Store getStore(String storeNo);
+
 }

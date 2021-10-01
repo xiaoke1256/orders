@@ -9,4 +9,6 @@ public interface StoreDao {
 	
 	public List<Store> queryAllStores();
 
+	public void saveStore(Store store);
+
 }

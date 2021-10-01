@@ -18,4 +18,5 @@ public class StoreMemberService {
     public List<StoreMember> selectByAccountNo(String accountNo){
         return storeMemberDao.selectByAccountNo(accountNo);
     }
+
 }

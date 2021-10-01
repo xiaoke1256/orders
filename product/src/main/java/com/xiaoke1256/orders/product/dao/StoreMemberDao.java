@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface StoreMemberDao {
     public List<StoreMember> selectByAccountNo(String accountNo);
+
+    public StoreMember getDefaultStore(String accountNo);
+
+    public void saveStoreMember(StoreMember storeMember);
 }

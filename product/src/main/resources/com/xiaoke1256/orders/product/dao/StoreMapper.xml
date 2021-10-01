@@ -12,11 +12,21 @@
 		<result property="insertTime" column="insert_time" />
 		<result property="updateTime" column="update_time" />
 	</resultMap>
+	<sql id="baseColSql">
+		store_no,store_name,store_intro,pay_type,pay_account_no,insert_time,update_time
+	</sql>
 	<select id="getByStoreNo" parameterType="string" resultMap="storeMap" >
-		select store_no,store_name,store_intro,pay_type,pay_account_no,insert_time,update_time from store where store_no=#{id}
+		select 
+		<include refid="baseColSql"></include>
+		from store where store_no=#{id}
 	</select>
 	
 	<select id="queryAllStores" resultMap="storeMap" >
 		select store_no,store_name,store_intro,pay_type,pay_account_no,insert_time,update_time from store 
 	</select>
+
+	<insert id="saveStore">
+        insert into store(<include refid="baseColSql"></include>) values
+		(#{storeNo},#{storeName},#{storeIntro},#{payType},#{payAccountNo},#{insertTime},#{insertTime},#{updateTime})
+	</insert>
 </mapper>

@@ -16,7 +16,17 @@
     </resultMap>
     
     <select id="selectByAccountNo" resultMap="storeMemberMap">
-        select store_no,account_no,role,is_default_store,insert_time,update_time from store_member
+        select store_member_id,store_no,account_no,role,is_default_store,insert_time,update_time from store_member
         where account_no=#{accountNo} order by insert_time
     </select>
+
+    <select id="getDefaultStore" resultMap="storeMemberMap" >
+        select store_member_id,store_no,account_no,role,is_default_store,insert_time,update_time from store_member
+        where account_no=#{accountNo} and is_default_store = '1'
+    </select>
+
+    <insert id="saveStoreMember" >
+        insert into (store_member_id,store_no,account_no,role,is_default_store,insert_time,update_time)
+            values(#{storeMemberId},#{storeNo},#{accountNo},#{role},#{isDefaultStore},#{insertTime},#{updateTime})
+    </insert>
 </mapper>
