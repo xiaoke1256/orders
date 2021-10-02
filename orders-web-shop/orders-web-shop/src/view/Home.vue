@@ -51,9 +51,8 @@
         </Sider>
         <Layout class="mainLayout" >
           <Breadcrumb>
-              <BreadcrumbItem>Home</BreadcrumbItem>
-              <BreadcrumbItem>Components</BreadcrumbItem>
-              <BreadcrumbItem>Layout</BreadcrumbItem>
+              <BreadcrumbItem>主页</BreadcrumbItem>
+              <BreadcrumbItem v-for="(path,idx) in breadcrumPath" :key="idx" >{{path}}</BreadcrumbItem>
           </Breadcrumb>
           <Content>
             <router-view></router-view>
@@ -66,19 +65,67 @@
 </template>
 <script lang="ts" >
 import { Vue, Component } from 'vue-property-decorator'
+import {MenuItem} from '@/types'
+import { Submenu } from 'iview';
 
 @Component({components:{}})
 export default class Home extends Vue {
   public nickName:string|null = '';
 
+  public menus:MenuItem[]=[
+    {menuName:'店铺设置',menuCode:'1',icon:'ios-navigate',children:[{menuName:'我的店铺',menuCode:'1-1',path:'/store/index'}]},
+    {menuName:'我的商品',menuCode:'2',icon:'ios-keypad',children:[{menuName:'商品列表',menuCode:'2-1',path:'/product/index'}]},
+    {menuName:'我的订单',menuCode:'3',icon:'ios-keypad',children:[{menuName:'订单中心',menuCode:'3-1',path:''}]},
+    {menuName:'小数据',menuCode:'4',icon:'ios-analytics',children:[{menuName:'图表 1',menuCode:'4-1',path:''},{menuName:'图表 2',menuCode:'4-2',path:''}]}
+  ] as MenuItem[];
+
+  public currentMenuCode:string='';
+
   public mounted(){
     this.nickName = sessionStorage.getItem('loginName');
+    this.currentMenuCode = '1-1';
   }
 
   public logout(){
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('loginName');
     this.$router.push('/');
+  }
+
+  public get breadcrumPath(){
+    const pathes:string[] = [];
+    let menuCode = this.currentMenuCode;
+    while(menuCode.length>0){
+      const menu = this.findMenu(menuCode,this.menus)
+      if(menu==null){
+        break;
+      }
+      pathes.push(menu.menuName);
+      const index = menuCode.lastIndexOf('-');
+      if(index<0){
+        break;
+      }
+      menuCode = menuCode.substring(0,index);
+    }
+    pathes.reverse();
+    return pathes;
+  }
+
+  private findMenu(menuCode:string,menus:MenuItem[]):MenuItem|null{
+    for(const menu of menus){
+      if(menu.menuCode===menuCode){
+        return menu;
+      }
+    }
+     for(const menu of this.menus){
+       if(menu.children){
+         const subMenu = this.findMenu(menuCode,menu.children);
+         if(subMenu!=null){
+           return subMenu;
+         }
+       }
+     }
+    return null;
   }
 }
 </script>
