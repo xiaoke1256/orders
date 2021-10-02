@@ -22,7 +22,7 @@ const toLogin = () => {
  * 请求失败后的错误统一处理 
  * @param {Number} status 请求失败的状态码
  */
-const errorHandle = (status: number, other: string) => {
+const errorHandle = (status: number,code:string, other: string) => {
   // 状态码判断
   switch (status) {
     // -1: 未登录状态，跳转登录页
@@ -42,7 +42,10 @@ const errorHandle = (status: number, other: string) => {
       message('与服务器失去连接');
       break;
     default:
-      message(other);
+      if(code=='99')
+        message("系统异常!");
+      else
+        message(other);
   }
 }
 
@@ -134,7 +137,7 @@ axiosInst.interceptors.response.use(
         sessionStorage.setItem('refreshToken',refreshToken);
         return await axiosInst.request(response.config);
       }else {
-        errorHandle(response.status, response.data.msg);
+        errorHandle(response.status, response.data.code ,response.data.msg);
       }
       return await Promise.reject(response);
     } else {
