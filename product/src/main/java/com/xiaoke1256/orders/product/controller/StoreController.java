@@ -49,7 +49,7 @@ public class StoreController implements com.xiaoke1256.orders.product.api.StoreS
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public void createStore(@RequestBody Store store, String leaderAccount){
+	public void createStore(@RequestBody Store store,@RequestParam String leaderAccount){
 		com.xiaoke1256.orders.product.bo.Store bo = new com.xiaoke1256.orders.product.bo.Store();
 		BeanUtils.copyProperties(store,bo);
 		storeService.createStore(bo,leaderAccount);

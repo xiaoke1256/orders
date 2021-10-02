@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.common.appcontext;
+package com.xiaoke1256.orders.store.intra.common.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

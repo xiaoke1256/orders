@@ -30,7 +30,7 @@
       </Form>
     </div>
     <div class="btn-div">
-      <Button type="primary" >保存</Button>
+      <Button type="primary" @click="saveStore" >保存</Button>
       <Button @click="cancel">返回</Button>
     </div>
   </div>
@@ -38,16 +38,24 @@
 <script lang="ts" >
 import { Vue, Component,Prop, Emit } from 'vue-property-decorator'
 import {Store} from '@/types/store'
+import {saveStore} from '@/api/store'
 
 @Component({})
 export default class StoreForm extends Vue {
   @Prop(String)
   public storeNo:string='';
 
-  public store:Store={} as Store;
+  public store:Store={payType:'003'} as Store;
 
   public mounted(){
     
+  }
+
+  public async saveStore(){
+    const result = await saveStore(this.store);
+    if(result){
+      this.cancel();
+    }
   }
   
   @Emit("exit")

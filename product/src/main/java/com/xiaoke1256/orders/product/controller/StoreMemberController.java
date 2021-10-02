@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class StoreMemberController implements com.xiaoke1256.orders.product.api.
     private StoreMemberService storeMemberService;
 
     @RequestMapping(value="/byAccountNo",method= RequestMethod.GET)
-    public List<StoreMember> queryStoreMemberByAccountNo(String accountNo){
+    public List<StoreMember> queryStoreMemberByAccountNo(@RequestParam String accountNo){
         List<com.xiaoke1256.orders.product.bo.StoreMember> bos = storeMemberService.selectByAccountNo(accountNo);
         List<StoreMember> dtos = new ArrayList<>();
         for(com.xiaoke1256.orders.product.bo.StoreMember bo:bos){

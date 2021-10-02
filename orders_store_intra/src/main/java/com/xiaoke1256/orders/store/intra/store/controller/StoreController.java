@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.store.intra.store.controller;
 
 import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
+import com.xiaoke1256.orders.store.intra.common.utils.RequestUtil;
 import com.xiaoke1256.orders.store.intra.store.client.StoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +23,7 @@ public class StoreController {
 
     @RequestMapping(method= RequestMethod.POST)
     public Boolean saveStore(HttpServletRequest request, Store store){
-        String token = request.getHeader("Authorization");
-        String loginName = loginTokenGenerator.getContent(token);
+        String loginName = RequestUtil.getLoginName(request);
         storeService.createStore(store,loginName);
         return true;
     }

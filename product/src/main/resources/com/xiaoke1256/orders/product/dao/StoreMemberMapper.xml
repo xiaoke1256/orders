@@ -11,7 +11,7 @@
         <result property="isDefaultStore" column="is_default_store" />
         <result property="insertTime" column="insert_time" />
         <result property="updateTime" column="update_time" />
-        <association property="store" column="store_no" select="com.xiaoke1256.orders.product.dao.StoreDaoDao.getByStoreNo"  >
+        <association property="store" column="store_no" select="com.xiaoke1256.orders.product.dao.StoreDao.getByStoreNo"  >
         </association>
     </resultMap>
     
@@ -26,7 +26,7 @@
     </select>
 
     <insert id="saveStoreMember" >
-        insert into (store_member_id,store_no,account_no,role,is_default_store,insert_time,update_time)
+        insert into store_member (store_member_id,store_no,account_no,role,is_default_store,insert_time,update_time)
             values(#{storeMemberId},#{storeNo},#{accountNo},#{role},#{isDefaultStore},#{insertTime},#{updateTime})
     </insert>
 </mapper>

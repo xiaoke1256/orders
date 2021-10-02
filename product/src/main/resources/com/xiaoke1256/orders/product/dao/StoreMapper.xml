@@ -27,6 +27,6 @@
 
 	<insert id="saveStore">
         insert into store(<include refid="baseColSql"></include>) values
-		(#{storeNo},#{storeName},#{storeIntro},#{payType},#{payAccountNo},#{insertTime},#{insertTime},#{updateTime})
+		(#{storeNo},#{storeName},#{storeIntro},#{payType},#{payAccountNo},#{insertTime},#{updateTime})
 	</insert>
 </mapper>

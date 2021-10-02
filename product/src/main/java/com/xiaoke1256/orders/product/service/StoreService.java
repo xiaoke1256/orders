@@ -53,7 +53,7 @@ public class StoreService {
 		}else{
 			leader.setIsDefaultStore("0");
 		}
-		leader.setCreateTime(new Timestamp(System.currentTimeMillis()));
+		leader.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		leader.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		storeMemberDao.saveStoreMember(leader);
 	}

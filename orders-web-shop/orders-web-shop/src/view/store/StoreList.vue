@@ -1,15 +1,17 @@
 <template>
   <div >
-    <Collapse v-if="storeMembers && storeMembers.length>0" v-model="defaultNo">
-      <Panel v-for="storeMember in storeMembers" :name="storeMember.storeNo" :key="storeMember.storeNo">
+    <div v-if="storeMembers && storeMembers.length>0">
+      <Collapse v-model="defaultNo">
+        <Panel v-for="storeMember in storeMembers" :name="storeMember.storeNo" :key="storeMember.storeNo">
             {{storeMember.store.storeName}}
-            <p slot="content">创建于：2021年10月；店长xxx;您于xxxx年xx月加入本店。</p>
-      </Panel>
-    </Collapse>
+            <p slot="content">您于{{storeMember.store.insertTime}}创建本店。</p>
+        </Panel>
+      </Collapse>
+    </div>
     <div v-else>
         你还没有属于你自己的网店。
     </div>
-    <div >
+    <div class="btn-div" >
       <Button @click="add">新开网店</Button>
     </div>
   </div>

@@ -15,19 +15,6 @@ public class StoreFallbackFactory implements FallbackFactory<StoreClient> {
     @Override
     public StoreClient create(Throwable cause) {
         return new StoreClient() {
-
-            @Override
-            public List<Store> queryAvailableStore() {
-                logger.error("connect fail.by hystrix.",cause);
-                throw new RuntimeException(cause);
-            }
-
-            @Override
-            public Store getStore(String storeNo) {
-                logger.error("connect fail.by hystrix.",cause);
-                throw new RuntimeException(cause);
-            }
-
             @Override
             public void createStore(Store store, String leaderAccount) {
                 logger.error("connect fail.by hystrix.",cause);

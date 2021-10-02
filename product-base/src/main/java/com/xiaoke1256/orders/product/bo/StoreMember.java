@@ -8,7 +8,7 @@ public class StoreMember {
     private String accountNo;
     private String role;
     private String isDefaultStore;
-    private Timestamp createTime;
+    private Timestamp insertTime;
     private Timestamp updateTime;
     private Store store;
 
@@ -60,12 +60,12 @@ public class StoreMember {
         this.store = store;
     }
 
-    public Timestamp getCreateTime() {
-        return createTime;
+    public Timestamp getInsertTime() {
+        return insertTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+    public void setInsertTime(Timestamp insertTime) {
+        this.insertTime = insertTime;
     }
 
     public Timestamp getUpdateTime() {
