@@ -4,7 +4,10 @@
  * @param fmt 
  * @returns 
  */
-export const dateFmt=(date:Date,fmt:string )=>{
+export const dateFmt=(date:Date|string,fmt:string )=>{
+  if(typeof(date)==='string'){
+    date = new Date(date.replace("-","/"));
+  }
   let ret;
   const opt = {
     "Y+": date.getFullYear().toString(),        // 年
