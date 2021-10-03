@@ -9,6 +9,7 @@ import './assets/style/login.css';
 import './assets/style/home.css';
 import './assets/style/style.css';
 import 'iview/dist/styles/iview.css'; 
+import * as filters from './plugin/filters';
 
 Vue.use(iView);
 
@@ -26,5 +27,12 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
+
+
+
+Object.keys(filters).forEach(key=>{
+  Vue.filter(key,(<{[key:string]:Function}>filters)[key])//插入过滤器名和对应方法
+})
+
 
 
