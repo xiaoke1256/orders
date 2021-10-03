@@ -6,16 +6,20 @@
  */
 export const dateFmt=(date:Date|string,fmt:string )=>{
   if(typeof(date)==='string'){
-    date = new Date(date.replace("-","/"));
+    const index = date.indexOf('+');
+    if(index>=0){
+      date = date.substring(0,index);
+    }
+    date = new Date(date.replace("-","/").replace('T',' '));
   }
   let ret;
   const opt = {
-    "Y+": date.getFullYear().toString(),        // 年
-    "m+": (date.getMonth() + 1).toString(),     // 月
+    "y+": date.getFullYear().toString(),        // 年
+    "M+": (date.getMonth() + 1).toString(),     // 月
     "d+": date.getDate().toString(),            // 日
     "H+": date.getHours().toString(),           // 时
-    "M+": date.getMinutes().toString(),         // 分
-    "S+": date.getSeconds().toString()          // 秒
+    "m+": date.getMinutes().toString(),         // 分
+    "s+": date.getSeconds().toString()          // 秒
     // 有其他格式化字符需求可以继续添加，必须转化成字符串
   } as {[key:string]:string};
   for (let k in opt) {

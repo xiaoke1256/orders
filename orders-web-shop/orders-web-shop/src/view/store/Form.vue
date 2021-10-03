@@ -38,17 +38,19 @@
 <script lang="ts" >
 import { Vue, Component,Prop, Emit } from 'vue-property-decorator'
 import {Store} from '@/types/store'
-import {saveStore} from '@/api/store'
+import {saveStore,getStore} from '@/api/store'
 
 @Component({})
 export default class StoreForm extends Vue {
   @Prop(String)
-  public storeNo:string='';
+  public storeNo:string|undefined;
 
   public store:Store={payType:'003'} as Store;
 
-  public mounted(){
-    
+  public async mounted(){
+    if(this.storeNo){
+      this.store = await getStore(this.storeNo);
+    }
   }
 
   public async saveStore(){
