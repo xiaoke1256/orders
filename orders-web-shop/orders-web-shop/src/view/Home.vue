@@ -17,35 +17,15 @@
       </Header>
       <Layout class="mainWithMenu">
         <Sider hide-trigger class="leftMenu">
-          <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-            <Submenu name="1">
+          <Menu active-name="1-2" theme="light" width="auto" :open-names="openMunes">
+            <Submenu v-for="menu in menus" :key="menu.menuCode" :name="menu.menuCode">
                 <template slot="title">
-                    <Icon type="ios-navigate"></Icon>
-                    店铺设置
+                    <Icon :type="menu.icon"></Icon>
+                    {{menu.menuName}}
                 </template>
-                <MenuItem name="1-1"><router-link to="/store/index">我的店铺</router-link></MenuItem>
-            </Submenu>
-            <Submenu name="2">
-                <template slot="title">
-                    <Icon type="ios-keypad"></Icon>
-                    我的商品
-                </template>
-                <MenuItem name="4-1"><router-link to="/product/index">商品列表</router-link></MenuItem>
-            </Submenu>
-            <Submenu name="3">
-                <template slot="title">
-                    <Icon type="ios-keypad"></Icon>
-                    我的订单
-                </template>
-                <MenuItem name="4-1">订单中心</MenuItem>
-            </Submenu>
-            <Submenu name="4">
-                <template slot="title">
-                    <Icon type="ios-analytics"></Icon>
-                    小数据
-                </template>
-                <MenuItem name="4-1">图表 1</MenuItem>
-                <MenuItem name="4-2">图表 2</MenuItem>
+                <MenuItem v-for="subMenu in menu.children" :key="subMenu.menuCode" :name="subMenu.menuCode">
+                  <router-link :to="subMenu.path">{{subMenu.menuName}}</router-link>
+                </MenuItem>
             </Submenu>
           </Menu>
         </Sider>
@@ -66,7 +46,6 @@
 <script lang="ts" >
 import { Vue, Component } from 'vue-property-decorator'
 import {MenuItem} from '@/types'
-import { Submenu } from 'iview';
 
 @Component({components:{}})
 export default class Home extends Vue {
@@ -92,6 +71,9 @@ export default class Home extends Vue {
     this.$router.push('/');
   }
 
+  /**
+   * 面包屑路劲
+   */
   public get breadcrumPath(){
     const pathes:string[] = [];
     let menuCode = this.currentMenuCode;
@@ -109,6 +91,22 @@ export default class Home extends Vue {
     }
     pathes.reverse();
     return pathes;
+  }
+
+  /**
+   * 需要展开的一级菜单
+   */
+  public get openMunes(){
+    console.log("this.currentMenuCode:"+this.currentMenuCode);
+    if(!this.currentMenuCode){
+      return [];
+    }
+    const index = this.currentMenuCode.lastIndexOf('-');
+    if(index<0){
+      return [];
+    }
+    console.log("here:",this.currentMenuCode.substring(0,index));
+    return [this.currentMenuCode.substring(0,index)];
   }
 
   private findMenu(menuCode:string,menus:MenuItem[]):MenuItem|null{
