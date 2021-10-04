@@ -14,6 +14,7 @@ export interface Product{
   export interface ProductSearchParms extends SearchParms{
 	productCode?:string;
 	productName?:string;
+	storeNo?:string;
 	productTypeName?:string;
 	needFullTypeName?:boolean;
   }

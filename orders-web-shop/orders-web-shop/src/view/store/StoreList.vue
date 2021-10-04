@@ -35,8 +35,7 @@ export default class StoreList extends Vue {
   public storeMembers:StoreMember[]=[];
 
   public async mounted(){
-      const accountNo = sessionStorage.getItem('loginName')
-      this.storeMembers = await getStoresByAccountNo(accountNo as string);
+      this.storeMembers = await getStoresByAccountNo();
       for(const storeMember of this.storeMembers){
         if(storeMember.isDefaultStore==='1'){
           this.defaultNo = storeMember.storeNo;
