@@ -17,10 +17,10 @@
       </Header>
       <Layout class="mainWithMenu">
         <Sider hide-trigger class="leftMenu">
-          <Menu active-name="1-2" theme="light" width="auto" :open-names="openMunes">
+          <Menu active-name="1-2" theme="light" width="auto" :open-names="openMunes" @on-select="changeCurrent">
             <Submenu v-for="menu in menus" :key="menu.menuCode" :name="menu.menuCode">
                 <template slot="title">
-                    <Icon :type="menu.icon"></Icon>
+                    <Icon :type="menu.icon"/>
                     {{menu.menuName}}
                 </template>
                 <MenuItem v-for="subMenu in menu.children" :key="subMenu.menuCode" :name="subMenu.menuCode">
@@ -63,6 +63,7 @@ export default class Home extends Vue {
   public mounted(){
     this.nickName = sessionStorage.getItem('loginName');
     this.currentMenuCode = '1-1';
+    this.setPpenMunes();
   }
 
   public logout(){
@@ -72,13 +73,13 @@ export default class Home extends Vue {
   }
 
   /**
-   * 面包屑路劲
+   * 面包屑路径
    */
   public get breadcrumPath(){
     const pathes:string[] = [];
     let menuCode = this.currentMenuCode;
     while(menuCode.length>0){
-      const menu = this.findMenu(menuCode,this.menus)
+      const menu = this.findMenu(menuCode,this.menus);
       if(menu==null){
         break;
       }
@@ -96,17 +97,18 @@ export default class Home extends Vue {
   /**
    * 需要展开的一级菜单
    */
-  public get openMunes(){
-    console.log("this.currentMenuCode:"+this.currentMenuCode);
+  public openMunes:string[]=[];
+  public setPpenMunes(){
     if(!this.currentMenuCode){
-      return [];
+      this.openMunes = [];
+      return;
     }
     const index = this.currentMenuCode.lastIndexOf('-');
     if(index<0){
-      return [];
+      this.openMunes = [];
+      return;
     }
-    console.log("here:",[this.currentMenuCode.substring(0,index)]);
-    return [this.currentMenuCode.substring(0,index)];
+    this.openMunes =  [this.currentMenuCode.substring(0,index)];
   }
 
   private findMenu(menuCode:string,menus:MenuItem[]):MenuItem|null{
@@ -115,8 +117,8 @@ export default class Home extends Vue {
         return menu;
       }
     }
-     for(const menu of this.menus){
-       if(menu.children){
+     for(const menu of menus){
+       if(menu.children && menu.children.length>0){
          const subMenu = this.findMenu(menuCode,menu.children);
          if(subMenu!=null){
            return subMenu;
@@ -124,6 +126,10 @@ export default class Home extends Vue {
        }
      }
     return null;
+  }
+
+  public changeCurrent(currentCode:string){
+    this.currentMenuCode = currentCode;
   }
 }
 </script>
