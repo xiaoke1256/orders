@@ -26,6 +26,12 @@ public class StoreFallbackFactory implements FallbackFactory<StoreClient> {
                 logger.error("connect fail.by hystrix.",cause);
                 throw new RuntimeException(cause);
             }
+
+            @Override
+            public void updateStore(Store store) {
+                logger.error("connect fail.by hystrix.",cause);
+                throw new RuntimeException(cause);
+            }
         };
     }
 }

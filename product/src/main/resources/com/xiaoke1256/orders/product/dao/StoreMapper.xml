@@ -29,4 +29,40 @@
         insert into store(<include refid="baseColSql"></include>) values
 		(#{storeNo},#{storeName},#{storeIntro},#{payType},#{payAccountNo},#{insertTime},#{updateTime})
 	</insert>
+
+	<update id="updateStore">
+		update store
+		set
+		  store_name=#{storeName},
+		  store_intro=#{storeIntro},
+		  pay_type=#{payType},
+		  pay_account_no=#{payAccountNo},
+		  insert_time=#{insertTime},
+		  update_time=#{updateTime}
+		where store_no = #{storeNo}
+	</update>
+	<update id="updateStoreSelective">
+		update store
+		<set>
+		  <if test="storeName!=null">
+		    store_name=#{storeName},
+		  </if>
+		  <if test="storeIntro!=null">
+		    store_intro=#{storeIntro},
+		  </if>
+		  <if test="payType!=null">
+		    pay_type=#{payType},
+		  </if>
+		  <if test="payAccountNo!=null">
+		    pay_account_no=#{payAccountNo},
+		  </if>
+		  <if test="insertTime!=null">
+		    insert_time=#{insertTime},
+		  </if>
+		  <if test="updateTime!=null">
+		    update_time=#{updateTime},
+		  </if>
+		</set>
+		where store_no = #{storeNo}
+	</update>
 </mapper>

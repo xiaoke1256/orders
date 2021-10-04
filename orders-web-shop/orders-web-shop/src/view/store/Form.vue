@@ -38,7 +38,7 @@
 <script lang="ts" >
 import { Vue, Component,Prop, Emit } from 'vue-property-decorator'
 import {Store} from '@/types/store'
-import {saveStore,getStore} from '@/api/store'
+import {saveStore,getStore,updateStore} from '@/api/store'
 
 @Component({})
 export default class StoreForm extends Vue {
@@ -50,11 +50,21 @@ export default class StoreForm extends Vue {
   public async mounted(){
     if(this.storeNo){
       this.store = await getStore(this.storeNo);
+      this.store.insertTime = undefined;
+      this.store.updateTime = undefined;
     }
   }
 
   public async saveStore(){
-    const result = await saveStore(this.store);
+    let result = false;
+    if(this.storeNo){
+      //修改
+      result = await updateStore(this.store);
+    }else{
+      //新增
+      result = await saveStore(this.store);
+    }
+    
     if(result){
       this.cancel();
     }

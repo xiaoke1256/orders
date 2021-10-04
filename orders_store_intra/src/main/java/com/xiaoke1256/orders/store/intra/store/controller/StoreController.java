@@ -35,4 +35,11 @@ public class StoreController {
         //TODO 检查一下storeMember表里是否有,且成员是本人。
         return dto;
     }
+
+    @RequestMapping(value="/{storeNo}",method=RequestMethod.PUT)
+    public Boolean saveStore(@PathVariable("storeNo") String storeNo,Store store) {
+        store.setStoreNo(storeNo);
+        storeService.updateStore(store);
+        return true;
+    }
 }

@@ -55,4 +55,11 @@ public class StoreController implements com.xiaoke1256.orders.product.api.StoreS
 		storeService.createStore(bo,leaderAccount);
 	}
 
+	@RequestMapping(method=RequestMethod.PUT)
+	public void updateStore(@RequestBody Store store){
+		com.xiaoke1256.orders.product.bo.Store bo = new com.xiaoke1256.orders.product.bo.Store();
+		BeanUtils.copyProperties(store,bo);
+		storeService.updateStore(bo);
+	}
+
 }

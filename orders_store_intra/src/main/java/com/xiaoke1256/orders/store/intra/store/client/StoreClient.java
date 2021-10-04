@@ -13,4 +13,7 @@ public interface StoreClient {
 
     @RequestMapping(value="/store/{storeNo}",method=RequestMethod.GET,consumes = MediaType.APPLICATION_JSON_VALUE)
     public Store getStore(@PathVariable("storeNo") String storeNo);
+
+    @RequestMapping(value="/store",method=RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateStore(@RequestBody Store store);
 }

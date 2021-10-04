@@ -1,6 +1,7 @@
 package com.xiaoke1256.orders.product.api;
 
 import com.xiaoke1256.orders.product.dto.Store;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -28,5 +29,11 @@ public interface StoreService {
      * @param store
      * @param leaderAccount
      */
-    public void createStore(@RequestBody Store store, String leaderAccount);
+    public void createStore(Store store, String leaderAccount);
+
+    /**
+     * 修改一个店铺
+     * @param store
+     */
+    public void updateStore(Store store);
 }

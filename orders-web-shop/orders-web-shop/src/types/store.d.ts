@@ -4,8 +4,8 @@ export interface Store{
 	storeIntro:string;
 	payType:string;
 	payAccountNo:string;
-	insertTime:string;
-	updateTime:string;
+	insertTime?:string;
+	updateTime?:string;
 }
 
 export interface StoreMember{

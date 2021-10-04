@@ -11,4 +11,8 @@ public interface StoreDao {
 
 	public void saveStore(Store store);
 
+	public void updateStore(Store store);
+
+	public void updateStoreSelective(Store store);
+
 }

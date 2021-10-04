@@ -70,4 +70,14 @@ public class StoreService {
 		storeNo.append(yearMonth).append(nanoSecode%10000);
         return storeNo.toString();
 	}
+
+	/**
+	 * 保存一个店铺
+	 * @param store
+	 */
+	public void updateStore(Store store){
+		store.setInsertTime(null);
+		store.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		storeDao.updateStoreSelective(store);
+	}
 }

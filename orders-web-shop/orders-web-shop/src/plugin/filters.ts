@@ -5,6 +5,9 @@
  * @returns 
  */
 export const dateFmt=(date:Date|string,fmt:string )=>{
+  if(date===undefined||date===null||date===''){
+    return '';
+  }
   if(typeof(date)==='string'){
     const index = date.indexOf('+');
     if(index>=0){
