@@ -37,6 +37,16 @@ public class ProductController implements ProductQueryService {
 		copyProperties(dto,product);
 		return dto;
 	}
+
+	/**
+	 * 修改上下架状态
+	 * @param productCode
+	 * @return
+	 */
+	@PostMapping("/product/{productCode}/switchShfs")
+	public void switchShelves(@PathVariable("productCode") String productCode,@RequestParam String onOrOff) {
+		productService.switchOnShf(productCode,onOrOff);
+	}
 	
 	@GetMapping("/simpleProduct/{productCode}")
 	public SimpleProduct getSimpleProductByCode(@PathVariable String productCode) {
@@ -48,13 +58,13 @@ public class ProductController implements ProductQueryService {
 	public SimpleProductQueryResultResp searchProductByCondition(@RequestBody ProductCondition condition){
 		try {
 			QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);
-			ArrayList<SimpleProduct> dtoList = new ArrayList<SimpleProduct>();
+			ArrayList<SimpleProduct> dtoList = new ArrayList<>();
 			for(com.xiaoke1256.orders.product.bo.Product product:result.getResultList()) {
 				SimpleProduct dto = new SimpleProduct();
 				copyProperties(dto,product,condition.isNeedFullTypeName());
 				dtoList.add(dto);
 			}
-			QueryResult<SimpleProduct> newRet = new QueryResult<SimpleProduct>();
+			QueryResult<SimpleProduct> newRet = new QueryResult<>();
 			newRet.setPageNo(result.getPageNo());
 			newRet.setPageSize(result.getPageSize());
 			newRet.setTotalCount(result.getTotalCount());
@@ -74,7 +84,7 @@ public class ProductController implements ProductQueryService {
 		BeanUtils.copyProperties(product.getStore(), store);
 		dto.setStore(store);
 		
-		List<ProductType> types = new ArrayList<ProductType>();
+		List<ProductType> types = new ArrayList<>();
 		if(product.getProductTypes()!=null)
 			for(com.xiaoke1256.orders.product.bo.ProductType productType:product.getProductTypes()) {
 				ProductType typeDto = new ProductType();
@@ -83,7 +93,7 @@ public class ProductController implements ProductQueryService {
 			}
 		dto.setProductTypes(types);
 		
-		ArrayList<ProductParam> paramDtos = new ArrayList<ProductParam>();
+		ArrayList<ProductParam> paramDtos = new ArrayList<>();
 		if(product.getParams()!=null)
 			for(com.xiaoke1256.orders.product.bo.ProductParam param:product.getParams()) {
 				ProductParam paramDto = new ProductParam();

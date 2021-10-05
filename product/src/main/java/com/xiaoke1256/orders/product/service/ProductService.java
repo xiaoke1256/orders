@@ -1,7 +1,11 @@
 package com.xiaoke1256.orders.product.service;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
+import com.xiaoke1256.orders.common.RespCode;
+import com.xiaoke1256.orders.common.exception.AppException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +29,8 @@ public class ProductService {
 	
 	/**
 	 * 搜索商品
-	 * @param condition
-	 * @return
+	 * @param condition 搜索条件
+	 * @return 搜索结果
 	 */
 	@Transactional(readOnly=true)
 	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
@@ -63,5 +67,26 @@ public class ProductService {
 	 */
 	public void closeSecKill(String productCode) {
 		productDao.updateSecKill(productCode, "0");
+	}
+
+	/**
+	 * 上线或下线
+	 * @param productCode 商品编号
+	 * @param onOrOff 上架或下架
+	 */
+	public void switchOnShf(String productCode,String onOrOff){
+		if("on".equalsIgnoreCase(onOrOff)){
+		    onOrOff = "1";
+		}else if("off".equalsIgnoreCase(onOrOff)){
+			onOrOff = "0";
+		}
+		if(!Arrays.asList("1","0").contains(onOrOff)){
+			throw new AppException(RespCode.WRONG_PARAMTER_ERROR.getCode(),"onOrOff 参数只能为 on 或 off");
+		}
+		Product p = new Product();
+		p.setProductCode(productCode);
+		p.setProductStatus(onOrOff);
+		p.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		productDao.updateBySelective(p);
 	}
 }
