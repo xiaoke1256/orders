@@ -28,6 +28,7 @@ import {Product, ProductSearchParms} from '@/types/product';
 import {Store} from '@/types/store';
 import {getPorductList} from '@/api/product';
 import {getStoresByAccountNo} from '@/api/store';
+import {Switch} from 'iview';
 
 @Component({components:{}})
 export default class ProductTable extends Vue {
@@ -90,6 +91,13 @@ export default class ProductTable extends Vue {
           render:(h:any,params:any)=>{
             const p = <Product>params.row;
             return h('div',{},p.productPrice/1000);
+          }
+        },{
+          title: '上下架',
+          key: 'productStatus',
+          render:(h:any,params:any)=>{
+            const p = <Product>params.row;
+            return h(Switch,{props:{ "size":"large","trueValue":"1","falseValue":"0","value":p.productStatus}},[h('span',{slot:"open"},'上架'),h('span',{slot:"close"},'下架')]);
           }
         }];
     }
