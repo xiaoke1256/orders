@@ -26,7 +26,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import {Product, ProductSearchParms} from '@/types/product';
 import {Store} from '@/types/store';
-import {getPorductList} from '@/api/product';
+import {getPorductList,switchOnShef} from '@/api/product';
 import {getStoresByAccountNo} from '@/api/store';
 import {Switch} from 'iview';
 
@@ -97,7 +97,23 @@ export default class ProductTable extends Vue {
           key: 'productStatus',
           render:(h:any,params:any)=>{
             const p = <Product>params.row;
-            return h(Switch,{props:{ "size":"large","trueValue":"1","falseValue":"0","value":p.productStatus}},[h('span',{slot:"open"},'上架'),h('span',{slot:"close"},'下架')]);
+            return h(Switch,
+              {
+                props:{ 
+                  "size":"large",
+                  "trueValue":"1",
+                  "falseValue":"0",
+                  "value":p.productStatus,
+                  "beforeChange":()=>{
+                    return switchOnShef(p.productCode,p.productStatus=='1'?'0':'1')
+                  }
+                }
+              },
+              [
+                h('span',{slot:"open"},'上架'),
+                h('span',{slot:"close"},'下架')
+              ]
+            );
           }
         }];
     }

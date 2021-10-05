@@ -49,7 +49,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/product/{productCode}/switchShfs")
+    @PostMapping("{productCode}/switchShfs")
     public Boolean switchShfs(@PathVariable("productCode") String productCode, String onOrOff){
         productService.switchShelves(productCode,onOrOff);
         return true;

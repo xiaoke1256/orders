@@ -88,16 +88,16 @@
    	  update PRODUCT set in_seckill=#{arg1} where product_code=#{arg0}
    </update>
 
-  <update id="updateBySelective">
+  <update id="updateBySelective" parameterType="com.xiaoke1256.orders.product.bo.Product">
     update PRODUCT
     <set>
-      <if test="productCode!=null">
-        product_code = #{productName},
+      <if test="productName!=null">
+        product_name = #{productName},
       </if>
       <if test="productPrice!=null">
         product_price = #{productPrice},
       </if>
-      <if test="storeNo!=null">
+      <if test="store!=null and store.storeNo!=null">
         store_no = #{storeNo},
       </if>
       <if test="inSeckill!=null">
@@ -116,6 +116,6 @@
         update_time = #{updateTime},
       </if>
     </set>
-    where product_code=#{productCode},
+    where product_code=#{productCode}
   </update>
 </mapper>

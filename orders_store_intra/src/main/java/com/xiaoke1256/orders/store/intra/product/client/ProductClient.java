@@ -9,6 +9,6 @@ public interface ProductClient {
      * 修改上下架状态
      * @param productCode 商品编号
      */
-    @RequestMapping(path="/product/{productCode}/switchShfs",method = {RequestMethod.GET})
+    @RequestMapping(path="/product/{productCode}/switchShfs",method = {RequestMethod.POST})
     void switchShelves(@PathVariable("productCode") String productCode, @RequestParam String onOrOff);
 }
