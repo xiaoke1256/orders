@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    active: peer1,dev
+  application:
+    name: orders-gateway
