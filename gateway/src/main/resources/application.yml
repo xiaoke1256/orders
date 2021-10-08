@@ -3,3 +3,12 @@ spring:
     active: peer1,dev
   application:
     name: orders-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: store_intra
+          uri: lb://orders_store_intra
+          order: 0
+          predicates:
+          - Path=/store_intra/**
+          filters:
