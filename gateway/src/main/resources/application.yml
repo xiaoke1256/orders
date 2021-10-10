@@ -8,7 +8,26 @@ spring:
       routes:
         - id: store_intra
           uri: lb://orders_store_intra
-          order: 0
+          #order: 0
           predicates:
-          - Path=/store_intra/**
-          filters:
+            - Path=/store_intra/**
+          #filters:
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8761/discovery/eureka/,http://peer2:8762/discovery/eureka/
+    healthcheck:
+      enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000
