@@ -7,7 +7,7 @@ spring:
     gateway:
       routes:
         - id: store_intra
-          uri: lb://orders_store_intra
+          uri: lb://orders-store-intra
           #order: 0
           predicates:
             - Path=/store_intra/**
