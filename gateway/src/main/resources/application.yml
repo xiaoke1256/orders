@@ -31,3 +31,13 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 15000
+---
+spring:
+  profiles: peer1
+server:
+  port: 8763
+---
+spring:
+  profiles: peer2
+server:
+  port: 8764
