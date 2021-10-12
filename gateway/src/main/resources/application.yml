@@ -7,11 +7,40 @@ spring:
     gateway:
       routes:
         - id: store_intra
-          uri: lb://orders-store-intra
+          uri: ${remote.serviceUri.product}
           #order: 0
           predicates:
             - Path=/store_intra/**
           #filters:
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000
+---
+# peer1
+spring:
+  profiles: peer1
+server:
+  port: 8763
+---
+# peer2
+spring:
+  profiles: peer2
+server:
+  port: 8764
+
+---
+# 测试和生产环境
+spring:
+  profiles: test,prod
+#bus-api
+remote:
+  serviceUri:
+    product: lb://orders-store-intra
 
 eureka:
   client:
@@ -24,20 +53,15 @@ eureka:
     lease-expiration-duration-in-seconds: 30
     lease-renewal-interval-in-seconds: 10
 
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 15000
 ---
+# 开发环境
 spring:
-  profiles: peer1
-server:
-  port: 8763
----
-spring:
-  profiles: peer2
-server:
-  port: 8764
+  profiles: dev
+#bus-api
+remote:
+  serviceUri:
+    product: http://localhost:8083/store_intra
+
+eureka:
+  client:
+    enabled: false
