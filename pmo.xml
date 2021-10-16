@@ -11,5 +11,11 @@
 
     <modules>
         <module>orders_store_intra</module>
+        <module>product</module>
+        <module>discovery-eureka</module>
+        <module>gateway</module>
+        <module>orders</module>
+        <module>orders-task</module>
+        <module>3rdPay</module>
     </modules>
 </project>
