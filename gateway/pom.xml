@@ -58,6 +58,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId> spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xiaoke_1256.orders</groupId>
+            <artifactId>orders-common</artifactId>
+            <version>1.2.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

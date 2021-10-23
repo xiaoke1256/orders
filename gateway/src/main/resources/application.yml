@@ -11,7 +11,8 @@ spring:
           #order: 0
           predicates:
             - Path=/store_intra/**
-          #filters:
+          filters:
+            - Auth=true
 
 hystrix:
   command:
