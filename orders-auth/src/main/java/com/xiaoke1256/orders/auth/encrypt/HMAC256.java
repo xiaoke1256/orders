@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.store.intra.common.encrypt;
+package com.xiaoke1256.orders.auth.encrypt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -15,7 +15,12 @@ import java.util.Random;
 public class HMAC256 {
 
     //设置过期时间
-    private long expireDate=30*60*1000;
+    private long expireDate;
+
+    {
+        expireDate = 30 * 60 * 1000;
+    }
+
     //token秘钥
     private String tokenSecret = "XIAOKE1256JBFJH2021BQWE";
 

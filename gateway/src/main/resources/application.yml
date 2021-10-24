@@ -5,6 +5,7 @@ spring:
     name: orders-gateway
   cloud:
     gateway:
+      enabled: true
       routes:
         - id: store_intra
           uri: ${remote.serviceUri.product}
@@ -21,6 +22,7 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 15000
+
 ---
 # peer1
 spring:

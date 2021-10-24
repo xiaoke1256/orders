@@ -1,6 +1,6 @@
 package com.xiaoke1256.orders.store.intra.common.utils;
 
-import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
+import com.xiaoke1256.orders.auth.encrypt.HMAC256;
 
 import javax.servlet.http.HttpServletRequest;
 

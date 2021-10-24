@@ -1,7 +1,6 @@
 package com.xiaoke1256.orders.store.intra;
 
 //import org.mybatis.spring.annotation.MapperScan;
-import com.xiaoke1256.orders.store.intra.common.encrypt.HMAC256;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,21 +18,11 @@ import org.springframework.context.annotation.Bean;
 @EnableCircuitBreaker
 @EnableDiscoveryClient
 @EnableFeignClients
-@SpringBootApplication(scanBasePackages="com.xiaoke1256.orders.store.intra",exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages={"com.xiaoke1256.orders.store.intra","com.xiaoke1256.orders.auth"},
+        exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class SpringbootApplication extends SpringBootServletInitializer {
 
-    @Value("${login.token.secret}")
-    private String loginSecret;
-
-    @Value("${login.session.expired}")
-    private String loginExpireExp;
-
-    @Value("${login.token.refresh_secret}")
-    private String refreshSecret;
-
-    @Value("${login.session.refresh_expired}")
-    private String refreshExpireExp;
 
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -46,28 +35,6 @@ public class SpringbootApplication extends SpringBootServletInitializer {
         }catch(Throwable t){
 	        t.printStackTrace();
         }
-    }
-
-    @Bean
-    public HMAC256 loginTokenGenerator(){
-	    //目前只支持计算乘法
-        String[] eles = loginExpireExp.replace(" ", "").split("\\*");
-        long result = 1l;
-        for(String ele:eles){
-            result *= Integer.parseInt(ele);
-        }
-	    return new HMAC256(result,loginSecret);
-    }
-
-    @Bean
-    public HMAC256 refreshTokenGenerator(){
-        //目前只支持计算乘法
-        String[] eles = refreshExpireExp.replace(" ", "").split("\\*");
-        long result = 1l;
-        for(String ele:eles){
-            result *= Integer.parseInt(ele);
-        }
-        return new HMAC256(result,refreshSecret);
     }
 
 }
