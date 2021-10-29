@@ -7,16 +7,16 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanConfig {
-    @Value("${login.token.secret}")
+    @Value("${login.token.secret:XIAOKE1256JGRTY2021BQWE}")
     private String loginSecret;
 
-    @Value("${login.session.expired}")
+    @Value("${login.session.expired:30*60*1000}")
     private String loginExpireExp;
 
-    @Value("${login.token.refresh_secret}")
+    @Value("${login.token.refresh_secret:XIAOKE1256UUERO2021BQWE}")
     private String refreshSecret;
 
-    @Value("${login.session.refresh_expired}")
+    @Value("${login.session.refresh_expired:45*60*1000}")
     private String refreshExpireExp;
 
     @Bean
