@@ -1,8 +1,0 @@
-#bussiness
-login:
-  token:
-    secret: XIAOKE1256JGRTY2021BQWE
-    refresh_secret: XIAOKE1256UUERO2021BQWE
-  session:
-    expired: 30*60*1000
-    refresh_expired: 45*60*1000

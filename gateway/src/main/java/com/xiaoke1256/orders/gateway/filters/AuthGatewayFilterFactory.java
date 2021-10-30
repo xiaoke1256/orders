@@ -39,7 +39,8 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Objec
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
             LOG.info("RequestURI:"+request.getURI());
-            if(request.getURI().getPath().startsWith("/login")){
+            String path = request.getURI().getPath();
+            if(path.substring(path.indexOf("/",1)).startsWith("/login")){
                 return chain.filter(exchange);
             }
             String token = request.getHeaders().getFirst("Authorization");

@@ -4,8 +4,10 @@ import com.xiaoke1256.orders.auth.encrypt.HMAC256;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource(value={"classpath:authConfig.yml"})
 public class BeanConfig {
     @Value("${login.token.secret:XIAOKE1256JGRTY2021BQWE}")
     private String loginSecret;
