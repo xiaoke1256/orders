@@ -1,24 +1,27 @@
 package com.xiaoke1256.orders.auth.components;
 
 import com.xiaoke1256.orders.auth.encrypt.HMAC256;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 @Configuration
 @PropertySource(value={"classpath:authConfig.yml"})
 public class BeanConfig {
-    @Value("${login.token.secret:XIAOKE1256JGRTY2021BQWE}")
+    
+    @Value("${login.token.secret}")
     private String loginSecret;
 
-    @Value("${login.session.expired:30*60*1000}")
+    @Value("${login.session.expired}")
     private String loginExpireExp;
 
-    @Value("${login.token.refresh_secret:XIAOKE1256UUERO2021BQWE}")
+    @Value("${login.token.refresh_secret}")
     private String refreshSecret;
 
-    @Value("${login.session.refresh_expired:45*60*1000}")
+    @Value("${login.session.refresh_expired}")
     private String refreshExpireExp;
 
     @Bean
