@@ -5,9 +5,9 @@
   "author": "xiaoke_1256 <xiaoke_1256@sina.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "cross-env NODE_PACK=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "cross-env NODE_PACK=production node build/build.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -21,6 +21,7 @@
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
+    "@types/node": "^16.11.6",
     "@types/qs": "^6.9.7",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
@@ -33,6 +34,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
