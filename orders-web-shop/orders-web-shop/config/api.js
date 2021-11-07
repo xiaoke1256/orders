@@ -5,7 +5,7 @@ switch(process.env.NODE_PACK) {
     apiUrl = '"http://peer1:8763/store_intra"';
     break;
   default:
-    apiUrl = '"http://localhost:8763/store_intra"';
+    apiUrl = '"api"';
     break;
 }
 module.exports = apiUrl
