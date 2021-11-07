@@ -13,7 +13,7 @@ spring:
           predicates:
             - Path=/store_intra/**
           filters:
-            - Auth=true
+            - Auth
 
 hystrix:
   command:

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@PropertySource(value={"classpath:authConfig.yml"})
 public class BeanConfig {
     
     @Value("${login.token.secret}")
