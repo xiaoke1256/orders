@@ -44,6 +44,8 @@ const errorHandle = (status: number,code:string, other: string) => {
     default:
       if(code=='99')
         message("系统异常!");
+      else if(code=='80')
+        Vue.prototype.$Notice.error({title:'操作异常',desc:other});
       else
         message(other);
   }
@@ -111,6 +113,10 @@ axiosInst.interceptors.response.use(
   // 请求成功
   res => {
     Vue.prototype.$Loading.finish();
+    console.log("res.config.method:"+res.config.method);
+    if(res.config.method && res.config.method.toLowerCase()!=='get'){
+      Vue.prototype.$Notice.success({title:'操作成功。'});
+    }
     return Promise.resolve(res);
   },
   // 请求失败
