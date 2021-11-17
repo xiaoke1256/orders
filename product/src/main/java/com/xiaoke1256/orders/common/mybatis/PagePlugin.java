@@ -38,7 +38,10 @@ public class PagePlugin implements Interceptor {
                     }
                     String sql = (String)metaStamtHandler.getValue("delegate.boundSql.sql");
                     sql = sql.trim();
+                    String countSql = "select count(*) from ("+sql+")";
+                    //获取
                     String pageSql = sql+" limit #{firstIndex},#{pageSize}";
+                    metaStamtHandler.setValue("delegate.boundSql.sql",pageSql);
                     return invocation.proceed();
                 }
             }
