@@ -5,7 +5,6 @@ import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
@@ -21,7 +20,7 @@ import java.util.Properties;
 /**
  * 分页插件
  */
-@Intercepts({@Signature(type= StatementHandler.class,method = "prepare",args={Connection.class})})
+@Intercepts({@Signature(type= StatementHandler.class,method = "prepare",args={Connection.class,Integer.class})})
 public class PagePlugin implements Interceptor {
 
     @Override

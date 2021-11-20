@@ -34,11 +34,8 @@ public class ProductService {
 	 */
 	@Transactional(readOnly=true)
 	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
-		Integer count = productDao.countByCondition(condition);
-		if(count==null)
-			count=0;
-		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),count);
 		List<Product> pList = productDao.queryByCondition(condition);
+		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),condition.getTotal());
 		result.setResultList(pList);
 		return result;
 	}

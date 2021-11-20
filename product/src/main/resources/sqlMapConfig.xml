@@ -12,4 +12,7 @@
 	    <!--关闭积极加载-->
 	    <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
+    <plugins>
+        <plugin interceptor="com.xiaoke1256.orders.common.mybatis.PagePlugin"></plugin>
+    </plugins>
 </configuration>
