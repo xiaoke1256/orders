@@ -5,7 +5,6 @@ import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
@@ -21,7 +20,7 @@ import java.util.Properties;
 /**
  * 分页插件
  */
-@Intercepts({@Signature(type= StatementHandler.class,method = "prepare",args={Connection.class})})
+@Intercepts({@Signature(type= StatementHandler.class,method = "prepare",args={Connection.class,Integer.class})})
 public class PagePlugin implements Interceptor {
 
     @Override
@@ -48,7 +47,7 @@ public class PagePlugin implements Interceptor {
             return invocation.proceed();
         }
         int total = 0;
-        String countSql = "select count(*) from ("+sql+") $_paging_table";
+        String countSql = "select count(*) as total from ("+sql+") $_paging_table";
         Connection conn = (Connection)invocation.getArgs()[0];
         MappedStatement mappedStatement = (MappedStatement) metaStamtHandler.getValue("delegate.mappedStatement");
         BoundSql boundSql = (BoundSql) metaStamtHandler.getValue("delegate.boundSql");
@@ -66,7 +65,7 @@ public class PagePlugin implements Interceptor {
         //获取分页SQL
         int getPageNo = Math.max(pageParamter.getPageNo(),1);
         int pageSize = pageParamter.getPageSize();
-        String pageSql = String.format(sql+" limit %d,%d",pageSize,(getPageNo-1)*pageSize);
+        String pageSql = sql+" limit "+pageSize+ "," +(getPageNo-1)*pageSize;
         metaStamtHandler.setValue("delegate.boundSql.sql",pageSql);
         return invocation.proceed();
     }

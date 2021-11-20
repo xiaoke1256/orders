@@ -3,10 +3,10 @@ package com.xiaoke1256.orders.product.dao;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 import org.apache.ibatis.annotations.Param;
 
 import com.xiaoke1256.orders.product.bo.Product;
-import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 public interface ProductDao {

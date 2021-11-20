@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.dao.ProductDao;
-import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
 @Service
@@ -34,11 +34,8 @@ public class ProductService {
 	 */
 	@Transactional(readOnly=true)
 	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
-		Integer count = productDao.countByCondition(condition);
-		if(count==null)
-			count=0;
-		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),count);
 		List<Product> pList = productDao.queryByCondition(condition);
+		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),condition.getTotal());
 		result.setResultList(pList);
 		return result;
 	}

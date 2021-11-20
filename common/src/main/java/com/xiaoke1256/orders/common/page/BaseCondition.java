@@ -12,6 +12,8 @@ public abstract class BaseCondition implements Serializable {
 	
 	private int pageSize=10;
 
+	private int total = 0;
+
 	public int getPageNo() {
 		return pageNo;
 	}
@@ -27,6 +29,12 @@ public abstract class BaseCondition implements Serializable {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	
-	
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
 }

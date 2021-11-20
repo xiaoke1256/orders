@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.product.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaoke1256.orders.product.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -10,14 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
-import com.xiaoke1256.orders.product.dto.ProductType;
-import com.xiaoke1256.orders.product.dto.SimpleProduct;
-import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
-import com.xiaoke1256.orders.product.dto.ProductParam;
 import com.xiaoke1256.orders.product.api.ProductQueryService;
-import com.xiaoke1256.orders.product.dto.Product;
-import com.xiaoke1256.orders.product.dto.ProductCondition;
-import com.xiaoke1256.orders.product.dto.Store;
 import com.xiaoke1256.orders.product.service.ProductService;
 
 @RestController

@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.xiaoke1256.orders.product.dto.ProductCondition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.xiaoke1256.orders.SpringbootApplication;
@@ -17,12 +17,10 @@ import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.bo.ProductParam;
 import com.xiaoke1256.orders.product.bo.ProductType;
 import com.xiaoke1256.orders.product.dao.ProductDao;
-import com.xiaoke1256.orders.product.dto.ProductCondition;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=SpringbootApplication.class)
-@ActiveProfiles("test")
 public class ProductDaoTest {
 	
 	@Resource
@@ -74,7 +72,7 @@ public class ProductDaoTest {
 	@Test
 	public void testQueryByCondition() {
 		ProductCondition condition = new ProductCondition();
-		condition.setProductName("米");
+		condition.setProductName("S");
 		List<Product> l = productDao.queryByCondition(condition );
 		for(Product p:l) {
 			System.out.println("productName : "+ p.getProductName());
