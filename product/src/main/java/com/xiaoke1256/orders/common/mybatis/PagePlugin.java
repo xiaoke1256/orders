@@ -65,7 +65,7 @@ public class PagePlugin implements Interceptor {
         //获取分页SQL
         int getPageNo = Math.max(pageParamter.getPageNo(),1);
         int pageSize = pageParamter.getPageSize();
-        String pageSql = sql+" limit "+pageSize+ "," +(getPageNo-1)*pageSize;
+        String pageSql = sql+" limit " +(getPageNo-1)*pageSize + "," + pageSize;
         metaStamtHandler.setValue("delegate.boundSql.sql",pageSql);
         return invocation.proceed();
     }
