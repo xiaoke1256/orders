@@ -48,7 +48,7 @@ public class ProductController implements ProductQueryService {
 		return productService.getSimpleProductByCode(productCode);
 	}
 	
-	@RequestMapping(value="/product/search",method=RequestMethod.GET,consumes = "application/json")
+	@RequestMapping(value="/product/search",method={RequestMethod.GET,RequestMethod.POST},consumes = "application/json")
 	public SimpleProductQueryResultResp searchProductByCondition(@RequestBody ProductCondition condition){
 		try {
 			QueryResult<com.xiaoke1256.orders.product.bo.Product> result = productService.searchProductByCondition(condition);

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.xiaoke1256.orders.product.dto.ProductCondition;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,6 +75,12 @@ public class ProductDaoTest {
 		ProductCondition condition = new ProductCondition();
 		condition.setProductName("米");
 		List<Product> l = productDao.queryByCondition(condition );
+		if(l.size()>0 && l.size()<10){
+			Assert.assertEquals(l.size(),condition.getTotal());
+		}else if(l.size()>=10){
+			System.out.println("condition.getTotal()="+condition.getTotal());
+			Assert.assertTrue(condition.getTotal()>=10);
+		}
 		for(Product p:l) {
 			System.out.println("productName : "+ p.getProductName());
 			if(p.getStore()!=null)

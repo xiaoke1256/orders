@@ -61,7 +61,7 @@ public class PagePlugin implements Interceptor {
         while (resultSet.next()){
             total = resultSet.getInt("total");
         }
-        //TODO pageParamter.setTotal(total);
+        pageParamter.setTotal(total);
         //获取分页SQL
         int getPageNo = Math.max(pageParamter.getPageNo(),1);
         int pageSize = pageParamter.getPageSize();

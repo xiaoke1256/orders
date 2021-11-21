@@ -19,9 +19,9 @@
 		  var callee = arguments.callee;
 		  $.ajax({  
 			    url:"product/search",
-			    type:"GET",  
+			    type:"POST",
 			    dataType:"json",  
-			    data:data,  
+			    data:JSON.stringify(data),
 			    contentType: "application/json;charset=utf-8",
 			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
 			    success: function (ret) {  
