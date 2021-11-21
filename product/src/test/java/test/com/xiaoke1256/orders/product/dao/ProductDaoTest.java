@@ -72,7 +72,7 @@ public class ProductDaoTest {
 	@Test
 	public void testQueryByCondition() {
 		ProductCondition condition = new ProductCondition();
-		condition.setProductName("S");
+		condition.setProductName("米");
 		List<Product> l = productDao.queryByCondition(condition );
 		for(Product p:l) {
 			System.out.println("productName : "+ p.getProductName());
