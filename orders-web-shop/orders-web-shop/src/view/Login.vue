@@ -62,12 +62,40 @@ import { Vue, Component } from 'vue-property-decorator'
 import { Form } from 'iview'
 import { login } from '@/api/login'
 import { LoginForm } from '@/types/login';
+import axiosInst from '@/axios';
+import { setTimeout } from 'timers/promises';
 
 @Component({components:{}})
 export default class Login extends Vue {
   public welcomeMsg='——欢迎访问商户端';
 
   public loginForm: LoginForm = {} as LoginForm;
+
+  public mounted(){
+     //注册 webSocket
+    let url = axiosInst.defaults.baseURL as string;
+    if(url.startsWith('https')){
+      url = url.replace('https','wss');
+    }else if(url.startsWith('http')){
+      url = url.replace('http','ws');
+    }
+    if(!url.endsWith('/')){
+      url += '/';
+    }
+    url += 'login';
+
+    const webSocket:WebSocket = new WebSocket(url);
+    webSocket.onmessage = (ev)=>{
+      //处理登录成功后要做的事
+    };
+    webSocket.onerror = ()=>{
+      setTimeout(3000,()=>{this.mounted()});
+    }
+
+    webSocket.onclose = ()=>{
+      console.log("websocket 关闭。");
+    }
+  }
 
   public async login(){
     console.log("this.$refs.logForm.validate:"+(<Form>this.$refs.logForm).validate);
@@ -94,6 +122,8 @@ export default class Login extends Vue {
     
     });
   }
+
+ 
     
 }
 </script>
