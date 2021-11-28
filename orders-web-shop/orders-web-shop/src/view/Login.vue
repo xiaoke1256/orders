@@ -87,6 +87,7 @@ export default class Login extends Vue {
     const webSocket:WebSocket = new WebSocket(url);
     webSocket.onmessage = (ev)=>{
       //处理登录成功后要做的事
+      console.log("啊哈登录成功啦，token是",ev.data);
     };
     webSocket.onerror = ()=>{
       setTimeout(3000,()=>{this.mounted()});
@@ -95,6 +96,8 @@ export default class Login extends Vue {
     webSocket.onclose = ()=>{
       console.log("websocket 关闭。");
     }
+    //10分钟后关闭连接
+    setTimeout(10*60*1000,()=>{webSocket.close()});
   }
 
   public async login(){
