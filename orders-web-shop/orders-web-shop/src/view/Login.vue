@@ -34,9 +34,14 @@
                 <Card>
                   <div class="loginWelcome" style="display:inline-block;width:100%">
                     <div style="display:inline-block;width:49%">请您登陆：</div>
-                    <div style="display:inline-block;width:49%;text-align:right"><a><Icon type="md-expand" />扫码登录</a><!--另一个是账号登录--></div>
+                    <div style="display:inline-block;width:49%;text-align:right">
+                      <a @click="loginTypeSwich">
+                        <Icon :type="isScanLogin?'md-desktop':'md-expand'" />
+                        {{isScanLogin?'账号登录':'扫码登录'}}
+                      </a>
+                    </div>
                   </div>
-                  <Form ref="logForm" :model="loginForm" >
+                  <Form v-if="!isScanLogin" ref="logForm" :model="loginForm" >
                     <Form-Item prop="loginName" :rules="[{required: true, message: '用户名不能为空'}]" >
                       <Input placeholder="用户名" v-model="loginForm.loginName" >
                         <Icon type="md-person" slot="prepend"></Icon>
@@ -49,6 +54,9 @@
                     </Form-Item>
                     <Button type="success" long @click="login">登录</Button>
                   </Form>
+                  <div v-if="isScanLogin">
+
+                  </div>
                 </Card>
               </div>
             </div>
@@ -74,9 +82,19 @@ export default class Login extends Vue {
 
   private webSocket:WebSocket|undefined;
 
+  // 是否扫码登录
+  public isScanLogin:boolean = false;
+
+  // 二维码登录时的随机码
+  private randomCode='';
+
+  // sessionId
+  private sessionId='';
+
   public mounted(){
      //注册 webSocket
-    let url = axiosInst.defaults.baseURL as string;
+    let url = axiosInst.getUri({baseURL:axiosInst.defaults.baseURL,url:'login'});
+    console.log("uri:",url);
     if(url.startsWith('https')){
       url = url.replace('https','wss');
     }else if(url.startsWith('http')){
@@ -138,6 +156,10 @@ export default class Login extends Vue {
 
   public onUnload(){
     this.webSocket?.close()
+  }
+
+  public loginTypeSwich(){
+    this.isScanLogin = !this.isScanLogin;
   }
     
 }
