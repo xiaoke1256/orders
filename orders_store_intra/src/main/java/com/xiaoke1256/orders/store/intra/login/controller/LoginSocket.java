@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.store.intra.login.controller;
 
+import org.bouncycastle.jcajce.provider.asymmetric.rsa.RSAUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -9,12 +11,24 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.security.KeyPair;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 用websoket方式登录
+ */
 public class LoginSocket extends TextWebSocketHandler {
 
+    /**
+     * 目前的链接数
+     */
     private static final Map<String, WebSocketSession> sessions = new HashMap<>();
+
+    /**
+     * 每个连接对应一个密钥对
+     */
+    private static final Map<String,KeyPair > keyPairs = new HashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -36,12 +50,14 @@ public class LoginSocket extends TextWebSocketHandler {
         }
         //logger.info("连接出错");
         sessions.remove((String)session.getAttributes().get("sessionId"));
+        keyPairs.remove((String)session.getAttributes().get("sessionId"));
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
         sessions.remove((String)session.getAttributes().get("sessionId"));
+        keyPairs.remove((String)session.getAttributes().get("sessionId"));
     }
 
     @Override
@@ -59,11 +75,26 @@ public class LoginSocket extends TextWebSocketHandler {
             return false;
         }
         try {
+            //
             session.sendMessage(message);
         } catch (IOException e) {
             //logger.info("sendMessageToUser method error：{}", e);
             return false;
         }
         return true;
+    }
+
+    /**
+     * 检查会话是否存在
+     * @param sessionId
+     * @return
+     */
+    public boolean hasSession(String sessionId){
+        return sessions.get(sessionId) != null;
+    }
+
+    public String decode(String encodeMessage,String sessionId){
+        keyPairs.get(sessionId).getPrivate();
+        return "";
     }
 }

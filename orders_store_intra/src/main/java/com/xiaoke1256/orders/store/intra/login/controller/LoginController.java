@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,9 @@ public class LoginController {
 
     @Autowired
     private MemberQueryClient memberQueryClient;
+
+    @Autowired
+    private LoginSocket loginSocket;
 
     @PostMapping("login")
     public Map<String,Object> login(String loginName, String password){
@@ -56,6 +60,53 @@ public class LoginController {
         return retMap;
     }
 
+    /**
+     * 二维码登录
+     * @param encodeMessage 加密信息，包括登录名和校验码
+     * @param randomCode 随机校验码
+     * @param sessionId
+     * @return 登录是否成功。
+     */
+    public Boolean loginWith2dCode(String encodeMessage,String randomCode,String sessionId){
+        //TODO 以后要法消息的办法来解决
+        if(!loginSocket.hasSession(sessionId)){
+            return false;
+        }
+        String decodeMessage = loginSocket.decode(encodeMessage, sessionId);
+        if(!decodeMessage.endsWith(randomCode)){
+            return false;
+        }
+        String loginName = decodeMessage.substring(0,decodeMessage.length()-randomCode.length());
+        //检查一下数据库中是否存在他
+        Member member = memberQueryClient.getMember(loginName);
+        if(member==null){
+            return false;
+        }
+        //校验正确发放Token
+        Map<String,Object> retMap = new HashMap<>();
+        String token = loginTokenGenerator.token(loginName);
+        Map<String,String> tokenParam = new HashMap<>();
+        tokenParam.put("loginName",loginName);
+        tokenParam.put("LOGTK_ENCODE", MD5Util.getMD5(token).substring(0,8));
+        String refreshToken = refreshTokenGenerator.token(tokenParam);
+        retMap.put("token",token);
+        retMap.put("refreshToken",refreshToken);
+        UserInfo user = new UserInfo();
+        user.setLoginName(loginName);
+        user.setNickName(member.getNickName());
+        retMap.put("user",user);
+        //JSON.toJSONString(retMap);
+        loginSocket.sendMessageToUser(sessionId,new TextMessage(retMap.toString()));
+
+        return true;
+    }
+
+    /**
+     * token 失效后用 refreshToken 来获取新的token
+     * @param request
+     * @param refreshToken
+     * @return
+     */
     @PostMapping("refresh")
     public Map<String,Object> refresh(HttpServletRequest request, String refreshToken){
         if(!refreshTokenGenerator.verify(refreshToken)){
