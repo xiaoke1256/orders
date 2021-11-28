@@ -32,9 +32,9 @@
               </div>
               <div style="width:320px"> 
                 <Card>
-                  <div class="loginWelcome">
-                    <div style="width:50%">请您登陆：</div>
-                    <a>扫码登录</a><!--另一个是账号登录-->
+                  <div class="loginWelcome" style="display:inline-block;width:100%">
+                    <div style="display:inline-block;width:49%">请您登陆：</div>
+                    <div style="display:inline-block;width:49%;text-align:right"><a><Icon type="md-expand" />扫码登录</a><!--另一个是账号登录--></div>
                   </div>
                   <Form ref="logForm" :model="loginForm" >
                     <Form-Item prop="loginName" :rules="[{required: true, message: '用户名不能为空'}]" >
