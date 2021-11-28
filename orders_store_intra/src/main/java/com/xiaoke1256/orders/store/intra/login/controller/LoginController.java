@@ -67,6 +67,7 @@ public class LoginController {
      * @param sessionId
      * @return 登录是否成功。
      */
+    @PostMapping("loginWith2dCode")
     public Boolean loginWith2dCode(String encodeMessage,String randomCode,String sessionId){
         //TODO 以后要法消息的办法来解决
         if(!loginSocket.hasSession(sessionId)){
@@ -101,7 +102,10 @@ public class LoginController {
         return true;
     }
 
-    public 
+    @PostMapping("sessionId")
+    public String getSessionId(HttpServletRequest request){
+        return request.getSession(true).getId();
+    }
 
     /**
      * token 失效后用 refreshToken 来获取新的token
