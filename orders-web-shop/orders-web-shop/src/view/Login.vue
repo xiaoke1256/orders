@@ -71,6 +71,8 @@ export default class Login extends Vue {
 
   public loginForm: LoginForm = {} as LoginForm;
 
+  private webSocket:WebSocket|undefined;
+
   public mounted(){
      //注册 webSocket
     let url = axiosInst.defaults.baseURL as string;
@@ -84,20 +86,27 @@ export default class Login extends Vue {
     }
     url += 'login';
 
-    const webSocket:WebSocket = new WebSocket(url);
-    webSocket.onmessage = (ev)=>{
+    this.webSocket = new WebSocket(url);
+    this.webSocket.onmessage = (ev)=>{
       //处理登录成功后要做的事
       console.log("啊哈登录成功啦，token是",ev.data);
+      //ev.data 中包含用户信息及两个token
     };
-    webSocket.onerror = ()=>{
-      setTimeout(3000,()=>{this.mounted()});
+    this.webSocket.onerror = ()=>{
+      window.setTimeout(()=>{this.mounted()},3000);
     }
 
-    webSocket.onclose = ()=>{
+    this.webSocket.onclose = ()=>{
       console.log("websocket 关闭。");
     }
     //10分钟后关闭连接
-    setTimeout(10*60*1000,()=>{webSocket.close()});
+    window.setTimeout(()=>{this.webSocket?.close()},10*60*1000);
+    //页面离开时
+    window.addEventListener('unload',this.onUnload);
+  }
+
+  public destroy(){
+    window.removeEventListener('unload',this.onUnload);
   }
 
   public async login(){
@@ -126,7 +135,9 @@ export default class Login extends Vue {
     });
   }
 
- 
+  public onUnload(){
+    this.webSocket?.close()
+  }
     
 }
 </script>
