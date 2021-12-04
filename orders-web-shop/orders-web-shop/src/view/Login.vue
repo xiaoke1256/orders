@@ -55,7 +55,14 @@
                     <Button type="success" long @click="login">登录</Button>
                   </Form>
                   <div v-if="isScanLogin">
-
+                    <Form ref="logForm" :model="loginForm" >
+                      <Input placeholder="用户名" v-model="loginForm.loginName" >
+                      </Input>
+                      <Input placeholder="随机码" v-model="loginForm.randomCode" >
+                      </Input>
+                      <Input placeholder="sessionId" v-model="loginForm.sessionId" >
+                      </Input>
+                    </Form>
                   </div>
                 </Card>
               </div>
@@ -69,7 +76,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Form } from 'iview'
-import { login } from '@/api/login'
+import { login, getSessionId } from '@/api/login'
 import { LoginForm } from '@/types/login';
 import axiosInst from '@/axios';
 import { setTimeout } from 'timers/promises';
@@ -91,19 +98,17 @@ export default class Login extends Vue {
   // sessionId
   private sessionId='';
 
-  public mounted(){
+  public async mounted(){
      //注册 webSocket
-    let url = axiosInst.getUri({baseURL:axiosInst.defaults.baseURL,url:'login'});
+    let url = '';
+    if(process.env.NODE_ENV==='development'){
+      url = 'ws://localhost:8763/store_intra/login';
+    }else if(process.env.NODE_ENV==='development'){
+      url = 'ws://peer1:8763/store_intra/login';
+    }
     console.log("uri:",url);
-    if(url.startsWith('https')){
-      url = url.replace('https','wss');
-    }else if(url.startsWith('http')){
-      url = url.replace('http','ws');
-    }
-    if(!url.endsWith('/')){
-      url += '/';
-    }
-    url += 'login';
+    this.loginForm.sessionId = await getSessionId();
+    this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16)
 
     this.webSocket = new WebSocket(url);
     this.webSocket.onmessage = (ev)=>{

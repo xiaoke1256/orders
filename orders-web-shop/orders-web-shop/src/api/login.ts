@@ -9,3 +9,7 @@ export const login:(loginName:string,password:string)=>Promise<{token:string;ref
 export const logout:()=>void = () => {
     
 };
+
+export const getSessionId:()=> Promise<string> = ()=>{
+    return axiosInst.get('/login/sessionId').then((resp)=>resp.data);
+}
