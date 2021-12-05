@@ -1,15 +1,12 @@
 package com.xiaoke1256.orders.store.intra.login.controller;
 
-import org.bouncycastle.jcajce.provider.asymmetric.rsa.RSAUtil;
-import org.springframework.stereotype.Component;
+
+import com.xiaoke1256.orders.store.intra.common.utils.RSAUtil;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import javax.websocket.*;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.util.HashMap;
@@ -93,8 +90,11 @@ public class LoginSocket extends TextWebSocketHandler {
         return sessions.get(sessionId) != null;
     }
 
-    public String decode(String encodeMessage,String sessionId){
-        keyPairs.get(sessionId).getPrivate();
-        return "";
+    public String decode(String encodeMessage,String sessionId) {
+        try {
+            return RSAUtil.decrypt(encodeMessage,keyPairs.get(sessionId).getPrivate());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
