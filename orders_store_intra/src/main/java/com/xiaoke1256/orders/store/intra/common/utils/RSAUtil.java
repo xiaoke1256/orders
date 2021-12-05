@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
@@ -52,7 +53,7 @@ public class RSAUtil {
         out.close();
         // 获取加密内容使用base64进行编码,并以UTF-8为标准转化成字符串
         // 加密后的字符串
-        return new String(Base64.encodeBase64String(encryptedData));
+        return Base64.encodeBase64String(encryptedData);
     }
 
     /**
@@ -60,7 +61,7 @@ public class RSAUtil {
      *
      * @param data 待解密数据
      * @param privateKey 私钥
-     * @return
+     * @return 明文
      */
     public static String decrypt(String data, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
@@ -85,6 +86,6 @@ public class RSAUtil {
         byte[] decryptedData = out.toByteArray();
         out.close();
         // 解密后的内容
-        return new String(decryptedData, "UTF-8");
+        return new String(decryptedData, StandardCharsets.UTF_8);
     }
 }
