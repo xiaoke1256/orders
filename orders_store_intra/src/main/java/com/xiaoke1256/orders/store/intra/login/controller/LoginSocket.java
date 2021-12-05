@@ -2,6 +2,8 @@ package com.xiaoke1256.orders.store.intra.login.controller;
 
 
 import com.xiaoke1256.orders.store.intra.common.utils.RSAUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -9,6 +11,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +20,8 @@ import java.util.Map;
  * 用websoket方式登录
  */
 public class LoginSocket extends TextWebSocketHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoginSocket.class);
 
     /**
      * 目前的链接数
@@ -30,7 +36,10 @@ public class LoginSocket extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
+        LOG.info("ws connected.  %s",(String)session.getAttributes().get("sessionId"));
         sessions.put((String)session.getAttributes().get("sessionId"),session);
+        keyPairs.put((String)session.getAttributes().get("sessionId"),RSAUtil.genKeyPair());
+        LOG.info("put success.");
     }
 
     @Override
@@ -99,6 +108,17 @@ public class LoginSocket extends TextWebSocketHandler {
     }
 
     public byte[] getPublicKey(String sessionId){
-        return keyPairs.get(sessionId).getPublic().getEncoded();
+        KeyPair keyPair = keyPairs.get(sessionId);
+        if(keyPair==null){
+            //有可能还没有连接成功就要给密钥了
+            try {
+                keyPair = RSAUtil.genKeyPair();
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+            keyPairs.put(sessionId,keyPair);
+        }
+        PublicKey publicKey = keyPair.getPublic();
+        return publicKey.getEncoded();
     }
 }

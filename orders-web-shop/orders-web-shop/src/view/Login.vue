@@ -109,12 +109,6 @@ export default class Login extends Vue {
       url = 'ws://peer1:8763/store_intra/login';
     }
     console.log("uri:",url);
-    getSessionId().then((sesstionId)=>{
-      this.loginForm.sessionId = sesstionId;
-      this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16)
-    }).then(async ()=>{
-      this.publicKey = await getloginPublicKey(this.loginForm.sessionId);
-    });
 
     this.webSocket = new WebSocket(url);
     this.webSocket.onmessage = (ev)=>{
@@ -133,6 +127,16 @@ export default class Login extends Vue {
     window.setTimeout(()=>{this.webSocket?.close()},10*60*1000);
     //页面离开时
     window.addEventListener('unload',this.onUnload);
+
+    this.webSocket.onopen = ()=>{
+      //成功建立WebSocket连接 后
+      getSessionId().then((sesstionId)=>{
+        this.loginForm.sessionId = sesstionId;
+        this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16)
+      }).then(async ()=>{
+        this.publicKey = await getloginPublicKey(this.loginForm.sessionId);
+      });
+    }
   }
 
   public destroy(){

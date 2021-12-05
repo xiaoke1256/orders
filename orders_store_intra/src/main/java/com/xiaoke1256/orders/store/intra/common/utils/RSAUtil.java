@@ -5,8 +5,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import javax.crypto.Cipher;
 import java.nio.charset.StandardCharsets;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 
 /**
  * RSA加解密算法
@@ -87,5 +86,11 @@ public class RSAUtil {
         out.close();
         // 解密后的内容
         return new String(decryptedData, StandardCharsets.UTF_8);
+    }
+
+    public static KeyPair genKeyPair() throws NoSuchAlgorithmException {
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        keyPairGen.initialize(512, new SecureRandom());
+        return keyPairGen.genKeyPair();
     }
 }
