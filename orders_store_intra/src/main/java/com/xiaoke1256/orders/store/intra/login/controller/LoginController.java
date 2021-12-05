@@ -8,14 +8,12 @@ import com.xiaoke1256.orders.member.dto.Member;
 import com.xiaoke1256.orders.store.intra.login.bo.UserInfo;
 import com.xiaoke1256.orders.store.intra.login.client.MemberQueryClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,8 +65,8 @@ public class LoginController {
      * @param sessionId
      * @return 登录是否成功。
      */
-    @PostMapping("loginWith2dCode")
-    public Boolean loginWith2dCode(String encodeMessage,String randomCode,String sessionId){
+    @PostMapping("loginWith2dCode/{sessionId}")
+    public Boolean loginWith2dCode(String encodeMessage, String randomCode, @PathVariable("sessionId")String sessionId){
         //TODO 以后要法消息的办法来解决
         if(!loginSocket.hasSession(sessionId)){
             return false;
@@ -102,9 +100,15 @@ public class LoginController {
         return true;
     }
 
-    @PostMapping("sessionId")
+    @GetMapping("sessionId")
     public String getSessionId(HttpServletRequest request){
         return request.getSession(true).getId();
+    }
+
+    @GetMapping("loginSecret/{sessionId}")
+    public String getLoginSecret(@PathVariable("sessionId")String sessionId){
+        //此处将来要移到 redis中
+        return Base64.getEncoder().encodeToString (loginSocket.getPublicKey(sessionId));
     }
 
     /**

@@ -23,7 +23,7 @@ public class LoginSocket extends TextWebSocketHandler {
     private static final Map<String, WebSocketSession> sessions = new HashMap<>();
 
     /**
-     * 每个连接对应一个密钥对
+     * 每个连接对应一个密钥对(TODO 这个以后要放到redits中)
      */
     private static final Map<String,KeyPair > keyPairs = new HashMap<>();
 
@@ -96,5 +96,9 @@ public class LoginSocket extends TextWebSocketHandler {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public byte[] getPublicKey(String sessionId){
+        return keyPairs.get(sessionId).getPublic().getEncoded();
     }
 }

@@ -58,11 +58,14 @@
                     <Form ref="logForm" :model="loginForm" >
                       <Input placeholder="用户名" v-model="loginForm.loginName" >
                       </Input>
-                      <Input placeholder="随机码" v-model="loginForm.randomCode" >
+                      <Input placeholder="随机码" readonly v-model="loginForm.randomCode" >
                       </Input>
                       <Input placeholder="sessionId" v-model="loginForm.sessionId" >
                       </Input>
                     </Form>
+                    <div>
+                      {{encodedUrl}}
+                    </div>
                   </div>
                 </Card>
               </div>
@@ -76,10 +79,12 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Form } from 'iview'
-import { login, getSessionId } from '@/api/login'
+import { login, getSessionId, getloginPublicKey } from '@/api/login'
 import { LoginForm } from '@/types/login';
+import { JSEncrypt } from 'jsencrypt';
 import axiosInst from '@/axios';
 import { setTimeout } from 'timers/promises';
+import { encode } from 'punycode';
 
 @Component({components:{}})
 export default class Login extends Vue {
@@ -92,13 +97,10 @@ export default class Login extends Vue {
   // 是否扫码登录
   public isScanLogin:boolean = false;
 
-  // 二维码登录时的随机码
-  private randomCode='';
+  //扫码登录时的公钥
+  public publicKey:string = '';
 
-  // sessionId
-  private sessionId='';
-
-  public async mounted(){
+  public mounted(){
      //注册 webSocket
     let url = '';
     if(process.env.NODE_ENV==='development'){
@@ -107,8 +109,12 @@ export default class Login extends Vue {
       url = 'ws://peer1:8763/store_intra/login';
     }
     console.log("uri:",url);
-    this.loginForm.sessionId = await getSessionId();
-    this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16)
+    getSessionId().then((sesstionId)=>{
+      this.loginForm.sessionId = sesstionId;
+      this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16)
+    }).then(async ()=>{
+      this.publicKey = await getloginPublicKey(this.loginForm.sessionId);
+    });
 
     this.webSocket = new WebSocket(url);
     this.webSocket.onmessage = (ev)=>{
@@ -131,6 +137,18 @@ export default class Login extends Vue {
 
   public destroy(){
     window.removeEventListener('unload',this.onUnload);
+  }
+
+  public get encodedUrl(){
+    if(!this.loginForm.loginName ||
+       !this.loginForm.randomCode || 
+       !this.publicKey){
+      return '';
+    }
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
+    const encodeStr = encrypt.encrypt(this.loginForm.loginName+this.loginForm.randomCode)
+    return encodeStr;
   }
 
   public async login(){

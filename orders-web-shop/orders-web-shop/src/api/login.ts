@@ -13,3 +13,7 @@ export const logout:()=>void = () => {
 export const getSessionId:()=> Promise<string> = ()=>{
     return axiosInst.get('/login/sessionId').then((resp)=>resp.data);
 }
+
+export const getloginPublicKey:(sessionId:string)=> Promise<string> = (sessionId)=>{
+    return axiosInst.get(`/login/loginSecret/${sessionId}`).then((resp)=>resp.data);
+}
