@@ -65,11 +65,14 @@ public class LoginController {
      * @param sessionId
      * @return 登录是否成功。
      */
-    @PostMapping("loginWith2dCode/{sessionId}")
+    @GetMapping("loginWith2dCode/{sessionId}")
     public Boolean loginWith2dCode(String encodeMessage, String randomCode, @PathVariable("sessionId")String sessionId){
         //TODO 以后要法消息的办法来解决
         if(!loginSocket.hasSession(sessionId)){
             return false;
+        }
+        if(!encodeMessage.endsWith("==")){
+            encodeMessage += "==";
         }
         String decodeMessage = loginSocket.decode(encodeMessage, sessionId);
         if(!decodeMessage.endsWith(randomCode)){
