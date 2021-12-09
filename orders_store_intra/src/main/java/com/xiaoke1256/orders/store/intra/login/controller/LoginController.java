@@ -7,6 +7,8 @@ import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.member.dto.Member;
 import com.xiaoke1256.orders.store.intra.login.bo.UserInfo;
 import com.xiaoke1256.orders.store.intra.login.client.MemberQueryClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.TextMessage;
@@ -20,6 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
     @Resource(name = "loginTokenGenerator")
     private HMAC256 loginTokenGenerator;
 
@@ -69,7 +72,7 @@ public class LoginController {
     public Boolean loginWith2dCode(String encodeMessage, String randomCode, @PathVariable("sessionId")String sessionId){
         //TODO 以后要法消息的办法来解决
         if(!loginSocket.hasSession(sessionId)){
-            
+            LOG.error("invalid sessionId :{}",sessionId);
             return false;
         }
         if(!encodeMessage.endsWith("==")){
@@ -77,14 +80,17 @@ public class LoginController {
         }
         String decodeMessage = loginSocket.decode(encodeMessage, sessionId);
         if(!decodeMessage.endsWith(randomCode)){
+            LOG.error("decodeMessage is not endwith randomCode.decodeMessage:{};randomCode:{}",encodeMessage,randomCode);
             return false;
         }
         String loginName = decodeMessage.substring(0,decodeMessage.length()-randomCode.length());
         //检查一下数据库中是否存在他
         Member member = memberQueryClient.getMember(loginName);
         if(member==null){
+            LOG.error("can not find the member.");
             return false;
         }
+        LOG.info("login success!!");
         //校验正确发放Token
         Map<String,Object> retMap = new HashMap<>();
         String token = loginTokenGenerator.token(loginName);
