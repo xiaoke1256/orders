@@ -69,6 +69,7 @@ public class LoginController {
     public Boolean loginWith2dCode(String encodeMessage, String randomCode, @PathVariable("sessionId")String sessionId){
         //TODO 以后要法消息的办法来解决
         if(!loginSocket.hasSession(sessionId)){
+            
             return false;
         }
         if(!encodeMessage.endsWith("==")){

@@ -60,10 +60,10 @@
                       </Input>
                       <Input placeholder="随机码" readonly v-model="loginForm.randomCode" >
                       </Input>
-                      <Input placeholder="sessionId" v-model="loginForm.sessionId" >
+                      <Input placeholder="sessionId" readonly v-model="loginForm.sessionId" >
                       </Input>
                     </Form>
-                    <div>
+                    <div style="word-break:break-all">
                       {{encodedUrl}}
                     </div>
                   </div>
@@ -100,12 +100,16 @@ export default class Login extends Vue {
   //扫码登录时的公钥
   public publicKey:string = '';
 
+  public basePath = '';
+
   public mounted(){
      //注册 webSocket
     let url = '';
     if(process.env.NODE_ENV==='development'){
+      this.basePath = 'http://localhost:8763/store_intra';
       url = 'ws://localhost:8763/store_intra/login';
     }else if(process.env.NODE_ENV==='development'){
+      this.basePath = 'http://peer1:8763/store_intra';
       url = 'ws://peer1:8763/store_intra/login';
     }
     console.log("uri:",url);
@@ -151,7 +155,14 @@ export default class Login extends Vue {
     }
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
-    const encodeStr = encrypt.encrypt(this.loginForm.loginName+this.loginForm.randomCode)
+    let encodeMessage = encrypt.encrypt(this.loginForm.loginName+this.loginForm.randomCode);
+    if(typeof(encodeMessage) == 'string'){
+      console.log("Haha");
+      encodeMessage = encodeMessage.replace('==','');
+    }
+    
+    const encodeStr = this.basePath+'/login/loginWith2dCode/'+this.loginForm.sessionId+'?encodeMessage='
+        +encodeMessage+'&randomCode='+this.loginForm.randomCode
     return encodeStr;
   }
 

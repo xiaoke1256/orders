@@ -63,7 +63,7 @@ public class LoginSocket extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
         sessions.remove((String)session.getAttributes().get("sessionId"));
-        keyPairs.remove((String)session.getAttributes().get("sessionId"));
+        setKeyPair((String)session.getAttributes().get("sessionId"));
     }
 
     @Override
@@ -108,6 +108,12 @@ public class LoginSocket extends TextWebSocketHandler {
     }
 
     public byte[] getPublicKey(String sessionId){
+        KeyPair keyPair = setKeyPair(sessionId);
+        PublicKey publicKey = keyPair.getPublic();
+        return publicKey.getEncoded();
+    }
+
+    private KeyPair setKeyPair(String sessionId) {
         KeyPair keyPair = keyPairs.get(sessionId);
         if(keyPair==null){
             //有可能还没有连接成功就要给密钥了
@@ -118,7 +124,6 @@ public class LoginSocket extends TextWebSocketHandler {
             }
             keyPairs.put(sessionId,keyPair);
         }
-        PublicKey publicKey = keyPair.getPublic();
-        return publicKey.getEncoded();
+        return keyPair;
     }
 }
