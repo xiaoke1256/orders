@@ -75,9 +75,10 @@ public class LoginController {
             LOG.error("invalid sessionId :{}",sessionId);
             return false;
         }
-        if(!encodeMessage.endsWith("==")){
-            encodeMessage += "==";
-        }
+//        if(!encodeMessage.endsWith("==")){
+//            encodeMessage += "==";
+//        }
+        LOG.error("encodeMessage:{}",encodeMessage);
         String decodeMessage = loginSocket.decode(encodeMessage, sessionId);
         if(!decodeMessage.endsWith(randomCode)){
             LOG.error("decodeMessage is not endwith randomCode.decodeMessage:{};randomCode:{}",encodeMessage,randomCode);

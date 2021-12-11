@@ -155,13 +155,14 @@ export default class Login extends Vue {
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
     let encodeMessage = encrypt.encrypt(this.loginForm.loginName+this.loginForm.randomCode);
-    if(typeof(encodeMessage) == 'string'){
+    if(typeof(encodeMessage) == 'boolean'){
       console.log("Haha");
-      encodeMessage = encodeMessage.replace('==','');
+      return 'encrypt error!';
+      //encodeMessage = encodeMessage.replace('==','');
     }
     
     const encodeStr = this.basePath+'/login/loginWith2dCode/'+this.loginForm.sessionId+'?encodeMessage='
-        +encodeMessage+'&randomCode='+this.loginForm.randomCode
+        +encodeURIComponent(encodeMessage)+'&randomCode='+this.loginForm.randomCode
     return encodeStr;
   }
 
