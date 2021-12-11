@@ -33,3 +33,7 @@ const uuid2 = (len:number, radix:number) => {
 
     return uuid.join('');
 }
+
+export const uuid= () => {
+    return uuid2(32,32);
+}

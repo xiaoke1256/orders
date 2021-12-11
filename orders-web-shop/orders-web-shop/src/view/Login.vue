@@ -80,6 +80,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { Form } from 'iview'
 import { login, getSessionId, getloginPublicKey } from '@/api/login'
+import { uuid } from '@/api/common'
 import { LoginForm } from '@/types/login';
 import { JSEncrypt } from 'jsencrypt';
 import axiosInst from '@/axios';
@@ -107,14 +108,16 @@ export default class Login extends Vue {
     let url = '';
     if(process.env.NODE_ENV==='development'){
       this.basePath = 'http://localhost:8763/store_intra';
-      url = 'ws://localhost:8763/store_intra/login?aaa=ccc';
+      url = 'ws://localhost:8763/store_intra/login';
     }else if(process.env.NODE_ENV==='development'){
       this.basePath = 'http://peer1:8763/store_intra';
-      url = 'ws://peer1:8763/store_intra/login?aaa=ccc';
+      url = 'ws://peer1:8763/store_intra/login';
     }
     console.log("uri:",url);
 
-    this.webSocket = new WebSocket(url);
+    this.loginForm.sessionId=uuid();
+
+    this.webSocket = new WebSocket(url+'?sessionId='+this.loginForm.sessionId);
     this.webSocket.onmessage = (ev)=>{
       //处理登录成功后要做的事
       console.log("啊哈登录成功啦，token是",ev.data);
@@ -132,14 +135,10 @@ export default class Login extends Vue {
     //页面离开时
     window.addEventListener('unload',this.onUnload);
 
-    this.webSocket.onopen = ()=>{
+    this.webSocket.onopen = async()=>{
       //成功建立WebSocket连接 后
-      getSessionId().then((sesstionId)=>{
-        this.loginForm.sessionId = sesstionId;
-        this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16)
-      }).then(async ()=>{
-        this.publicKey = await getloginPublicKey(this.loginForm.sessionId);
-      });
+      this.loginForm.randomCode = Math.floor(Math.random()*Math.pow(16,6)).toString(16);
+      this.publicKey = await getloginPublicKey(this.loginForm.sessionId);
     }
   }
 

@@ -28,23 +28,29 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
                 LOG.info("paratmer name: {}",paratmer);
                 String value = request.getParameter(paratmer);
                 LOG.info("paratmer value: {}",value);
+                map.put(paratmer,value);
             }
         }
-        HttpHeaders headers = serverHttpRequest.getHeaders();
-        String sessionId = headers.getFirst("sessionid");
-        if(sessionId==null){
-            String cookies = headers.getFirst("cookie");
-            String[] cookiesArray = cookies.split(";");
-            for(String cookie:cookiesArray){
-                String[] kv = cookie.trim().split("=");
-                if("JSESSIONID".endsWith(kv[0])){
-                    sessionId = kv[1];
-                }
-            }
-        }
-        LOG.info("sessionId is {}",sessionId);
-        if(sessionId!=null && !"".equals(sessionId)){
-            map.put("sessionId",sessionId);
+//        HttpHeaders headers = serverHttpRequest.getHeaders();
+//        String sessionId = headers.getFirst("sessionid");
+//        if(sessionId==null){
+//            String cookies = headers.getFirst("cookie");
+//            String[] cookiesArray = cookies.split(";");
+//            for(String cookie:cookiesArray){
+//                String[] kv = cookie.trim().split("=");
+//                if("JSESSIONID".endsWith(kv[0])){
+//                    sessionId = kv[1];
+//                }
+//            }
+//        }
+//        LOG.info("sessionId is {}",sessionId);
+//        if(sessionId!=null && !"".equals(sessionId)){
+//            map.put("sessionId",sessionId);
+//            serverHttpResponse.setStatusCode(HttpStatus.OK);
+//            return true;
+//        }
+        if(map.get("sessionId")!=null){
+            LOG.info("sessionId is {}",map.get("sessionId"));
             serverHttpResponse.setStatusCode(HttpStatus.OK);
             return true;
         }
