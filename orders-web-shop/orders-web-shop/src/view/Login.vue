@@ -107,10 +107,10 @@ export default class Login extends Vue {
     let url = '';
     if(process.env.NODE_ENV==='development'){
       this.basePath = 'http://localhost:8763/store_intra';
-      url = 'ws://localhost:8763/store_intra/login';
+      url = 'ws://localhost:8763/store_intra/login?aaa=ccc';
     }else if(process.env.NODE_ENV==='development'){
       this.basePath = 'http://peer1:8763/store_intra';
-      url = 'ws://peer1:8763/store_intra/login';
+      url = 'ws://peer1:8763/store_intra/login?aaa=ccc';
     }
     console.log("uri:",url);
 

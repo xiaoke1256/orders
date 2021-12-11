@@ -90,7 +90,7 @@ public class LoginController {
             LOG.error("can not find the member.");
             return false;
         }
-        LOG.info("login success!!");
+        LOG.info("login validate success!!");
         //校验正确发放Token
         Map<String,Object> retMap = new HashMap<>();
         String token = loginTokenGenerator.token(loginName);
@@ -112,7 +112,7 @@ public class LoginController {
 
     @GetMapping("sessionId")
     public String getSessionId(HttpServletRequest request){
-        return request.getSession(true).getId();
+        return request.getSession().getId();
     }
 
     @GetMapping("loginSecret/{sessionId}")

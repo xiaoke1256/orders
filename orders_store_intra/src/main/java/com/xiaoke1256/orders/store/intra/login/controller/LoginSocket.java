@@ -36,9 +36,9 @@ public class LoginSocket extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
-        LOG.info("ws connected.  %s",(String)session.getAttributes().get("sessionId"));
+        LOG.info("ws connected.  {}",(String)session.getAttributes().get("sessionId"));
         sessions.put((String)session.getAttributes().get("sessionId"),session);
-        keyPairs.put((String)session.getAttributes().get("sessionId"),RSAUtil.genKeyPair());
+        setKeyPair((String)session.getAttributes().get("sessionId"));
         LOG.info("put success.");
     }
 
@@ -63,7 +63,7 @@ public class LoginSocket extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
         sessions.remove((String)session.getAttributes().get("sessionId"));
-        setKeyPair((String)session.getAttributes().get("sessionId"));
+        keyPairs.remove((String)session.getAttributes().get("sessionId"));
     }
 
     @Override
