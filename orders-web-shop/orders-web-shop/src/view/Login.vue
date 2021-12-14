@@ -120,8 +120,20 @@ export default class Login extends Vue {
     this.webSocket = new WebSocket(url+'?sessionId='+this.loginForm.sessionId);
     this.webSocket.onmessage = (ev)=>{
       //处理登录成功后要做的事
-      console.log("啊哈登录成功啦，token是",ev.data);
+      console.log("login success");
       //ev.data 中包含用户信息及两个token
+      let {token,refreshToken,user} = ev.data;
+      if(typeof token !== 'string' || !token){
+        throw new Error("登录异常");
+      }
+      console.log("token:"+token);
+      sessionStorage.setItem("token",token);
+      sessionStorage.setItem("refreshToken",refreshToken);
+      sessionStorage.setItem("nickName",user.nickName);
+      sessionStorage.setItem("loginName",this.loginForm.loginName);
+      this.$router.push({
+            path: 'home/index'
+          });
     };
     this.webSocket.onerror = ()=>{
       window.setTimeout(()=>{this.mounted()},3000);
@@ -156,7 +168,6 @@ export default class Login extends Vue {
     encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
     let encodeMessage = encrypt.encrypt(this.loginForm.loginName+this.loginForm.randomCode);
     if(typeof(encodeMessage) == 'boolean'){
-      console.log("Haha");
       return 'encrypt error!';
       //encodeMessage = encodeMessage.replace('==','');
     }
