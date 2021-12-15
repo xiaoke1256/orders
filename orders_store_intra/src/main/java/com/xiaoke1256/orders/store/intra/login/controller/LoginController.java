@@ -1,5 +1,6 @@
 package com.xiaoke1256.orders.store.intra.login.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.xiaoke1256.orders.auth.encrypt.HMAC256;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.orders.common.exception.InvalidAuthorizationException;
@@ -106,7 +107,7 @@ public class LoginController {
         user.setNickName(member.getNickName());
         retMap.put("user",user);
         //JSON.toJSONString(retMap);
-        loginSocket.sendMessageToUser(sessionId,new TextMessage(retMap.toString()));
+        loginSocket.sendMessageToUser(sessionId,new TextMessage(JSON.toJSONString(retMap)));
 
         return true;
     }

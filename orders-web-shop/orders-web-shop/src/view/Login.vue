@@ -121,8 +121,10 @@ export default class Login extends Vue {
     this.webSocket.onmessage = (ev)=>{
       //处理登录成功后要做的事
       console.log("login success");
+      console.log("type of ev.data:"+(typeof(ev.data)));
+       console.log("ev.data:"+ev.data);
       //ev.data 中包含用户信息及两个token
-      let {token,refreshToken,user} = ev.data;
+      let {token,refreshToken,user} = JSON.parse(ev.data);
       if(typeof token !== 'string' || !token){
         throw new Error("登录异常");
       }
