@@ -52,8 +52,8 @@
        </if>
        <if test="storeNos!=null and storeNos.length>0">
          and store_no in
-         <foreach collection="storeNos" item="sno" open="(" close=")" separator=",">
-           #{sno}
+         <foreach collection="storeNos" item="sno" index="idx" open="(" close=")" separator=",">
+           #{storeNos[${idx}]}
          </foreach>
        </if>
    </select>
@@ -74,8 +74,8 @@
       </if>
       <if test="storeNos!=null and storeNos.length>0">
         and store_no in
-        <foreach collection="storeNos" item="sno" open="(" close=")" separator=",">
-          #{sno}
+        <foreach collection="storeNos" item="sno" index="idx" open="(" close=")" separator=",">
+            #{storeNos[${idx}]}
         </foreach>
       </if>
       order by update_time desc
