@@ -1,9 +1,9 @@
-package com.xiaoke1256.orders.store.intra.common.utils;
+package test.com.xiaoke1256.orders.store.intra.common.utils;
 
+import com.xiaoke1256.orders.store.intra.common.utils.RSAUtil;
 import org.junit.Test;
 
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 
 public class RSAUtilTest {
 

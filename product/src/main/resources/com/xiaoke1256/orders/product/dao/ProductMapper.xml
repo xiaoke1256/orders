@@ -75,7 +75,7 @@
       <if test="storeNos!=null and storeNos.length>0">
         and store_no in
         <foreach collection="storeNos" item="sno" index="idx" open="(" close=")" separator=",">
-            #{storeNos[${idx}]}
+            ${sno}
         </foreach>
       </if>
       order by update_time desc

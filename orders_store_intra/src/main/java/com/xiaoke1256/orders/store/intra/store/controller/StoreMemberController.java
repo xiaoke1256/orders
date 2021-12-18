@@ -1,6 +1,5 @@
 package com.xiaoke1256.orders.store.intra.store.controller;
 
-import com.xiaoke1256.orders.product.api.StoreMemberService;
 import com.xiaoke1256.orders.product.dto.StoreMember;
 import com.xiaoke1256.orders.store.intra.common.utils.RequestUtil;
 import com.xiaoke1256.orders.store.intra.store.client.StoreMemberClient;
