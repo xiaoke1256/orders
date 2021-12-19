@@ -74,6 +74,7 @@ public class ProductDaoTest {
 	public void testQueryByCondition() {
 		ProductCondition condition = new ProductCondition();
 		condition.setProductName("米");
+		condition.setStoreNos(new String[]{"0001","2018100009"});
 		List<Product> l = productDao.queryByCondition(condition );
 		if(l.size()>0 && l.size()<10){
 			Assert.assertEquals(l.size(),condition.getTotal());

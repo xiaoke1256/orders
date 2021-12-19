@@ -10,7 +10,9 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.Configuration;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,6 +56,16 @@ public class PagePlugin implements Interceptor {
         Configuration configuration = mappedStatement.getConfiguration();
         PreparedStatement ps = conn.prepareStatement(countSql);
         BoundSql countBoundSql = new BoundSql(configuration, countSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+        Field metaParametersField = ReflectionUtils.findField(BoundSql.class, "metaParameters");
+        ReflectionUtils.makeAccessible(metaParametersField);
+        MetaObject mo = (MetaObject)ReflectionUtils.getField(metaParametersField, boundSql);
+        if(mo!=null){
+            ReflectionUtils.setField(metaParametersField,countBoundSql,mo);
+            Field additionalParametersField = ReflectionUtils.findField(BoundSql.class, "additionalParameters");
+            ReflectionUtils.makeAccessible(additionalParametersField);
+            ReflectionUtils.setField(additionalParametersField,countBoundSql,ReflectionUtils.getField(additionalParametersField,boundSql));
+        }
+
         ParameterHandler handler = new DefaultParameterHandler(mappedStatement, boundSql.getParameterObject(), countBoundSql);
         handler.setParameters(ps);
         //执行查询
