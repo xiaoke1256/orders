@@ -136,6 +136,7 @@ export default class Login extends Vue {
       this.$router.push({
             path: 'home/index'
           });
+      this.webSocket?.close();//跳转成功后关闭链接
     };
     this.webSocket.onerror = ()=>{
       window.setTimeout(()=>{this.mounted()},3000);

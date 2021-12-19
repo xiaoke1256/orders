@@ -64,6 +64,7 @@ public class LoginSocket extends TextWebSocketHandler {
         super.afterConnectionClosed(session, status);
         sessions.remove((String)session.getAttributes().get("sessionId"));
         keyPairs.remove((String)session.getAttributes().get("sessionId"));
+        LOG.info("WebSocket closed.");
     }
 
     @Override
