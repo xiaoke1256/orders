@@ -73,7 +73,7 @@
         <dependency>
             <groupId>com.xiaoke_1256.orders</groupId>
             <artifactId>orders-common</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1</version>
             <scope>compile</scope>
         </dependency>
 

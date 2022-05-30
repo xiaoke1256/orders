@@ -22,7 +22,13 @@ public class MemberQueryFallbackFactory implements FallbackFactory<MemberQueryCl
 				logger.error("connect fail.by hystrix.",cause);
 				throw new RuntimeException(cause);
 			}
-			
+
+			@Override
+			public Member getMember(String accountNo) {
+				logger.error("connect fail.by hystrix.",cause);
+				throw new RuntimeException(cause);
+			}
+
 		};
 	}
 

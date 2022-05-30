@@ -22,4 +22,9 @@ public class MemberQueryController implements MemberQueryService {
 		return memberQueryClient.findAll();
 	}
 
+	@Override
+	public Member getMember(String accountNo) {
+		return null;
+	}
+
 }
