@@ -45,11 +45,13 @@ public class QueryResultResp<T> extends RespMsg {
 
 	public QueryResultResp(String code, String msg, QueryResult<T> queryResult) {
 		super(code, msg);
-		this.pageNo = queryResult.getPageNo();
-		this.pageSize = queryResult.getPageSize();
-		this.totalCount = queryResult.getTotalCount();
-		this.totalPages = queryResult.getTotalPages();
-		this.resultList = queryResult.getResultList();
+		if(queryResult!=null) {
+			this.pageNo = queryResult.getPageNo();
+			this.pageSize = queryResult.getPageSize();
+			this.totalCount = queryResult.getTotalCount();
+			this.totalPages = queryResult.getTotalPages();
+			this.resultList = queryResult.getResultList();
+		}
 	}
 
 	public int getPageNo() {
