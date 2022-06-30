@@ -181,14 +181,18 @@
 	      <executions>
 	        <execution>
 	       	  <id>build-image</id>
-	       	  <phase>package</phase>
+	       	  <!--<phase>package</phase>-->
 	       	  <goals>
 	       	  	<goal>build</goal>
 	       	  </goals>
 	       	</execution>
 	      </executions>
 	      <configuration>
-	        <imageName>repo.orders.com:5000/orders/product:1.2.1</imageName>
+	        <imageName>repo.orders.com/orders/product</imageName>
+            <imageTags>
+                <imageTag>${project.version}</imageTag>
+                <imageTag>latest</imageTag>
+            </imageTags>
 	       	<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
             <dockerHost>http://repo.orders.com:2375</dockerHost>
               <!--
@@ -201,7 +205,7 @@
 	       	  <resource>
 	       	    <targetPath>/</targetPath>
 	       	    <directory>${project.build.directory}</directory>
-	       	    <include>${project.build.finalName}</include>
+	       	    <include>${project.build.finalName}.war</include>
 	       	  </resource>
 	       	</resources>
 	       	<forceTags>true</forceTags>
