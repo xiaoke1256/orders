@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+  labels:
+    name: product
+spec:
+  ports:
+  - port: 8082
+    targetPort: 8080
+  selector:
+    name: product

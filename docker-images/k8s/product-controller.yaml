@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: product
+  labels:
+    name: product
+spec:
+  replicas: 1
+  selector:
+    name: product
+  template:
+    metadata:
+      labels:
+        name: product
+    spec:
+      containers:
+      - name: product
+        image: repo.orders.com/product
+        ports:
+        - containerPort: 8080
