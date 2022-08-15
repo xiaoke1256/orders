@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: product
-        image: repo.orders.com/orders/product
+        image: repo.orders.com:5000/orders/product
         ports:
         - containerPort: 8080
