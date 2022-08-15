@@ -188,7 +188,7 @@
 	       	</execution>
 	      </executions>
 	      <configuration>
-	        <imageName>repo.orders.com/orders/product</imageName>
+	        <imageName>repo.orders.com:5000/orders/product</imageName>
             <imageTags>
                 <imageTag>${project.version}</imageTag>
                 <imageTag>latest</imageTag>
