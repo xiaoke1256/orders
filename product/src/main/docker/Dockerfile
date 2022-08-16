@@ -1,4 +1,4 @@
-FROM tomcat:8
+FROM tomcat:9
 
 MAINTAINER xiaoke_1256
 
