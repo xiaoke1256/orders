@@ -10,3 +10,6 @@ spec:
     targetPort: 8080
   selector:
     name: product
+  type: LoadBalancer
+  externalIPs:
+  - 192.168.162.101  #需要根据环境调整
