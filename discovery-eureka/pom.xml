@@ -5,8 +5,8 @@
   <groupId>com.xiaoke_1256.orders</groupId>
   <artifactId>discovery-eureka</artifactId>
   <version>1.0.0</version>
-  <packaging>jar</packaging>
-  
+  <packaging>war</packaging>
+  <description></description>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -76,6 +76,43 @@
                <excludes>
                    <exclude>**/Es*.java</exclude>
                </excludes>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>1.0.0</version>
+            <executions>
+                <execution>
+                    <id>build-image</id>
+                    <!--<phase>package</phase>-->
+                    <goals>
+                        <goal>build</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <imageName>repo.orders.com:5000/orders/discovery-eureka</imageName>
+                <imageTags>
+                    <imageTag>${project.version}</imageTag>
+                    <imageTag>latest</imageTag>
+                </imageTags>
+                <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                <dockerHost>http://repo.orders.com:2375</dockerHost>
+                <!--
+                <imageName>10.10.8.175:5000/${artifactId}:${project.version}</imageName>
+                <dockerHost>https://10.10.8.175:2376</dockerHost>
+                <dockerCertPath>C:\Users\AtomView\.docker\machine\machines\default</dockerCertPath>
+                <dockerDirectory>src/main/docker</dockerDirectory>
+                -->
+                <resources>
+                    <resource>
+                        <targetPath>/</targetPath>
+                        <directory>${project.build.directory}</directory>
+                        <include>${project.build.finalName}.war</include>
+                    </resource>
+                </resources>
+                <forceTags>true</forceTags>
             </configuration>
         </plugin>
     </plugins>
