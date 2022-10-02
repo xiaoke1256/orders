@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: discovery-eureka-peer1
+  labels:
+    name: discovery-eureka
+spec:
+  replicas: 1
+  selector:
+    name: discovery-eureka
+  template:
+    metadata:
+      labels:
+        name: discovery-eureka
+    spec:
+      containers:
+        - name: discovery-eureka
+          image: repo.orders.com:5000/orders/discovery-eureka
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: peer1,prod
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: discovery-eureka-peer2
+  labels:
+    name: discovery-eureka
+spec:
+  replicas: 1
+  selector:
+    name: discovery-eureka
+  template:
+    metadata:
+      labels:
+        name: discovery-eureka
+    spec:
+      containers:
+        - name: discovery-eureka
+          image: repo.orders.com:5000/orders/discovery-eureka
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: peer2,prod
+          ports:
+            - containerPort: 8080
