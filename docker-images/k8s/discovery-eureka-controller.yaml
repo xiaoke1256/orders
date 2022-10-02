@@ -14,13 +14,13 @@ spec:
         name: discovery-eureka
     spec:
       containers:
-        - name: discovery-eureka
-          image: repo.orders.com:5000/orders/discovery-eureka
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: peer1,prod
-          ports:
-            - containerPort: 8080
+      - name: discovery-eureka
+        image: repo.orders.com:5000/orders/discovery-eureka
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: peer1,prod
+        ports:
+          - containerPort: 8080
 ---
 apiVersion: v1
 kind: ReplicationController
@@ -38,10 +38,10 @@ spec:
         name: discovery-eureka
     spec:
       containers:
-        - name: discovery-eureka
-          image: repo.orders.com:5000/orders/discovery-eureka
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: peer2,prod
-          ports:
-            - containerPort: 8080
+      - name: discovery-eureka
+        image: repo.orders.com:5000/orders/discovery-eureka
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: peer2,prod
+        ports:
+          - containerPort: 8080
