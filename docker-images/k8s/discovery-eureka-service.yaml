@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-eureka
+  labels:
+    name: discovery-eureka
+spec:
+  ports:
+    - port: 8761
+      targetPort: 8761
+  selector:
+    name: discovery-eureka
+  externalIPs:
+    - 192.168.1.101  #需要根据环境调整
