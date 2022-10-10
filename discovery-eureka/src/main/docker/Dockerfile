@@ -10,4 +10,4 @@ ADD discovery-eureka*.war /discovery-eureka.war
 EXPOSE 8761 8762
 ENV JAVA_OPTS='-server -Xms64m -Xmx512m $EXT_JAVA_OPTS'
 ENV EXT_JAVA_OPTS=''
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/discovery-eureka.war"]
+ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /discovery-eureka.war > log.out

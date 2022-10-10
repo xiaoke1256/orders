@@ -1,14 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: discovery-eureka
+  name: discovery-eureka-peer1
   labels:
-    name: discovery-eureka
+    name: discovery-eureka-peer1-service
 spec:
   ports:
-    - port: 8761
-      targetPort: 8761
+  - name: "8761"
+    port: 8761
+    targetPort: 8761
   selector:
-    name: discovery-eureka
+    name: discovery-eureka-peer1
+  type: LoadBalancer
   externalIPs:
-    - 192.168.1.101  #需要根据环境调整
+  - 192.168.1.101  #需要根据环境调整
+status:
+  loadBalancer: {}
