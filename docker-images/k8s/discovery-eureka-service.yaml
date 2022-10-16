@@ -13,6 +13,6 @@ spec:
     name: discovery-eureka-peer1
   type: LoadBalancer
   externalIPs:
-  - 192.168.1.101  #需要根据环境调整
+  - 192.168.1.102  #需要根据环境调整
 status:
   loadBalancer: {}
