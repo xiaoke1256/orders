@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: orders-geteway
+  name: orders-gateway
   labels:
-    name: orders-geteway
+    name: orders-gateway
 spec:
   replicas: 2
   selector:
-    name: orders-geteway
+    name: orders-gateway
   template:
     metadata:
       labels:
-        name: orders-geteway
+        name: orders-gateway
     spec:
       containers:
-      - name: orders-geteway
-        image: repo.orders.com:5000/orders/orders-geteway
+      - name: orders-gateway
+        image: repo.orders.com:5000/orders/orders-gateway
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: peer1,prod
