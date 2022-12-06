@@ -1,6 +1,3 @@
-spring:
-  profiles: dev
-
 login:
   token:
     secret: XIAOKE1256JGRTY2021BQWE
