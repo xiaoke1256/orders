@@ -5,7 +5,7 @@ metadata:
   labels:
     name: product
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     name: product
   template:
@@ -16,5 +16,10 @@ spec:
       containers:
       - name: product
         image: repo.orders.com:5000/orders/product
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: prod
+          - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            value: http://${DISCOVERY_EUREKA_PEER1_SERVICE_HOST}:${DISCOVERY_EUREKA_PEER1_SERVICE_PORT}/discovery/eureka/,http://${DISCOVERY_EUREKA_PEER2_SERVICE_HOST}:${DISCOVERY_EUREKA_PEER2_SERVICE_PORT}/discovery/eureka/
         ports:
-        - containerPort: 8080
+        - containerPort: 8082
