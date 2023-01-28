@@ -16,7 +16,7 @@ kind: Service
 metadata:
   name: orders-db
 spec:
-  type: ExternalName
+#  type: ExternalName
 #  externalName: db1.orders.com
   ports:
   - port: 3306
