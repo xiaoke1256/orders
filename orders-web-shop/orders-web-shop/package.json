@@ -15,7 +15,7 @@
     "iview": "^3.5.4",
     "joi": "^17.4.1",
     "jsencrypt": "^3.2.1",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "vue": "^2.5.2",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2",
