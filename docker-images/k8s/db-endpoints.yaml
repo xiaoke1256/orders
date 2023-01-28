@@ -17,6 +17,7 @@ metadata:
   name: orders-db
 spec:
   type: ExternalName
-  externalName: db1.orders.com
+#  externalName: db1.orders.com
   ports:
   - port: 3306
+    protocol: TCP
