@@ -13,6 +13,19 @@ spec:
       labels:
         name: product
     spec:
+      dnsConfig:
+        nameservers:
+          - 192.168.1.7
+          - 114.114.114.114
+          - 8.8.8.8
+        searches:
+          - demo.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "2"
+          - name: edns0
       containers:
       - name: product
         image: repo.orders.com:5000/orders/product
