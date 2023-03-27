@@ -162,7 +162,10 @@ spec:
       priorityClassName: system-node-critical
       tolerations:
         - operator: Exists
+          key: node-role.kubernetes.io/master
           effect: NoSchedule
+        - effect: NoSchedule
+          key: node.kubernetes.io/not-ready
       serviceAccountName: flannel
       initContainers:
         - name: install-cni
