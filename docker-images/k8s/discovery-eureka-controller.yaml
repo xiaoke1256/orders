@@ -13,6 +13,7 @@ spec:
       labels:
         name: discovery-eureka-peer1
     spec:
+      nodeName: work1
       containers:
       - name: discovery-eureka
         image: repo.orders.com:5000/orders/discovery-eureka
@@ -39,6 +40,7 @@ spec:
       labels:
         name: discovery-eureka-peer2
     spec:
+      nodeName: work2
       containers:
       - name: discovery-eureka
         image: repo.orders.com:5000/orders/discovery-eureka
