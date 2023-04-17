@@ -12,5 +12,5 @@ import java.util.List;
 @FeignClient(name="api-product",url="${remote.api.product.uri}",fallbackFactory= StoreMemberFallbackFactory.class,path="product")
 public interface StoreMemberClient extends StoreMemberService {
     @GetMapping(path="/storeMember/byAccountNo",consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<StoreMember> queryStoreMemberByAccountNo(@RequestParam String accountNo);
+    List<StoreMember> queryStoreMemberByAccountNo(@RequestParam("accountNo") String accountNo);
 }

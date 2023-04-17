@@ -13,5 +13,5 @@ public interface ProductQueryClient extends ProductQueryService {
     public SimpleProductQueryResultResp searchProductByCondition(@RequestBody ProductCondition condition);
 
     @GetMapping("/simpleProduct/{productCode}")
-    public SimpleProduct getSimpleProductByCode(@PathVariable String productCode);
+    public SimpleProduct getSimpleProductByCode(@PathVariable("productCode") String productCode);
 }

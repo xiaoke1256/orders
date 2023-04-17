@@ -10,5 +10,5 @@ public interface ProductClient {
      * @param productCode 商品编号
      */
     @RequestMapping(path="/product/{productCode}/switchShfs",method = {RequestMethod.POST})
-    void switchShelves(@PathVariable("productCode") String productCode, @RequestParam String onOrOff);
+    void switchShelves(@PathVariable("productCode") String productCode, @RequestParam("onOrOff") String onOrOff);
 }
