@@ -2,7 +2,7 @@ package com.xiaoke1256.orders.store.intra.store.client;
 
 import com.xiaoke1256.orders.product.api.StoreMemberService;
 import com.xiaoke1256.orders.product.dto.StoreMember;
-import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
