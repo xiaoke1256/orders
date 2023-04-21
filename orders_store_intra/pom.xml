@@ -26,12 +26,19 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-feign</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.netflix.feign</groupId>-->
+<!--            <artifactId>feign-httpclient</artifactId>-->
+<!--            <version>8.15.1</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
@@ -67,12 +74,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <!--  <version>1.2.2</version> -->
-        </dependency>
-
-        <dependency>
-            <groupId>com.netflix.feign</groupId>
-            <artifactId>feign-httpclient</artifactId>
-            <version>8.15.1</version>
         </dependency>
 
         <dependency>
@@ -172,7 +173,7 @@
               <executions>
                 <execution>
                      <id>build-image</id>
-                     <phase>package</phase>
+                     <!--<phase>package</phase>-->
                      <goals>
                          <goal>build</goal>
                      </goals>
