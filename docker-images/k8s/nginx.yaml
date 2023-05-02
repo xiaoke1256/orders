@@ -14,8 +14,8 @@ spec:
       targetPort: 8082
       nodePort: 30014
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: ReplicationController
 metadata:
   name: nginx
   labels:
