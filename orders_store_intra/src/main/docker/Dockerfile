@@ -10,7 +10,7 @@ RUN apt-get update; \
     apt-get install -y --no-install-recommends \
         net-tools \
     ; \
-    apt-get install iputils-ping; \
+    apt-get install -y iputils-ping; \
     rm -rf /var/lib/apt/lists/*
 
 # 设置时区
