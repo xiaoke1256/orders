@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch7
+  namespace: elasticsearch
+spec:
+  selector:
+    app: elasticsearch7
+  type: NodePort
+  ports:
+    - port: 9200
+      nodePort: 30002
+      targetPort: 9200
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: es-external
+  namespace: elasticsearch
+spec:
+  selector:
+    app: elasticsearch7
+  type: LoadBalancer
+  externalIPs:
+    - 192.168.1.102  #需要根据环境调整
+  ports:
+    - port: 9200
+      targetPort: 9200
