@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-conf
+data:
+  filebeat.yml: |-
+    filebeat.inputs:
+    - input_type: log
+      paths:
+        - /logs/*/*.log
+      tail_files: true
+    output.kafka:
+      hosts: ["192.168.1.101:9092"]
