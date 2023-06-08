@@ -10,4 +10,4 @@ data:
         - /logs/*/*.log
       tail_files: true
     output.kafka:
-      hosts: ["192.168.1.101:9092"]
+      hosts: ["192.168.1.102:9092"]
