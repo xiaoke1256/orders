@@ -9,5 +9,6 @@ data:
       paths:
         - /logs/*/*.log
       tail_files: true
-    output.kafka:
-      hosts: ["192.168.1.102:9092"]
+    output.logstash:
+      enabled: true
+      hosts: ["192.168.1.102:5047"]

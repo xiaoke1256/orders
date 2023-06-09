@@ -47,9 +47,8 @@ spec:
         volumeMounts:
           - name: logs
             mountPath: /logs
-            readOnly: true
           - name: config
-            mountPath: /etc/filebeat.yml
+            mountPath: /usr/share/filebeat/filebeat.yml
             readOnly: true
             subPath: filebeat.yml
 
@@ -58,6 +57,6 @@ spec:
           emptyDir: {}
         - name: config
           configMap:
-            defaultMode: 384
+            defaultMode: 420
             name: filebeat-conf
 
