@@ -17,5 +17,6 @@
         <module>orders</module>
         <module>orders-task</module>
         <module>3rdPay</module>
+        <module>search</module>
     </modules>
 </project>
