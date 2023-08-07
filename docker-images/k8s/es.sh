@@ -1,4 +1,10 @@
-docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -v esdata:/usr/share/elasticsearch/data -v /home/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml -d --restart=always --network=host docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+docker run --restart=always --name elasticsearch \
+-p 9200:9200  -p 9300:9300 \
+-e "discovery.type=single-node" \
+-e ES_JAVA_OPTS="-Xms256m -Xmx256m" \
+-v /opt/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
+-v /opt/elasticsearch/data:/usr/share/elasticsearch/data \
+-v /opt/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d --restart=always --network=host elasticsearch:7.11.1
 
 docker run -p 9100:9100 -d --restart=always mobz/elasticsearch-head:5-alpine
 
