@@ -1,53 +1,36 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: StatefulSet   ##资源类型
 metadata:
-  name: discovery-eureka-peer1
   labels:
-    name: discovery-eureka-peer1
+    workload.user.cattle.io/workloadselector: apps.statefulset-discovery-eureka
+  name: discovery-eureka      #服务名称
 spec:
-  replicas: 1
+  podManagementPolicy: OrderedReady
+  replicas: 2        #副本数目
+  revisionHistoryLimit: 10    ##历史最大保留数目
   selector:
-    name: discovery-eureka-peer1
+    matchLabels:
+      workload.user.cattle.io/workloadselector: apps.statefulset-discovery-eureka
+  serviceName: eureka-hl  # Headless Service 无头服务名称
   template:
     metadata:
       labels:
-        name: discovery-eureka-peer1
+        workload.user.cattle.io/workloadselector: apps.statefulset-discovery-eureka
     spec:
-      nodeName: work1
-      containers:
-      - name: discovery-eureka
-        image: repo.orders.com:5000/orders/discovery-eureka
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: peer1,prod
-        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          value: http://${DISCOVERY_EUREKA_PEER2_SERVICE_HOST}:${DISCOVERY_EUREKA_PEER2_SERVICE_PORT}/discovery/eureka/
-        ports:
-        - containerPort: 8761
----
-apiVersion: v1
-kind: ReplicationController
-metadata:
-  name: discovery-eureka-peer2
-  labels:
-    name: discovery-eureka-peer2
-spec:
-  replicas: 1
-  selector:
-    name: discovery-eureka-peer2
-  template:
-    metadata:
-      labels:
-        name: discovery-eureka-peer2
-    spec:
-      nodeName: work2
-      containers:
-      - name: discovery-eureka
-        image: repo.orders.com:5000/orders/discovery-eureka
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: peer2,prod
-        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          value: http://${DISCOVERY_EUREKA_PEER1_SERVICE_HOST}:${DISCOVERY_EUREKA_PEER1_SERVICE_PORT}/discovery/eureka/
-        ports:
-        - containerPort: 8762
+      containers:    ##容器信息
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: peer1,prod
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://discovery-eureka-0.eureka-hl:8761/discovery/eureka/,http://discovery-eureka-1.eureka-hl:8761/discovery/eureka/
+          image: repo.orders.com:5000/orders/discovery-eureka
+          #imagePullPolicy: Always    ##拉取策略
+          name: discovery-eureka
+      restartPolicy: Always        ##重启策略
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate

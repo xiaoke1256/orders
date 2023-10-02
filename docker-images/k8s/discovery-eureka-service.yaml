@@ -1,38 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: discovery-eureka-peer1
-  labels:
-    name: discovery-eureka-peer1-service
+  name: eureka-hl  #服务名称
 spec:
+  clusterIP: None  #无头服务
   ports:
-  - name: "8761"
-    port: 8761
-    targetPort: 8761
+    - name: "8761"
+      port: 8761
+      targetPort: 8761
   selector:
-    name: discovery-eureka-peer1
-  type: LoadBalancer
-  externalIPs:
-  - 192.168.1.102  #需要根据环境调整
-status:
-  loadBalancer: {}
+    workload.user.cattle.io/workloadselector: apps.statefulset-discovery-eureka
+  sessionAffinity: None
+  type: ClusterIP
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: discovery-eureka-peer2
-  labels:
-    name: discovery-eureka-peer2-service
+  name: eureka-np
 spec:
+  #clusterIP:  192.168.1.102
+  externalTrafficPolicy: Cluster
   ports:
-    - name: "8762"
-      port: 8762
-      targetPort: 8762
+    - name: "8761"
+      nodePort: 30001
+      port: 8761
+      protocol: TCP
+      targetPort: 8761
   selector:
-    name: discovery-eureka-peer2
-  type: LoadBalancer
-  externalIPs:
-    - 192.168.1.103  #需要根据环境调整
-status:
-  loadBalancer: {}
+    workload.user.cattle.io/workloadselector: apps.statefulset-discovery-eureka
+  sessionAffinity: None
+  type: NodePort
