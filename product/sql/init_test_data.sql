@@ -1,4 +1,4 @@
---测试环境模拟数据
+-- 测试环境模拟数据
 delete from store;
 insert into store (store_no,store_name) values ('0001','华硕旗舰店');
 insert into store (store_no,store_name) values ('0002','弘基专卖店');
