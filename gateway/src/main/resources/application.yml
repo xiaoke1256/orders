@@ -47,6 +47,7 @@ remote:
 
 eureka:
   client:
+    enabled: true
     serviceUrl:
       defaultZone: http://peer1:8761/discovery/eureka/,http://peer2:8762/discovery/eureka/
     healthcheck:
@@ -67,4 +68,8 @@ remote:
 
 eureka:
   client:
-    enabled: false
+    enabled: true
+    serviceUrl:
+      defaultZone: http://peer1:8761/discovery/eureka/,http://peer2:8762/discovery/eureka/
+    healthcheck:
+      enabled: true
