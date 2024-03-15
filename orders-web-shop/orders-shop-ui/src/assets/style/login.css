@@ -1,0 +1,60 @@
+  .layout{
+      border: 1px solid #d7dde4;
+      background: #f5f7f9;
+      position: relative;
+      border-radius: 4px;
+  }
+  .layout-logo{
+      width: 200px;
+      height: 30px;
+      background: #5b6270;
+      border-radius: 3px;
+      float: left;
+      position: relative;
+      top: 15px;
+      left: 20px;
+      color:lightsteelblue;
+      font:italic 60px  "Acadian" ;
+      letter-spacing:12px;
+  }
+  .layout-footer-center{
+      text-align: center;
+      background: #2c3e50 !important;
+      color:#fff !important;
+  }
+
+  .loginWelcome{
+    text-align:left;
+    font:italic bolder 16px;
+    color:lightsteelblue;
+    border-bottom:cornflowerblue solid 2px;
+    margin-bottom: 15px;
+  }
+  .welcomeMsg{
+    padding:0 50px;
+    text-align: right;
+    font:italic bolder 16px "yahei";
+    color:lightsteelblue
+  }
+  .ivu-layout.top{
+    min-height: 99.6vh
+  }
+  .ivu-layout-content.loginContent{
+    padding: 20px 50px
+  }
+
+  .loginMain{
+    min-height:300px;
+    text-align: center;
+  }
+
+  .loginMain > div{
+    display:inline-block;
+    vertical-align:middle;
+  }
+
+  .loginMain .ivu-card{
+    height:413px;
+    vertical-align:middle;
+    padding:60px 0;
+  }
