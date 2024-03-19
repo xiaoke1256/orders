@@ -79,6 +79,7 @@ import { Vue, Options } from "vue-class-component";
 import { Form } from 'iview'
 //import { login, getSessionId, getloginPublicKey } from '@/api/login'
 import { LoginForm } from '@/types/login';
+import { JSEncrypt } from 'jsencrypt';
 
 @Options({ components: {} })
 export default class Login extends Vue {
@@ -91,26 +92,28 @@ export default class Login extends Vue {
   // 是否扫码登录
   public isScanLogin = false;
 
+  //扫码登录时的公钥
+  public publicKey = '';
+
+  public basePath = '';
+
   public get encodedUrl() {
-    /*
     if (!this.loginForm.loginName ||
-        !this.loginForm.randomCode ||
-        !this.publicKey) {
-        return '';
+      !this.loginForm.randomCode ||
+      !this.publicKey) {
+      return '';
     }
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
     let encodeMessage = encrypt.encrypt(this.loginForm.loginName + this.loginForm.randomCode);
     if (typeof (encodeMessage) == 'boolean') {
-        return 'encrypt error!';
-        //encodeMessage = encodeMessage.replace('==','');
+      return 'encrypt error!';
+      //encodeMessage = encodeMessage.replace('==','');
     }
 
     const encodeStr = this.basePath + '/login/loginWith2dCode/' + this.loginForm.sessionId + '?encodeMessage='
-        + encodeURIComponent(encodeMessage) + '&randomCode=' + this.loginForm.randomCode
+      + encodeURIComponent(encodeMessage) + '&randomCode=' + this.loginForm.randomCode
     return encodeStr;
-    */
-    return ''
   }
 
 
