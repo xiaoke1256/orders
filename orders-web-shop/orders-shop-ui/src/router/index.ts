@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import Home from "@/views/Home.vue"
+import HomeIndex from "@/views/home/Index.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,6 +21,18 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+    children: [
+      {
+        path: 'index',
+        name: 'HomeIndex',
+        component: HomeIndex
+      },
+    ]
   },
 ];
 
