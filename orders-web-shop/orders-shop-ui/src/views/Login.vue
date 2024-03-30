@@ -77,7 +77,7 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import { Form } from 'iview'
-//import { login, getSessionId, getloginPublicKey } from '@/api/login'
+import { login, getSessionId, getloginPublicKey } from '@/api/login'
 import { LoginForm } from '@/types/login';
 import { JSEncrypt } from 'jsencrypt';
 
@@ -118,31 +118,29 @@ export default class Login extends Vue {
 
 
   public async login() {
-    /*
     console.log("this.$refs.logForm.validate:" + (<Form>this.$refs.logForm).validate);
     (this.$refs.logForm as Form).validate(async (valid) => {
-        console.log("valid");
-        if (valid != true) {
-            return;
-        }
-        const result = await login(this.loginForm.loginName, this.loginForm.password);
-        const token = result.token;
-        const refreshToken = result.refreshToken;
-        const user = result.user;
-        if (typeof token !== 'string' || !token) {
-            throw new Error("登录异常");
-        }
-        console.log("token:" + token);
-        sessionStorage.setItem("token", token);
-        sessionStorage.setItem("refreshToken", refreshToken);
-        sessionStorage.setItem("nickName", user.nickName);
-        sessionStorage.setItem("loginName", this.loginForm.loginName);
-        this.$router.push({
-            path: 'home/index'
-        });
+      console.log("valid");
+      if (valid != true) {
+        return;
+      }
+      const result = await login(this.loginForm.loginName, this.loginForm.password);
+      const token = result.token;
+      const refreshToken = result.refreshToken;
+      const user = result.user;
+      if (typeof token !== 'string' || !token) {
+        throw new Error("登录异常");
+      }
+      console.log("token:" + token);
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("refreshToken", refreshToken);
+      sessionStorage.setItem("nickName", user.nickName);
+      sessionStorage.setItem("loginName", this.loginForm.loginName);
+      this.$router.push({
+        path: 'home/index'
+      });
 
     });
-    */
   }
 
   public loginTypeSwich() {
