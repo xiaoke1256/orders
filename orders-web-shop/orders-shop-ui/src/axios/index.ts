@@ -9,7 +9,9 @@ const instance = getCurrentInstance()
 const { proxy } = instance != null ? instance : { proxy: undefined }
 
 const message = (msg: string, type?: any) => {
-  proxy?.$Message.error(msg);
+  console.log("before msg.");
+  //proxy?.$Message.error(msg);
+  console.log("after msg.");
   //Vue.getCurrentInstance.prototype.$Message.error(msg);
 }
 
