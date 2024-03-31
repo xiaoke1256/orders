@@ -1,17 +1,12 @@
-import { getCurrentInstance } from 'vue';
 import axios from "axios";
 import router from "@/router/index";
 import qs from "qs";
 //import store from "@/store";
+import { Message, Notice } from 'view-ui-plus';
 import ViewUIPlus from 'view-ui-plus';
 
-const instance = getCurrentInstance()
-const { proxy } = instance != null ? instance : { proxy: undefined }
-
 const message = (msg: string, type?: any) => {
-  console.log("before msg.");
-  //proxy?.$Message.error(msg);
-  console.log("after msg.");
+  Message.error(msg);
   //Vue.getCurrentInstance.prototype.$Message.error(msg);
 }
 
@@ -51,9 +46,10 @@ const errorHandle = (status: number, code: string, other: string) => {
     default:
       if (code == '99')
         message("系统异常!");
-      else if (code == '80')
-        proxy?.$Notice.error({ title: '操作异常', desc: other })
-      //Vue.getCurrentInstance.prototype.$Notice.error({ title: '操作异常', desc: other });
+      else if (code == '80') {
+        Notice.error({ title: '操作异常', desc: other })
+        //Vue.getCurrentInstance.prototype.$Notice.error({ title: '操作异常', desc: other });
+      }
       else
         message(other);
   }
@@ -110,7 +106,9 @@ axiosInst.interceptors.request.use(
 
 axiosInst.interceptors.request.use(
   config => {
-    proxy?.$Loading.start();
+    // const instance = getCurrentInstance()
+    // const { proxy } = instance != null ? instance : { proxy: undefined }
+    ViewUIPlus.LoadingBar.start();
     return config;
   },
 )
@@ -124,7 +122,9 @@ axiosInst.interceptors.response.use(
     ViewUIPlus.LoadingBar.finish();
     console.log("res.config.method:" + res.config.method);
     if (res.config.method && res.config.method.toLowerCase() !== 'get') {
-      proxy?.$Notice.success({ title: '操作成功。' });
+      // const instance = getCurrentInstance()
+      // const { proxy } = instance != null ? instance : { proxy: undefined }
+      Notice.success({ title: '操作成功。' });
     }
     return Promise.resolve(res);
   },
