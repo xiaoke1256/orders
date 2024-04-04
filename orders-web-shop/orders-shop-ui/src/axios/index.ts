@@ -66,7 +66,7 @@ const axiosInst = axios.create({
   // 请求时长
   timeout: 1000 * 30,
   // 请求的base地址 TODO:这块以后根据不同的模块调不同的api
-  baseURL: process.env.BASE_API,
+  //baseURL: 'http://localhost:8763/store_intra/',//process.env.BASE_API,
   // baseURL:
   //   process.env.NODE_ENV === "development"
   //     ? "测试"
