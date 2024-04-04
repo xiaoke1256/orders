@@ -21,7 +21,7 @@
         <Sider hide-trigger class="leftMenu">
           <Menu active-name="1-2" theme="light" width="auto" :open-names="openMunes" @on-select="changeCurrent">
             <Submenu v-for="menu in menus" :key="menu.menuCode" :name="menu.menuCode">
-              <template slot:title>
+              <template #title>
                 <Icon :type="menu.icon" />
                 {{ menu.menuName }}
               </template>
