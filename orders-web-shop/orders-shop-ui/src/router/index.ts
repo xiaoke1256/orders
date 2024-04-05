@@ -34,6 +34,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ]
   },
+  {
+    path: '/product',
+    component: Home,
+    children: [
+      {
+        path: 'index',
+        name: 'ProductIndex',
+        component: () => import('@/views/product/Table.vue')
+      }
+    ]
+  },
 ];
 
 const router = createRouter({
