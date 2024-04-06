@@ -45,6 +45,17 @@ const routes: Array<RouteRecordRaw> = [
       }
     ]
   },
+  {
+    path: '/store',
+    component: Home,
+    children: [
+      {
+        path: 'index',
+        name: 'StoreIndex',
+        component: () => import('@/views/store/Index.vue')
+      }
+    ]
+  }
 ];
 
 const router = createRouter({
