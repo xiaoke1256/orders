@@ -18,7 +18,19 @@
         </Row>
       </Form>
     </div>
-    <Table :columns="productCols" :data="porductList"></Table>
+    <Table :columns="productCols" :data="porductList">
+      <template #productStatus="{ row }">
+        <Switch size="large" :true-value="'1'" :false-value="'0'" v-model="row.productStatus"
+          :before-change="() => onSwitchStatus(row.productCode, row.productStatus)">
+          <template #open>
+            <span>上架</span>
+          </template>
+          <template #close>
+            <span>下架</span>
+          </template>
+        </Switch>
+      </template>
+    </Table>
     <Page :total="totalCount" :page-size="pageSize" @on-change="onPageChange" show-sizer show-total transfer />
   </div>
 </template>
@@ -95,6 +107,7 @@ export default class ProductTable extends Vue {
     }, {
       title: '上下架',
       key: 'productStatus',
+      slot: 'productStatus'/*,
       render: (h: any, params: any) => {
         const p = <Product>params.row;
         return h(resolveComponent('Switch'),
@@ -110,12 +123,16 @@ export default class ProductTable extends Vue {
             }
           },
           [
-            h('span', { slot: "open" }, '上架'),
-            h('span', { slot: "close" }, '下架')
+            h('template', { "#open": "" }, '上架'),
+            h('template', { "#close": "" }, '下架')
           ]
         );
-      }
+      }*/
     }];
+  }
+
+  public onSwitchStatus(productCode: string, productStatus: string) {
+    return switchOnShef(productCode, productStatus == '1' ? '0' : '1')
   }
 }
 </script>
