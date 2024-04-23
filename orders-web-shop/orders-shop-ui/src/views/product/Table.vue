@@ -107,27 +107,7 @@ export default class ProductTable extends Vue {
     }, {
       title: '上下架',
       key: 'productStatus',
-      slot: 'productStatus'/*,
-      render: (h: any, params: any) => {
-        const p = <Product>params.row;
-        return h(resolveComponent('Switch'),
-          {
-            props: {
-              "size": "large",
-              "trueValue": "1",
-              "falseValue": "0",
-              "value": p.productStatus,
-              "beforeChange": () => {
-                return switchOnShef(p.productCode, p.productStatus == '1' ? '0' : '1')
-              }
-            }
-          },
-          [
-            h('template', { "#open": "" }, '上架'),
-            h('template', { "#close": "" }, '下架')
-          ]
-        );
-      }*/
+      slot: 'productStatus'
     }];
   }
 
