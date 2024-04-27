@@ -6,7 +6,10 @@ import { Message, Notice } from 'view-ui-plus';
 import ViewUIPlus from 'view-ui-plus';
 
 const message = (msg: string, type?: any) => {
-  Message.error(msg);
+  console.log("msg:" + msg);
+  if (msg) {
+    Message.error(msg);
+  }
   //Vue.getCurrentInstance.prototype.$Message.error(msg);
 }
 
@@ -33,6 +36,10 @@ const errorHandle = (status: number, code: string, other: string) => {
       break;
     // 403 token过期
     // 清除token并跳转登录页
+    case 401:
+      message('登录过期');
+      toLogin();
+      break;
     case 403:
       message('你无权限访问该资源');
       break;
@@ -44,14 +51,13 @@ const errorHandle = (status: number, code: string, other: string) => {
       message('与服务器失去连接');
       break;
     default:
-      if (code == '99')
+      if (code == '99') {
         message("系统异常!");
-      else if (code == '80') {
+      } else if (code == '80') {
         Notice.error({ title: '操作异常', desc: other })
-        //Vue.getCurrentInstance.prototype.$Notice.error({ title: '操作异常', desc: other });
-      }
-      else
+      } else {
         message(other);
+      }
   }
 }
 
