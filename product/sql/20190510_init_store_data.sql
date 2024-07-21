@@ -15,7 +15,7 @@ insert into store (store_no,store_name,pay_type,pay_account_no) values ('2018100
 insert into store (store_no,store_name,pay_type,pay_account_no) values ('2018100017','和丰家居城','003','DDS324345343223432');
 insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100018','林智生活商城','家电','003','DDS324300175223432');
 insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100019','世纪百城家电',null,'003','DDS3243II43223432');
-insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100020','美的专卖店',null),'003','DDS3765H453433432';
+insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100020','美的专卖店',null,'003','DDS3765H453433432');
 insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100021','小米专卖店',null,'003','DDS32434509823432');
 insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100022','创维数码广场',null,'003','DDK114345343223432');
 insert into store (store_no,store_name,store_intro,pay_type,pay_account_no) values ('2018100023','索尼数码专营店',null,'003','DYS324333343223432');
