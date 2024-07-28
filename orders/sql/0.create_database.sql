@@ -28,7 +28,7 @@ CHANGE MASTER TO MASTER_HOST='localhost', MASTER_PORT=3306,
     MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=2426; -- 其中2426 是 show master status 中显示的。
 
 -- 需要设置为：
--- slave_sql_verify_checksum=0
+-- slave_sql_verify_checksum = 0
 
 -- 如有必要设置 max_allowed_packet =1073741824;
 
