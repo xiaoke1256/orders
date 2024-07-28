@@ -30,7 +30,7 @@ CHANGE MASTER TO MASTER_HOST='localhost', MASTER_PORT=3306,
 -- 需要设置为：
 -- slave_sql_verify_checksum = 0
 
--- 如有必要设置 max_allowed_packet =1073741824;
+-- 如有必要设置 max_allowed_packet = 1073741824;
 
 start slave;
 show slave status ;
