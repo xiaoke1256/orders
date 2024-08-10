@@ -14,6 +14,7 @@
         <module>common</module>
         <module>common-zookeeper</module>
         <module>product</module>
+        <module>product-base</module>
         <module>discovery-eureka</module>
         <module>gateway</module>
         <module>orders</module>
