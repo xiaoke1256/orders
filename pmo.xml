@@ -18,6 +18,7 @@
         <module>gateway</module>
         <module>orders</module>
         <module>orders-api</module>
+        <module>orders-base</module>
         <module>orders-auth</module>
         <module>orders-task</module>
         <module>3rdPay</module>
