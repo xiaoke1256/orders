@@ -5,13 +5,19 @@ create schema orders default character set utf8 collate utf8_general_ci;
 GRANT ALL ON orders.* TO 'ordersUser'@'%';
 
 -- 主从复制配置
+
+-- # my.cnf 需要加如下配置：
+-- #log-bin=mysql-bin
+-- # #主从库此值不能相等 从库 server-id=2
+-- #server-id=1
+
 -- 主库
 CREATE USER 'slaveUser'@'127.0.0.1' IDENTIFIED BY 'xiaoke_1256';
 GRANT REPLICATION SLAVE ON *.* TO 'slaveUser'@'127.0.0.1';
 FLUSH PRIVILEGES;
 SHOW MASTER STATUS;
 
-ALTER USER 'slaveUser'@'127.0.0.1' IDENTIFIED WITH mysql_native_password;
+ALTER USER 'slaveUser'@'127.0.0.1' IDENTIFIED WITH mysql_native_password by 'xiaoke_1256';
 
 -- 主库加锁
 FLUSH TABLES WITH READ LOCK;
@@ -21,6 +27,8 @@ FLUSH TABLES WITH READ LOCK;
 -- # /opt/all-20231226.sql 复制到从库机器上
 -- # 在从库的操作系统中执行：
 -- mysql -uroot -pPassw0rd@_ < /opt/all-20231226.sql
+-- 执行
+UNLOCK TABLES; -- 解锁
 
 -- # 登上从库执行
 CHANGE MASTER TO MASTER_HOST='localhost', MASTER_PORT=3306,
