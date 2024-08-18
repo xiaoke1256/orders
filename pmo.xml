@@ -24,5 +24,6 @@
         <module>orders-task</module>
         <module>3rdPay</module>
         <module>search</module>
+        <module>bigData</module>
     </modules>
 </project>

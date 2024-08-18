@@ -8,7 +8,7 @@ import org.apache.spark.storage.StorageLevel
 import scala.Tuple2
 import java.util
 
-class SparkMain{
+object SparkMain{
   @throws[Exception]
   def main(args: Array[String]): Unit = {
 
@@ -17,7 +17,7 @@ class SparkMain{
     val master = "local"
     // 处理的源文件，输出的结果，这个文件是咱们前几天在MapReduce中的文件
     val filePath = "/test/input/testFile.txt"
-    val outputPath = "/test/output/testSpartResult"
+    val outputPath = "/test/output/testSpartResult.txt"
     // 初始化Spark环境，为后边运行读取环境配置
     val conf = new SparkConf().setAppName(appName).setMaster(master)
     val sc = new JavaSparkContext(conf)
@@ -28,6 +28,11 @@ class SparkMain{
     //val words = lines.flatMap[Array[String]]((s: String) => util.Arrays.asList(s.split(" "):_*))
     val words = lines.flatMap((s: String) => util.Arrays.asList(s.split(" "):_*).iterator)
 
+
+//    def function1 = (input: String)=> Seq[String] = {
+//      // some processing that produces multiple outputs
+//      Seq("output1", "output2", "output3")
+//    }
     // 将所有的文字组成键值对，并对不同的key进行计数
     val pairs = words.mapToPair((s:String) => new Tuple2[String,Integer](s, 1))
     val counts = pairs.reduceByKey((a: Integer, b: Integer) => a + b)
