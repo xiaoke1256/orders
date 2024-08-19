@@ -33,6 +33,11 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.xiaoke_1256.orders</groupId>
+            <artifactId>product-base</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
     </dependencies>
 
