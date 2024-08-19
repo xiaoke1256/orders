@@ -1,4 +1,4 @@
---大类：服装、箱包、玩具、家电、化妆品、运动、游戏、书、办公、美食
+-- 大类：服装、箱包、玩具、家电、化妆品、运动、游戏、书、办公、美食
 delete from product_type;
 insert into product_type (type_id,type_name,parent_type_id,type_desc,show_order)
 	values ('01','服装',null,null,1);
