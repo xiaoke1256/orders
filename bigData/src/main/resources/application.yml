@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: orders-bigdata
+  thymeleaf:
+    cache: false
+    enabled: false
+
+server:
+  context-path: /bigdata
+  port: 8080
+  servlet-path: /
+
+logging:
+  config: classpath:logback.xml
+
