@@ -42,6 +42,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'index',
         name: 'ProductIndex',
         component: () => import('@/views/product/Table.vue')
+      },
+      {
+        path: 'storage',
+        name: 'StorageIndex',
+        component: () => import('@/views/storage/Table.vue')
       }
     ]
   },

@@ -55,7 +55,7 @@ export default class Home extends Vue {
 
   public menus: MenuItem[] = [
     { menuName: '店铺设置', menuCode: '1', icon: 'ios-navigate', children: [{ menuName: '我的店铺', menuCode: '1-1', path: '/store/index' }] },
-    { menuName: '我的商品', menuCode: '2', icon: 'ios-keypad', children: [{ menuName: '商品列表', menuCode: '2-1', path: '/product/index' }] },
+    { menuName: '我的商品', menuCode: '2', icon: 'ios-keypad', children: [{ menuName: '商品列表', menuCode: '2-1', path: '/product/index' },{ menuName: '库存管理', menuCode: '2-2', path: '/product/storage' }] },
     /*{menuName:'我的订单',menuCode:'3',icon:'ios-keypad',children:[{menuName:'订单中心',menuCode:'3-1',path:''}]},*/
     /*{menuName:'小数据',menuCode:'4',icon:'ios-analytics',children:[{menuName:'图表 1',menuCode:'4-1',path:''},{menuName:'图表 2',menuCode:'4-2',path:''}]}*/
   ] as MenuItem[];
