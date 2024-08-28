@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>orders-bigdata welcome!</title>
+  <base href="../">
+  <script type="text/javascript" src="js/jquery.min.js" ></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <script type="text/javascript" src="js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
+  <script type="text/javascript">
+  $(function (){
+
+	  function queryData(){
+		  var pageNo = $(this).attr("pageNo");
+		  if(!pageNo || isNaN(pageNo) )
+			  pageNo=1;
+		  //alert(pageNo);
+		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,"needFullTypeName":true};
+		  var callee = arguments.callee;
+		  $.ajax({  
+			    url:"product/searchProduct",
+			    type:"GET",
+			    dataType:"json",  
+			    data:data,
+			    contentType: "application/json;charset=utf-8",
+			    headers: {'Content-Type': 'application/json;charset=UTF-8'},  
+			    success: function (ret) {
+			    	var $tr = $('#listTable tbody').empty();
+			    	for(var i in ret.resultList){
+			    		var p = ret.resultList[i];
+			    		//alert("p:"+p);
+			    		$tr.append('<tr> <td>'+p.productCode+'</td><td>'+p.productName+'</td><td>'+(p.productPrice/1000)+'</td>'
+			    				+'<td>'+new Date(p.updateTime).format('yyyy-MM-dd HH:mm:ss.S')+'</td> </tr>');
+			    		
+			    	}
+			    	$('#pageTd').makePage(ret,callee);
+			    },
+			    error:function(err){
+			    	//alert("网络异常："+err.responseText);
+			    	alert("网络异常："+err.status);
+			    }
+		  });
+		  
+	  }
+	  
+	  $('body').on('click','#searchBtn',queryData);
+	  
+  });
+  </script>
+</head>
+<body>
+	<header>
+		<h1 class="title">欢迎访问 orders 订单系统</h1>
+	</header>
+	<br>
+	<section style="margin:10px auto;width:80%">
+		商品代码<input id="productCode" type="text" value="" >
+		商品名称<input id="productName" type="text" value="" > 
+		<button id="searchBtn" >搜索</button>
+	</section>
+	<div id="content" class="content">
+	 	<table id="listTable" class="listTable">
+	 		<thead>
+	 			<tr>
+	 				<th>code</th>
+	 				<th>name</th>
+	 				<th>price</th>
+					<!--
+	 				<th>store name</th>
+	 				<th>type name</th>
+	 				-->
+	 				<th>update time</th>
+	 			</tr>
+	 		</thead>
+	 		<tbody>
+	 			
+	 		</tbody>
+	 		<tfoot>
+	 			<tr>
+	 				<td colspan="7" id="pageTd" ></td>
+	 			</tr>
+	 		</tfoot>
+	 	</table>
+	</div>
+	<div id="pageFoot">
+		
+	</div>
+</body>
+</html>

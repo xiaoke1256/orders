@@ -23,7 +23,7 @@
                          targetProject="./src/main/java">
       <property name="enableSubPackages" value="false"/>
     </javaClientGenerator>
-    <!--<table schema="product" tableName="product"/>-->
-    <table schema="orders" tableName="pay_order"/>
+    <!--<table schema="product" tableName="product.product"/>-->
+    <table schema="orders" tableName="orders.pay_order"/>
   </context>
 </generatorConfiguration>

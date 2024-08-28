@@ -1,5 +1,6 @@
 package com.xiaoke_1256.orders.bigdata.product.mapper;
 
+import com.xiaoke_1256.orders.bigdata.product.dto.ProductCondition;
 import com.xiaoke_1256.orders.bigdata.product.model.Product;
 import java.util.List;
 
@@ -43,4 +44,6 @@ public interface ProductMapper {
      * @mbg.generated Wed Aug 28 16:03:57 CST 2024
      */
     int updateByPrimaryKey(Product row);
+
+    List<Product> queryByCondition(ProductCondition condition);
 }

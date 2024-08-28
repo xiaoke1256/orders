@@ -8,8 +8,8 @@ spring:
     enabled: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    drive-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.249.101:3306?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true
+    drive-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.249.101:3306/orders?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true
     username: bigDataUser
     password: xiaoke_1256
     druid:
@@ -26,6 +26,13 @@ server:
   context-path: /bigdata
   port: 8080
   servlet-path: /
+
+mybatis:
+  mapperLocations: classpath*:com/xiaoke_1256/orders/**/mapper/*Mapper.xml
+  configLocation: classpath:sqlMapConfig.xml
+#  configuration:
+#    lazy-loading-enabled: true
+#    aggressiveLazy-loading: false
 
 logging:
   config: classpath:logback.xml
