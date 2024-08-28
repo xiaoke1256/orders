@@ -26,6 +26,8 @@ public class SimpleProduct implements Serializable {
 	private String storeName;
 	
 	private String storeNo;
+
+	private Long stockNum;
 	
 	private String inSeckill;
 	
@@ -134,6 +136,12 @@ public class SimpleProduct implements Serializable {
 	public void setStoreNo(String storeNo) {
 		this.storeNo = storeNo;
 	}
-	
-	
+
+	public Long getStockNum() {
+		return stockNum;
+	}
+
+	public void setStockNum(Long stockNum) {
+		this.stockNum = stockNum;
+	}
 }

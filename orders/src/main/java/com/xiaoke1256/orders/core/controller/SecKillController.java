@@ -90,16 +90,16 @@ public class SecKillController {
 		try {
 			int pageNo = condition.getPageNo();
 			int pageSize = condition.getPageSize();
-			Map<String,Object> paramsMap = new HashMap<>();
-			paramsMap.put("pageNo", pageNo);
-			paramsMap.put("pageSize", pageSize);
-			if(StringUtils.isNotBlank(condition.getProductCode())) {
-				paramsMap.put("productCode", condition.getProductCode());
-			}
-			if(StringUtils.isNotBlank(condition.getProductName())) {
-				paramsMap.put("productName", condition.getProductName());
-			}
-			RespMsg respMsg = productQueryService.searchProductByCondition(paramsMap);
+//			Map<String,Object> paramsMap = new HashMap<>();
+//			paramsMap.put("pageNo", pageNo);
+//			paramsMap.put("pageSize", pageSize);
+//			if(StringUtils.isNotBlank(condition.getProductCode())) {
+//				paramsMap.put("productCode", condition.getProductCode());
+//			}
+//			if(StringUtils.isNotBlank(condition.getProductName())) {
+//				paramsMap.put("productName", condition.getProductName());
+//			}
+			RespMsg respMsg = productQueryService.searchProductByCondition(condition);
 			if(!RespMsg.SUCCESS.getCode().equals(respMsg.getCode())) {
 				return respMsg;
 			}
@@ -118,10 +118,9 @@ public class SecKillController {
 	private ProductWithStorage makeProductWithStorage(SimpleProduct p) {
 		String productCode = p.getProductCode();
 		OStorage storage = oStorageService.getByProductCode(productCode);
-		storage.getStockNum();
 		ProductWithStorage productWithStorage = new ProductWithStorage();
 		BeanUtils.copyProperties(p, productWithStorage);
-		productWithStorage.setStockNum(storage.getStockNum());
+		productWithStorage.setStockNum(storage==null?0:storage.getStockNum());
 		productWithStorage.setStoreName(p.getStoreName());
 		logger.info("p.getInSeckill()="+p.getInSeckill());
 		//productWithStorage.setProductTypeNames(productTypeNames);TODO 暂不处理
@@ -263,7 +262,7 @@ public class SecKillController {
 	
 	/**
 	 * 结束秒杀活动。
-	 * @param productCodes
+	 * @param productCode
 	 */
 	//@HystrixCommand(fallbackMethod="connectFail")
 	@PostMapping("/close/{productCode}")

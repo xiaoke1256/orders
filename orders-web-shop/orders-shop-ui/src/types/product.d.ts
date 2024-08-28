@@ -9,6 +9,7 @@ export interface Product{
 	public productStatus:string;
 	public productIntro:string;
 	public brand:string;
+	public stockNum:number;
   }
 
   export interface ProductSearchParms extends SearchParms{

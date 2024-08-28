@@ -133,4 +133,11 @@ public class ProductController implements ProductQueryService {
 			dto.setParentType(null);
 		}
 	}
+
+	/**
+	 * 增加库存
+	 */
+	public void addStorage(){
+
+	}
 }

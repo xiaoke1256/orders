@@ -82,7 +82,7 @@ public class LogisticsController {
 	
 	/**
 	 * 确认收货
-	 * @param request
+	 * @param subOrderNo
 	 * @return
 	 */
 	@RequestMapping(value="/confirmReceived",method= {RequestMethod.POST})

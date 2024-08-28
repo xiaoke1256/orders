@@ -8,3 +8,7 @@ export const getPorductList: (params: ProductSearchParms) => Promise<{ totalCoun
 export const switchOnShef: (productNo: string, onOrOff: string) => Promise<boolean> = (productNo, onOrOff) => {
     return axiosInst.post(`/api/product/${productNo}/switchShfs`, { onOrOff }).then((resp) => resp.data);
 }
+
+export const incStorage: (productCode: string, incNum: number) => Promise<boolean> = (productCode, incNum) => {
+    return axiosInst.post(`/api/product/incStorage`, { productCode,incNum}).then((resp) => resp.data);
+}

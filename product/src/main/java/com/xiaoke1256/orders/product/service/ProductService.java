@@ -86,4 +86,11 @@ public class ProductService {
 		p.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		productDao.updateBySelective(p);
 	}
+
+	/**
+	 * 增加库存
+	 */
+	public void addStorage(String productCode, int incNum){
+
+	}
 }

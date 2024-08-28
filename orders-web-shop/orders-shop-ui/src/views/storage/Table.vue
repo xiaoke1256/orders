@@ -29,7 +29,8 @@
   <Modal
       v-model="modal"
       @on-ok="onIncStorageOk"
-      @on-cancel="cancel">
+      @on-cancel="onCancel"
+      >
       <template #header>
         <dev v-if="product">
           <B>{{product.productName}}</B> - {{ product.productCode }}
@@ -45,9 +46,8 @@
 import { Vue, Options } from "vue-class-component";
 import { Product, ProductSearchParms } from '@/types/product';
 import { Store } from '@/types/store';
-import { getPorductList, switchOnShef } from '@/api/product';
+import { getPorductList, switchOnShef, incStorage } from '@/api/product';
 import { getStoresByAccountNo } from '@/api/store';
-import { resolveComponent } from 'vue';
 
 @Options({ components: {} })
 export default class ProductTable extends Vue {
@@ -130,9 +130,24 @@ export default class ProductTable extends Vue {
     this.product = product
     this.modal = true;
   }
-  public onIncStorageOk(){
+  /**
+   * 出入库的确定按钮
+   */
+  public async onIncStorageOk(){
+    if(!this.product){
+      alert('未选择商品。');
+      return;
+    }
+    const result = await incStorage(this.product.productCode,this.incNum);
+    if(result){
+      await this.search();
+    }
+    this.incNum = 1;  
     
-    this.incNum = 1;
+  }
+  //取消按钮
+  public onCancel(){
+    //do nothing
   }
 }
 </script>

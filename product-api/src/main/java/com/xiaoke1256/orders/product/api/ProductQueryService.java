@@ -14,7 +14,7 @@ import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
  *
  */
 public interface ProductQueryService {
-	@RequestMapping(value="/product/search",method=RequestMethod.GET)
+	@RequestMapping(value="/product/search",method=RequestMethod.POST)
 	public SimpleProductQueryResultResp searchProductByCondition(ProductCondition condition);
 	
 	@RequestMapping(value="/simpleProduct/{productCode}",method=RequestMethod.GET)

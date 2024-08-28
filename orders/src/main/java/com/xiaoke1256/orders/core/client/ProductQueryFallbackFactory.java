@@ -30,12 +30,6 @@ public class ProductQueryFallbackFactory implements FallbackFactory<ProductQuery
 			}
 
 			@Override
-			public SimpleProductQueryResultResp searchProductByCondition(Map<String, Object> condition) {
-				logger.error("connect fail.by hystrix.",cause);
-				return new SimpleProductQueryResultResp(RespCode.CONNECT_ERROR);
-			}
-
-			@Override
 			public SimpleProduct getSimpleProductByCode(String productCode) {
 				logger.error("connect fail.by hystrix.",cause);
 				throw new AppException(RespCode.CONNECT_ERROR);
