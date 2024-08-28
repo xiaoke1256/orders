@@ -1,0 +1,29 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+  <context id="simple" targetRuntime="MyBatis3Simple">
+    <jdbcConnection
+            driverClass="com.mysql.cj.jdbc.Driver"
+            connectionURL="jdbc:mysql://192.168.249.101:3306?characterEncoding=utf-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;autoReconnect=true"
+            userId="bigDataUser"
+            password="xiaoke_1256"
+    />
+    <javaModelGenerator targetPackage="com.xiaoke_1256.orders.bigdata.orders.model"
+                        targetProject="./src/main/java">
+      <property name="enableSubPackages" value="false"/>
+      <property name="trimString" value="true"/>
+    </javaModelGenerator>
+    <sqlMapGenerator targetPackage="com.xiaoke_1256.orders.bigdata.orders.mapper"
+                     targetProject="./src/main//resources">
+      <property name="enableSubPackages" value="false"/>
+    </sqlMapGenerator>
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.xiaoke_1256.orders.bigdata.orders.mapper"
+                         targetProject="./src/main/java">
+      <property name="enableSubPackages" value="false"/>
+    </javaClientGenerator>
+    <!--<table schema="product" tableName="product"/>-->
+    <table schema="orders" tableName="pay_order"/>
+  </context>
+</generatorConfiguration>

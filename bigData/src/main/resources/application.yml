@@ -6,6 +6,21 @@ spring:
   thymeleaf:
     cache: false
     enabled: false
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    drive-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.249.101:3306?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true
+    username: bigDataUser
+    password: xiaoke_1256
+    druid:
+      validation-query: select 1
+      min-idle: 10
+      initial-size: 10
+      max-active: 50
+      time-between-eviction-runs-millis: 60000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
 
 server:
   context-path: /bigdata
@@ -14,4 +29,3 @@ server:
 
 logging:
   config: classpath:logback.xml
-
