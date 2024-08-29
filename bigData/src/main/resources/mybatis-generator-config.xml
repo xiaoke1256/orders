@@ -24,6 +24,10 @@
       <property name="enableSubPackages" value="false"/>
     </javaClientGenerator>
     <!--<table schema="product" tableName="product.product"/>-->
-    <table schema="orders" tableName="orders.pay_order"/>
+    <!--<table schema="orders" tableName="orders.pay_order"/>-->
+    <table schema="orders" tableName="order_item"  mapperName="OrderItemMapper" domainObjectName="OrderItem">
+      <property name="ignoreQualifiersAtRuntime" value="false"/>
+      <property name="runtimeSchema" value="orders"/>
+    </table>
   </context>
 </generatorConfiguration>

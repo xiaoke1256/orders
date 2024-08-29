@@ -24,6 +24,6 @@ public class ProductSearchService {
     @Transactional(readOnly = true)
     public QueryResult<Product> searchByCondition(ProductCondition productCondition){
         List<Product> list = productDao.search(productCondition);
-        return new QueryResult<Product>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), list);
+        return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), list);
     }
 }
