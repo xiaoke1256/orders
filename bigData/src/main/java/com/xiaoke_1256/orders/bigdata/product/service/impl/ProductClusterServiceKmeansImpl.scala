@@ -35,7 +35,9 @@ class ProductClusterServiceKmeansImpl {
 
     //sc.parallelize(productList).foreach(p=>{println(p.getProductPrice());println(p.getOrderCount)});
 
-    val parsedData = sc.parallelize(productList).map(p=>Vectors.dense(p.getProductPrice.toDouble/1000.0,p.getOrderCount.toDouble)).cache()
+    val parsedData = sc.parallelize(productList)
+      .filter(p=>p.getOrderCount>0)
+      .map(p=>Vectors.dense(p.getProductPrice.toDouble/1000.0,p.getOrderCount.toDouble)).cache()
     val model = KMeans.train(parsedData,numClusters,numIterator);
 
     println("模型训练完成")
