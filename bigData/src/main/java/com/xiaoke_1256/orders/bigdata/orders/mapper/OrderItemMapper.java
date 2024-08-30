@@ -43,4 +43,6 @@ public interface OrderItemMapper {
      * @mbg.generated Thu Aug 29 12:07:44 CST 2024
      */
     int updateByPrimaryKey(OrderItem row);
+
+    Integer countByProductCode(String productCode);
 }

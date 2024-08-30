@@ -51,6 +51,9 @@
 				      accountNos.push(result[i].accountNo);
 				  }
 			  }
+			  if(accountNos.length==0){
+			  	alert("账号初始化失败，请刷新页面");
+			  }
 		  },
 		  error:function(resp,errMsg,err){
 			  alert("error:"+resp);

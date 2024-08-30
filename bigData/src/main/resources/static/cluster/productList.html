@@ -34,6 +34,7 @@
 			    		var p = ret.resultList[i];
 			    		//alert("p:"+p);
 			    		$tr.append('<tr> <td>'+p.productCode+'</td><td>'+p.productName+'</td><td>'+(p.productPrice/1000)+'</td>'
+			    				+'<td>'+p.orderCount+'</td>'
 			    				+'<td>'+new Date(p.updateTime).format('yyyy-MM-dd HH:mm:ss.S')+'</td> </tr>');
 			    		
 			    	}
@@ -48,7 +49,39 @@
 	  }
 	  
 	  $('body').on('click','#searchBtn',queryData);
-	  
+	  $('#trainBtn').click(function(){
+	  	if($.trim($('#numClusters').val())==''){
+	  		alert('请填写“最大分类数”');
+	  		return;
+	  	}
+	  	if($.trim($('#numIterator').val())==''){
+	  		alert('请填写“迭代次数”');
+	  		return;
+	  	}
+		var reqData = {
+		  numClusters:$('#numClusters').val(),
+		  numIterator:$('#numIterator').val(),
+		  condition:{
+		  	productCode:$('#productCode').val(),
+		  	productName:$('#productName').val()
+		  }
+		}
+		$.ajax({
+			url:"product/cluster/train",
+			type:"POST",
+			dataType:"json",
+			data:JSON.stringify(reqData),
+			contentType: "application/json;charset=utf-8",
+			headers: {'Content-Type': 'application/json;charset=UTF-8'},
+			success: function (ret) {
+				var modelPath= ret.modelPath
+				alert('训练成功，modelPath：'+modelPath);
+			},
+			error:function(err){
+				alert("训练异常："+err.status);
+			}
+	    });
+	  });
   });
   </script>
 </head>
@@ -73,6 +106,7 @@
 	 				<th>store name</th>
 	 				<th>type name</th>
 	 				-->
+					<th>orderCount</th>
 	 				<th>update time</th>
 	 			</tr>
 	 		</thead>
@@ -85,9 +119,20 @@
 	 			</tr>
 	 		</tfoot>
 	 	</table>
+		<div id="pageFoot">
+
+		</div>
+		<div>
+			<div>
+				<span><label for="numClusters">最大分类数</label><input type="text" id="numClusters" /></span>
+				<span><label for="numIterator">迭代次数</label><input type="text" id="numIterator" /></span>
+			</div>
+			<div>
+				<button id="trainBtn" >按目前筛选条件训练模型</button>
+			</div>
+		</div>
 	</div>
-	<div id="pageFoot">
-		
-	</div>
+
+
 </body>
 </html>
