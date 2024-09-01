@@ -75,7 +75,9 @@
 			headers: {'Content-Type': 'application/json;charset=UTF-8'},
 			success: function (ret) {
 				var modelPath= ret.modelPath
-				alert('训练成功，modelPath：'+modelPath);
+				//alert('训练成功，modelPath：'+modelPath);
+				//训练完成后打开新页面
+				window.open('cluster/trainResult.html?modelPath='+encodeURI(modelPath),'_blank')
 			},
 			error:function(err){
 				alert("训练异常："+err.status);

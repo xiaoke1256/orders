@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>orders-bigdata welcome!</title>
+    <base href="../">
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script type="text/javascript" src="js/date_format.js" ></script>
+    <script type="text/javascript" src="js/jq_page.js" ></script>
+    <script type="text/javascript" src="js/echarts.min.js" ></script>
+    <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
+    <script type="text/javascript">
+      $(function(){
+        var chartDom = document.getElementById('chart');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        var data1 = [
+                [10.0, 8.04,'ssss'],
+                [8.07, 6.95,'sjjs'],
+                [13.0, 7.58,'skks'],
+                [9.05, 8.81],
+                [11.0, 8.33],
+                [14.0, 7.66],
+                [13.4, 6.81],
+                [10.0, 6.33],
+                [14.0, 8.96],
+                [12.5, 6.82],
+              ];
+
+        var data2 = [
+                [9.15, 7.2,'dse'],
+                [11.5, 7.2],
+                [3.03, 4.23,'ewed'],
+                [12.2, 7.83],
+                [2.02, 4.47],
+                [1.05, 3.33],
+                [4.05, 4.96],
+                [6.03, 7.24],
+                [12.0, 6.26],
+                [12.0, 8.84],
+                [7.08, 5.82],
+                [5.02, 5.68]
+              ];
+
+        option = {
+          legend: {
+            data: ['Female', 'Male'],
+            left: 'center',
+            bottom: 10
+          },
+          tooltip: {
+            position: 'top',
+            formatter: function(param){
+              return param.data[0]+','+param.data[1]+" "+ param.data[2];
+            }
+          },
+          xAxis: {},
+          yAxis: {},
+          series: [
+            {
+              name: 'Male',
+              symbolSize: 20,
+              data: data1,
+              type: 'scatter',
+              itemStyle: {
+                borderColor: '#555'
+              }
+            },
+            {
+              name: 'Female',
+              symbolSize: 20,
+              data: data2,
+              type: 'scatter',
+              itemStyle: {
+                color:'#af3',
+                borderColor: '#af5'
+              }
+            }
+          ]
+        };
+
+        option && myChart.setOption(option);
+      });
+    </script>
+  </head>
+  <body style="height:100%">
+    <div style="height:85%">
+      <div id="chart" style="height:85%" ></div>
+    </div>
+    <button>保存模型</button>
+  </body>
+</html>
