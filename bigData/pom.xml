@@ -9,8 +9,9 @@
         <relativePath />
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>com.xiaoke_1256.orders</groupId>
     <artifactId>bigData</artifactId>
+    <version>1.2.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -35,25 +36,25 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-graphx_2.12</artifactId>
             <version>3.2.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.12.0</version>
+            <version>2.12.13</version>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
-            <version>2.12.0</version>
+            <version>2.12.13</version>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-reflect</artifactId>
-            <version>2.12.0</version>
+            <version>2.12.13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -74,6 +75,27 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-mllib_2.12</artifactId>
             <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json4s</groupId>
+            <artifactId>json4s-native_2.12</artifactId>
+            <version>3.7.0-M5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.13.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.13.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.0.8</version>
         </dependency>
 
         <dependency>
@@ -206,6 +228,15 @@
                   <exclude>**/InitProduct.java</exclude>
                 </excludes>
                  -->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--设置为true，以便把本地的system的jar也包括进来-->
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
 

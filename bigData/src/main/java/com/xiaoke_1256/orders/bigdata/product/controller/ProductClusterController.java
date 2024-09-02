@@ -10,6 +10,8 @@ import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic;
 import com.xiaoke_1256.orders.bigdata.product.model.Product;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductClusterService;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/product")
 public class ProductClusterController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductClusterController.class);
 
     @Autowired
     private ProductClusterService productClusterService;
@@ -45,6 +49,7 @@ public class ProductClusterController {
      */
     @PostMapping("/cluster/train")
     public Map<String,String> trainCluster( @RequestBody TrainInput trainInput){
+        logger.debug("trainInput:"+trainInput);
         String modelPath = productService.trainClusterModel(trainInput.getCondition(),
                 trainInput.getNumClusters(),
                 trainInput.getNumIterator());

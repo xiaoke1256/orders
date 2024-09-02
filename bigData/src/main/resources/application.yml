@@ -38,4 +38,4 @@ logging:
   config: classpath:logback.xml
 
 big-data:
-  tmp-div: D:\temp\orders\bigdata
+  tmp-div: D:\tmp\orders\bigdata

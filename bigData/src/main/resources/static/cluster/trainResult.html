@@ -14,39 +14,82 @@
     <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
     <script type="text/javascript">
       $(function(){
+        //从地址栏获取参数
+        var urlParams = new URLSearchParams(window.location.search);
+        var modelPath = urlParams.get('modelPath');
+        var productCode = urlParams.get('productCode');
+        var productName = urlParams.get('productName');
+        //alert("modelPath:"+modelPath);
+        var reqData = {
+          modelPath:modelPath,
+          condition:{
+            productCode:productCode,
+            productName:productName
+          }
+        };
+
+        //调用预测
+        $.ajax({
+			url:"product/cluster/predict",
+			type:"POST",
+			dataType:"json",
+			data:JSON.stringify(reqData),
+			contentType: "application/json;charset=utf-8",
+			headers: {'Content-Type': 'application/json;charset=UTF-8'},
+			success: function (ret) {
+			  //分了多少个类
+			  var clusters = [];
+              for(var i in ret){
+                var sample = ret[i].sample;
+                var label = ret[i].label;
+                var cluster = clusters[label];
+                if(!cluster){
+                  cluster = [];
+                  clusters[label] = cluster;
+                }
+                var row = [sample.productPrice/1000,sample.orderCount,sample.productName,sample.productCode]
+                cluster.push(row);
+              }
+              showChart(clusters)
+
+			},
+			error:function(err){
+				alert("预测异常："+err.status);
+			}
+	    });
+      });
+
+      var COLORS = ['#80FFA5',
+          '#00DDFF',
+          '#37A2FF',
+          '#FF0087',
+          '#FFBF00',
+          '#37A2DA',
+          '#e06343',
+          '#37a354',
+          '#b55dba',
+          '#b5bd48',
+          '#8378EA',
+          '#96BFFF'
+      ];
+
+      function showChart(clusters){
+        var series = [];
+        for(var i in clusters){
+          var cluster = clusters[i];
+          series.push({
+              name: 'Cluster'+i,
+              symbolSize: 20,
+              data: clusters[i],
+              type: 'scatter',
+              itemStyle: {
+                color: COLORS[i%COLORS.length],
+              }
+            });
+        }
         var chartDom = document.getElementById('chart');
         var myChart = echarts.init(chartDom);
-        var option;
-
-        var data1 = [
-                [10.0, 8.04,'ssss'],
-                [8.07, 6.95,'sjjs'],
-                [13.0, 7.58,'skks'],
-                [9.05, 8.81],
-                [11.0, 8.33],
-                [14.0, 7.66],
-                [13.4, 6.81],
-                [10.0, 6.33],
-                [14.0, 8.96],
-                [12.5, 6.82],
-              ];
-
-        var data2 = [
-                [9.15, 7.2,'dse'],
-                [11.5, 7.2],
-                [3.03, 4.23,'ewed'],
-                [12.2, 7.83],
-                [2.02, 4.47],
-                [1.05, 3.33],
-                [4.05, 4.96],
-                [6.03, 7.24],
-                [12.0, 6.26],
-                [12.0, 8.84],
-                [7.08, 5.82],
-                [5.02, 5.68]
-              ];
-
-        option = {
+        var option = {
           legend: {
             data: ['Female', 'Male'],
             left: 'center',
@@ -55,36 +98,16 @@
           tooltip: {
             position: 'top',
             formatter: function(param){
-              return param.data[0]+','+param.data[1]+" "+ param.data[2];
+              return  '<b>'+param.data[2]+'</b><br>￥'+param.data[0]+','+param.data[1]+"单 ";
             }
           },
           xAxis: {},
           yAxis: {},
-          series: [
-            {
-              name: 'Male',
-              symbolSize: 20,
-              data: data1,
-              type: 'scatter',
-              itemStyle: {
-                borderColor: '#555'
-              }
-            },
-            {
-              name: 'Female',
-              symbolSize: 20,
-              data: data2,
-              type: 'scatter',
-              itemStyle: {
-                color:'#af3',
-                borderColor: '#af5'
-              }
-            }
-          ]
+          series: series
         };
 
         option && myChart.setOption(option);
-      });
+      }
     </script>
   </head>
   <body style="height:100%">

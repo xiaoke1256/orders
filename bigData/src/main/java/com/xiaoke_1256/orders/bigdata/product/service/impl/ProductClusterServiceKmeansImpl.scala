@@ -1,14 +1,15 @@
 package com.xiaoke_1256.orders.bigdata.product.service.impl
 
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult
-import com.xiaoke_1256.orders.bigdata.product.dto.{ProductWithStatic, SimpleProductStatic}
-import org.apache.spark.SparkConf
-import org.apache.spark.api.java.JavaSparkContext
+import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic
 import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
 import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.sql.SparkSession
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-import scala.math.BigDecimal.javaBigDecimal2bigDecimal
+import java.io.File
+import scala.collection.JavaConverters
 
 
 /**
@@ -18,9 +19,8 @@ import scala.math.BigDecimal.javaBigDecimal2bigDecimal
 @Service
 class ProductClusterServiceKmeansImpl {
 
-  val appName = "kmeansCluster"
-  // 设定spark master（默认支持local）
-  val master = "local"
+  @Autowired
+  private val sparkSession:SparkSession = null ;
 
   /**
    * 聚类算法训练
@@ -30,26 +30,27 @@ class ProductClusterServiceKmeansImpl {
    * @param modelPath 模型输出到一个流中（可空）
    */
   def trainModel(productList:java.util.List[SimpleProductStatic],numClusters: Int,numIterator:Int,modelPath:String): Unit = {
-    val conf = new SparkConf().setAppName(appName).setMaster(master)
-    val sc = new JavaSparkContext(conf)
+    val sc = sparkSession.sparkContext
 
-    //sc.parallelize(productList).foreach(p=>{println(p.getProductPrice());println(p.getOrderCount)});
-
-    val parsedData = sc.parallelize(productList)
+    val productListSeq = JavaConverters.asScalaIteratorConverter(productList.iterator()).asScala.toSeq//把List转成Seq
+    val parsedData = sc.parallelize[SimpleProductStatic](productListSeq)
       .filter(p=>p.getOrderCount>0)
-      .map(p=>Vectors.dense(p.getProductPrice.toDouble/1000.0,p.getOrderCount.toDouble)).cache()
+      .map(p=>Vectors.dense(p.getProductPrice/1000.0,p.getOrderCount.toDouble)).cache()
     val model = KMeans.train(parsedData,numClusters,numIterator);
 
     println("模型训练完成")
     model.clusterCenters.foreach(println)
-    if(modelPath!=null && "".equals(modelPath.trim)){
-      model.toPMML(modelPath);
+    if(modelPath!=null && !"".equals(modelPath.trim)){
+//      val file = new File(modelPath)
+//      if(!file.exists()){
+//        file.createNewFile()
+//      }
+      model.save(sc,modelPath)
     }
   }
 
   def modelDetail(modelPath:String): Object = {
-    val conf = new SparkConf().setAppName(appName).setMaster(master)
-    val sc = new JavaSparkContext(conf)
+    val sc = sparkSession.sparkContext
     val model = KMeansModel.load(sc,modelPath)
     model.clusterCenters
   }
@@ -61,14 +62,15 @@ class ProductClusterServiceKmeansImpl {
    * @return
    */
   def predict(modelPath:String,productList:java.util.List[SimpleProductStatic]): java.util.List[PredictResult[SimpleProductStatic]] = {
-    val conf = new SparkConf().setAppName(appName).setMaster(master)
-    val sc = new JavaSparkContext(conf)
-
+    val sc = sparkSession.sparkContext
     val model = KMeansModel.load(sc,modelPath)
 
-    sc.parallelize(productList).map((p)=>{
+    val productListSeq = JavaConverters.asScalaIteratorConverter(productList.iterator()).asScala.toSeq//把List转成Seq
+
+    val result = sc.parallelize(productListSeq).map((p)=>{
       val label = model.predict(Vectors.dense(p.getProductPrice.toDouble/1000.0,p.getOrderCount.toDouble))
       new PredictResult[SimpleProductStatic](p,label)
     }).collect()
+    JavaConverters.seqAsJavaList(result);
   }
 }

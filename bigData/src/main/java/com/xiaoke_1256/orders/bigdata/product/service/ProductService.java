@@ -64,18 +64,23 @@ public class ProductService {
         productCondition.setPageNo(1);
         productCondition.setPageSize(Integer.MAX_VALUE);
         List<ProductWithStatic> productList =  this.searchByCondition(productCondition).getResultList();
-        List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
+        List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
 
-        String modelPath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID()+".pmml" ;//模型文件地址；
-        productClusterServiceKmeans.trainModel(sampleList,numClusters,numIterator,modelPath);
+        String path = tmpDiv + File.separator +"models" ;
+        File dev = new File(path);
+        if(!dev.exists()){
+            dev.mkdirs();
+        }
+        String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;//模型文件地址；
+        productClusterServiceKmeans.trainModel(sampleList,numClusters,numIterator,modelFilePath);
 
         //模型
-        return modelPath;
+        return modelFilePath;
     }
 
     @Transactional(readOnly = true)
     public List<PredictResult<SimpleProductStatic>> predict(List<ProductWithStatic> productList , String modelPath ){
-        List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
+        List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
         return productClusterServiceKmeans.predict(modelPath,sampleList);
     }
 }

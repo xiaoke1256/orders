@@ -8,14 +8,16 @@ import java.math.BigDecimal;
  */
 public class SimpleProductStatic implements Serializable {
     private String productCode;
+    private String productName;
     private double productPrice;
     private int orderCount;
 
     public SimpleProductStatic() {
     }
 
-    public SimpleProductStatic(String productCode, double productPrice, int orderCount) {
+    public SimpleProductStatic(String productCode,String productName, double productPrice, int orderCount) {
         this.productCode = productCode;
+        this.productName = productName;
         this.productPrice = productPrice;
         this.orderCount = orderCount;
     }
@@ -26,6 +28,14 @@ public class SimpleProductStatic implements Serializable {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public double getProductPrice() {
