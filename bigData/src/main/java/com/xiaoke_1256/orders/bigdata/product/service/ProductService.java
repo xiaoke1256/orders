@@ -60,7 +60,8 @@ public class ProductService {
      * 聚集算法
      */
     @Transactional(readOnly = true)
-    public String trainClusterModel(ProductCondition productCondition, int numClusters, int numIterator) {
+    public String trainClusterModel(ProductCondition productCondition, int numClusters, int numIterator
+            ,double productPriceCoefficient,double orderCountCoefficient) {
         productCondition.setPageNo(1);
         productCondition.setPageSize(Integer.MAX_VALUE);
         List<ProductWithStatic> productList =  this.searchByCondition(productCondition).getResultList();
@@ -72,15 +73,16 @@ public class ProductService {
             dev.mkdirs();
         }
         String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;//模型文件地址；
-        productClusterServiceKmeans.trainModel(sampleList,numClusters,numIterator,modelFilePath);
+        productClusterServiceKmeans.trainModel(sampleList,numClusters,numIterator,modelFilePath,productPriceCoefficient,orderCountCoefficient);
 
         //模型
         return modelFilePath;
     }
 
     @Transactional(readOnly = true)
-    public List<PredictResult<SimpleProductStatic>> predict(List<ProductWithStatic> productList , String modelPath ){
+    public List<PredictResult<SimpleProductStatic>> predict(List<ProductWithStatic> productList , String modelPath
+            ,double productPriceCoefficient,double orderCountCoefficient){
         List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
-        return productClusterServiceKmeans.predict(modelPath,sampleList);
+        return productClusterServiceKmeans.predict(modelPath,sampleList,productPriceCoefficient,orderCountCoefficient);
     }
 }

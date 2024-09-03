@@ -52,7 +52,9 @@ public class ProductClusterController {
         logger.debug("trainInput:"+trainInput);
         String modelPath = productService.trainClusterModel(trainInput.getCondition(),
                 trainInput.getNumClusters(),
-                trainInput.getNumIterator());
+                trainInput.getNumIterator(),
+                trainInput.getProductPriceCoefficient(),
+                trainInput.getOrderCountCoefficient());
         //把模型参数放到session里
         return new HashMap<String,String>(){{
             put("modelPath",modelPath);
@@ -64,7 +66,17 @@ public class ProductClusterController {
         predictInput.getCondition().setPageNo(1);
         predictInput.getCondition().setPageSize(Integer.MAX_VALUE);
         QueryResult<ProductWithStatic> products = productService.searchByCondition(predictInput.getCondition());
-        return productService.predict(products.getResultList(),predictInput.getModelPath());
+        return productService.predict(products.getResultList(),predictInput.getModelPath(),
+                predictInput.getProductPriceCoefficient(),predictInput.getOrderCountCoefficient());
+    }
+
+    /**
+     * 保存模型
+     * @return
+     */
+    @PostMapping("/cluster/saveModel")
+    public Boolean saveModel(){
+        return true;
     }
 
 }

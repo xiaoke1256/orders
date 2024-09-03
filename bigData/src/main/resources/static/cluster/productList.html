@@ -61,6 +61,8 @@
 		var reqData = {
 		  numClusters:$('#numClusters').val(),
 		  numIterator:$('#numIterator').val(),
+		  productPriceCoefficient:$('#productPriceCoefficient').val(),
+		  orderCountCoefficient:$('#orderCountCoefficient').val(),
 		  condition:{
 		  	productCode:$('#productCode').val(),
 		  	productName:$('#productName').val()
@@ -80,6 +82,9 @@
 				var url = 'cluster/trainResult.html?modelPath='+encodeURI(modelPath);
 				url += '&productCode='+encodeURI($('#productCode').val());
 				url += '&productName='+encodeURI($('#productName').val());
+				url += '&productPriceCoefficient='+$('#productPriceCoefficient').val();
+				url += '&orderCountCoefficient='+$('#orderCountCoefficient').val();
+		  orderCountCoefficient:$('#orderCountCoefficient').val(),
 				window.open(url,'_blank')
 			},
 			error:function(err){
@@ -127,11 +132,19 @@
 		<div id="pageFoot">
 
 		</div>
+		<br>
 		<div>
-			<div>
-				<span><label for="numClusters">最大分类数</label><input type="text" id="numClusters" /></span>
-				<span><label for="numIterator">迭代次数</label><input type="text" id="numIterator" /></span>
-			</div>
+			<div><h3 style="text-align:center">训练参数</h3></div>
+			<table>
+			  <tr>
+				<td><label for="numClusters">最大分类数</label></td><td><input type="text" id="numClusters" /></td>
+				<td><label for="numIterator">迭代次数</label></td><td><input type="text" id="numIterator" /></td>
+			  </tr>
+			  <tr>
+				<td><label for="productPriceCoefficient">productPrice维度系数</label></td><td><input type="text" id="productPriceCoefficient" value="1" /></td>
+				<td><label for="orderCountCoefficient">orderCount维度系数</label></td><td><input type="text" id="orderCountCoefficient" value="1" /></td>
+			  </tr>
+			</table>
 			<div>
 				<button id="trainBtn" >按目前筛选条件训练模型</button>
 			</div>

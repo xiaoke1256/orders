@@ -19,9 +19,13 @@
         var modelPath = urlParams.get('modelPath');
         var productCode = urlParams.get('productCode');
         var productName = urlParams.get('productName');
+        var productPriceCoefficient = urlParams.get('productPriceCoefficient');
+        var orderCountCoefficient = urlParams.get('orderCountCoefficient');
         //alert("modelPath:"+modelPath);
         var reqData = {
           modelPath:modelPath,
+          productPriceCoefficient:productPriceCoefficient,
+          orderCountCoefficient:orderCountCoefficient,
           condition:{
             productCode:productCode,
             productName:productName
@@ -75,6 +79,7 @@
 
       function showChart(clusters){
         var series = [];
+        var seriesNames = [];
         for(var i in clusters){
           var cluster = clusters[i];
           series.push({
@@ -86,19 +91,20 @@
                 color: COLORS[i%COLORS.length],
               }
             });
+          seriesNames.push('Cluster'+i);
         }
         var chartDom = document.getElementById('chart');
         var myChart = echarts.init(chartDom);
         var option = {
           legend: {
-            data: ['Female', 'Male'],
+            data: seriesNames,
             left: 'center',
             bottom: 10
           },
           tooltip: {
             position: 'top',
             formatter: function(param){
-              return  '<b>'+param.data[2]+'</b><br>￥'+param.data[0]+','+param.data[1]+"单 ";
+              return  '<b>'+param.data[2]+'</b><br>￥'+param.data[0]+'<br>'+param.data[1]+"单 ";
             }
           },
           xAxis: {},

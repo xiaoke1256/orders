@@ -19,6 +19,12 @@ public class TrainInput {
      */
     private int numIterator;
 
+    /**
+     * 系数
+     */
+    private double orderCountCoefficient;
+    private double productPriceCoefficient;
+
     public ProductCondition getCondition() {
         return condition;
     }
@@ -41,5 +47,21 @@ public class TrainInput {
 
     public void setNumIterator(int numIterator) {
         this.numIterator = numIterator;
+    }
+
+    public double getOrderCountCoefficient() {
+        return orderCountCoefficient;
+    }
+
+    public void setOrderCountCoefficient(double orderCountCoefficient) {
+        this.orderCountCoefficient = orderCountCoefficient;
+    }
+
+    public double getProductPriceCoefficient() {
+        return productPriceCoefficient;
+    }
+
+    public void setProductPriceCoefficient(double productPriceCoefficient) {
+        this.productPriceCoefficient = productPriceCoefficient;
     }
 }
