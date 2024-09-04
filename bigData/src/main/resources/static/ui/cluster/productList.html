@@ -6,11 +6,11 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>orders-bigdata welcome!</title>
-  <base href="../">
-  <script type="text/javascript" src="js/jquery.min.js" ></script>
-  <script type="text/javascript" src="js/date_format.js" ></script>
-  <script type="text/javascript" src="js/jq_page.js" ></script>
-  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" >
+  <base href="../../">
+  <script type="text/javascript" src="ui/js/jquery.min.js" ></script>
+  <script type="text/javascript" src="ui/js/date_format.js" ></script>
+  <script type="text/javascript" src="ui/js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="ui/css/style.css" >
   <script type="text/javascript">
   $(function (){
 
@@ -79,7 +79,7 @@
 				var modelPath= ret.modelPath
 				//alert('训练成功，modelPath：'+modelPath);
 				//训练完成后打开新页面
-				var url = 'cluster/trainResult.html?modelPath='+encodeURI(modelPath);
+				var url = 'ui/cluster/trainResult.html?modelPath='+encodeURI(modelPath);
 				url += '&productCode='+encodeURI($('#productCode').val());
 				url += '&productName='+encodeURI($('#productName').val());
 				url += '&productPriceCoefficient='+$('#productPriceCoefficient').val();

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>orders-bigdata welcome!</title>
+  <base href="../../">
+  <script type="text/javascript" src="ui/js/jquery.min.js" ></script>
+  <script type="text/javascript" src="ui/js/date_format.js" ></script>
+  <script type="text/javascript" src="ui/js/jq_page.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="ui/css/style.css" >
+  <script type="text/javascript">
+  $(function(){
+    var modelTypeDic = {'01':'商品分类','02':'用户分类','03':'商品推送'};
+
+    function queryData(){
+	  var pageNo = $(this).attr("pageNo");
+	  if(!pageNo || isNaN(pageNo) )
+		  pageNo=1;
+	  //alert(pageNo);
+	  var data = {"pageNo":pageNo,"pageSize":10};
+	  var callee = arguments.callee;
+	  $.ajax({
+		url:"model/search",
+		type:"GET",
+		dataType:"json",
+		data:data,
+		contentType: "application/json;charset=utf-8",
+		headers: {'Content-Type': 'application/json;charset=UTF-8'},
+		success: function (ret) {
+			var $tr = $('#listTable tbody').empty();
+			for(var i in ret.resultList){
+				var m = ret.resultList[i];
+				//alert("p:"+p);
+				$tr.append('<tr> <td>'+m.modelName+'</td><td>'+modelTypeDic[m.modelType]+'</td><td>'+m.algorithmType+'</td>'
+						+'<td>'+new Date(m.createTime).format('yyyy-MM-dd HH:mm:ss.S')+'</td><td>'+m.createBy+'</td> </tr>');
+
+			}
+			$('#pageTd').makePage(ret,callee);
+		},
+		error:function(err){
+			//alert("网络异常："+err.responseText);
+			alert("网络异常："+err.status);
+		}
+	  });
+
+    }
+
+    //搜索按钮
+    $('#searchBtn').click(function(){
+      queryData();
+    });
+  })
+  </script>
+  </head>
+  <body>
+  	<header>
+  		<h1 class="title">欢迎访问 模型列表</h1>
+  	</header>
+  	<br>
+  	<section style="margin:10px auto;width:80%">
+
+  		<button id="searchBtn" >搜索</button>
+  	</section>
+  	<div id="content" class="content">
+  	 	<table id="listTable" class="listTable">
+  	 		<thead>
+  	 			<tr>
+  	 				<th>模型名称</th>
+					<th>模型类型</th>
+  	 				<th>模型算法</th>
+  	 				<th>创建时间</th>
+					<th>创建人</th>
+  	 			</tr>
+  	 		</thead>
+  	 		<tbody>
+
+  	 		</tbody>
+  	 		<tfoot>
+  	 			<tr>
+  	 				<td colspan="7" id="pageTd" ></td>
+  	 			</tr>
+  	 		</tfoot>
+  	 	</table>
+  		<div id="pageFoot">
+
+  		</div>
+  	</div>
+
+
+  </body>
+  </html>
