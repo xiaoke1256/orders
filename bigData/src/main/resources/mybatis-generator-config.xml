@@ -3,31 +3,33 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-  <context id="simple" targetRuntime="MyBatis3Simple">
+  <context id="myBatis3" targetRuntime="MyBatis3" defaultModelType="hierarchical">
+    <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
     <jdbcConnection
             driverClass="com.mysql.cj.jdbc.Driver"
             connectionURL="jdbc:mysql://192.168.249.101:3306?characterEncoding=utf-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;autoReconnect=true"
             userId="bigDataUser"
             password="xiaoke_1256"
     />
-    <javaModelGenerator targetPackage="com.xiaoke_1256.orders.bigdata.orders.model"
+    <javaModelGenerator targetPackage="com.xiaoke_1256.orders.bigdata.aimode.model"
                         targetProject="./src/main/java">
-      <property name="enableSubPackages" value="false"/>
-      <property name="trimString" value="true"/>
     </javaModelGenerator>
-    <sqlMapGenerator targetPackage="com.xiaoke_1256.orders.bigdata.orders.mapper"
+    <sqlMapGenerator targetPackage="com.xiaoke_1256.orders.bigdata.aimode.mapper"
                      targetProject="./src/main//resources">
-      <property name="enableSubPackages" value="false"/>
     </sqlMapGenerator>
-    <javaClientGenerator type="XMLMAPPER" targetPackage="com.xiaoke_1256.orders.bigdata.orders.mapper"
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.xiaoke_1256.orders.bigdata.aimode.mapper"
                          targetProject="./src/main/java">
-      <property name="enableSubPackages" value="false"/>
     </javaClientGenerator>
     <!--<table schema="product" tableName="product.product"/>-->
     <!--<table schema="orders" tableName="orders.pay_order"/>-->
+    <!--
     <table schema="orders" tableName="order_item"  mapperName="OrderItemMapper" domainObjectName="OrderItem">
       <property name="ignoreQualifiersAtRuntime" value="false"/>
       <property name="runtimeSchema" value="orders"/>
+    </table>
+    -->
+    <table tableName="BIG_DATA_MODEL">
+
     </table>
   </context>
 </generatorConfiguration>

@@ -9,7 +9,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     drive-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.249.101:3306/orders?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true
+    url: jdbc:mysql://192.168.249.101:3306/big_data?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true
     username: bigDataUser
     password: xiaoke_1256
     druid:

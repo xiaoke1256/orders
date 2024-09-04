@@ -21,6 +21,8 @@
         var productName = urlParams.get('productName');
         var productPriceCoefficient = urlParams.get('productPriceCoefficient');
         var orderCountCoefficient = urlParams.get('orderCountCoefficient');
+        var numClusters = urlParams.get('numClusters');
+        var numIterator = urlParams.get('numIterator');
         //alert("modelPath:"+modelPath);
         var reqData = {
           modelPath:modelPath,
@@ -61,6 +63,62 @@
 				alert("预测异常："+err.status);
 			}
 	    });
+
+	    //保存按钮
+        $('#saveBtn').click(function(){
+
+          if($.trim($('#inputModelName').val())==''){
+            alert('模型名称不能为空。');
+            return;
+          }
+
+          var labelNameJson = {};
+          for(var i =0;i < $('#clustersTable tbody input').length;i++){
+            var $input = $($('#clustersTable tbody input')[i]);
+            var inputName = $input.attr('name');
+            console.log('inputName:'+inputName)
+            var label = inputName.split('_')[1]
+            console.log('label:'+label)
+            var labelName = $input.val();
+            labelNameJson[label]=labelName;
+          }
+
+          var reqData = {
+            modelPath: modelPath,
+            modelName: $('#inputModelName').val(),
+            modelDesc: $('#inputModelDesc').val(),
+            modelType: '01',/*01表示商品分类*/
+            algorithmType: 'Kmeans',
+            trainParam: {
+              productPriceCoefficient: productPriceCoefficient,
+              orderCountCoefficient: orderCountCoefficient,
+              numClusters: numClusters,
+              numIterator: numIterator
+            },
+            classDefine: labelNameJson
+          }
+
+          //调用保存
+          $.ajax({
+			url:"model/save",
+			type:"POST",
+			dataType:"json",
+			data:JSON.stringify(reqData),
+			contentType: "application/json;charset=utf-8",
+			headers: {'Content-Type': 'application/json;charset=UTF-8'},
+			success: function (ret) {
+			  //成功后关闭
+              if(ret===true){
+                 alert('保存成功');
+                 window.close()
+              }
+			},
+			error:function(err){
+				alert("保存异常："+err.status);
+			}
+	      });
+
+        });
       });
 
       var COLORS = ['#80FFA5',
@@ -113,6 +171,18 @@
         };
 
         option && myChart.setOption(option);
+
+        //显示分类名称的输入表单
+        $('#clustersTable tbody').empty();
+        for(var label in clusters){
+          var $tr = $('<tr></tr>');
+          $tr.append('<td>'+label+'</td>');
+          var $input = $('<input name="clusterName_'+label+'" value="'+'Cluster'+label+'" >');
+          var $td = $('<td></td>').append($input);
+          $tr.append($td);
+          $('#clustersTable tbody').append($tr);
+        }
+
       }
     </script>
   </head>
@@ -120,6 +190,22 @@
     <div style="height:85%">
       <div id="chart" style="height:85%" ></div>
     </div>
-    <button>保存模型</button>
+    <div style="text-align">
+      <table>
+        <tr><th>模型算法</th><td>Kmeans</td></tr>
+        <tr><th>模型名称</th><td><input id="inputModelName" value="" /></td></tr>
+        <tr><th>模型描述</th><td><input id="inputModelDesc" value="" /></td></tr>
+      </table>
+      <table id="clustersTable">
+        <thead>
+          <tr>
+            <th>分类序号</th><th>分类名称</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <button id="saveBtn" >保存模型</button>
+    </div>
   </body>
 </html>

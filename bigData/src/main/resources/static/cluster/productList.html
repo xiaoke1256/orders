@@ -84,6 +84,8 @@
 				url += '&productName='+encodeURI($('#productName').val());
 				url += '&productPriceCoefficient='+$('#productPriceCoefficient').val();
 				url += '&orderCountCoefficient='+$('#orderCountCoefficient').val();
+				url += '&numClusters='+$('#numClusters').val();
+				url += '&numIterator='+$('#numIterator').val();
 		  orderCountCoefficient:$('#orderCountCoefficient').val(),
 				window.open(url,'_blank')
 			},
@@ -136,6 +138,9 @@
 		<div>
 			<div><h3 style="text-align:center">训练参数</h3></div>
 			<table>
+			  <tr>
+				<td><label>训练算法</label></td><td>Kmeans</td>
+			  </tr>
 			  <tr>
 				<td><label for="numClusters">最大分类数</label></td><td><input type="text" id="numClusters" /></td>
 				<td><label for="numIterator">迭代次数</label></td><td><input type="text" id="numIterator" /></td>
