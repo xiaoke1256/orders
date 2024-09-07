@@ -1,6 +1,7 @@
 package com.xiaoke_1256.orders.bigdata.product.controller;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
+import com.xiaoke_1256.orders.bigdata.aimode.dto.ProductClusterResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.TrainInput;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductCondition;
@@ -70,13 +71,9 @@ public class ProductClusterController {
                 predictInput.getProductPriceCoefficient(),predictInput.getOrderCountCoefficient());
     }
 
-    /**
-     * 保存模型
-     * @return
-     */
-    @PostMapping("/cluster/saveModel")
-    public Boolean saveModel(){
-        return true;
+    @PostMapping("/cluster/predictAndSave")
+    public Boolean predictAndSave(@RequestBody ProductPredictInput predictInput ){
+        return null;
     }
 
 }

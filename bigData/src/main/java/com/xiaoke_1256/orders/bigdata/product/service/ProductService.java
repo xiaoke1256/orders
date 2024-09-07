@@ -1,6 +1,8 @@
 package com.xiaoke_1256.orders.bigdata.product.service;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
+import com.xiaoke_1256.orders.bigdata.aimode.dao.BigDataModelDao;
+import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModelWithBLOBs;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult;
 import com.xiaoke_1256.orders.bigdata.orders.dao.OrderItemDao;
 import com.xiaoke_1256.orders.bigdata.product.dao.ProductDao;
@@ -15,8 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +32,9 @@ public class ProductService {
 
     @Autowired
     private OrderItemDao orderItemDao;
+
+    @Autowired
+    private BigDataModelDao bigDataModelDao;
 
     @Value("${big-data.tmp-div}")
     private String tmpDiv;
@@ -84,5 +89,23 @@ public class ProductService {
             ,double productPriceCoefficient,double orderCountCoefficient){
         List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
         return productClusterServiceKmeans.predict(modelPath,sampleList,productPriceCoefficient,orderCountCoefficient);
+    }
+
+    public void predictAndSave(ProductCondition productCondition , Long modelId) {
+        BigDataModelWithBLOBs model = bigDataModelDao.getDetail(modelId);
+        //输出到指定文件然后解压。
+        String modelFilePath = tmpDiv + File.separator + "models" + File.separator + UUID.randomUUID();
+        String zipFilePath = modelFilePath + ".zip";
+        try{
+            File zipFile = new File(zipFilePath);
+            boolean result = zipFile.createNewFile();
+            OutputStream os = Files.newOutputStream(zipFile.toPath());
+            os.write(model.getFileContent());
+        }catch (IOException ex){
+
+        }
+
+//        List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
+//        return productClusterServiceKmeans.predict(modelPath,sampleList,productPriceCoefficient,orderCountCoefficient);
     }
 }

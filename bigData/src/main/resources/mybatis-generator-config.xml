@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-  <context id="myBatis3" targetRuntime="MyBatis3" defaultModelType="hierarchical">
+  <context id="myBatis3" targetRuntime="MyBatis3" >
     <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
     <jdbcConnection
             driverClass="com.mysql.cj.jdbc.Driver"
@@ -28,8 +28,11 @@
       <property name="runtimeSchema" value="orders"/>
     </table>
     -->
-    <table tableName="BIG_DATA_MODEL">
-
+    <table tableName="BIG_DATA_CAL_EXEC_INFO" domainObjectName="BigDataCalExecInfo">
+    </table>
+    <table tableName="BIG_DATA_CLUSTER" domainObjectName="BigDataCluster">
+    </table>
+    <table tableName="BIG_DATA_CLUSTER_OBJECT_MAP" domainObjectName="BigDataClusterObjectMap">
     </table>
   </context>
 </generatorConfiguration>

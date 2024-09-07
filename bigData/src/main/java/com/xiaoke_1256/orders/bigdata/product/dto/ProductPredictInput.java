@@ -11,6 +11,11 @@ public class ProductPredictInput {
     private String modelPath;
 
     /**
+     * 模型主键
+     */
+    private Integer modelId;
+
+    /**
      * 系数
      */
     private double orderCountCoefficient;
@@ -30,6 +35,14 @@ public class ProductPredictInput {
 
     public void setModelPath(String modelPath) {
         this.modelPath = modelPath;
+    }
+
+    public Integer getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(Integer modelId) {
+        this.modelId = modelId;
     }
 
     public double getOrderCountCoefficient() {

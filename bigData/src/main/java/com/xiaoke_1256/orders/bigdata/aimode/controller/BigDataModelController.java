@@ -33,6 +33,12 @@ public class BigDataModelController {
         return bigDataModelService.searchModel(condition);
     }
 
+    /**
+     * 保存模型
+     * @param modelDto
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/save")
     public Boolean saveModel(@RequestBody BigDataModelDto modelDto) throws IOException {
         String modelPath = modelDto.getModelPath();

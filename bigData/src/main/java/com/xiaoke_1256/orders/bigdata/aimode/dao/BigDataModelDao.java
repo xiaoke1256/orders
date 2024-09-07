@@ -6,6 +6,7 @@ import com.xiaoke_1256.orders.bigdata.aimode.dto.ModelSearchCondition;
 import com.xiaoke_1256.orders.bigdata.aimode.mapper.BigDataModelMapper;
 import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModel;
 import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModelExample;
+import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModelKey;
 import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModelWithBLOBs;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class BigDataModelDao {
     public void save(BigDataModelWithBLOBs bigDataModel){
         bigDataModel.setCreateTime(new Date());
         bigDataModelMapper.insert(bigDataModel);
+    }
+
+    public BigDataModelWithBLOBs getDetail(Long modelId){
+        BigDataModelKey key = new BigDataModelKey();
+        key.setModelId(modelId);
+        return bigDataModelMapper.selectByPrimaryKey(key);
     }
 
     public QueryResult<BigDataModel> searchModel(ModelSearchCondition condition){
