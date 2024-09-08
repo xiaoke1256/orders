@@ -73,7 +73,8 @@ public class ProductClusterController {
 
     @PostMapping("/cluster/predictAndSave")
     public Boolean predictAndSave(@RequestBody ProductPredictInput predictInput ){
-        return null;
+        productService.predictAndSave(predictInput.getCondition(),predictInput.getModelId());
+        return Boolean.TRUE;
     }
 
 }

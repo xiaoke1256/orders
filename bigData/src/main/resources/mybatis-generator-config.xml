@@ -28,10 +28,10 @@
       <property name="runtimeSchema" value="orders"/>
     </table>
     -->
-    <table tableName="BIG_DATA_CAL_EXEC_INFO" domainObjectName="BigDataCalExecInfo">
+<!--    <table tableName="BIG_DATA_CAL_EXEC_INFO" domainObjectName="BigDataCalExecInfo">
     </table>
-    <table tableName="BIG_DATA_CLUSTER" domainObjectName="BigDataCluster">
-    </table>
+    <table tableName="BIG_DATA_CLUSTER_DEFINED" domainObjectName="BigDataClusterDefined">
+    </table>-->
     <table tableName="BIG_DATA_CLUSTER_OBJECT_MAP" domainObjectName="BigDataClusterObjectMap">
     </table>
   </context>

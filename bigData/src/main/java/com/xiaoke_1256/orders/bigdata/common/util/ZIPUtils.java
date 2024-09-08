@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -67,6 +68,44 @@ public class ZIPUtils {
         }
 
         return fileList;
+    }
+
+    public static void unzip(String zipFilePath, String destDir) throws IOException {
+        File dir = new File(destDir);
+        // 创建输出目录如果它不存在
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        byte[] buffer = new byte[1024];
+            FileInputStream fis = new FileInputStream(zipFilePath);
+            ZipInputStream zis = new ZipInputStream(fis);
+            ZipEntry ze = zis.getNextEntry();
+
+            while (ze != null) {
+            String fileName = ze.getName();
+            File newFile = new File(destDir + File.separator + fileName);
+
+            // 创建所有非存在的父目录
+            new File(newFile.getParent()).mkdirs();
+
+            FileOutputStream fos = new FileOutputStream(newFile);
+
+            int len;
+            while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+
+            fos.close();
+            // 关闭当前ZipEntry并移至下一个
+            zis.closeEntry();
+            ze = zis.getNextEntry();
+        }
+
+        // 关闭最后一个ZipEntry
+        zis.closeEntry();
+        zis.close();
+        fis.close();
     }
 
 }

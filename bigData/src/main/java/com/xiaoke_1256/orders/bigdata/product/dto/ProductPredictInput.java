@@ -13,7 +13,7 @@ public class ProductPredictInput {
     /**
      * 模型主键
      */
-    private Integer modelId;
+    private Long modelId;
 
     /**
      * 系数
@@ -37,11 +37,11 @@ public class ProductPredictInput {
         this.modelPath = modelPath;
     }
 
-    public Integer getModelId() {
+    public Long getModelId() {
         return modelId;
     }
 
-    public void setModelId(Integer modelId) {
+    public void setModelId(Long modelId) {
         this.modelId = modelId;
     }
 
