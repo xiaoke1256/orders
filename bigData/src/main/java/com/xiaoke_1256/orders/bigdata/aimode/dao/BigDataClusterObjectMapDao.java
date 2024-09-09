@@ -20,4 +20,8 @@ public class BigDataClusterObjectMapDao {
         example.createCriteria().andExecIdEqualTo(execId);
         bigDataClusterObjectMapMapper.deleteByExample(example);
     }
+
+    public BigDataClusterObjectMap selectByModelIdAndObjectId(String objectType, String objectId, Long modelId ){
+        return bigDataClusterObjectMapMapper.selectByModelIdAndObjectId(objectType,objectId,modelId);
+    }
 }

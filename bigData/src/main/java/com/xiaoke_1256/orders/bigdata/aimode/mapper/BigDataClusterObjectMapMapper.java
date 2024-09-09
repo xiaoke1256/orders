@@ -102,4 +102,7 @@ public interface BigDataClusterObjectMapMapper {
      * @mbggenerated Sun Sep 08 14:35:38 CST 2024
      */
     int updateByPrimaryKey(BigDataClusterObjectMap record);
+
+
+    BigDataClusterObjectMap selectByModelIdAndObjectId(@Param("objectType")String objectType, @Param("objectId") String objectId, @Param("modelId")Long modelId );
 }

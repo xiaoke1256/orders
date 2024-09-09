@@ -14,6 +14,7 @@ import com.xiaoke_1256.orders.bigdata.common.util.ZIPUtils;
 import com.xiaoke_1256.orders.bigdata.orders.dao.OrderItemDao;
 import com.xiaoke_1256.orders.bigdata.product.dao.ProductDao;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductCondition;
+import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithLabel;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithStatic;
 import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic;
 import com.xiaoke_1256.orders.bigdata.product.model.Product;
@@ -32,8 +33,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 @Service
 @Transactional
@@ -74,6 +73,29 @@ public class ProductService {
             BeanUtils.copyProperties(p,productWithStatic);
             productWithStatic.setOrderCount(count);
             resultList.add(productWithStatic);
+        }
+        return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), resultList);
+    }
+
+    /**
+     * 按条件查询商品
+     * @param productCondition
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public QueryResult<ProductWithLabel> searchByConditionWithLabel(ProductCondition productCondition, Long modelId){
+        List<Product> list = productDao.search(productCondition);
+        List<ProductWithLabel> resultList = new ArrayList<>();
+        for(Product p:list){
+            int count = orderItemDao.countByProductCode(p.getProductCode());
+            ProductWithLabel productWithLabel = new ProductWithLabel();
+            BeanUtils.copyProperties(p,productWithLabel);
+            productWithLabel.setOrderCount(count);
+            BigDataClusterObjectMap map = bigDataClusterObjectMapDao.selectByModelIdAndObjectId("01", p.getProductCode(), modelId);
+            if(map!=null) {
+                productWithLabel.setLabel(map.getLabel());
+            }
+            resultList.add(productWithLabel);
         }
         return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), resultList);
     }

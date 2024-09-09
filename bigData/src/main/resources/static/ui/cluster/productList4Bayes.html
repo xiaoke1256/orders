@@ -16,15 +16,17 @@
 
       var modelId = null;
 
+      var clusterMap = {};
+
 	  function queryData(){
 		  var pageNo = $(this).attr("pageNo");
 		  if(!pageNo || isNaN(pageNo) )
 			  pageNo=1;
 		  //alert(pageNo);
-		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,"needFullTypeName":true};
+		  var data = {"productCode":$('#productCode').val(),"productName":$('#productName').val(),"pageNo":pageNo,"pageSize":10,"modelId":$('#selectModelId').val()};
 		  var callee = arguments.callee;
 		  $.ajax({  
-			    url:"product/searchProduct",
+			    url:"product/searchProductWithLabel",
 			    type:"GET",
 			    dataType:"json",  
 			    data:data,
@@ -37,7 +39,9 @@
 			    		//alert("p:"+p);
 			    		$tr.append('<tr> <td>'+p.productCode+'</td><td>'+p.productName+'</td><td>'+(p.productPrice/1000)+'</td>'
 			    				+'<td>'+p.orderCount+'</td>'
-			    				+'<td>'+new Date(p.updateTime).format('yyyy-MM-dd HH:mm:ss.S')+'</td> </tr>');
+			    				+'<td>'+new Date(p.updateTime).format('yyyy-MM-dd HH:mm:ss.S')+'</td>'
+			    				+'<td>'+(p.label?clusterMap[p.label]:'')+'</td>'
+			    				+'</tr>');
 			    		
 			    	}
 			    	$('#pageTd').makePage(ret,callee);
@@ -50,7 +54,25 @@
 		  
 	  }
 
+	  $.get('model/findAll',{},function(ret){
+	    $('#selectModelId').empty();
+	  	for(var i=0; i < ret.length ; i++){
+	  	  var model = ret[i];
+	  	  $('#selectModelId').append('<option value="'+model.modelId+'" >'+model.modelName+'模型方案</option>');
+	  	}
+	  	$('#selectModelId').change()
+	  })
+
 	  $('body').on('click','#searchBtn',queryData);
+
+	  //select 重新选择后
+	  $('#selectModelId').change(function(){
+	    modelId = $(this).val();
+	    $.get('model/getClusterMap',{modelId:modelId},function(ret){
+		  clusterMap = ret;
+	    })
+	  })
+
 	  $('#trainBtn').click(function(){
 	  	if($.trim($('#numClusters').val())==''){
 	  		alert('请填写“最大分类数”');
@@ -107,6 +129,7 @@
 	<section style="margin:10px auto;width:80%">
 		商品代码<input id="productCode" type="text" value="" >
 		商品名称<input id="productName" type="text" value="" >
+		分类方案<select id="selectModelId" ></select>
 		<button id="searchBtn" >搜索</button>
 	</section>
 	<div id="content" class="content">
@@ -122,6 +145,7 @@
 	 				-->
 					<th>orderCount</th>
 	 				<th>update time</th>
+					<th>Label</th>
 	 			</tr>
 	 		</thead>
 	 		<tbody>

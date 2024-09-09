@@ -3,10 +3,7 @@ package com.xiaoke_1256.orders.bigdata.product.controller;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.TrainInput;
-import com.xiaoke_1256.orders.bigdata.product.dto.ProductCondition;
-import com.xiaoke_1256.orders.bigdata.product.dto.ProductPredictInput;
-import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithStatic;
-import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic;
+import com.xiaoke_1256.orders.bigdata.product.dto.*;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductClusterService;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductService;
 import org.slf4j.Logger;
@@ -41,8 +38,8 @@ public class ProductClusterController {
     }
 
     @GetMapping("/searchProductWithLabel")
-    public QueryResult<ProductWithStatic> searchProductWithLabel(ProductCondition productCondition,Long modelId){
-        return productService.searchByCondition(productCondition);
+    public QueryResult<ProductWithLabel> searchProductWithLabel(ProductCondition productCondition,Long modelId){
+        return productService.searchByConditionWithLabel(productCondition,modelId);
     }
 
     /**

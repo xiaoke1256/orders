@@ -44,4 +44,9 @@ public class BigDataModelDao {
         return new QueryResult<BigDataModel>(condition.getPageNo() , condition.getPageSize(), (int)total, retList);
     }
 
+    public List<BigDataModel> findAll(){
+        BigDataModelExample example = new BigDataModelExample();
+        return bigDataModelMapper.selectByExample(example);
+    }
+
 }

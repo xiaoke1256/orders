@@ -319,4 +319,13 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select id="selectByModelIdAndObjectId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from big_data_cluster_object_map
+    where object_type = #{objectType,jdbcType=CHAR}
+      and object_id = #{objectId,jdbcType=VARCHAR}
+      and exec_id in (select exec_id from big_data_cal_exec_info where model_id = #{modelId,jdbcType=BIGINT})
+  </select>
 </mapper>

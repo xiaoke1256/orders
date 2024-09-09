@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/model")
 @RestController
@@ -59,6 +61,20 @@ public class BigDataModelController {
         boolean result = zipfile.delete();
         FileUtils.deleteDirectory(new File(modelPath));
         return true;
+    }
+
+    /**
+     * 查询全部模型
+     * @return
+     */
+    @GetMapping("/findAll")
+    public List<BigDataModel> findAll(){
+        return bigDataModelService.findAll();
+    }
+
+    @GetMapping("/getClusterMap")
+    public Map<String,String> getClusterMap(Long modelId){
+        return bigDataModelService.getClusterDic(modelId);
     }
 
 }
