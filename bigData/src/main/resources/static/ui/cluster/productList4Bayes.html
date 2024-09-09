@@ -14,6 +14,8 @@
   <script type="text/javascript">
   $(function (){
 
+      var modelId = null;
+
 	  function queryData(){
 		  var pageNo = $(this).attr("pageNo");
 		  if(!pageNo || isNaN(pageNo) )
@@ -47,7 +49,7 @@
 		  });
 		  
 	  }
-	  
+
 	  $('body').on('click','#searchBtn',queryData);
 	  $('#trainBtn').click(function(){
 	  	if($.trim($('#numClusters').val())==''){
@@ -104,7 +106,7 @@
 	<br>
 	<section style="margin:10px auto;width:80%">
 		商品代码<input id="productCode" type="text" value="" >
-		商品名称<input id="productName" type="text" value="" > 
+		商品名称<input id="productName" type="text" value="" >
 		<button id="searchBtn" >搜索</button>
 	</section>
 	<div id="content" class="content">

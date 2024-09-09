@@ -1,14 +1,12 @@
 package com.xiaoke_1256.orders.bigdata.product.controller;
 
 import com.xiaoke1256.orders.common.page.QueryResult;
-import com.xiaoke_1256.orders.bigdata.aimode.dto.ProductClusterResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.TrainInput;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductCondition;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductPredictInput;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithStatic;
 import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic;
-import com.xiaoke_1256.orders.bigdata.product.model.Product;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductClusterService;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductService;
 import org.slf4j.Logger;
@@ -16,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +37,11 @@ public class ProductClusterController {
 
     @GetMapping("/searchProduct")
     public QueryResult<ProductWithStatic> searchProduct(ProductCondition productCondition){
+        return productService.searchByCondition(productCondition);
+    }
+
+    @GetMapping("/searchProductWithLabel")
+    public QueryResult<ProductWithStatic> searchProductWithLabel(ProductCondition productCondition,Long modelId){
         return productService.searchByCondition(productCondition);
     }
 

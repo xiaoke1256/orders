@@ -126,7 +126,17 @@ public class ProductService {
         }
 
         try {
+            //先清理老数据
+            List<BigDataCalExecInfo> oldExecs = bigDataCalExecInfoDao.queryByModelId(modelId);
+            for(BigDataCalExecInfo oldExec:oldExecs){
+                bigDataClusterObjectMapDao.deleteByExecId(oldExec.getExecId());
+            }
+            bigDataCalExecInfoDao.deleteByModelId(modelId);
+
+
             //用模型预测
+            productCondition.setPageNo(1);
+            productCondition.setPageSize(Integer.MAX_VALUE);
             List<ProductWithStatic> productList = this.searchByCondition(productCondition).getResultList();
             String trainParamJson = model.getTrainParam();
             JSONObject trainParamJsonObject = JSON.parseObject(trainParamJson);
