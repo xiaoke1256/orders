@@ -47,10 +47,10 @@ public class ProductClusterController {
      * @param trainInput 训练输入参数
      * @
      */
-    @PostMapping("/cluster/train")
+    @PostMapping("/cluster/kmeans/train")
     public Map<String,String> trainCluster( @RequestBody TrainInput trainInput){
         logger.debug("trainInput:"+trainInput);
-        String modelPath = productService.trainClusterModel(trainInput.getCondition(),
+        String modelPath = productService.trainClusterKmeansModel(trainInput.getCondition(),
                 trainInput.getNumClusters(),
                 trainInput.getNumIterator(),
                 trainInput.getProductPriceCoefficient(),
@@ -61,7 +61,7 @@ public class ProductClusterController {
         }};
     }
 
-    @PostMapping("/cluster/predict")
+    @PostMapping("/cluster/kmeans/predict")
     public List<PredictResult<SimpleProductStatic>> predict(@RequestBody ProductPredictInput predictInput ){
         predictInput.getCondition().setPageNo(1);
         predictInput.getCondition().setPageSize(Integer.MAX_VALUE);

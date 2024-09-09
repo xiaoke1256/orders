@@ -101,10 +101,10 @@ public class ProductService {
     }
 
     /**
-     * 聚集算法
+     * 聚集算法(Kmeans)
      */
     @Transactional(readOnly = true)
-    public String trainClusterModel(ProductCondition productCondition, int numClusters, int numIterator
+    public String trainClusterKmeansModel(ProductCondition productCondition, int numClusters, int numIterator
             ,double productPriceCoefficient,double orderCountCoefficient) {
         productCondition.setPageNo(1);
         productCondition.setPageSize(Integer.MAX_VALUE);
