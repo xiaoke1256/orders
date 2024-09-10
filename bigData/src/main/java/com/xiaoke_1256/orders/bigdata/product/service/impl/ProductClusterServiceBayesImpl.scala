@@ -29,7 +29,7 @@ class ProductClusterServiceBayesImpl {
     val productListSeq = JavaConverters.asScalaIteratorConverter(productList.iterator()).asScala.toSeq
     //sc.parallelize[SimpleProductStatic](productListSeq).filter((p)=>p.getLabel!=null).foreach((p)=>println(p.getStoreNo))
     val parsedData = sc.parallelize[SimpleProductStatic](productListSeq).filter((p)=>p.getLabel!=null)
-      .map(p=>new LabeledPoint(p.getLabel.toDouble,Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode),if(p.getStoreNo==null) 0 else p.getStoreNo.hashCode))  ).cache() //
+      .map(p=>new LabeledPoint(p.getLabel.toDouble,Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode), p.getStoreNo.hashCode))  ).cache() //
     val model = NaiveBayes.train(parsedData);
     println("模型训练完成")
     model.labels.foreach(println);
@@ -50,7 +50,7 @@ class ProductClusterServiceBayesImpl {
     val productListSeq = JavaConverters.asScalaIteratorConverter(productList.iterator()).asScala.toSeq//把List转成Seq
 
     val result = sc.parallelize(productListSeq).map((p)=>{
-      val label = model.predict(Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode),if(p.getStoreNo==null) 0 else p.getStoreNo.hashCode))
+      val label = model.predict(Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode),p.getStoreNo.hashCode))
       new PredictResult[SimpleProductStatic](p,label.intValue())
     }).collect()
     JavaConverters.seqAsJavaList(result);
