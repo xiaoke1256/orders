@@ -74,26 +74,15 @@
 	  })
 
 	  $('#trainBtn').click(function(){
-	  	if($.trim($('#numClusters').val())==''){
-	  		alert('请填写“最大分类数”');
-	  		return;
-	  	}
-	  	if($.trim($('#numIterator').val())==''){
-	  		alert('请填写“迭代次数”');
-	  		return;
-	  	}
 		var reqData = {
-		  numClusters:$('#numClusters').val(),
-		  numIterator:$('#numIterator').val(),
-		  productPriceCoefficient:$('#productPriceCoefficient').val(),
-		  orderCountCoefficient:$('#orderCountCoefficient').val(),
 		  condition:{
 		  	productCode:$('#productCode').val(),
 		  	productName:$('#productName').val()
-		  }
+		  },
+		  clusterFormulaModelId:$('#selectModelId').val()
 		}
 		$.ajax({
-			url:"product/cluster/train",
+			url:"product/cluster/bayes/train",
 			type:"POST",
 			dataType:"json",
 			data:JSON.stringify(reqData),
@@ -103,14 +92,9 @@
 				var modelPath= ret.modelPath
 				//alert('训练成功，modelPath：'+modelPath);
 				//训练完成后打开新页面
-				var url = 'ui/cluster/trainResult.html?modelPath='+encodeURI(modelPath);
+				var url = 'ui/cluster/trainResult4Bayes.html?modelPath='+encodeURI(modelPath);
 				url += '&productCode='+encodeURI($('#productCode').val());
 				url += '&productName='+encodeURI($('#productName').val());
-				url += '&productPriceCoefficient='+$('#productPriceCoefficient').val();
-				url += '&orderCountCoefficient='+$('#orderCountCoefficient').val();
-				url += '&numClusters='+$('#numClusters').val();
-				url += '&numIterator='+$('#numIterator').val();
-		  orderCountCoefficient:$('#orderCountCoefficient').val(),
 				window.open(url,'_blank')
 			},
 			error:function(err){
@@ -165,15 +149,7 @@
 			<div><h3 style="text-align:center">训练参数</h3></div>
 			<table>
 			  <tr>
-				<td><label>训练算法</label></td><td>Kmeans</td>
-			  </tr>
-			  <tr>
-				<td><label for="numClusters">最大分类数</label></td><td><input type="text" id="numClusters" /></td>
-				<td><label for="numIterator">迭代次数</label></td><td><input type="text" id="numIterator" /></td>
-			  </tr>
-			  <tr>
-				<td><label for="productPriceCoefficient">productPrice维度系数</label></td><td><input type="text" id="productPriceCoefficient" value="1" /></td>
-				<td><label for="orderCountCoefficient">orderCount维度系数</label></td><td><input type="text" id="orderCountCoefficient" value="1" /></td>
+				<td><label>训练算法</label></td><td>NaiveBayes</td>
 			  </tr>
 			</table>
 			<div>

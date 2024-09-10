@@ -20,6 +20,11 @@ public class TrainInput {
     private int numIterator;
 
     /**
+     * 分类方案（即联外一个模型的执行结果）
+     */
+    private Long clusterFormulaModelId;
+
+    /**
      * 系数
      */
     private double orderCountCoefficient;
@@ -47,6 +52,14 @@ public class TrainInput {
 
     public void setNumIterator(int numIterator) {
         this.numIterator = numIterator;
+    }
+
+    public Long getClusterFormulaModelId() {
+        return clusterFormulaModelId;
+    }
+
+    public void setClusterFormulaModelId(Long clusterFormulaModelId) {
+        this.clusterFormulaModelId = clusterFormulaModelId;
     }
 
     public double getOrderCountCoefficient() {

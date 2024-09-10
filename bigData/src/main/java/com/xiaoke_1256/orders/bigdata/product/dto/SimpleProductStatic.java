@@ -10,7 +10,10 @@ public class SimpleProductStatic implements Serializable {
     private String productCode;
     private String productName;
     private double productPrice;
+    private String brand;
+    private String storeNo;
     private int orderCount;
+    private String label;
 
     public SimpleProductStatic() {
     }
@@ -20,6 +23,14 @@ public class SimpleProductStatic implements Serializable {
         this.productName = productName;
         this.productPrice = productPrice;
         this.orderCount = orderCount;
+    }
+
+    public SimpleProductStatic(String label,String productCode,String productName,  String brand, String storeNo) {
+        this.label = label;
+        this.productCode = productCode;
+        this.productName = productName;
+        this.brand = brand;
+        this.storeNo = storeNo;
     }
 
     public String getProductCode() {
@@ -46,11 +57,35 @@ public class SimpleProductStatic implements Serializable {
         this.productPrice = productPrice;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getStoreNo() {
+        return storeNo;
+    }
+
+    public void setStoreNo(String storeNo) {
+        this.storeNo = storeNo;
+    }
+
     public int getOrderCount() {
         return orderCount;
     }
 
     public void setOrderCount(int orderCount) {
         this.orderCount = orderCount;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

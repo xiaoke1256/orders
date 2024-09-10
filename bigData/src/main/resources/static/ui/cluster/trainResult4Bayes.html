@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>orders-bigdata welcome!</title>
+    <base href="../../">
+    <script type="text/javascript" src="ui/js/jquery.min.js" ></script>
+    <script type="text/javascript" src="ui/js/date_format.js" ></script>
+    <script type="text/javascript" src="ui/js/jq_page.js" ></script>
+    <script type="text/javascript" src="ui/js/echarts.min.js" ></script>
+    <link rel="stylesheet" type="text/css" title="default" href="ui/css/style.css" >
+    <script type="text/javascript">
+      $(function(){
+        //从地址栏获取参数
+        var urlParams = new URLSearchParams(window.location.search);
+        var modelPath = urlParams.get('modelPath');
+        var productCode = urlParams.get('productCode');
+        var productName = urlParams.get('productName');
+        //alert("modelPath:"+modelPath);
+        var reqData = {
+          modelPath:modelPath,
+          condition:{
+          }
+        };
+
+        //调用预测
+        $.ajax({
+			url:"product/cluster/bayes/predict",
+			type:"POST",
+			dataType:"json",
+			data:JSON.stringify(reqData),
+			contentType: "application/json;charset=utf-8",
+			headers: {'Content-Type': 'application/json;charset=UTF-8'},
+			success: function (ret) {
+			  //分了多少个类
+			  var clusters = [];
+              for(var i in ret){
+                var sample = ret[i].sample;
+                var label = ret[i].label;
+                var cluster = clusters[label];
+                if(!cluster){
+                  cluster = [];
+                  clusters[label] = cluster;
+                }
+                var row = [sample.productPrice/1000,sample.orderCount,sample.productName,sample.productCode]
+                cluster.push(row);
+              }
+              alert("clusters:"+JSON.stringify(clusters));
+              showChart(clusters)
+
+			},
+			error:function(err){
+				alert("预测异常："+err.status);
+			}
+	    });
+
+	    //保存按钮
+        $('#saveBtn').click(function(){
+
+          if($.trim($('#inputModelName').val())==''){
+            alert('模型名称不能为空。');
+            return;
+          }
+
+          var labelNameJson = {};
+          for(var i =0;i < $('#clustersTable tbody input').length;i++){
+            var $input = $($('#clustersTable tbody input')[i]);
+            var inputName = $input.attr('name');
+            console.log('inputName:'+inputName)
+            var label = inputName.split('_')[1]
+            console.log('label:'+label)
+            var labelName = $input.val();
+            labelNameJson[label]=labelName;
+          }
+
+          var reqData = {
+            modelPath: modelPath,
+            modelName: $('#inputModelName').val(),
+            modelDesc: $('#inputModelDesc').val(),
+            modelType: '01',/*01表示商品分类*/
+            algorithmType: 'NaiveBayes',
+            trainParam: {
+            },
+            classDefine: labelNameJson
+          }
+
+          //调用保存
+          $.ajax({
+			url:"model/save",
+			type:"POST",
+			dataType:"json",
+			data:JSON.stringify(reqData),
+			contentType: "application/json;charset=utf-8",
+			headers: {'Content-Type': 'application/json;charset=UTF-8'},
+			success: function (ret) {
+			  //成功后关闭
+              if(ret===true){
+                 alert('保存成功');
+                 window.close()
+              }
+			},
+			error:function(err){
+				alert("保存异常："+err.status);
+			}
+	      });
+
+        });
+      });
+
+      var COLORS = ['#80FFA5',
+          '#00DDFF',
+          '#37A2FF',
+          '#FF0087',
+          '#FFBF00',
+          '#37A2DA',
+          '#e06343',
+          '#37a354',
+          '#b55dba',
+          '#b5bd48',
+          '#8378EA',
+          '#96BFFF'
+      ];
+
+      function showChart(clusters){
+        var series = [];
+        var seriesNames = [];
+        for(var i in clusters){
+          var cluster = clusters[i];
+          series.push({
+              name: 'Cluster'+i,
+              symbolSize: 20,
+              data: clusters[i],
+              type: 'scatter',
+              itemStyle: {
+                color: COLORS[i%COLORS.length],
+              }
+            });
+          seriesNames.push('Cluster'+i);
+        }
+        var chartDom = document.getElementById('chart');
+        var myChart = echarts.init(chartDom);
+        var option = {
+          legend: {
+            data: seriesNames,
+            left: 'center',
+            bottom: 10
+          },
+          tooltip: {
+            position: 'top',
+            formatter: function(param){
+              return  '<b>'+param.data[2]+'</b><br>￥'+param.data[0]+'<br>'+param.data[1]+"单 ";
+            }
+          },
+          xAxis: {},
+          yAxis: {},
+          series: series
+        };
+
+        option && myChart.setOption(option);
+
+        //显示分类名称的输入表单
+        $('#clustersTable tbody').empty();
+        for(var label in clusters){
+          var $tr = $('<tr></tr>');
+          $tr.append('<td>'+label+'</td>');
+          var $input = $('<input name="clusterName_'+label+'" value="'+'Cluster'+label+'" >');
+          var $td = $('<td></td>').append($input);
+          $tr.append($td);
+          $('#clustersTable tbody').append($tr);
+        }
+
+      }
+    </script>
+  </head>
+  <body style="height:100%">
+    <div style="height:85%">
+      <div id="chart" style="height:85%" ></div>
+    </div>
+    <div style="text-align">
+      <table>
+        <tr><th>模型算法</th><td>NaiveBayes</td></tr>
+        <tr><th>模型名称</th><td><input id="inputModelName" value="" /></td></tr>
+        <tr><th>模型描述</th><td><input id="inputModelDesc" value="" /></td></tr>
+      </table>
+      <table id="clustersTable">
+        <thead>
+          <tr>
+            <th>分类序号</th><th>分类名称</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <button id="saveBtn" >保存模型</button>
+    </div>
+  </body>
+</html>

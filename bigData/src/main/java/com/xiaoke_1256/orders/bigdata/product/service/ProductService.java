@@ -18,6 +18,7 @@ import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithLabel;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithStatic;
 import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic;
 import com.xiaoke_1256.orders.bigdata.product.model.Product;
+import com.xiaoke_1256.orders.bigdata.product.service.impl.ProductClusterServiceBayesImpl;
 import com.xiaoke_1256.orders.bigdata.product.service.impl.ProductClusterServiceKmeansImpl;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.BeanUtils;
@@ -56,7 +57,16 @@ public class ProductService {
     private ProductClusterServiceKmeansImpl productClusterServiceKmeans;
 
     @Autowired
+    private ProductClusterServiceBayesImpl productClusterServiceBayes;
+
+    @Autowired
     private BigDataClusterObjectMapDao bigDataClusterObjectMapDao;
+
+    @Transactional(readOnly = true)
+    public QueryResult<Product> searchProduct(ProductCondition productCondition){
+        List<Product> list = productDao.search(productCondition);
+        return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), list);
+    }
 
     /**
      * 按条件查询商品
@@ -75,6 +85,15 @@ public class ProductService {
             resultList.add(productWithStatic);
         }
         return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), resultList);
+    }
+
+    @Transactional(readOnly = true)
+    public SimpleProductStatic productToSimpleProductStatic(Product p){
+        int count = orderItemDao.countByProductCode(p.getProductCode());
+        SimpleProductStatic simpleProductStatic = new SimpleProductStatic();
+        BeanUtils.copyProperties(p,simpleProductStatic);
+        simpleProductStatic.setOrderCount(count);
+        return simpleProductStatic;
     }
 
     /**
@@ -123,11 +142,40 @@ public class ProductService {
         return modelFilePath;
     }
 
+    /**
+     * 聚集算法(Bayes)
+     * @return
+     */
     @Transactional(readOnly = true)
-    public List<PredictResult<SimpleProductStatic>> predict(List<ProductWithStatic> productList , String modelPath
+    public String trainClusterBayesModel(List<SimpleProductStatic> products) {
+        String path = tmpDiv + File.separator +"models" ;
+        File dev = new File(path);
+        if(!dev.exists()){
+            dev.mkdirs();
+        }
+        String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;
+        productClusterServiceBayes.train(products,modelFilePath);
+        return modelFilePath;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PredictResult<SimpleProductStatic>> predictKmeans(List<ProductWithStatic> productList , String modelPath
             ,double productPriceCoefficient,double orderCountCoefficient){
         List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
         return productClusterServiceKmeans.predict(modelPath,sampleList,productPriceCoefficient,orderCountCoefficient);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PredictResult<SimpleProductStatic>> predictBayes(List<Product> productList , String modelPath){
+        List<SimpleProductStatic> sampleList = productList.stream().map((p) -> {
+            SimpleProductStatic sample = new SimpleProductStatic();
+            BeanUtils.copyProperties(p, sample);
+            sample.setProductPrice(p.getProductPrice().doubleValue());
+            int count = orderItemDao.countByProductCode(p.getProductCode());
+            sample.setOrderCount(count);
+            return sample;
+        }).collect(Collectors.toList());
+        return productClusterServiceBayes.predict(modelPath,sampleList);
     }
 
     @Transactional
