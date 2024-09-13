@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -75,7 +74,21 @@ public class OrederService {
 			}
 			products.add(product);
 		}
-		
+
+		//扣减库存，看库存是否足够
+		for(Entry<String,Integer> enty:orderMap.entrySet()){
+			String productId = enty.getKey();
+			Integer num = enty.getValue();
+			String hql = "update OStorage set stockNum = (stockNum- ?) where productCode = ? and stockNum>= ? ";
+			int excResult = entityManager.createQuery(hql)
+					.setParameter(1, num.longValue())
+					.setParameter(2, productId)
+					.setParameter(3, num.longValue())
+					.executeUpdate();
+			if(excResult<=0)
+				throw new RuntimeException("库存不足");
+		}
+
 		//按店铺分组。
 		Map<String, List<SimpleProduct>> groupByStore = groupByStoreNo(products);
 		
@@ -112,35 +125,24 @@ public class OrederService {
 			subOrder.setOrderItems(items);
 			subOrders.add(subOrder);
 		}
-		
-		//扣减库存
-		for(Entry<String,Integer> enty:orderMap.entrySet()){
-			String productId = enty.getKey();
-			Integer num = enty.getValue();
-			String hql = "update OStorage set stockNum = (stockNum- ?) where productCode = ? and stockNum>= ? ";
-			int excResult = entityManager.createQuery(hql)
-					.setParameter(1, num.longValue())
-					.setParameter(2, productId)
-					.setParameter(3, num.longValue())
-					.executeUpdate();
-			if(excResult<=0)
-				throw new RuntimeException("库存不足");
-		}
-		entityManager.flush();
+
 		//创建支付单
 		PayOrder payOrder = createPayOrder(payerNo, subOrders);
 		entityManager.persist(payOrder);
-		for( SubOrder subOrder:payOrder.getSubOrders()) {
-			for(OrderItem item:subOrder.getOrderItems()) {
+
+		//保存子订单
+		for(SubOrder subOrder:subOrders){
+			Set<OrderItem> orderItems = subOrder.getOrderItems();
+			subOrder.setOrderItems(null);
+			entityManager.persist(subOrder);
+			//保存订单项
+			for(OrderItem item:orderItems) {
 				item.setPayOrderId(payOrder.getPayOrderId());
 				entityManager.merge(item);
 			}
 		}
 		entityManager.flush();
 		return payOrder;
-//		for(SubOrder subOrder:payOrder.getSubOrders()){
-//			entityManager.persist(subOrder);
-//		}
 	}
 	
 	private PayOrder createPayOrder(String payerNo,List<SubOrder> subOrders){
@@ -161,7 +163,7 @@ public class OrederService {
 		payOrder.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		payOrder.setPayOrderNo(genPayOrderNo(payerNo));
-		payOrder.setSubOrders(new LinkedHashSet<SubOrder>(subOrders));
+		//payOrder.setSubOrders(new LinkedHashSet<SubOrder>(subOrders));
 		return payOrder;
 	}
 	
@@ -198,7 +200,7 @@ public class OrederService {
 	/**
 	 * 计算运费
 	 * @param storeNo
-	 * @param products
+	 * @param subOrderMap
 	 * @return
 	 */
 	private BigDecimal calCarriage(String storeNo, Map<SimpleProduct,Integer> subOrderMap) {
