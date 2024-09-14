@@ -45,7 +45,9 @@ public class ProductController implements ProductQueryService {
 	@GetMapping("/simpleProduct/{productCode}")
 	public SimpleProduct getSimpleProductByCode(@PathVariable String productCode) {
 		logger.info("simple product.");
-		return productService.getSimpleProductByCode(productCode);
+		SimpleProduct product = productService.getSimpleProductByCode(productCode);
+		logger.info("end of product.");
+		return product;
 	}
 	
 	@RequestMapping(value="/product/search",method={RequestMethod.GET,RequestMethod.POST},consumes = "application/json")

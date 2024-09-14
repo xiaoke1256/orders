@@ -26,6 +26,10 @@
 		  var curNum = $("[name=curNum]").val();
 		  taskCount = parseInt(curNum);
 		  times = 1000;
+		  if(times>curNum*Math.ceil(curNum/1000)){
+		    times = curNum*Math.ceil(curNum/1000);
+		  }
+
 		  intervalCode = setInterval(function(){submitSomeOrder(curNum/1000)},1);
 		  //submitOrder();
 	  });//
@@ -47,6 +51,7 @@
 		  async: false,
 		  success:function(result){
 			  for(var i in result){
+			      //alert(Math.random());
 				  if(Math.random()*5<1){//只有5分之一的accoutNo可以被选中
 				      accountNos.push(result[i].accountNo);
 				  }
@@ -105,8 +110,9 @@
   
   var times = 1000;
   function submitSomeOrder(num){
+      console.log("num:"+num)
 	  for(var i = 0  ; i<num; i++){
-		  submitOrder();
+		submitOrder();
 	  }
 	  times--;
 	  if(times==0)
@@ -180,6 +186,7 @@
 		    	endTime=new Date().getTime();
 		        costTime += (endTime-startTime);
 		        taskCount--;
+		        console.log("taskCount:"+taskCount);
 		        completedCount++;
 		        $("#console").append("taskCount:"+taskCount+"<br>"); 
 		    	if(taskCount==0){
@@ -251,6 +258,7 @@
 		<span>并发量：</span>
 		<select name="curNum">
 		    <option value="100">100</option>
+			<option value="500">500</option>
 			<option value="1000">1000</option>
 			<option value="2000">2000</option>
 			<option value="5000">5000</option>
