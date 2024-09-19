@@ -1,8 +1,7 @@
 package com.xiaoke_1256.orders.bigdata.product.service.impl
 
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult
-import com.xiaoke_1256.orders.bigdata.product.dto.{ProductWithLabel, SimpleProductStatic}
-import com.xiaoke_1256.orders.bigdata.product.model.Product
+import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic
 import org.apache.spark.mllib.classification.{NaiveBayes, NaiveBayesModel}
 import org.apache.spark.mllib.clustering.KMeansModel
 import org.apache.spark.mllib.linalg.Vectors
@@ -29,7 +28,7 @@ class ProductClusterServiceBayesImpl {
     val productListSeq = JavaConverters.asScalaIteratorConverter(productList.iterator()).asScala.toSeq
     //sc.parallelize[SimpleProductStatic](productListSeq).filter((p)=>p.getLabel!=null).foreach((p)=>println(p.getStoreNo))
     val parsedData = sc.parallelize[SimpleProductStatic](productListSeq).filter((p)=>p.getLabel!=null)
-      .map(p=>new LabeledPoint(p.getLabel.toDouble,Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode), p.getStoreNo.hashCode))  ).cache() //
+      .map(p=>new LabeledPoint(p.getLabel.toDouble,Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode), p.getStoreNo.toInt))  ).cache() //
     val model = NaiveBayes.train(parsedData);
     println("模型训练完成")
     model.labels.foreach(println);
@@ -50,7 +49,7 @@ class ProductClusterServiceBayesImpl {
     val productListSeq = JavaConverters.asScalaIteratorConverter(productList.iterator()).asScala.toSeq//把List转成Seq
 
     val result = sc.parallelize(productListSeq).map((p)=>{
-      val label = model.predict(Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode),p.getStoreNo.hashCode))
+      val label = model.predict(Vectors.dense((if(p.getBrand==null) 0 else p.getBrand.hashCode),p.getStoreNo.toInt))
       new PredictResult[SimpleProductStatic](p,label.intValue())
     }).collect()
     JavaConverters.seqAsJavaList(result);
