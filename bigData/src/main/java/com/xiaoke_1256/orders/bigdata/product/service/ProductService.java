@@ -160,7 +160,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<PredictResult<SimpleProductStatic>> predictKmeans(List<ProductWithStatic> productList , String modelPath
-            ,double productPriceCoefficient,double orderCountCoefficient){
+            , double productPriceCoefficient, double orderCountCoefficient){
         List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
         return productClusterServiceKmeans.predict(modelPath,sampleList,productPriceCoefficient,orderCountCoefficient);
     }

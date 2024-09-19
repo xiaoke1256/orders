@@ -9,10 +9,8 @@ import com.xiaoke_1256.orders.bigdata.product.service.ProductClusterService;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import scala.beans.BeanProperty;
 
 import java.util.HashMap;
 import java.util.List;
