@@ -9,17 +9,17 @@
 		  var pageSize = pageInfo.pageSize;
 		  var totalCount = pageInfo.totalCount;
 		  var totalPages = pageInfo.totalPages;
-		  var pageContetxt = '';
+		  var pageContext = '';
 		  if(pageNo>1){
-		    pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
-		    pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
+		    pageContext += ' <a href="javascript:void(0)" class="page" pageNo="1">首页</a> ';
+		    pageContext += ' <a href="javascript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
 		  }
-		  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
+		  pageContext += ' 第'+pageNo+'页/共'+totalPages+'页 ';
 	      if(pageNo<totalPages){
-		    pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
-			pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalPages+'">尾页</a> ';
+		    pageContext += ' <a href="javascript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
+			pageContext += ' <a href="javascript:void(0)" class="page" pageNo="'+totalPages+'">尾页</a> ';
 		  }
-		  $(this).empty().append(pageContetxt);
+		  $(this).empty().append(pageContext);
 		  
 		  if(typeof(refleshFunction)=='function'){
 			  $(this).find('.page').click(refleshFunction);

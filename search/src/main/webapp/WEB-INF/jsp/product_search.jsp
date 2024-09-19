@@ -73,13 +73,13 @@
 		  var totalPages = page.totalPages;
 		  var pageContetxt = '';
 		  if(pageNo>1){
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="1">首页</a> ';
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
+			  pageContetxt += ' <a href="javascript:void(0)" class="page" pageNo="1">首页</a> ';
+			  pageContetxt += ' <a href="javascript:void(0)" class="page" pageNo="'+(pageNo-1)+'">上一页</a> ';
 		  }
 		  pageContetxt += ' 第'+pageNo+'页/共'+totalPages+'页 ';
 		  if(pageNo<totalPages){
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
-			  pageContetxt += ' <a href="javacript:void(0)" class="page" pageNo="'+totalCount+'">尾页</a> ';
+			  pageContetxt += ' <a href="javascript:void(0)" class="page" pageNo="'+(pageNo+1)+'">下一页</a> ';
+			  pageContetxt += ' <a href="javascript:void(0)" class="page" pageNo="'+totalCount+'">尾页</a> ';
 		  }
 		  $('#pageTd').empty().append(pageContetxt);
 	  }
