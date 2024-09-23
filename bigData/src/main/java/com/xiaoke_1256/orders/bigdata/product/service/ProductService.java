@@ -18,9 +18,15 @@ import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithLabel;
 import com.xiaoke_1256.orders.bigdata.product.dto.ProductWithStatic;
 import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic;
 import com.xiaoke_1256.orders.bigdata.product.model.Product;
-import com.xiaoke_1256.orders.bigdata.product.service.impl.ProductClusterServiceBayesImpl;
-import com.xiaoke_1256.orders.bigdata.product.service.impl.ProductClusterServiceKmeansImpl;
+
+import com.xiaoke_1256.orders.bigdata.product.service.spark.ProductClusterServiceBayesImpl;
+import com.xiaoke_1256.orders.bigdata.product.service.spark.ProductClusterServiceKmeansImpl;
 import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +34,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +46,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ProductService {
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     @Autowired
     private ProductDao productDao;
 
@@ -66,6 +76,20 @@ public class ProductService {
     public QueryResult<Product> searchProduct(ProductCondition productCondition){
         List<Product> list = productDao.search(productCondition);
         return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), list);
+    }
+
+    private void uploadToHdfs(String localPath,String hdfsPath) throws IOException, URISyntaxException {
+        // 获取配置对象
+        Configuration conf = new Configuration();
+        // 指定HDFS的URI
+        URI uri = new URI("hdfs://master:8020"); // 默认端口是8020，根据你的HDFS配置修改
+
+        // 获取FileSystem对象
+        FileSystem fileSystem = FileSystem.get(uri, conf);
+        // 上传文件
+        fileSystem.copyFromLocalFile(new Path(localPath), new Path(hdfsPath));
+
+        System.out.println("File uploaded successfully.");
     }
 
     /**
@@ -124,7 +148,7 @@ public class ProductService {
      */
     @Transactional(readOnly = true)
     public String trainClusterKmeansModel(ProductCondition productCondition, int numClusters, int numIterator
-            ,double productPriceCoefficient,double orderCountCoefficient) {
+            ,double productPriceCoefficient,double orderCountCoefficient) throws Exception {
         productCondition.setPageNo(1);
         productCondition.setPageSize(Integer.MAX_VALUE);
         List<ProductWithStatic> productList =  this.searchByCondition(productCondition).getResultList();
@@ -135,10 +159,42 @@ public class ProductService {
         if(!dev.exists()){
             dev.mkdirs();
         }
-        String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;//模型文件地址；
-        productClusterServiceKmeans.trainModel(sampleList,numClusters,numIterator,modelFilePath,productPriceCoefficient,orderCountCoefficient);
+        path = tmpDiv + File.separator +"samples" ;
+        dev = new File(path);
+        if(!dev.exists()){
+            dev.mkdirs();
+        }
 
-        //模型
+        String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() + ".txt";//模型文件地址；
+        String sampleFilePath = tmpDiv + File.separator +"samples" + File.separator + UUID.randomUUID() + ".txt" ;//样本文件地址
+        File sampleFile = new File(sampleFilePath);
+        sampleFile.createNewFile();
+        Writer write = new FileWriter(sampleFile);
+        //写入样本数据
+        for(int index=0;index < sampleList.size();index++){
+            SimpleProductStatic product = sampleList.get(index);
+            //index 1:price 2:count
+            write.write((index+1)+" ");
+            write.write("1:"+product.getProductPrice()+" ");
+            write.write("2:"+product.getOrderCount());
+            write.write("\r\n");
+        }
+        write.close();
+        String hdfsPath = sampleFilePath;
+        if(hdfsPath.contains(":")){
+            hdfsPath = hdfsPath.substring(hdfsPath.indexOf(":")+1);
+        }
+        hdfsPath = hdfsPath.replaceAll("\\\\","/");
+        if(!hdfsPath.startsWith("/")){
+            hdfsPath = "/"+hdfsPath;
+        }
+        uploadToHdfs(sampleFilePath,hdfsPath);
+        logger.info("sampleFilePath:"+sampleFilePath);
+        productClusterServiceKmeans.trainModel("hdfs://master:8020/"+hdfsPath,numClusters,numIterator,modelFilePath,productPriceCoefficient,orderCountCoefficient);
+        //训练完成后删除样本文件
+        sampleFile.delete();
+        //TODO 删除hdfs文件
+        //模型地址
         return modelFilePath;
     }
 
@@ -160,9 +216,58 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<PredictResult<SimpleProductStatic>> predictKmeans(List<ProductWithStatic> productList , String modelPath
-            , double productPriceCoefficient, double orderCountCoefficient){
+            , double productPriceCoefficient, double orderCountCoefficient) throws IOException {
         List<SimpleProductStatic> sampleList = productList.stream().map((p) -> new SimpleProductStatic(p.getProductCode(),p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
-        return productClusterServiceKmeans.predict(modelPath,sampleList,productPriceCoefficient,orderCountCoefficient);
+        String path = tmpDiv + File.separator +"samples" ;
+        File dev = new File(path);
+        if(!dev.exists()){
+            dev.mkdirs();
+        }
+
+        String sampleFilePath = tmpDiv + File.separator +"samples" + File.separator + UUID.randomUUID() + ".txt" ;//样本文件地址
+        String resultFilePath = tmpDiv + File.separator +"samples" + File.separator + "result_"+UUID.randomUUID() + ".txt" ;//预测结果文件地址
+        File sampleFile = new File(sampleFilePath);
+        sampleFile.createNewFile();
+        try(Writer write = new FileWriter(sampleFilePath)){
+            //写入样本文件
+            for(int i=0;i < sampleList.size();i++){
+                SimpleProductStatic product = sampleList.get(i);
+                //index 1:price 2:count
+                write.write((i+1)+" ");
+                write.write("1:"+product.getProductPrice()+" ");
+                write.write("2:"+product.getOrderCount());
+                write.write("\r\n");
+            }
+        }
+
+        productClusterServiceKmeans.predict(modelPath,"file:///"+sampleFilePath, resultFilePath,productPriceCoefficient,orderCountCoefficient);
+        try(BufferedReader reader = new BufferedReader(new FileReader(resultFilePath))){
+            List<PredictResult<SimpleProductStatic>> resultList = new ArrayList<>();
+            String line = reader.readLine();
+            while(line!=null){
+                String[] perperties = line.split(" ");
+                int index = Integer.parseInt(perperties[0]);
+                SimpleProductStatic product = sampleList.get(index);
+                //约定把label放在最后一个字段。
+                String label = perperties[perperties.length - 1];
+                resultList.add(new PredictResult<SimpleProductStatic>(product,Integer.parseInt(label)));
+                line = reader.readLine();
+            }
+            return resultList;
+        }finally {
+            //删除sample文件
+            try{
+                new File(sampleFilePath).delete();
+            }catch (Exception e){
+                logger.error(e.getMessage(),e);
+            }
+            //删除resualt文件
+            try{
+                new File(resultFilePath).delete();
+            }catch (Exception e){
+                logger.error(e.getMessage(),e);
+            }
+        }
     }
 
     @Transactional(readOnly = true)
@@ -213,7 +318,7 @@ public class ProductService {
             int productPriceCoefficient = trainParamJsonObject.getInteger("productPriceCoefficient");
             int orderCountCoefficient = trainParamJsonObject.getInteger("orderCountCoefficient");
             List<SimpleProductStatic> sampleList = productList.stream().map(p -> new SimpleProductStatic(p.getProductCode(), p.getProductName(), p.getProductPrice().doubleValue(), p.getOrderCount())).collect(Collectors.toList());
-            List<PredictResult<SimpleProductStatic>> predictResults = productClusterServiceKmeans.predict(modelFilePath, sampleList, productPriceCoefficient, orderCountCoefficient);
+            List<PredictResult<SimpleProductStatic>> predictResults = this.predictKmeans(productList,modelFilePath,productPriceCoefficient,orderCountCoefficient);
 
             //保存到数据库
             //执行记录
@@ -235,7 +340,9 @@ public class ProductService {
                 bigDataClusterObjectMapDao.save(clusterObjectMap);
             }
 
-        }finally{
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally{
             //预测完后删除模型文件
             try {
                 boolean result = zipFile.delete();

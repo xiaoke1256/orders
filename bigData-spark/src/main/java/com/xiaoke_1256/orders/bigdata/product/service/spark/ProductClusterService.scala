@@ -1,4 +1,4 @@
-package com.xiaoke_1256.orders.bigdata.product.service
+package com.xiaoke_1256.orders.bigdata.product.service.spark
 
 import org.springframework.stereotype.Service
 

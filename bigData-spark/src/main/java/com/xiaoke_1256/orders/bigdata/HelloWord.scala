@@ -1,4 +1,4 @@
-package com.xiaoke_1256.orders
+package com.xiaoke_1256.orders.bigdata
 
 object HelloWord {
   def main(args: Array[String]): Unit = {

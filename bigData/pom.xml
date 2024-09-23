@@ -21,46 +21,7 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.12</artifactId>
-            <version>3.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-graphx_2.12</artifactId>
-            <version>3.1.1</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.12.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-compiler</artifactId>
-            <version>2.12.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-reflect</artifactId>
-            <version>2.12.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.1.0</version>
-        </dependency>
+
         <dependency>
             <groupId>com.xiaoke_1256.orders</groupId>
             <artifactId>product-base</artifactId>
@@ -73,14 +34,10 @@
         </dependency>
         <dependency>
             <groupId>com.xiaoke_1256.orders</groupId>
-            <artifactId>bigData-models</artifactId>
+            <artifactId>bigData-spark</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_2.12</artifactId>
-            <version>3.1.1</version>
-        </dependency>
+
         <dependency>
             <groupId>org.json4s</groupId>
             <artifactId>json4s-native_2.12</artifactId>
@@ -153,13 +110,6 @@
           <version>1.2.2</version>
         </dependency>
 
-        <!-- spark依赖log4j所以要引入 -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -194,28 +144,10 @@
 
     <build>
         <plugins>
-            <!-- scala 语言build 插件 -->
             <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>scala-compile-first</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>scala-test-compile</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
             </plugin>
 
             <plugin>

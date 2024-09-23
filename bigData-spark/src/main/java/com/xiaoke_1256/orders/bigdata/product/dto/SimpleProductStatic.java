@@ -1,7 +1,6 @@
 package com.xiaoke_1256.orders.bigdata.product.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 缩减字段后的商品统计信息
@@ -18,14 +17,14 @@ public class SimpleProductStatic implements Serializable {
     public SimpleProductStatic() {
     }
 
-    public SimpleProductStatic(String productCode,String productName, double productPrice, int orderCount) {
+    public SimpleProductStatic(String productCode, String productName, double productPrice, int orderCount) {
         this.productCode = productCode;
         this.productName = productName;
         this.productPrice = productPrice;
         this.orderCount = orderCount;
     }
 
-    public SimpleProductStatic(String label,String productCode,String productName,  String brand, String storeNo) {
+    public SimpleProductStatic(String label, String productCode, String productName, String brand, String storeNo) {
         this.label = label;
         this.productCode = productCode;
         this.productName = productName;

@@ -1,14 +1,11 @@
-package com.xiaoke_1256.orders.bigdata.product.service.impl
+package com.xiaoke_1256.orders.bigdata.product.service.spark
 
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult
 import com.xiaoke_1256.orders.bigdata.product.dto.SimpleProductStatic
 import org.apache.spark.mllib.classification.{NaiveBayes, NaiveBayesModel}
-import org.apache.spark.mllib.clustering.KMeansModel
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
-import org.apache.spark.mllib.util.MLUtils
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.{SparkConf, SparkContext}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

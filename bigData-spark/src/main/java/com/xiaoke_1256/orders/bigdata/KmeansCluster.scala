@@ -1,4 +1,4 @@
-package com.xiaoke_1256.orders.bigdata.product
+package com.xiaoke_1256.orders.bigdata
 
 import org.apache.spark.SparkConf
 import org.apache.spark.api.java.JavaSparkContext

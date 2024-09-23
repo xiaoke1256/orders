@@ -26,5 +26,6 @@
         <module>3rdPay</module>
         <module>search</module>
         <module>bigData</module>
+        <module>bigData-spark</module>
     </modules>
 </project>

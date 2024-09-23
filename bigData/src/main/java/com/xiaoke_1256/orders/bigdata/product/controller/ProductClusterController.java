@@ -5,13 +5,14 @@ import com.xiaoke_1256.orders.bigdata.common.ml.dto.PredictResult;
 import com.xiaoke_1256.orders.bigdata.common.ml.dto.TrainInput;
 import com.xiaoke_1256.orders.bigdata.product.dto.*;
 import com.xiaoke_1256.orders.bigdata.product.model.Product;
-import com.xiaoke_1256.orders.bigdata.product.service.ProductClusterService;
+import com.xiaoke_1256.orders.bigdata.product.service.spark.ProductClusterService;
 import com.xiaoke_1256.orders.bigdata.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class ProductClusterController {
      * @
      */
     @PostMapping("/cluster/kmeans/train")
-    public Map<String,String> trainCluster( @RequestBody TrainInput trainInput){
+    public Map<String,String> trainCluster( @RequestBody TrainInput trainInput) throws Exception {
         logger.debug("trainInput:"+trainInput);
         String modelPath = productService.trainClusterKmeansModel(trainInput.getCondition(),
                 trainInput.getNumClusters(),
@@ -84,7 +85,7 @@ public class ProductClusterController {
     }
 
     @PostMapping("/cluster/kmeans/predict")
-    public List<PredictResult<SimpleProductStatic>> predict(@RequestBody ProductPredictInput predictInput ){
+    public List<PredictResult<SimpleProductStatic>> predict(@RequestBody ProductPredictInput predictInput ) throws IOException {
         predictInput.getCondition().setPageNo(1);
         predictInput.getCondition().setPageSize(Integer.MAX_VALUE);
         QueryResult<ProductWithStatic> products = productService.searchByCondition(predictInput.getCondition());

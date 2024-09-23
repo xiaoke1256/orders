@@ -1,13 +1,10 @@
-package com.xiaoke_1256.orders
+package com.xiaoke_1256.orders.bigdata
 
 import org.apache.spark.SparkConf
-import org.apache.spark.api.java.JavaPairRDD
-import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.api.java.JavaSparkContext
 import org.apache.spark.storage.StorageLevel
 
 import java.io.File
-import scala.Tuple2
 import java.util
 import scala.reflect.io.Directory
 
