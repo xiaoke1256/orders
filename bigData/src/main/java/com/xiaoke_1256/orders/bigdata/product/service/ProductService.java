@@ -165,7 +165,7 @@ public class ProductService {
             dev.mkdirs();
         }
 
-        String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() + ".txt";//模型文件地址；
+        String modelFilePath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;//模型文件目录；
         String sampleFilePath = tmpDiv + File.separator +"samples" + File.separator + UUID.randomUUID() + ".txt" ;//样本文件地址
         File sampleFile = new File(sampleFilePath);
         sampleFile.createNewFile();
