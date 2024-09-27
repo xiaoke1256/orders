@@ -44,7 +44,8 @@ class ProductClusterServiceKmeansImpl {
 
     val libSVMData = sparkSession.read.format("libsvm").load(samplePath)
     val parsedData = libSVMData.select("features").rdd.map(row => row.getAs[org.apache.spark.ml.linalg.Vector](0))
-      .map((f)=>Vectors.dense(f(0)*productPriceCoefficient,f(1)*orderCountCoefficient)).cache()
+      .filter( (f)=>f(1)>0)
+      .map((f)=>Vectors.dense(f(0)/1000.0*productPriceCoefficient,f(1)*orderCountCoefficient)).cache()
     //val labels = libSVMData.select("label").rdd.map(row => row.getDouble(0))
     val model = KMeans.train(parsedData,numClusters,numIterator);
 

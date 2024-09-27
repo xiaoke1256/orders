@@ -195,7 +195,7 @@ public class ProductService {
         sampleFile.delete();
         //TODO 删除hdfs文件
         //模型地址
-        return hdfsModelFilePath;
+        return hdfsUri+hdfsModelFilePath;
     }
 
     /**
@@ -260,7 +260,7 @@ public class ProductService {
             hdfsResultPath = "/"+hdfsResultPath;
         }
 
-        productClusterServiceKmeans.predict(hdfsUri+modelPath,hdfsUri+hdfsPath, hdfsUri+hdfsResultPath,productPriceCoefficient,orderCountCoefficient);
+        productClusterServiceKmeans.predict(modelPath,hdfsUri+hdfsPath, hdfsUri+hdfsResultPath,productPriceCoefficient,orderCountCoefficient);
         //下载到本地
         HdfsUtils.download(false,hdfsUri+hdfsResultPath,resultFilePath);
         try(BufferedReader reader = new BufferedReader(new FileReader(resultFilePath))){
@@ -287,7 +287,7 @@ public class ProductService {
             //。。。。
             //删除resualt文件
             try{
-                new File(resultFilePath).delete();
+                //new File(resultFilePath).delete();
             }catch (Exception e){
                 logger.error(e.getMessage(),e);
             }
