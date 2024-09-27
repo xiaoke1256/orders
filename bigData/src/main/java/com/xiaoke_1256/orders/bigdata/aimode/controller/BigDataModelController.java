@@ -1,26 +1,32 @@
 package com.xiaoke_1256.orders.bigdata.aimode.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.xiaoke1256.orders.common.page.BaseCondition;
 import com.xiaoke1256.orders.common.page.QueryResult;
 import com.xiaoke_1256.orders.bigdata.aimode.dto.BigDataModelDto;
 import com.xiaoke_1256.orders.bigdata.aimode.dto.ModelSearchCondition;
 import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModel;
 import com.xiaoke_1256.orders.bigdata.aimode.model.BigDataModelWithBLOBs;
 import com.xiaoke_1256.orders.bigdata.aimode.service.BigDataModelService;
+import com.xiaoke_1256.orders.bigdata.common.util.HdfsUtils;
 import com.xiaoke_1256.orders.bigdata.common.util.ZIPUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RequestMapping("/model")
 @RestController
 public class BigDataModelController {
+
+    @Value("${big-data.tmp-div}")
+    private String tmpDiv;
 
     @Autowired
     private BigDataModelService bigDataModelService;
@@ -42,8 +48,15 @@ public class BigDataModelController {
      * @throws IOException
      */
     @PostMapping("/save")
-    public Boolean saveModel(@RequestBody BigDataModelDto modelDto) throws IOException {
+    public Boolean saveModel(@RequestBody BigDataModelDto modelDto) throws IOException, URISyntaxException {
         String modelPath = modelDto.getModelPath();
+        if(modelPath.startsWith("hdfs:")){
+            String localPath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;
+            new File(localPath).mkdirs();
+            //先下载到本地
+            HdfsUtils.downloadFiles(modelPath,localPath);
+            modelPath = localPath;
+        }
         String zipFileName = modelPath + ".zip";
         ZIPUtils.createZip(zipFileName,modelPath);
         File zipfile = new File(zipFileName);

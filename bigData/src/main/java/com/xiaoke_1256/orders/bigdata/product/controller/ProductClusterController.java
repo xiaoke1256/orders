@@ -10,9 +10,11 @@ import com.xiaoke_1256.orders.bigdata.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +87,7 @@ public class ProductClusterController {
     }
 
     @PostMapping("/cluster/kmeans/predict")
-    public List<PredictResult<SimpleProductStatic>> predict(@RequestBody ProductPredictInput predictInput ) throws IOException {
+    public List<PredictResult<SimpleProductStatic>> predict(@RequestBody ProductPredictInput predictInput ) throws IOException, URISyntaxException {
         predictInput.getCondition().setPageNo(1);
         predictInput.getCondition().setPageSize(Integer.MAX_VALUE);
         QueryResult<ProductWithStatic> products = productService.searchByCondition(predictInput.getCondition());

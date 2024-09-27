@@ -30,16 +30,17 @@ class ProductClusterServiceKmeansImpl {
    */
   def trainModel(samplePath:String,numClusters: Int,numIterator:Int,modelPath:String
                  ,productPriceCoefficient:Double,orderCountCoefficient:Double): Unit = {
+    println("modelPath:"+modelPath)
     val sc = sparkSession.sparkContext
 
     //HDFS上的目标路径
     //val hdfsPath = "hdfs://192.168.249.107:8020/your/hdfs/path/file.txt"
 
     //将文件上传到HDFS
-    sc.addFile(samplePath)
+    //sc.addFile(samplePath)
 
-    //val data = MLUtils.loadLibSVMFile(sc,samplePath)
-    //val parsedData = data.map( s => s.getFeatures).map((f)=>Vectors.dense(f(0)*productPriceCoefficient,f(1)*orderCountCoefficient)).cache()
+//    val data = MLUtils.loadLibSVMFile(sc,samplePath)
+//    val parsedData = data.map( s => s.getFeatures).map((f)=>Vectors.dense(f(0)*productPriceCoefficient,f(1)*orderCountCoefficient)).cache()
 
     val libSVMData = sparkSession.read.format("libsvm").load(samplePath)
     val parsedData = libSVMData.select("features").rdd.map(row => row.getAs[org.apache.spark.ml.linalg.Vector](0))
@@ -76,13 +77,12 @@ class ProductClusterServiceKmeansImpl {
 
     val data = MLUtils.loadLibSVMFile(sc,simplePath)
 
-    val printWriter = new PrintWriter(new File(resultPath))
-
-    data.filter( (d)=>d.getFeatures(1).toDouble>0).foreach((d)=>{
+    val predictedData = data.filter( (d)=>d.getFeatures(1).toDouble>0).map((d)=>{
       val label = model.predict(Vectors.dense(d.getFeatures(0).toDouble/1000.0*productPriceCoefficient,d.getFeatures(1).toDouble*orderCountCoefficient))
       // index price count label
-      printWriter.println(d.label+" "+d.getFeatures(0)+" "+d.getFeatures(1)+" "+label)
+      d.label+" "+d.getFeatures(0)+" "+d.getFeatures(1)+" "+label
     })
-    printWriter.close()
+    println("resultPath:"+resultPath)
+    predictedData.coalesce(1,true).saveAsTextFile(resultPath);
   }
 }

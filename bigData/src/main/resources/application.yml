@@ -37,5 +37,28 @@ mybatis:
 logging:
   config: classpath:logback.xml
 
+#spark 相关配置
+spark:
+  appName: orders-bigdata-algorithm
+  master: spark://192.168.249.107:7077
+  sql:
+    shuffle:
+      partitions: 1
+  yarn:
+    maxAppAttempts: 10
+  blockManager:
+    port: 10025
+  driver:
+    host: 192.168.40.1
+    bindAddress: 0.0.0.0
+    blockManager:
+      port: 10026
+  executor:
+    memory: 512m
+  #涉及到多个jar包则用逗号分割
+  jars: D:\maven-repository\com\xiaoke_1256\orders\bigData-spark\1.0.0\bigData-spark-1.0.0.jar
+  hdfs:
+    uri: hdfs://master:8020
+
 big-data:
   tmp-div: D:\tmp\orders\bigdata
