@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
@@ -22,13 +21,14 @@ public class HdfsUtils implements ApplicationContextAware {
 
     private static ApplicationContext ctx;
 
-    private static String hdfsUri ;
+    private static Configuration conf;
+
 
     /**
      * 初始化
      */
     private void init(){
-        hdfsUri = ctx.getEnvironment().getProperty("spark.hdfs.uri");
+        conf = ctx.getBean(Configuration.class);
     }
 
     @Override
@@ -44,9 +44,6 @@ public class HdfsUtils implements ApplicationContextAware {
      * @param localPath
      */
     public static void download(boolean delSrc,String hdfsPath,String localPath) {
-        Configuration conf = new Configuration();
-        conf.set("fs.defaultFS", hdfsUri);
-
         try {
             FileSystem fs = FileSystem.get(conf);
             Path srcPath = new Path(hdfsPath);
@@ -91,11 +88,6 @@ public class HdfsUtils implements ApplicationContextAware {
      * @throws URISyntaxException
      */
     public static void upload(String localPath,String hdfsPath) throws IOException, URISyntaxException {
-        // 获取配置对象
-        Configuration conf = new Configuration();
-        conf.set("fs.defaultFS", hdfsUri);
-//        // 指定HDFS的URI
-//        URI uri = new URI(hdfsUri);
         // 获取FileSystem对象
         FileSystem fileSystem = FileSystem.get(conf);
         // 上传文件
@@ -110,8 +102,6 @@ public class HdfsUtils implements ApplicationContextAware {
      * @throws IOException
      */
     public static void downloadFiles(String hdfsFolderPath, String localFolderPath) throws IOException {
-        Configuration conf = new Configuration();
-        conf.set("fs.defaultFS", hdfsUri); // 设置HDFS的URI
         FileSystem fs = FileSystem.get(conf);
         Path hdfsPath = new Path(hdfsFolderPath);
         FileStatus[] fileStatusArray = fs.listStatus(hdfsPath);
