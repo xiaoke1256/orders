@@ -33,9 +33,13 @@
   	<logger name="com.xiaoke1256" level="INFO" additivity="false">  
     	<appender-ref ref="STDOUT"/>  
     	<appender-ref ref="file_log"/>  
-  	</logger>  
-	
- 
+  	</logger>
+
+	<logger name="com.xiaoke_1256" level="INFO" additivity="false">
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="file_log"/>
+	</logger>
+
 	<!-- * 通配符 设置log打印级别 对所有类有效-->
 	<root level="WARN">
 		<appender-ref ref="STDOUT" />

@@ -1,10 +1,12 @@
 package com.xiaoke_1256.orders.bigdata.product.service.spark
 
+import com.typesafe.scalalogging.slf4j.Logger
 import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
-import org.apache.spark.mllib.linalg.Vector;
+import org.apache.spark.mllib.linalg.Vector
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.util.MLUtils
 import org.apache.spark.sql.SparkSession
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -20,6 +22,8 @@ class ProductClusterServiceKmeansImpl {
 
   @Autowired
   private val sparkSession:SparkSession = null ;
+
+  private val logger = Logger(LoggerFactory.getLogger(this.getClass));
 
   /**
    * 聚类算法训练
@@ -41,22 +45,26 @@ class ProductClusterServiceKmeansImpl {
 
 //    val data = MLUtils.loadLibSVMFile(sc,samplePath)
 //    val parsedData = data.map( s => s.getFeatures).map((f)=>Vectors.dense(f(0)*productPriceCoefficient,f(1)*orderCountCoefficient)).cache()
-
+    logger.info("开始加载数据")
     val libSVMData = sparkSession.read.format("libsvm").load(samplePath)
+    logger.info("转换数据")
     val parsedData = libSVMData.select("features").rdd.map(row => row.getAs[org.apache.spark.ml.linalg.Vector](0))
       .filter( (f)=>f(1)>0)
       .map((f)=>Vectors.dense(f(0)/1000.0*productPriceCoefficient,f(1)*orderCountCoefficient)).cache()
     //val labels = libSVMData.select("label").rdd.map(row => row.getDouble(0))
+    logger.info("开始训练模型")
     val model = KMeans.train(parsedData,numClusters,numIterator);
 
-    println("模型训练完成")
+    logger.info("模型训练完成")
     model.clusterCenters.foreach(println)
+    logger.info("模型训练完成")
     if(modelPath!=null && !"".equals(modelPath.trim)){
       //      val file = new File(modelPath)
       //      if(!file.exists()){
       //        file.createNewFile()
       //      }
       model.save(sc,modelPath)
+      logger.info("模型保存完成")
     }
   }
 

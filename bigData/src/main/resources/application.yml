@@ -56,7 +56,7 @@ spark:
   executor:
     memory: 512m
   #涉及到多个jar包则用逗号分割
-  jars: D:\maven-repository\com\xiaoke_1256\orders\bigData-spark\1.0.0\bigData-spark-1.0.0.jar
+  jars: D:\maven-repository\com\xiaoke_1256\orders\bigData-spark\1.0.0\bigData-spark-1.0.0.jar,D:\maven-repository\com\typesafe\scala-logging\scala-logging-slf4j_2.11\2.1.2\scala-logging-slf4j_2.11-2.1.2.jar,D:\maven-repository\com\typesafe\scala-logging\scala-logging-api_2.11\2.1.2\scala-logging-api_2.11-2.1.2.jar
   hdfs:
     uri: hdfs://master:8020
 
