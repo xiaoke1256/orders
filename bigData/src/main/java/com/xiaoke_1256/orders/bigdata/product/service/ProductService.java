@@ -331,7 +331,6 @@ public class ProductService {
             }
             bigDataCalExecInfoDao.deleteByModelId(modelId);
 
-
             //用模型预测
             productCondition.setPageNo(1);
             productCondition.setPageSize(Integer.MAX_VALUE);
