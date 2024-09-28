@@ -39,7 +39,7 @@ public class HdfsUtils implements ApplicationContextAware {
 
     /**
      * hdfs上的文件下载到本地(同时合并小文件)
-     * @param delSrc
+     * @param delSrc 下载成功后如否删除原文件
      * @param hdfsPath
      * @param localPath
      */
@@ -89,10 +89,11 @@ public class HdfsUtils implements ApplicationContextAware {
      */
     public static void upload(String localPath,String hdfsPath) throws IOException, URISyntaxException {
         // 获取FileSystem对象
-        FileSystem fileSystem = FileSystem.get(conf);
+        FileSystem fs = FileSystem.get(conf);
         // 上传文件
-        fileSystem.copyFromLocalFile(new Path(localPath), new Path(hdfsPath));
+        fs.copyFromLocalFile(new Path(localPath), new Path(hdfsPath));
         System.out.println("File uploaded successfully.");
+        fs.close();
     }
 
     /**
@@ -101,7 +102,7 @@ public class HdfsUtils implements ApplicationContextAware {
      * @param localFolderPath
      * @throws IOException
      */
-    public static void downloadFiles(String hdfsFolderPath, String localFolderPath) throws IOException {
+    public static void downloadFiles(boolean delSrc,String hdfsFolderPath, String localFolderPath) throws IOException {
         FileSystem fs = FileSystem.get(conf);
         Path hdfsPath = new Path(hdfsFolderPath);
         FileStatus[] fileStatusArray = fs.listStatus(hdfsPath);
@@ -109,6 +110,20 @@ public class HdfsUtils implements ApplicationContextAware {
             Path filePath = fileStatus.getPath();
             fs.copyToLocalFile(filePath, new Path(localFolderPath + "/" + filePath.getName())); // 下载文件到本地
         }
+        if(delSrc){
+            fs.delete(hdfsPath,true);
+        }
+        fs.close();
+    }
+
+    /**
+     * 删除文件或文件夹
+     * @param hdfsPath
+     */
+    public static void delete(String hdfsPath) throws IOException {
+        FileSystem fs = FileSystem.get(conf);
+        fs.delete(new Path(hdfsPath),true);
+        fs.close();
     }
 
 

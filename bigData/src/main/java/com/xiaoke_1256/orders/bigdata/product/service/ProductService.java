@@ -101,6 +101,11 @@ public class ProductService {
         return new QueryResult<>( productCondition.getPageNo(), productCondition.getPageSize(), productCondition.getTotal(), resultList);
     }
 
+    /**
+     * 计算count
+     * @param
+     * @return
+     */
     @Transactional(readOnly = true)
     public SimpleProductStatic productToSimpleProductStatic(Product p){
         int count = orderItemDao.countByProductCode(p.getProductCode());
@@ -134,7 +139,24 @@ public class ProductService {
     }
 
     /**
-     * 聚集算法(Kmeans)
+     * 生成hdfs上的path
+     * @param localPath
+     * @return
+     */
+    private String genHdfsPath(String localPath){
+        String hdfsPath = localPath;
+        if(hdfsPath.contains(":")){//
+            hdfsPath = hdfsPath.substring(hdfsPath.indexOf(":")+1);
+        }
+        hdfsPath = hdfsPath.replaceAll("\\\\","/");
+        if(!hdfsPath.startsWith("/")){
+            hdfsPath = "/"+hdfsPath;
+        }
+        return hdfsPath;
+    }
+
+    /**
+     * 聚集算法训练(Kmeans)
      */
     @Transactional(readOnly = true)
     public String trainClusterKmeansModel(ProductCondition productCondition, int numClusters, int numIterator
@@ -171,29 +193,16 @@ public class ProductService {
         }
         write.close();
         //上传至 hadoop
-        String hdfsPath = sampleFilePath;
-        if(hdfsPath.contains(":")){
-            hdfsPath = hdfsPath.substring(hdfsPath.indexOf(":")+1);
-        }
-        hdfsPath = hdfsPath.replaceAll("\\\\","/");
-        if(!hdfsPath.startsWith("/")){
-            hdfsPath = "/"+hdfsPath;
-        }
+        String hdfsPath = genHdfsPath(sampleFilePath);
         HdfsUtils.upload(sampleFilePath,hdfsPath);
         logger.info("sampleFilePath:"+sampleFilePath);
         //模型文件的接收地址
-        String hdfsModelFilePath = modelFilePath;
-        if(hdfsModelFilePath.contains(":")){
-            hdfsModelFilePath = hdfsModelFilePath.substring(hdfsModelFilePath.indexOf(":")+1);
-        }
-        hdfsModelFilePath = hdfsModelFilePath.replaceAll("\\\\","/");
-        if(!hdfsModelFilePath.startsWith("/")){
-            hdfsModelFilePath = "/"+hdfsModelFilePath;
-        }
+        String hdfsModelFilePath = genHdfsPath(modelFilePath);
         productClusterServiceKmeans.trainModel(hdfsUri+"/"+hdfsPath,numClusters,numIterator,hdfsUri+"/"+hdfsModelFilePath,productPriceCoefficient,orderCountCoefficient);
         //训练完成后删除样本文件
         sampleFile.delete();
-        //TODO 删除hdfs文件
+        //删除hdfs文件
+        HdfsUtils.delete(hdfsPath);
         //模型地址
         return hdfsUri+hdfsModelFilePath;
     }
@@ -240,25 +249,11 @@ public class ProductService {
             }
         }
         //把样本文件上传至hdfs
-        String hdfsPath = sampleFilePath;
-        if(hdfsPath.contains(":")){
-            hdfsPath = hdfsPath.substring(hdfsPath.indexOf(":")+1);
-        }
-        hdfsPath = hdfsPath.replaceAll("\\\\","/");
-        if(!hdfsPath.startsWith("/")){
-            hdfsPath = "/"+hdfsPath;
-        }
+        String hdfsPath = genHdfsPath(sampleFilePath);
         HdfsUtils.upload(sampleFilePath,hdfsPath);
 
         //结果文件的hdfs地址
-        String hdfsResultPath = resultFilePath;
-        if(hdfsResultPath.contains(":")){
-            hdfsResultPath = hdfsResultPath.substring(hdfsResultPath.indexOf(":")+1);
-        }
-        hdfsResultPath = hdfsResultPath.replaceAll("\\\\","/");
-        if(!hdfsResultPath.startsWith("/")){
-            hdfsResultPath = "/"+hdfsResultPath;
-        }
+        String hdfsResultPath = genHdfsPath(resultFilePath);
 
         productClusterServiceKmeans.predict(modelPath,hdfsUri+hdfsPath, hdfsUri+hdfsResultPath,productPriceCoefficient,orderCountCoefficient);
         //下载到本地
@@ -284,10 +279,14 @@ public class ProductService {
                 logger.error(e.getMessage(),e);
             }
             //删除sample文件（hdfs）
-            //。。。。
+            try{
+                HdfsUtils.delete(hdfsPath);
+            }catch (Exception e){
+                logger.error(e.getMessage(),e);
+            }
             //删除resualt文件
             try{
-                //new File(resultFilePath).delete();
+                new File(resultFilePath).delete();
             }catch (Exception e){
                 logger.error(e.getMessage(),e);
             }

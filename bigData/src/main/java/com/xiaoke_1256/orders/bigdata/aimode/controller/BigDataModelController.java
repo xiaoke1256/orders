@@ -54,7 +54,7 @@ public class BigDataModelController {
             String localPath = tmpDiv + File.separator +"models" + File.separator + UUID.randomUUID() ;
             new File(localPath).mkdirs();
             //先下载到本地
-            HdfsUtils.downloadFiles(modelPath,localPath);
+            HdfsUtils.downloadFiles(true,modelPath,localPath);
             modelPath = localPath;
         }
         String zipFileName = modelPath + ".zip";
