@@ -1,9 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
+import MainRuoter from './MainRuoter';
+import {Link} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
+      <MainRuoter></MainRuoter>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -17,6 +20,7 @@ function App() {
         >
           Learn React
         </a>
+        <Link to="/home">Home</Link>
       </header>
     </div>
   );
