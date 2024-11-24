@@ -14,7 +14,7 @@ export function Login(){
         <Content className="loginContent">
           <Flex justify={"flex-end"} className='welcomeMsg' >——欢迎访问Orders大数据</Flex >
           <Card>
-
+            <div style={{backgroundImage:"~/public/login.jpg"}} ></div>
           </Card>
         </Content>
         <Footer className='layout-footer-center'>2021 &copy; xiaoke1256</Footer>
