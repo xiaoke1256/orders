@@ -1,0 +1,24 @@
+.hearder-logo{
+    width: 200px;
+    height: 30px;
+    background: #5b6270;
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 15px;
+    left: 20px;
+    color:lightsteelblue;
+    font:italic 60px  "Acadian" ;
+    letter-spacing:12px;
+}
+
+.welcomeMsg{
+    padding:0 50px;
+    text-align: right;
+    font:italic bolder 16px "yahei";
+    color:lightsteelblue
+}
+
+.ant-layout-content.loginContent{
+    padding: 20px 50px
+}

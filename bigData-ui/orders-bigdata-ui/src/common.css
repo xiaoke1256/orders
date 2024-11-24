@@ -1,0 +1,24 @@
+.ant-layout{
+    height: 100%;
+    
+}
+
+.ant-layout-header{
+    background: #434343;
+}
+
+.layout-footer-center{
+    text-align: center;
+    background: #2c3e50 !important;
+    color:#fff !important;
+}
+
+@font-face {
+    font-family:'Lucida Calligraphy Italic';
+    src: url('~/public/font/Lucida_Calligraphy_Italic.TTF');
+}
+  
+@font-face {
+    font-family:'Acadian';
+    src: url('~/public/font/Acadian.TTF');
+}
