@@ -22,3 +22,27 @@
 .ant-layout-content.loginContent{
     padding: 20px 50px
 }
+
+.loginWelcome{
+    text-align:left;
+    font:italic bolder 16px;
+    color:lightsteelblue;
+    border-bottom:cornflowerblue solid 2px;
+    margin-bottom: 15px;
+  }
+
+.loginMain{
+    min-height:300px;
+    text-align: center;
+}
+
+.loginMain > div{
+    display:inline-block;
+    vertical-align:middle;
+}
+
+.loginMain .ant-card{
+    height:413px;
+    vertical-align:middle;
+    padding:60px 0;
+}
