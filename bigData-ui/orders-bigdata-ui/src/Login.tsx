@@ -18,7 +18,7 @@ export function Login(){
         <Content className="loginContent">
           <Flex justify={"flex-end"} className='welcomeMsg' >——欢迎访问Orders大数据</Flex >
           <Card>
-            <div className="loginMain">
+            <Flex className="loginMain">
               <div>
                 <Image preview={false} src="/login.jpg" />
               </div>
@@ -46,7 +46,7 @@ export function Login(){
                   </Form>
                 </Card>
               </div>
-            </div>
+            </Flex>
           </Card>
         </Content>
         <Footer className='layout-footer-center'>2021 &copy; xiaoke1256</Footer>

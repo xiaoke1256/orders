@@ -13,6 +13,10 @@
     color:#fff !important;
 }
 
+.ant-form-item-explain-error{
+    text-align: left;
+}
+
 @font-face {
     font-family:'Lucida Calligraphy Italic';
     src: url('~/public/font/Lucida_Calligraphy_Italic.TTF');
