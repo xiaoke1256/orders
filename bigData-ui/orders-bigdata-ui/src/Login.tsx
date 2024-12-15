@@ -7,9 +7,12 @@ import './Login.css'
 const { Header, Content, Footer } = Layout;
 
 export function Login(){
-    const isScanLogin = false;
 
-    return (
+  const login = ()=>{
+    
+  }
+
+  return (
     <>
       <Layout>
         <Header>
@@ -42,7 +45,7 @@ export function Login(){
                     >
                       <Input.Password  type="password" placeholder="密码" />
                     </Form.Item>
-                    <Button type="primary" block onClick={()=>{}} >登录</Button>
+                    <Button type="primary" block onClick={login} >登录</Button>
                   </Form>
                 </Card>
               </div>
@@ -52,5 +55,5 @@ export function Login(){
         <Footer className='layout-footer-center'>2021 &copy; xiaoke1256</Footer>
       </Layout>
     </>
-    )
+  )
 }
