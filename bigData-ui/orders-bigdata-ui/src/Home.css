@@ -1,0 +1,43 @@
+.hearder-nav{
+    margin-right: 20px;
+    line-height: normal;
+    position: relative;
+    top: 40px;
+}
+
+.hearder-nav dev {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.hearder-nav a{
+    height: 14px;
+    color:rgba(255,255,255,.7);
+    margin-left: 30px;
+}
+
+.leftMenu .ivu-menu {
+    text-align: left;
+}
+.ivu-breadcrumb{
+    text-align: left;
+    margin: 24px 0;
+}
+
+.leftMenu {
+    background: #fff;
+}
+
+.ivu-layout.mainLayout {
+    padding: 0 24px 24px;
+}
+
+.mainLayout .ivu-layout-content{
+    padding: 24px;
+    min-height: 280px;
+    background:#fff;
+}
+
+.mainWithMenu.ivu-layout-has-sider{
+    margin-top: 10px;
+}
