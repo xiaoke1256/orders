@@ -21,7 +21,7 @@ export function Login(){
         <Content className="loginContent">
           <Flex justify={"flex-end"} className='welcomeMsg' >——欢迎访问Orders大数据</Flex >
           <Card>
-            <Flex className="loginMain">
+            <Flex className="loginMain" justify='center'>
               <div>
                 <Image preview={false} src="/login.jpg" />
               </div>
