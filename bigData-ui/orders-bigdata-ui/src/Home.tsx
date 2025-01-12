@@ -2,7 +2,7 @@ import { Layout, Breadcrumb, Menu, Card, Flex, Image, Form, Input, Button  } fro
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 
 import './Home.css';
-// import { BrowserRouter } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 const { Header, Content, Footer,Sider } = Layout;
 
@@ -99,7 +99,7 @@ export function Home(){
         <Layout className="mainLayout">
           <Breadcrumb routes={[{ title:'主页',href:"#" }]} ></Breadcrumb>
           <Content>
-            {/* <BrowserRouter></BrowserRouter> */}
+            <Outlet/>
           </Content>
         </Layout>
       </Layout>
