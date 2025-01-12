@@ -1,12 +1,12 @@
 import { Layout, Breadcrumb, Menu, Card, Flex, Image, Form, Input, Button  } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 
-import './Home.css';
+import './Main.css';
 import { Outlet } from "react-router-dom";
 
 const { Header, Content, Footer,Sider } = Layout;
 
-export function Home(){
+export function Main(){
 
   const logout = ()=>{
 
