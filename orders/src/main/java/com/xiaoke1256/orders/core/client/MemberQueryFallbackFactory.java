@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xiaoke1256.orders.member.dto.Member;
+import org.springframework.cloud.openfeign.FallbackFactory;
 
-import feign.hystrix.FallbackFactory;
 
 public class MemberQueryFallbackFactory implements FallbackFactory<MemberQueryClient> {
 

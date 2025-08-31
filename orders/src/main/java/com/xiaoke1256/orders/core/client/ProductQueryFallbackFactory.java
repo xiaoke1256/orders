@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.RespCode;
@@ -12,7 +13,6 @@ import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 
-import feign.hystrix.FallbackFactory;
 
 @Component
 public class ProductQueryFallbackFactory implements FallbackFactory<ProductQueryClient> {

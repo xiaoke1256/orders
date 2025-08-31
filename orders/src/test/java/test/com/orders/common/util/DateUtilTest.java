@@ -2,9 +2,8 @@ package test.com.orders.common.util;
 
 import java.util.Date;
 
-import org.junit.Test;
-
 import com.xiaoke1256.orders.common.util.DateUtil;
+import org.junit.jupiter.api.Test;
 
 public class DateUtilTest {
 	@Test

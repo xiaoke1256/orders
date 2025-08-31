@@ -4,11 +4,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.xiaoke1256.common.utils.RedisUtils;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 
@@ -106,6 +105,6 @@ public class RedisTest {
 		
 		String reslt = j.get("a");
 		System.out.println("finally result:"+reslt);
-		Assert.assertNotEquals("11", reslt);
+		Assert.isTrue("11".equals(reslt),"fail");
 	}
 }

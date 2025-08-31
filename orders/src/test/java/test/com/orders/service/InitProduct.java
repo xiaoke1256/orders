@@ -7,9 +7,9 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 //import org.apache.logging.log4j.PropertyConfigurator;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +25,6 @@ import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes=SpringbootApplication.class)
 @ActiveProfiles("test")
 public class InitProduct {
@@ -33,8 +32,8 @@ public class InitProduct {
 	@Value("${remote.api.product.uri}")
 	private String productApiUri;
 	
-	@Before
-	public void init(){
+	@BeforeAll
+	public static void init(){
 		//log4j初始化
 //        String basePath  = Class.class.getResource("/").getPath();
 //        String log4jPath = "";

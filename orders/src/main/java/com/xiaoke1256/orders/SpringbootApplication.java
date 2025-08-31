@@ -1,31 +1,21 @@
 package com.xiaoke1256.orders;
 
+import com.xiaoke1256.common.utils.RedisConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
-import com.xiaoke1256.common.utils.RedisConfig;
-
-@EnableCircuitBreaker
-@EnableFeignClients
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableFeignClients
 @Import(RedisConfig.class)
-public class SpringbootApplication extends SpringBootServletInitializer {
-	
-	@Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SpringbootApplication.class);
-    }
+public class SpringbootApplication {
 	
 	@Bean
 	@LoadBalanced

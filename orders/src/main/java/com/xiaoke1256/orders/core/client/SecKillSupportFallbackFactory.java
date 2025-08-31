@@ -2,12 +2,11 @@ package com.xiaoke1256.orders.core.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
-
-import feign.hystrix.FallbackFactory;
 
 @Component
 public class SecKillSupportFallbackFactory implements FallbackFactory<SecKillSupportClient> {
