@@ -9,23 +9,107 @@
     <version>1.2.1</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <spring.version>4.3.20.RELEASE</spring.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <spring-cloud.version>2021.1.0</spring-cloud.version>
+        <alibaba-cloud.version>2.2.1.RELEASE</alibaba-cloud.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.18</version>
+    </parent>
+
     <modules>
-        <module>orders_store_intra</module>
-        <module>common</module>
-        <module>common-zookeeper</module>
-        <module>product</module>
-        <module>product-base</module>
-        <module>product-api</module>
-        <module>discovery-eureka</module>
-        <module>gateway</module>
+<!--        <module>orders_store_intra</module>-->
+<!--        <module>common</module>-->
+<!--        <module>common-zookeeper</module>-->
+<!--        <module>product</module>-->
+<!--        <module>product-base</module>-->
+<!--        <module>product-api</module>-->
+<!--        <module>discovery-eureka</module>-->
+<!--        <module>gateway</module>-->
         <module>orders</module>
-        <module>orders-api</module>
-        <module>orders-base</module>
-        <module>orders-auth</module>
-        <module>orders-task</module>
-        <module>3rdPay</module>
-        <module>search</module>
-        <module>bigData</module>
-        <module>bigData-spark</module>
+<!--        <module>orders-api</module>-->
+<!--        <module>orders-base</module>-->
+<!--        <module>orders-auth</module>-->
+<!--        <module>orders-task</module>-->
+<!--        <module>3rdPay</module>-->
+<!--        <module>search</module>-->
+<!--        <module>bigData</module>-->
+<!--        <module>bigData-spark</module>-->
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2021.0.8</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.33</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${alibaba-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-javanica</artifactId>
+                <version>1.5.12</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.netflix.archaius</groupId>
+                <artifactId>archaius-core</artifactId>
+                <version>0.7.7</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 </project>
