@@ -14,6 +14,8 @@ spring:
             - Path=/store_intra/**
           filters:
             - Auth
+    loadbalancer:
+      enabled: true
 
 hystrix:
   command:
@@ -40,22 +42,28 @@ server:
 # 测试和生产环境
 spring:
   profiles: test,prod
-#bus-api
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 #bus-api
+
 remote:
   serviceUri:
     product: lb://orders-store-intra
 
-eureka:
-  client:
-    enabled: true
-    serviceUrl:
-      defaultZone: http://peer1:8761/discovery/eureka/,http://peer2:8762/discovery/eureka/
-    healthcheck:
-      enabled: true
-  instance:
-    prefer-ip-address: true
-    lease-expiration-duration-in-seconds: 30
-    lease-renewal-interval-in-seconds: 10
+#eureka:
+#  client:
+#    enabled: true
+#    serviceUrl:
+#      defaultZone: http://peer1:8761/discovery/eureka/,http://peer2:8762/discovery/eureka/
+#    healthcheck:
+#      enabled: true
+#  instance:
+#    prefer-ip-address: true
+#    lease-expiration-duration-in-seconds: 30
+#    lease-renewal-interval-in-seconds: 10
+
 
 ---
 # 开发环境

@@ -11,10 +11,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <spring.version>4.3.20.RELEASE</spring.version>
+        <spring.version>5.0.12.RELEASE</spring.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.1.0</spring-cloud.version>
         <alibaba-cloud.version>2.2.1.RELEASE</alibaba-cloud.version>
@@ -34,7 +35,7 @@
 <!--        <module>product-base</module>-->
 <!--        <module>product-api</module>-->
 <!--        <module>discovery-eureka</module>-->
-<!--        <module>gateway</module>-->
+        <module>gateway</module>
         <module>orders</module>
 <!--        <module>orders-api</module>-->
 <!--        <module>orders-base</module>-->
@@ -137,6 +138,12 @@
                 </excludes>
                  -->
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
             </plugin>
 
         </plugins>
