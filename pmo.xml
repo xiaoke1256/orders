@@ -31,9 +31,9 @@
 <!--        <module>orders_store_intra</module>-->
 <!--        <module>common</module>-->
 <!--        <module>common-zookeeper</module>-->
-<!--        <module>product</module>-->
-<!--        <module>product-base</module>-->
-<!--        <module>product-api</module>-->
+        <module>product</module>
+        <module>product-base</module>
+        <module>product-api</module>
 <!--        <module>discovery-eureka</module>-->
         <module>gateway</module>
         <module>orders</module>
@@ -55,6 +55,12 @@
                 <version>2021.0.8</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.2.8</version>
             </dependency>
 
             <dependency>
@@ -88,6 +94,13 @@
             </dependency>
 
             <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>1.2.2</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.4</version>
@@ -100,6 +113,12 @@
             </dependency>
 
             <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <dependency>
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>2.9.0</version>
@@ -109,6 +128,12 @@
                 <groupId>com.netflix.archaius</groupId>
                 <artifactId>archaius-core</artifactId>
                 <version>0.7.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>1.3.5</version>
             </dependency>
 
         </dependencies>

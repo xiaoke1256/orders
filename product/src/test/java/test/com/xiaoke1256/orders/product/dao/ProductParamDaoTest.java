@@ -10,12 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.xiaoke1256.orders.SpringbootApplication;
+import com.xiaoke1256.orders.ProductApplication;
 import com.xiaoke1256.orders.product.bo.ProductParam;
 import com.xiaoke1256.orders.product.dao.ProductParamDao;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes=SpringbootApplication.class)
+@SpringBootTest(classes= ProductApplication.class)
 @ActiveProfiles("test")
 public class ProductParamDaoTest {
 	@Resource

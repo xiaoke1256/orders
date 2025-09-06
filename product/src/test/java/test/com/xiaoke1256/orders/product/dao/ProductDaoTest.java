@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.xiaoke1256.orders.SpringbootApplication;
+import com.xiaoke1256.orders.ProductApplication;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.bo.ProductParam;
 import com.xiaoke1256.orders.product.bo.ProductType;
@@ -21,7 +21,7 @@ import com.xiaoke1256.orders.product.dao.ProductDao;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes=SpringbootApplication.class)
+@SpringBootTest(classes= ProductApplication.class)
 public class ProductDaoTest {
 	
 	@Resource
