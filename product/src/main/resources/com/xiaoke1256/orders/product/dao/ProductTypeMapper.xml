@@ -15,12 +15,12 @@
    </resultMap>
 	<select parameterType="string" id="getTypesByProductCode" resultMap="productTypeMap">
       select t.type_id, t.type_name, t.parent_type_id, t.type_desc, t.show_order, t.insert_time, t.update_time
-       from PRODUCT_TYPE t,type_product_map m where t.type_id=m.type_id and m.product_code = #{productCode} 
+       from product_type t,type_product_map m where t.type_id=m.type_id and m.product_code = #{productCode}
        order by t.show_order
    </select>
    
    <select id="getByTypeId" parameterType="string" resultMap="productTypeMap" >
      select t.type_id, t.type_name, t.parent_type_id, t.type_desc, t.show_order, t.insert_time, t.update_time
-       from PRODUCT_TYPE t where t.type_id = #{id}
+       from product_type t where t.type_id = #{id}
    </select>
 </mapper>

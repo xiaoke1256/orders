@@ -18,18 +18,18 @@
 
    <select parameterType="string" id="getProductByCode" resultMap="productMap">
       select product_code, product_name, product_price, store_no,in_seckill, product_status, product_intro, insert_time, update_time
-       from PRODUCT where product_code = #{id}
+       from product where product_code = #{id}
    </select>
    
    <select parameterType="string" id="getSimpleProductByCode" resultMap="simpleProductMap">
       select product_code, product_name, product_price, store_no,in_seckill, product_status, product_intro, insert_time, update_time
-       from PRODUCT where product_code = #{id}
+       from product where product_code = #{id}
    </select>
    
    <!-- parameters:update_time,product_status  -->
    <select parameterType="map" id="queryModifed" resultMap="productMap">
       select product_code, product_name, product_price, store_no,in_seckill , product_status, product_intro, insert_time, update_time
-       from PRODUCT 
+       from product
        where product_status = #{productStatus}
        <if test="lastTime != null">
        		and update_time > #{lastTime}
@@ -37,7 +37,7 @@
    </select>
    <select id="countByCondition" parameterType="com.xiaoke1256.orders.product.dto.ProductCondition" resultType="java.lang.Integer">
    	  select count(*)
-       from PRODUCT 
+       from product
       where 1=1
       <if test="productCode!=null and productCode!=''">
       	<bind name="productCodeLike" value="productCode + '%'" />
@@ -59,7 +59,7 @@
    </select>
    <select id="queryByCondition" parameterType="com.xiaoke1256.orders.product.dto.ProductCondition" resultMap="productMap">
    	  select product_code, product_name, product_price, store_no,in_seckill , product_status, product_intro, insert_time, update_time
-       from PRODUCT 
+       from product
       where 1=1
       <if test="productCode!=null and productCode!=''">
       	<!--<bind name="productCodeLike" value="productCode + '%'" />-->
@@ -87,11 +87,11 @@
       -->
    </select>
    <update id="updateSecKill"  >
-   	  update PRODUCT set in_seckill=#{arg1} where product_code=#{arg0}
+   	  update product set in_seckill=#{arg1} where product_code=#{arg0}
    </update>
 
   <update id="updateBySelective" parameterType="com.xiaoke1256.orders.product.bo.Product">
-    update PRODUCT
+    update product
     <set>
       <if test="productName!=null">
         product_name = #{productName},
