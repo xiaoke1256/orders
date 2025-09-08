@@ -1,18 +1,16 @@
 package com.xiaoke1256.orders;
 
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
+import com.xiaoke1256.orders.common.mybatis.repository.IRepository;
+import com.xiaoke1256.orders.common.mybatis.repository.impl.CrudRepository;
 
 import java.net.URL;
+import java.util.Collections;
 
 public class CodeGenerator {
     public static void main(String[] args) {
-        AutoGenerator generator = new AutoGenerator();
-
         System.out.println("System.getProperty(\"user.dir\"):"+System.getProperty("user.dir"));
 
         ClassLoader classLoader = CodeGenerator.class.getClassLoader();
@@ -22,39 +20,35 @@ public class CodeGenerator {
         if (osName.contains("win") && modulePath.startsWith("/") ) {
             modulePath = modulePath.substring(1);
         }
+        String finalModulePath = modulePath;
         System.out.println("modulePath:"+modulePath);
 
-        // 全局配置
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setOutputDir(modulePath + "/src/main/java");
-        globalConfig.setAuthor("xiaoke_1256");
-        globalConfig.setOpen(false);
-        generator.setGlobalConfig(globalConfig);
-
-        // 数据源配置
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setUrl("jdbc:mysql://192.168.249.101:3306/product?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true");
-        dataSourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
-        dataSourceConfig.setUsername("productUser");
-        dataSourceConfig.setPassword("xiaoke_1256");
-        generator.setDataSource(dataSourceConfig);
-
-        // 包配置
-        PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setParent("com.xiaoke1256.orders.product");
-        packageConfig.setEntity("entity");
-        packageConfig.setMapper("mapper");
-        packageConfig.setXml("mapper");
-        generator.setPackageInfo(packageConfig);
-
-        // 策略配置
-        StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setEntityLombokModel(true);
-        strategy.setInclude("product"); // 表名
-        generator.setStrategy(strategy);
-
-        generator.execute(); // 执行生成
+        FastAutoGenerator.create("jdbc:mysql://192.168.249.101:3306/product?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true", "productUser", "xiaoke_1256")
+                .globalConfig(builder -> {
+                    builder.author("xiaoke_1256") // 设置作者
+                            //.enableSwagger() // 开启 swagger 模式
+                            .fileOverride() // 覆盖已生成文件
+                            .outputDir(finalModulePath + "/src/main/java"); // 指定输出目录
+                })
+                .packageConfig(builder -> {
+                    builder.parent("com.xiaoke1256.orders.product") // 设置父包名
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, finalModulePath + "/src/main/resources/mapper"))// 设置mapperXml文件路径
+                            .service("repository").serviceImpl("repository.impl")
+                    ;
+                })
+                .strategyConfig(builder -> {
+                    builder.entityBuilder().enableLombok().formatFileName("%sEntity"); // 开启 Lombok 模式
+                    builder.mapperBuilder().enableMapperAnnotation(); // 开启 @Mapper 注解
+                    //builder.controllerBuilder().enableHyphenStyle(); // 使用连字符命名方式
+                    builder.serviceBuilder()
+                            .convertServiceFileName(entityName -> "I" + entityName + "Repository")
+                            .convertServiceImplFileName(entityName -> entityName + "Repository")
+                            .superServiceClass(IRepository.class)
+                            .superServiceImplClass(CrudRepository.class)
+                    ;
+                    builder.addInclude("product");
+                })
+                .templateEngine(new VelocityTemplateEngine()) // 使用Freemarker引擎模板
+                .execute(); // 执行操作
     }
 }

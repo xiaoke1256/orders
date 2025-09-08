@@ -3,10 +3,14 @@ package com.xiaoke1256.orders.product.service;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.product.assembler.ProductAssembler;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
+import com.xiaoke1256.orders.product.entity.ProductEntity;
+import com.xiaoke1256.orders.product.repository.IProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,9 @@ public class ProductService {
 	public static final Logger LOG = LoggerFactory.getLogger(ProductService .class);
 
 	@Autowired
+	private IProductRepository productRepository;
+
+	@Autowired
 	private ProductDao productDao;
 	
 	/**
@@ -34,9 +41,9 @@ public class ProductService {
 	 */
 	@Transactional(readOnly=true)
 	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
-		List<Product> pList = productDao.queryByCondition(condition);
+		List<ProductEntity> pList = productRepository.queryByCondition(condition);
 		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),condition.getTotal());
-		result.setResultList(pList);
+		result.setResultList(pList.stream().map((p)-> ProductAssembler.toBo(p)).collect(Collectors.toList()));
 		return result;
 	}
 	
