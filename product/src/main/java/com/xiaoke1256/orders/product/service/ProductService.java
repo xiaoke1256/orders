@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.product.assembler.ProductAssembler;
@@ -55,7 +56,7 @@ public class ProductService {
 	
 	@Transactional(readOnly=true)
 	public SimpleProduct getSimpleProductByCode(String productCode) {
-		return productDao.getSimpleProductByCode(productCode);
+		return productRepository.getSimpleProductByCode(productCode);
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class ProductService {
 	 * @param productCode
 	 */
 	public void openSecKill(String productCode) {
-		productDao.updateSecKill(productCode, "1");
+		productRepository.updateSecKill(productCode, "1");
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class ProductService {
 	 * @param productCode
 	 */
 	public void closeSecKill(String productCode) {
-		productDao.updateSecKill(productCode, "0");
+		productRepository.updateSecKill(productCode, "0");
 	}
 
 	/**
@@ -88,11 +89,13 @@ public class ProductService {
 		if(!Arrays.asList("1","0").contains(onOrOff)){
 			throw new AppException(RespCode.WRONG_PARAMTER_ERROR.getCode(),"onOrOff 参数只能为 on 或 off");
 		}
-		Product p = new Product();
-		p.setProductCode(productCode);
-		p.setProductStatus(onOrOff);
-		p.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		productDao.updateBySelective(p);
+//		Product p = new Product();
+//		p.setProductCode(productCode);
+//		p.setProductStatus(onOrOff);
+//		p.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		LambdaUpdateWrapper<ProductEntity> updateWrapper=new LambdaUpdateWrapper<>();
+		updateWrapper.eq(ProductEntity::getProductCode,productCode).set(ProductEntity::getProductStatus,onOrOff);
+		productRepository.update(updateWrapper);
 	}
 
 	/**

@@ -24,6 +24,7 @@ public class SecKillSupportController implements SecKillSupportService {
 	private ProductService productService;
 	/**
 	 * 开始秒杀活动
+	 * @param productCode
 	 */
 	@PostMapping("/open/{productCode}")
 	public RespMsg openSecKill(@PathVariable("productCode") String productCode) {
@@ -36,7 +37,7 @@ public class SecKillSupportController implements SecKillSupportService {
 	
 	/**
 	 * 结束秒杀活动。
-	 * @param productCodes
+	 * @param productCode
 	 */
 	@PostMapping("/close/{productCode}")
 	public RespMsg closeSecKill(@PathVariable("productCode") String productCode) {

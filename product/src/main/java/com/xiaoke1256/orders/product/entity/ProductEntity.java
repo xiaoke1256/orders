@@ -1,6 +1,8 @@
 package com.xiaoke1256.orders.product.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,6 +35,7 @@ public class ProductEntity implements Serializable {
     /**
      * 商品编号，主键
      */
+    @TableId
     private String productCode;
 
     /**
@@ -73,11 +76,13 @@ public class ProductEntity implements Serializable {
     /**
      * 插入时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime insertTime;
 
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**

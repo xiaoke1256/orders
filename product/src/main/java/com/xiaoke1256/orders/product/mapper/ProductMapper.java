@@ -1,5 +1,6 @@
 package com.xiaoke1256.orders.product.mapper;
 
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.entity.ProductEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,5 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProductMapper extends BaseMapper<ProductEntity> {
+
+    SimpleProduct getSimpleProductByCode(String productCode);
 
 }

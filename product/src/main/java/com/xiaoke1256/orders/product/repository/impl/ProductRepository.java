@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
+import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.entity.ProductEntity;
 import com.xiaoke1256.orders.product.entity.ProductTypeEntity;
 import com.xiaoke1256.orders.product.entity.StoreEntity;
@@ -21,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -76,6 +81,18 @@ public class ProductRepository extends CrudRepository<ProductMapper, ProductEnti
         ProductEntity entity = baseMapper.selectOne(wrapper);
         loadCascade(entity);
         return entity;
+    }
+
+    @Override
+    public SimpleProduct getSimpleProductByCode(String productCode) {
+        return baseMapper.getSimpleProductByCode(productCode);
+    }
+
+    @Override
+    public void updateSecKill(String productCode, String isSecKill) {
+        LambdaUpdateWrapper<ProductEntity> updateWrapper=new LambdaUpdateWrapper<>();
+        updateWrapper.eq(ProductEntity::getProductCode,productCode).set(ProductEntity::getInSeckill,isSecKill);
+        this.update(null,updateWrapper);
     }
 
     private void loadCascade(ProductEntity p){
