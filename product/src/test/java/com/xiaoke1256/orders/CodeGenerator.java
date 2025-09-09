@@ -27,7 +27,7 @@ public class CodeGenerator {
         FastAutoGenerator.create("jdbc:mysql://192.168.249.101:3306/product?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true", "productUser", "xiaoke_1256")
                 .globalConfig(builder -> {
                     builder.author("xiaoke_1256") // 设置作者
-                            .dateType(DateType.SQL_PACK)
+                            .dateType(DateType.TIME_PACK)
                             //.enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
                             .outputDir(finalModulePath + "/src/main/java"); // 指定输出目录

@@ -48,8 +48,9 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly=true)
-	public Product getProductByCode(String productCode) {
-		return productDao.getProductByCode(productCode);
+	public com.xiaoke1256.orders.product.domain.Product getProductByCode(String productCode) {
+		ProductEntity productEntity = productRepository.getProductByCode(productCode);
+		return ProductAssembler.toDomain(productEntity);
 	}
 	
 	@Transactional(readOnly=true)

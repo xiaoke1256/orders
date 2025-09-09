@@ -1,6 +1,6 @@
 package com.xiaoke1256.orders.product.domain;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 public class Store {

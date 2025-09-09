@@ -17,4 +17,6 @@ import java.util.List;
  */
 public interface IProductRepository extends IRepository<ProductEntity> {
     List<ProductEntity> queryByCondition(ProductCondition condition);
+
+    ProductEntity getProductByCode(String productCode);
 }

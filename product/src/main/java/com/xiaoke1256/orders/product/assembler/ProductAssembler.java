@@ -6,6 +6,8 @@ import com.xiaoke1256.orders.product.domain.ProductType;
 import com.xiaoke1256.orders.product.entity.ProductEntity;
 import org.springframework.beans.BeanUtils;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,8 @@ public class ProductAssembler {
         }
         Product domain = new Product();
         BeanUtils.copyProperties(productEntity,domain);
+        domain.setInsertTime(Date.from(productEntity.getInsertTime().atZone(ZoneId.systemDefault()).toInstant()));
+        domain.setUpdateTime(Date.from(productEntity.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant()));
         if(productEntity.getProductTypes()!=null){
             List<ProductType> typesDomain = productEntity.getProductTypes().stream().map(ProductTypeAssembler::toDomain).collect(Collectors.toList());
             domain.setProductTypes(typesDomain);

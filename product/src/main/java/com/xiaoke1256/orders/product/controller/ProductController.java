@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.xiaoke1256.orders.product.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,12 @@ public class ProductController implements ProductQueryService {
 	@GetMapping("/product/{productCode}")
 	public Product getProductByCode(@PathVariable String productCode) {
 		logger.info("full product.");
-		com.xiaoke1256.orders.product.bo.Product product = productService.getProductByCode(productCode);
+		com.xiaoke1256.orders.product.domain.Product product = productService.getProductByCode(productCode);
 		if(product==null)
 			return null;
 		Product dto = new Product();
 		copyProperties(dto,product);
+		logger.info("productDTO:"+ JSON.toJSONString(dto));
 		return dto;
 	}
 
@@ -100,6 +102,32 @@ public class ProductController implements ProductQueryService {
 			}
 		dto.setParams(paramDtos);
 	}
+
+	private void copyProperties(Product dto,com.xiaoke1256.orders.product.domain.Product product) {
+		BeanUtils.copyProperties(product, dto);
+
+		Store store = new Store();
+		BeanUtils.copyProperties(product.getStore(), store);
+		dto.setStore(store);
+
+		List<ProductType> types = new ArrayList<>();
+		if(product.getProductTypes()!=null)
+			for(com.xiaoke1256.orders.product.domain.ProductType productType:product.getProductTypes()) {
+				ProductType typeDto = new ProductType();
+				copyProductType(typeDto,productType);
+				types.add(typeDto);
+			}
+		dto.setProductTypes(types);
+
+		ArrayList<ProductParam> paramDtos = new ArrayList<>();
+		if(product.getParams()!=null)
+			for(com.xiaoke1256.orders.product.domain.ProductParam param:product.getParams()) {
+				ProductParam paramDto = new ProductParam();
+				BeanUtils.copyProperties(param,paramDto);
+				paramDtos.add(paramDto);
+			}
+		dto.setParams(paramDtos);
+	}
 	
 	private void copyProperties(SimpleProduct dto,com.xiaoke1256.orders.product.bo.Product product,boolean needFullTypeName) {
 		BeanUtils.copyProperties(product, dto);
@@ -119,8 +147,6 @@ public class ProductController implements ProductQueryService {
 
 	private void copyProperties(SimpleProduct dto,com.xiaoke1256.orders.product.domain.Product product,boolean needFullTypeName) {
 		BeanUtils.copyProperties(product, dto);
-		dto.setInsertTime(Date.from(product.getInsertTime().atZone(ZoneId.systemDefault()).toInstant()));
-		dto.setUpdateTime(Date.from(product.getUpdateTime().atZone(ZoneId.systemDefault()).toInstant()));
 		if(product.getStore()!=null) {
 			dto.setStoreName(product.getStore().getStoreName());
 		}
@@ -160,6 +186,18 @@ public class ProductController implements ProductQueryService {
 			ProductType parentDto = new ProductType();
 			BeanUtils.copyProperties(bo.getParentType(), parentDto);
 			copyProductType(parentDto,bo.getParentType());
+			dto.setParentType(parentDto);
+		}else {
+			dto.setParentType(null);
+		}
+	}
+
+	private void copyProductType(ProductType dto,com.xiaoke1256.orders.product.domain.ProductType domain) {
+		BeanUtils.copyProperties( domain,dto);
+		if(domain.getParentType()!=null) {
+			ProductType parentDto = new ProductType();
+			BeanUtils.copyProperties(domain.getParentType(), parentDto);
+			copyProductType(parentDto,domain.getParentType());
 			dto.setParentType(parentDto);
 		}else {
 			dto.setParentType(null);

@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.product.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class Product implements Serializable {
@@ -29,9 +30,9 @@ public class Product implements Serializable {
 	
 	private String brand;
 	
-	private Timestamp insertTime;
+	private Date insertTime;
 	
-	private Timestamp updateTime;
+	private Date updateTime;
 	
 	private List<ProductParam> params;
 
@@ -99,19 +100,19 @@ public class Product implements Serializable {
 		this.brand = brand;
 	}
 
-	public Timestamp getInsertTime() {
+	public Date getInsertTime() {
 		return insertTime;
 	}
 
-	public void setInsertTime(Timestamp insertTime) {
+	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
 
-	public Timestamp getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(Timestamp updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 

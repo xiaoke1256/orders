@@ -63,13 +63,26 @@ public class ProductRepository extends CrudRepository<ProductMapper, ProductEnti
         Page<ProductEntity> page = new Page<>(condition.getPageNo(), condition.getPageSize());
         Page<ProductEntity> productPage = baseMapper.selectPage(page, wrapper);
         productPage.getRecords().forEach((p)->{
-            p.setProductTypes(productTypeMapper.getTypesByProductCode(p.getProductCode()));
-            LambdaQueryWrapper<StoreEntity> storeWrapper = new LambdaQueryWrapper<>();
-            storeWrapper.eq(StoreEntity::getStoreNo,p.getStoreNo());
-            StoreEntity store = storeMapper.selectOne(storeWrapper,false);
-            p.setStore(store);
+            loadCascade(p);
             logger.info("p:"+ JSON.toJSONString(p));
         });
         return productPage.getRecords();
+    }
+
+    @Override
+    public ProductEntity getProductByCode(String productCode) {
+        LambdaQueryWrapper<ProductEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ProductEntity::getProductCode,productCode);
+        ProductEntity entity = baseMapper.selectOne(wrapper);
+        loadCascade(entity);
+        return entity;
+    }
+
+    private void loadCascade(ProductEntity p){
+        p.setProductTypes(productTypeMapper.getTypesByProductCode(p.getProductCode()));
+        LambdaQueryWrapper<StoreEntity> storeWrapper = new LambdaQueryWrapper<>();
+        storeWrapper.eq(StoreEntity::getStoreNo,p.getStoreNo());
+        StoreEntity store = storeMapper.selectOne(storeWrapper,false);
+        p.setStore(store);
     }
 }

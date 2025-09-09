@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.product.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class ProductType implements Serializable {
 	/**
@@ -13,8 +14,8 @@ public class ProductType implements Serializable {
 	private ProductType parentType;
 	private String typeDesc;
 	private Integer showOrder;
-	private Timestamp insertTime;
-	private Timestamp updateTime;
+	private Date insertTime;
+	private Date updateTime;
 	public String getTypeId() {
 		return typeId;
 	}
@@ -45,16 +46,16 @@ public class ProductType implements Serializable {
 	public void setShowOrder(Integer showOrder) {
 		this.showOrder = showOrder;
 	}
-	public Timestamp getInsertTime() {
+	public Date getInsertTime() {
 		return insertTime;
 	}
-	public void setInsertTime(Timestamp insertTime) {
+	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
-	public Timestamp getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(Timestamp updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 	

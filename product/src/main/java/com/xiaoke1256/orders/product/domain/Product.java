@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class Product implements Serializable {
@@ -32,9 +33,9 @@ public class Product implements Serializable {
 
 	private Store store;
 	
-	private LocalDateTime insertTime;
+	private Date insertTime;
 	
-	private LocalDateTime updateTime;
+	private Date updateTime;
 	
 	private List<ProductParam> params;
 
@@ -102,19 +103,19 @@ public class Product implements Serializable {
 		this.brand = brand;
 	}
 
-	public LocalDateTime getInsertTime() {
+	public Date getInsertTime() {
 		return insertTime;
 	}
 
-	public void setInsertTime(LocalDateTime insertTime) {
+	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
 
-	public LocalDateTime getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(LocalDateTime updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 
