@@ -1,11 +1,19 @@
 package com.xiaoke1256.orders.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.xiaoke1256.orders.product.bo.ProductParam;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * <p>
@@ -76,4 +84,12 @@ public class ProductEntity implements Serializable {
      * 是否正在进行秒杀活动。（是:1;否:0）
      */
     private String inSeckill;
+
+    @TableField(exist = false)
+    private StoreEntity store;
+
+    @TableField(exist = false)
+    private List<ProductTypeEntity> productTypes;
+
+//    private List<ProductParamEntity> params;
 }

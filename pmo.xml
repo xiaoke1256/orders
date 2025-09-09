@@ -140,7 +140,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.5.6</version> <!-- 请替换为最新版本 -->
+                <version>3.5.5</version> <!-- 请替换为最新版本 -->
             </dependency>
 
         </dependencies>

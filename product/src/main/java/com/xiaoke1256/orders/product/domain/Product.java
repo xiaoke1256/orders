@@ -1,12 +1,9 @@
 package com.xiaoke1256.orders.product.domain;
 
-import com.xiaoke1256.orders.product.dto.ProductParam;
-import com.xiaoke1256.orders.product.dto.ProductType;
-import com.xiaoke1256.orders.product.dto.Store;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Product implements Serializable {
@@ -18,12 +15,12 @@ public class Product implements Serializable {
 	private String productCode;
 	
 	private String productName;
+
+	private String storeNo;
 	
 	private List<ProductType> productTypes;
 	
 	private BigDecimal productPrice;
-	
-	private Store store;
 	
 	private String inSeckill;
 	
@@ -32,10 +29,12 @@ public class Product implements Serializable {
 	private String productIntro;
 	
 	private String brand;
+
+	private Store store;
 	
-	private Timestamp insertTime;
+	private LocalDateTime insertTime;
 	
-	private Timestamp updateTime;
+	private LocalDateTime updateTime;
 	
 	private List<ProductParam> params;
 
@@ -71,12 +70,12 @@ public class Product implements Serializable {
 		this.productPrice = productPrice;
 	}
 
-	public Store getStore() {
-		return store;
+	public String getStoreNo() {
+		return storeNo;
 	}
 
-	public void setStore(Store store) {
-		this.store = store;
+	public void setStoreNo(String storeNo) {
+		this.storeNo = storeNo;
 	}
 
 	public String getProductStatus() {
@@ -103,19 +102,19 @@ public class Product implements Serializable {
 		this.brand = brand;
 	}
 
-	public Timestamp getInsertTime() {
+	public LocalDateTime getInsertTime() {
 		return insertTime;
 	}
 
-	public void setInsertTime(Timestamp insertTime) {
+	public void setInsertTime(LocalDateTime insertTime) {
 		this.insertTime = insertTime;
 	}
 
-	public Timestamp getUpdateTime() {
+	public LocalDateTime getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(Timestamp updateTime) {
+	public void setUpdateTime(LocalDateTime updateTime) {
 		this.updateTime = updateTime;
 	}
 
@@ -134,5 +133,12 @@ public class Product implements Serializable {
 	public void setInSeckill(String inSeckill) {
 		this.inSeckill = inSeckill;
 	}
-	
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
 }

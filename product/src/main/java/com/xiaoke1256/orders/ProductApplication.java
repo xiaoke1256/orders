@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@MapperScan("com.xiaoke1256.orders.*.dao")
+@MapperScan({"com.xiaoke1256.orders.*.dao","com.xiaoke1256.orders.*.mapper"})
 public class ProductApplication {
 	
 	public static void main(String[] args) {

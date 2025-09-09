@@ -40,10 +40,10 @@ public class ProductService {
 	 * @return 搜索结果
 	 */
 	@Transactional(readOnly=true)
-	public QueryResult<Product> searchProductByCondition(ProductCondition condition){
+	public QueryResult<com.xiaoke1256.orders.product.domain.Product> searchProductByCondition(ProductCondition condition){
 		List<ProductEntity> pList = productRepository.queryByCondition(condition);
-		QueryResult<Product> result = new QueryResult<Product>(condition.getPageNo(),condition.getPageSize(),condition.getTotal());
-		result.setResultList(pList.stream().map((p)-> ProductAssembler.toBo(p)).collect(Collectors.toList()));
+		QueryResult<com.xiaoke1256.orders.product.domain.Product> result = new QueryResult<>(condition.getPageNo(),condition.getPageSize(),condition.getTotal());
+		result.setResultList(pList.stream().map((p)-> ProductAssembler.toDomain(p)).collect(Collectors.toList()));
 		return result;
 	}
 	
