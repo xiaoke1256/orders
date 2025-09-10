@@ -14,6 +14,12 @@ spring:
             - Path=/store_intra/**
           filters:
             - Auth
+        - id: product
+          uri: lb://api-product
+          #order: 0
+          predicates:
+            - Path=/product/**
+
     loadbalancer:
       enabled: true
 
