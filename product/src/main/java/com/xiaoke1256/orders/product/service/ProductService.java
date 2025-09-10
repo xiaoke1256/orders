@@ -31,9 +31,6 @@ public class ProductService {
 
 	@Autowired
 	private IProductRepository productRepository;
-
-	@Autowired
-	private ProductDao productDao;
 	
 	/**
 	 * 搜索商品

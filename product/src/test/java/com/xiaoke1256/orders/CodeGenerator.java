@@ -33,7 +33,7 @@ public class CodeGenerator {
                             .outputDir(finalModulePath + "/src/main/java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
-                    builder.parent("com.xiaoke1256.orders.product") // 设置父包名
+                    builder.moduleName("member").parent("com.xiaoke1256.orders") // 设置父包名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, finalModulePath + "/src/main/resources/mapper"))// 设置mapperXml文件路径
                             .service("repository").serviceImpl("repository.impl")
                     ;
@@ -48,7 +48,7 @@ public class CodeGenerator {
                             .superServiceClass(IRepository.class)
                             .superServiceImplClass(CrudRepository.class)
                     ;
-                    builder.addInclude("store");
+                    builder.addInclude("member");
                 })
                 .templateEngine(new VelocityTemplateEngine()) // 使用Freemarker引擎模板
                 .execute(); // 执行操作

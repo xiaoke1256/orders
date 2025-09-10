@@ -20,21 +20,21 @@ public class MemberController {
 	
 	@GetMapping("/member/{accountNo}")
 	public Member getMember(@PathVariable("accountNo") String accountNo) {
-		com.xiaoke1256.orders.member.bo.Member bo = memberService.getMemberByAccountNo(accountNo);
-		if(bo==null)
+		com.xiaoke1256.orders.member.domain.Member domain = memberService.getMemberByAccountNo(accountNo);
+		if(domain==null)
 			return null;
 		Member dto = new  Member();
-		BeanUtils.copyProperties(bo, dto);
+		BeanUtils.copyProperties(domain, dto);
 		return dto;
 	}
 	
 	@GetMapping("/members")
 	public List<Member> findAll() {
-		List<com.xiaoke1256.orders.member.bo.Member> bos = memberService.findAll();
+		List<com.xiaoke1256.orders.member.domain.Member> bos = memberService.findAll();
 		if(bos==null || bos.isEmpty())
 			return new ArrayList<>();
 		List<Member> dtos = new ArrayList<>();
-		for(com.xiaoke1256.orders.member.bo.Member bo:bos) {
+		for(com.xiaoke1256.orders.member.domain.Member bo:bos) {
 			Member dto = new  Member();
 			BeanUtils.copyProperties(bo, dto);
 			dtos.add(dto);

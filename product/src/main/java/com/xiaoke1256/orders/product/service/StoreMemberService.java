@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.product.service;
 
+import com.xiaoke1256.orders.member.entity.MemberEntity;
+import com.xiaoke1256.orders.member.repository.IMemberRepository;
 import com.xiaoke1256.orders.product.bo.StoreMember;
 import com.xiaoke1256.orders.product.dao.StoreMemberDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.util.List;
 public class StoreMemberService {
     @Autowired
     private StoreMemberDao storeMemberDao;
+
+    @Autowired
+    private IMemberRepository memberRepository;
 
     @Transactional(readOnly=true)
     public List<StoreMember> selectByAccountNo(String accountNo){

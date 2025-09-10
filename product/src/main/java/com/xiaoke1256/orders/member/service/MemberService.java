@@ -1,12 +1,16 @@
 package com.xiaoke1256.orders.member.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.xiaoke1256.orders.member.assembler.MemberAssembler;
+import com.xiaoke1256.orders.member.entity.MemberEntity;
+import com.xiaoke1256.orders.member.repository.IMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoke1256.orders.member.bo.Member;
+import com.xiaoke1256.orders.member.domain.Member;
 import com.xiaoke1256.orders.member.dao.MemberDao;
 
 @Service
@@ -14,13 +18,18 @@ import com.xiaoke1256.orders.member.dao.MemberDao;
 public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
+
+	@Autowired
+	private IMemberRepository memberRepository;
 	
 	@Transactional(readOnly = true)
 	public Member getMemberByAccountNo(String accountNo) {
-		return memberDao.getMemberByAccountNo(accountNo);
+		MemberEntity entity = memberRepository.getMemberByAccountNo(accountNo);
+		return MemberAssembler.toDomain(entity);
 	}
 	
 	public List<Member> findAll(){
-		return memberDao.findAll();
+		List<MemberEntity> entities =  memberRepository.list();
+		return entities.stream().map((e)->MemberAssembler.toDomain(e)).collect(Collectors.toList());
 	}
 }

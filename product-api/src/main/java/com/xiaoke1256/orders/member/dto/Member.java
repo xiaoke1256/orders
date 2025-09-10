@@ -2,6 +2,7 @@ package com.xiaoke1256.orders.member.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 会员表
@@ -30,9 +31,9 @@ public class Member implements Serializable {
 
 	private String password;
 	
-	private Timestamp insertTime;
+	private Date insertTime;
 	
-	private Timestamp updateTime;
+	private Date updateTime;
 
 	public Long getMemberId() {
 		return memberId;
@@ -90,19 +91,19 @@ public class Member implements Serializable {
 		this.mobilePhone = mobilePhone;
 	}
 
-	public Timestamp getInsertTime() {
+	public Date getInsertTime() {
 		return insertTime;
 	}
 
-	public void setInsertTime(Timestamp insertTime) {
+	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
 
-	public Timestamp getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(Timestamp updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 
