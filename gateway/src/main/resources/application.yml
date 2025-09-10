@@ -19,6 +19,8 @@ spring:
           #order: 0
           predicates:
             - Path=/product/**
+          filters:
+            - StripPrefix=1
 
     loadbalancer:
       enabled: true
