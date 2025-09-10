@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.xiaoke1256.orders.product.bo.Store;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public interface StoreDao {
 	public Store getByStoreNo(String storeNo);
 	

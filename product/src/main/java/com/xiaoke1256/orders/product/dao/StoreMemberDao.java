@@ -4,6 +4,10 @@ import com.xiaoke1256.orders.product.bo.StoreMember;
 
 import java.util.List;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public interface StoreMemberDao {
     public List<StoreMember> selectByAccountNo(String accountNo);
 

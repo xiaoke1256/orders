@@ -9,6 +9,10 @@ import org.apache.ibatis.annotations.Param;
 import com.xiaoke1256.orders.product.bo.Product;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public interface ProductDao {
 	Product getProductByCode(String productCode);
 	

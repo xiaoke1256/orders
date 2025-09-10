@@ -3,35 +3,39 @@ package com.xiaoke1256.orders.product.service;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.xiaoke1256.orders.common.util.DateUtil;
-import com.xiaoke1256.orders.product.bo.StoreMember;
-import com.xiaoke1256.orders.product.dao.StoreMemberDao;
+import com.xiaoke1256.orders.product.assembler.StoreAssembler;
+import com.xiaoke1256.orders.product.entity.StoreEntity;
+import com.xiaoke1256.orders.product.entity.StoreMemberEntity;
+import com.xiaoke1256.orders.product.repository.IStoreMemberRepository;
+import com.xiaoke1256.orders.product.repository.IStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xiaoke1256.orders.product.bo.Store;
-import com.xiaoke1256.orders.product.dao.StoreDao;
+import com.xiaoke1256.orders.product.domain.Store;
 
 @Service
 @Transactional
 public class StoreService {
-	@Autowired
-	private StoreDao storeDao;
 
 	@Autowired
-	private StoreMemberDao storeMemberDao;
+	private IStoreRepository storeRepository;
+
+	@Autowired
+	private IStoreMemberRepository storeMemberRepository;
 	
 	@Transactional(readOnly=true)
 	public List<Store> queryAvailableStores() {
-		return storeDao.queryAllStores();
-		
+		List<StoreEntity> entities = storeRepository.list();
+		return entities.stream().map((e)-> StoreAssembler.toDomain(e)).collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly=true)
 	public Store getByStoreNo(String storeNo) {
-		return storeDao.getByStoreNo(storeNo);
+		return StoreAssembler.toDomain(storeRepository.getByStoreNo(storeNo));
 	}
 
 	/**
@@ -41,13 +45,13 @@ public class StoreService {
 		store.setStoreNo(genStoreNo());
 		store.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		store.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		storeDao.saveStore(store);
+		storeRepository.saveStore(StoreAssembler.toEntity(store));
 		//店长
-		StoreMember leader = new StoreMember();
+		StoreMemberEntity leader = new StoreMemberEntity();
 		leader.setStoreNo(store.getStoreNo());
 		leader.setAccountNo(userAccountNo);
 		leader.setRole("1");//"1"代表店长
-		StoreMember defaultStore = storeMemberDao.getDefaultStore(userAccountNo);
+		StoreMemberEntity defaultStore = storeMemberRepository.getDefaultStore(userAccountNo);
 		if(defaultStore==null){
 			leader.setIsDefaultStore("1");
 		}else{
@@ -55,7 +59,7 @@ public class StoreService {
 		}
 		leader.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		leader.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		storeMemberDao.saveStoreMember(leader);
+		storeMemberRepository.saveStoreMember(leader);
 	}
 
 	/**
@@ -78,6 +82,6 @@ public class StoreService {
 	public void updateStore(Store store){
 		store.setInsertTime(null);
 		store.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		storeDao.updateStoreSelective(store);
+		storeRepository.updateStore(StoreAssembler.toEntity(store));
 	}
 }

@@ -27,13 +27,13 @@ public class CodeGenerator {
         FastAutoGenerator.create("jdbc:mysql://192.168.249.101:3306/product?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true", "productUser", "xiaoke_1256")
                 .globalConfig(builder -> {
                     builder.author("xiaoke_1256") // 设置作者
-                            .dateType(DateType.TIME_PACK)
+                            .dateType(DateType.ONLY_DATE)
                             //.enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
                             .outputDir(finalModulePath + "/src/main/java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
-                    builder.moduleName("member").parent("com.xiaoke1256.orders") // 设置父包名
+                    builder.moduleName("product").parent("com.xiaoke1256.orders") // 设置父包名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, finalModulePath + "/src/main/resources/mapper"))// 设置mapperXml文件路径
                             .service("repository").serviceImpl("repository.impl")
                     ;
@@ -48,7 +48,7 @@ public class CodeGenerator {
                             .superServiceClass(IRepository.class)
                             .superServiceImplClass(CrudRepository.class)
                     ;
-                    builder.addInclude("member");
+                    builder.addInclude("store_member");
                 })
                 .templateEngine(new VelocityTemplateEngine()) // 使用Freemarker引擎模板
                 .execute(); // 执行操作

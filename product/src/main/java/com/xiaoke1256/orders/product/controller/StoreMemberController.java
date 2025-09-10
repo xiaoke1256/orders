@@ -23,13 +23,13 @@ public class StoreMemberController implements com.xiaoke1256.orders.product.api.
 
     @RequestMapping(value="/byAccountNo",method= RequestMethod.GET)
     public List<StoreMember> queryStoreMemberByAccountNo(@RequestParam String accountNo){
-        List<com.xiaoke1256.orders.product.bo.StoreMember> bos = storeMemberService.selectByAccountNo(accountNo);
+        List<com.xiaoke1256.orders.product.domain.StoreMember> domains = storeMemberService.selectByAccountNo(accountNo);
         List<StoreMember> dtos = new ArrayList<>();
-        for(com.xiaoke1256.orders.product.bo.StoreMember bo:bos){
+        for(com.xiaoke1256.orders.product.domain.StoreMember domain:domains){
             StoreMember dto = new StoreMember();
-            BeanUtils.copyProperties(bo, dto);
+            BeanUtils.copyProperties(domain, dto);
             dto.setStore(new Store());
-            BeanUtils.copyProperties(bo.getStore(),dto.getStore());
+            BeanUtils.copyProperties(domain.getStore(),dto.getStore());
             dtos.add(dto);
         }
         return dtos;

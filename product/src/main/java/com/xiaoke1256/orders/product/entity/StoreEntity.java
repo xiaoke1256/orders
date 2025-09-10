@@ -1,5 +1,8 @@
 package com.xiaoke1256.orders.product.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -24,6 +27,7 @@ public class StoreEntity implements Serializable {
     /**
      * 商铺编号，主键
      */
+    @TableId
     private String storeNo;
 
     /**
@@ -39,11 +43,13 @@ public class StoreEntity implements Serializable {
     /**
      * 插入时间
      */
+    @TableField(fill= FieldFill.INSERT)
     private Timestamp insertTime;
 
     /**
      * 修改时间
      */
+    @TableField(fill= FieldFill.INSERT_UPDATE)
     private Timestamp updateTime;
 
     /**

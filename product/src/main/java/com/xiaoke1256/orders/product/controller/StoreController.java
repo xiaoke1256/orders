@@ -26,11 +26,11 @@ public class StoreController implements com.xiaoke1256.orders.product.api.StoreS
 	@RequestMapping(value="/queryAvailable",method=RequestMethod.GET)
 	@Override
 	public List<Store> queryAvailableStore() {
-		List<com.xiaoke1256.orders.product.bo.Store> bos = storeService.queryAvailableStores();
+		List<com.xiaoke1256.orders.product.domain.Store> bos = storeService.queryAvailableStores();
 		List<Store> dtos = new ArrayList<Store>();
-		for(com.xiaoke1256.orders.product.bo.Store bo:bos) {
+		for(com.xiaoke1256.orders.product.domain.Store domain:bos) {
 			Store dto = new Store();
-			BeanUtils.copyProperties(bo, dto);
+			BeanUtils.copyProperties(domain, dto);
 			dtos.add(dto);
 		}
 		return dtos;
@@ -39,27 +39,27 @@ public class StoreController implements com.xiaoke1256.orders.product.api.StoreS
 	@RequestMapping(value="/{storeNo}",method=RequestMethod.GET)
 	@Override
 	public Store getStore(@PathVariable("storeNo") String storeNo) {
-		com.xiaoke1256.orders.product.bo.Store bo = storeService.getByStoreNo(storeNo);
-		if(bo == null) {
+		com.xiaoke1256.orders.product.domain.Store domain = storeService.getByStoreNo(storeNo);
+		if(domain == null) {
 			return null;
 		}
 		Store dto = new Store();
-		BeanUtils.copyProperties(bo, dto);
+		BeanUtils.copyProperties(domain, dto);
 		return dto;
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
 	public void createStore(@RequestBody Store store,@RequestParam String leaderAccount){
-		com.xiaoke1256.orders.product.bo.Store bo = new com.xiaoke1256.orders.product.bo.Store();
-		BeanUtils.copyProperties(store,bo);
-		storeService.createStore(bo,leaderAccount);
+		com.xiaoke1256.orders.product.domain.Store domain = new com.xiaoke1256.orders.product.domain.Store();
+		BeanUtils.copyProperties(store,domain);
+		storeService.createStore(domain,leaderAccount);
 	}
 
 	@RequestMapping(method=RequestMethod.PUT)
 	public void updateStore(@RequestBody Store store){
-		com.xiaoke1256.orders.product.bo.Store bo = new com.xiaoke1256.orders.product.bo.Store();
-		BeanUtils.copyProperties(store,bo);
-		storeService.updateStore(bo);
+		com.xiaoke1256.orders.product.domain.Store domain = new com.xiaoke1256.orders.product.domain.Store();
+		BeanUtils.copyProperties(store,domain);
+		storeService.updateStore(domain);
 	}
 
 }

@@ -12,5 +12,9 @@ import com.xiaoke1256.orders.common.mybatis.repository.IRepository;
  * @since 2025-09-09
  */
 public interface IStoreRepository extends IRepository<StoreEntity> {
+    public StoreEntity getByStoreNo(String storeNo);
 
+    public void saveStore(StoreEntity store);
+
+    public void updateStore(StoreEntity store);
 }

@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.product.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -49,10 +51,12 @@ public class ProductTypeEntity implements Serializable {
     /**
      * 插入时间
      */
+    @TableField(fill= FieldFill.INSERT)
     private LocalDateTime insertTime;
 
     /**
      * 修改时间
      */
+    @TableField(fill= FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 }

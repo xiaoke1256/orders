@@ -6,6 +6,10 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xiaoke1256.orders.product.bo.ProductParam;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public interface ProductParamDao {
 	
 	public ProductParam getById(@Param("id")Long paramId);
