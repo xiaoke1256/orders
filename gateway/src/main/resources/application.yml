@@ -15,7 +15,7 @@ spring:
           filters:
             - Auth
         - id: product
-          uri: lb://api-product
+          uri: ${remote.serviceUri.product-api}
           #order: 0
           predicates:
             - Path=/product/**
@@ -81,6 +81,7 @@ spring:
 remote:
   serviceUri:
     product: http://localhost:8083/store_intra
+    product-api: lb://api-product
 
 eureka:
   client:
