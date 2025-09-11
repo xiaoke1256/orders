@@ -1,0 +1,40 @@
+# 数据源配置
+dataSource:
+  driverName: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/your_database?useUnicode=true&characterEncoding=utf8
+  username: your_username
+  password: your_password
+
+# 全局配置
+globalConfig:
+  author: developer
+  outputDir: ./src/main/java
+  baseResultMap: true
+  baseColumnList: true
+
+# 包配置
+packageConfig:
+  parent: com.xiaoke_1256.orders.product
+  moduleName:
+  entity: entity
+  service: service
+  serviceImpl: service.impl
+  mapper: mapper
+  controller: controller
+  xml: resources/mapper
+
+# 策略配置
+strategyConfig:
+  include:
+    - table_name
+  entityLombokModel: true
+  naming: underline_to_camel
+  columnNaming: underline_to_camel
+  entityTableFieldAnnotation: true
+  mapperAnnotation: true
+  baseResultMap: true
+  baseColumnList: true
+
+# 模板配置
+templateConfig:
+  disable: false
