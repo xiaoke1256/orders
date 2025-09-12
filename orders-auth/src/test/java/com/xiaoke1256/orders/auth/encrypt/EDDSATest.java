@@ -9,10 +9,12 @@ import static org.junit.Assert.*;
 
 public class EDDSATest {
 
+    String privateKeyPEM = "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEICvppB2/P0eL4VX+3nuhjJyCYJxo2M1/jqKOopkJgJse\n-----END PRIVATE KEY-----";
+
     @Test
     public void testTokenGenerationAndVerification() {
         // 创建EDDSA实例
-        EDDSA eddsa = new EDDSA();
+        EDDSA eddsa = new EDDSA(privateKeyPEM);
         
         // 测试内容
         String testContent = "test_user_id_12345";
@@ -34,7 +36,7 @@ public class EDDSATest {
     @Test
     public void testTokenWithParams() {
         // 创建EDDSA实例
-        EDDSA eddsa = new EDDSA();
+        EDDSA eddsa = new EDDSA(privateKeyPEM);
         
         // 创建参数映射
         Map<String, String> params = new HashMap<>();
@@ -92,7 +94,7 @@ public class EDDSATest {
     @Test
     public void testInvalidToken() {
         // 创建EDDSA实例
-        EDDSA eddsa = new EDDSA();
+        EDDSA eddsa = new EDDSA(privateKeyPEM);
         
         // 测试无效的token
         String invalidToken = "invalid.token.string";
@@ -109,7 +111,7 @@ public class EDDSATest {
     @Test
     public void testModifiedToken() {
         // 创建EDDSA实例
-        EDDSA eddsa = new EDDSA();
+        EDDSA eddsa = new EDDSA(privateKeyPEM);
         
         // 测试内容
         String testContent = "test_modified_token";

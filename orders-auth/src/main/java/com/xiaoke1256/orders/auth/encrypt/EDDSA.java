@@ -33,7 +33,7 @@ import java.util.Random;
 public class EDDSA {
 
     //设置过期时间
-    private long expireDate;
+    private long expireDate= 30 * 60 * 1000;
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private Ed25519PrivateKeyParameters privateKeyParams;
@@ -44,14 +44,9 @@ public class EDDSA {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-    {
-        expireDate = 30 * 60 * 1000;
-    }
-
-    public EDDSA() {
+    public EDDSA(String privateKeyPEM) {
         try {
             // 默认使用提供的私钥
-            String privateKeyPEM = "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEICvppB2/P0eL4VX+3nuhjJyCYJxo2M1/jqKOopkJgJse\n-----END PRIVATE KEY-----";
             initKeys(privateKeyPEM);
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,10 +396,11 @@ public class EDDSA {
      */
     public static void main(String[] args) {
         try {
+            String privateKey = "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEICvppB2/P0eL4VX+3nuhjJyCYJxo2M1/jqKOopkJgJse\n-----END PRIVATE KEY-----";
             System.out.println("开始测试EDDSA密钥解析和标准JWT功能...");
             
             // 创建EDDSA实例，这将触发密钥解析
-            EDDSA eddsa = new EDDSA();
+            EDDSA eddsa = new EDDSA(privateKey);
             
             System.out.println("EDDSA实例创建成功");
             System.out.println("密钥解析完成，准备生成JWT令牌");
