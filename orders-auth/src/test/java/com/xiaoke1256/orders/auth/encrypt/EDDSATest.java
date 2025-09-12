@@ -1,7 +1,11 @@
 package com.xiaoke1256.orders.auth.encrypt;
 
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +13,14 @@ import static org.junit.Assert.*;
 
 public class EDDSATest {
 
-    String privateKeyPEM = "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEICvppB2/P0eL4VX+3nuhjJyCYJxo2M1/jqKOopkJgJse\n-----END PRIVATE KEY-----";
+    private String privateKeyPEM;
 
+
+    public EDDSATest() throws FileNotFoundException {
+        Yaml yaml = new Yaml();
+        Map<String, Object> config = yaml.load(EDDSATest.class.getClassLoader().getResourceAsStream("config/application.yml"));
+        privateKeyPEM = ((Map<String, String>) config.get("jwt")).get("testPrivateKey");
+    }
     @Test
     public void testTokenGenerationAndVerification() {
         // 创建EDDSA实例
@@ -66,7 +76,7 @@ public class EDDSATest {
     @Test
     public void testExpiredToken() throws InterruptedException {
         // 创建一个过期时间非常短的EDDSA实例（1秒）
-        EDDSA eddsa = new EDDSA(1000, "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEICvppB2/P0eL4VX+3nuhjJyCYJxo2M1/jqKOopkJgJse\n-----END PRIVATE KEY-----");
+        EDDSA eddsa = new EDDSA(1000, privateKeyPEM);
         
         // 测试内容
         String testContent = "test_expire_token";
@@ -130,7 +140,7 @@ public class EDDSATest {
         assertFalse("Modified token should be rejected", isValid);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         // 简单的主方法来快速测试功能
         EDDSATest test = new EDDSATest();
         try {

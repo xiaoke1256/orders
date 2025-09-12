@@ -5,3 +5,9 @@ login:
   session:
     expired: 30*60*1000
     refresh_expired: 45*60*1000
+
+jwt:
+  testPrivateKey: |
+    -----BEGIN PRIVATE KEY-----
+    MC4CAQAwBQYDK2VwBCIEICvppB2/P0eL4VX+3nuhjJyCYJxo2M1/jqKOopkJgJse
+    -----END PRIVATE KEY-----
