@@ -1,10 +1,10 @@
-drop table ORDER_ITEM;
-drop table SUB_ORDER;
-drop table PAY_ORDER;
-drop table O_STORAGE;
+drop table order_item;
+drop table sub_order;
+drop table pay_order;
+drop table o_storage;
 
 -- Create table
-create table O_STORAGE
+create table o_storage
 (
   storage_id	BIGINT primary key not null auto_increment comment '库存主键',
   product_code    CHAR(10) not null comment '商品编号',
@@ -14,7 +14,7 @@ create table O_STORAGE
   update_time TIMESTAMP not null  DEFAULT NOW() comment '修改时间'
 ) comment='库存表';
 
-create table PAY_ORDER
+create table pay_order
 (
   pay_order_id BIGINT primary key not null auto_increment comment '支付单主键',
   pay_order_no VARCHAR(18) not null unique comment '支付单订单号',
@@ -28,7 +28,7 @@ create table PAY_ORDER
   
 
 
-create table SUB_ORDER
+create table sub_order
 (
    order_no  VARCHAR(20) primary key not null comment '订单号，主键',
    pay_order_id  BIGINT comment '支付单主键',
@@ -40,7 +40,7 @@ create table SUB_ORDER
 -- Create/Recreate primary, unique and foreign key constraints 
 
 
-create table ORDER_ITEM
+create table order_item
 (
 	item_id BIGINT primary key not null auto_increment comment '订单项主键',
 	pay_order_id BIGINT comment '支付单号',
@@ -52,11 +52,11 @@ create table ORDER_ITEM
 ) comment='订单项';
 
 -- create index
-CREATE INDEX IDX_STORE_PRODUCT_NO ON O_STORAGE(product_code);
-CREATE UNIQUE INDEX IDX_PAY_ORDER_PAYER_ORDER_NO ON PAY_ORDER(pay_order_no);
-CREATE INDEX IDX_PAY_ORDER_PAYER_NO ON PAY_ORDER(PAYER_NO);
-CREATE INDEX IDX_SUB_ORDER_ORDER_NO ON SUB_ORDER (PAY_ORDER_ID);
-CREATE INDEX IDX_ORDER_ITEM_SUB_ID ON ORDER_ITEM (ORDER_NO);
-CREATE INDEX IDX_ORDER_ITEM_PAY_ORDER_ID ON ORDER_ITEM (PAY_ORDER_ID);
--- CREATE INDEX IDX_SUB_ORDER_STORE_NO ON SUB_ORDER (STORE_NO);
--- CREATE INDEX IDX_SUB_ORDER_PRODUCT_ID ON SUB_ORDER(PRODUCT_ID);
+CREATE INDEX idx_store_product_no ON o_storage(product_code);
+CREATE UNIQUE INDEX idx_pay_order_payer_order_no ON pay_order(pay_order_no);
+CREATE INDEX idx_pay_order_payer_no ON pay_order(payer_no);
+CREATE INDEX idx_sub_order_order_no ON sub_order (pay_order_id);
+CREATE INDEX idx_order_item_sub_id ON order_item (order_no);
+CREATE INDEX idx_order_item_pay_order_id ON order_item (pay_order_id);
+-- CREATE INDEX IDX_SUB_ORDER_STORE_NO ON sub_order (STORE_NO);
+-- CREATE INDEX IDX_SUB_ORDER_PRODUCT_ID ON sub_order(PRODUCT_ID);

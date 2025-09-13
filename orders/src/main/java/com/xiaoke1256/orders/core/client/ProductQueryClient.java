@@ -15,7 +15,6 @@ import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
 @FeignClient(name="api-product",
         url="${remote.api.product.uri}",
         fallbackFactory=ProductQueryFallbackFactory.class,
-        contextId="ProductQuery",
-        path="product")
+        contextId="ProductQuery")
 public interface ProductQueryClient extends ProductQueryService {
 }
