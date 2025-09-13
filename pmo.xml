@@ -88,6 +88,18 @@
             </dependency>
 
             <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                <version>${alibaba-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+                <version>${alibaba-cloud.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.netflix.hystrix</groupId>
                 <artifactId>hystrix-javanica</artifactId>
                 <version>1.5.12</version>

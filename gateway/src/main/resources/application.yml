@@ -21,6 +21,12 @@ spring:
             - Path=/product/**
           filters:
             - StripPrefix=1
+        - id: orders
+          uri: ${remote.serviceUri.orders-api}
+          predicates:
+            - Path=/orders/**
+          filters:
+            - StripPrefix=1
 
     loadbalancer:
       enabled: true
@@ -77,11 +83,16 @@ remote:
 # 开发环境
 spring:
   profiles: dev
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:1111
 #bus-api
 remote:
   serviceUri:
     product: http://localhost:8083/store_intra
     product-api: lb://api-product
+    orders-api: lb://api-orders
 
 eureka:
   client:
