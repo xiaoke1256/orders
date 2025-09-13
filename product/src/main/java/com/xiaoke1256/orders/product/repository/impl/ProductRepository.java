@@ -96,6 +96,9 @@ public class ProductRepository extends CrudRepository<ProductMapper, ProductEnti
     }
 
     private void loadCascade(ProductEntity p){
+        if(p==null){
+            return;
+        }
         p.setProductTypes(productTypeMapper.getTypesByProductCode(p.getProductCode()));
         LambdaQueryWrapper<StoreEntity> storeWrapper = new LambdaQueryWrapper<>();
         storeWrapper.eq(StoreEntity::getStoreNo,p.getStoreNo());
