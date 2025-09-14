@@ -1,16 +1,14 @@
 package com.xiaoke1256.orders;
 
-import com.alibaba.csp.sentinel.slots.block.RuleConstant;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * 网关应用程序入口
+ * 全局限流配置已在 SentinelGatewayConfig 类中实现
+ */
 @SpringBootApplication(
         scanBasePackages={"com.xiaoke1256.orders","org.springframework.http.codec"},
         exclude = DataSourceAutoConfiguration.class)

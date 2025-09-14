@@ -31,8 +31,27 @@ spring:
     loadbalancer:
       enabled: true
     sentinel:
+      # 启用网关限流
+      enabled: true
+      # 取消控制台懒加载
+      eager: true
+      # 控制台配置
       transport:
         dashboard: localhost:1111
+        # 与控制台通信的端口，默认8719，若被占用会自动从8719开始依次+1扫描
+        port: 8719
+      # 全局限流阈值配置
+      gateway:
+        # 全局QPS限制
+        global-qps: 1
+      # 暂时禁用Nacos数据源，避免与代码配置冲突
+      # datasource:
+      #   ds:
+      #     nacos:
+      #       server-addr: localhost:8848
+      #       dataId: gateway-sentinel-rules
+      #       groupId: DEFAULT_GROUP
+      #       rule-type: gw-flow
 
 hystrix:
   command:
@@ -90,6 +109,23 @@ spring:
     sentinel:
       transport:
         dashboard: localhost:1111
+      # 开发环境下的限流配置
+      # 暂时禁用Nacos数据源，避免与代码配置冲突
+      # datasource:
+      #   ds:
+      #     nacos:
+      #       server-addr: localhost:8848
+      #       dataId: gateway-sentinel-rules-dev
+      #       groupId: DEFAULT_GROUP
+      #       rule-type: gw-flow
+      # Sentinel命令行测试工具配置
+      test:
+        # 是否启用测试
+        enabled: true
+        # 并发线程数
+        concurrent-threads: 5
+        # 每线程请求数
+        requests-per-thread: 5
 #bus-api
 remote:
   serviceUri:
