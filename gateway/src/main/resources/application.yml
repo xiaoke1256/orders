@@ -30,6 +30,9 @@ spring:
 
     loadbalancer:
       enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:1111
 
 hystrix:
   command:
@@ -45,6 +48,7 @@ spring:
   profiles: peer1
 server:
   port: 8763
+
 ---
 # peer2
 spring:
@@ -56,7 +60,6 @@ server:
 # 测试和生产环境
 spring:
   profiles: test,prod
-
   cloud:
     nacos:
       discovery:
