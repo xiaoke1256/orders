@@ -24,17 +24,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Sentinel网关限流配置类
- * 配置全局限流规则和路由级别的限流规则
+ * Sentinel网关基础配置类
+ * 负责API分组定义和限流异常处理，限流规则从Nacos动态加载
  */
 @Configuration
 public class SentinelGatewayConfig {
     
     private static final Logger logger = LoggerFactory.getLogger(SentinelGatewayConfig.class);
 
-    // 从配置文件中读取全局限流阈值
-    @Value("${spring.cloud.sentinel.gateway.global-qps:1}")
-    private int globalQps;
+    // 不再需要读取全局QPS配置，因为规则从Nacos动态加载
 
     /**
      * 初始化限流规则

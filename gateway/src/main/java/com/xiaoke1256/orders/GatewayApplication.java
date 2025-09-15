@@ -7,7 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 网关应用程序入口
- * 全局限流配置已在 SentinelGatewayConfig 类中实现
+ * 限流配置已在SentinelGatewayConfig和SentinelNacosConfig类中实现
+ * Sentinel限流规则从Nacos动态加载，实现持久化管理
  */
 @SpringBootApplication(
         scanBasePackages={"com.xiaoke1256.orders","org.springframework.http.codec"},
