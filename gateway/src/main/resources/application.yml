@@ -44,12 +44,12 @@ spring:
       gateway:
       # 启用Nacos数据源，实现限流规则持久化
       datasource:
-        ds:
+        ds1:
           nacos:
             server-addr: localhost:8848
             dataId: gateway-sentinel-rules
             groupId: DEFAULT_GROUP
-            rule-type: gw-flow
+            rule-type: flow
 
 hystrix:
   command:
@@ -108,12 +108,12 @@ spring:
       transport:
         dashboard: localhost:1111
         datasource:
-          ds:
+          ds1:
             nacos:
               server-addr: localhost:8848
               dataId: gateway-sentinel-rules-dev
               groupId: DEFAULT_GROUP
-              rule-type: gw-flow
+              rule-type: flow
       # Sentinel命令行测试工具配置
       test:
         # 是否启用测试

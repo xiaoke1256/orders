@@ -1,0 +1,11 @@
+[
+  {
+    "resource": "global_api",
+    "resourceMode": 1,
+    "count": 10,
+    "intervalSec": 1,
+    "controlBehavior": 0,
+    "burst": 2,
+    "maxQueueingTimeoutMs": 500
+  }
+]
