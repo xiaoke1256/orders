@@ -43,13 +43,6 @@ spring:
       # 限流规则从Nacos动态加载，不再使用硬编码的全局QPS配置
       gateway:
       # 启用Nacos数据源，实现限流规则持久化
-      datasource:
-        ds1:
-          nacos:
-            server-addr: localhost:8848
-            dataId: gateway-sentinel-rules
-            groupId: DEFAULT_GROUP
-            rule-type: flow
 
 hystrix:
   command:
@@ -107,21 +100,8 @@ spring:
     sentinel:
       transport:
         dashboard: localhost:1111
-        datasource:
-          ds1:
-            nacos:
-              server-addr: localhost:8848
-              dataId: gateway-sentinel-rules-dev
-              groupId: DEFAULT_GROUP
-              rule-type: flow
-      # Sentinel命令行测试工具配置
-      test:
-        # 是否启用测试
-        enabled: true
-        # 并发线程数
-        concurrent-threads: 5
-        # 每线程请求数
-        requests-per-thread: 5
+      eager: true  # 立即加载限流规则
+
 #bus-api
 remote:
   serviceUri:
