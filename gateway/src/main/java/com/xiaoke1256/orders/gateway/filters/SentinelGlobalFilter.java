@@ -47,7 +47,7 @@ public class SentinelGlobalFilter implements GlobalFilter, Ordered {
         FlowRule globalRule = new FlowRule();
         globalRule.setResource(GLOBAL_RESOURCE_NAME);
         globalRule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        globalRule.setCount(1); // 全局QPS阈值
+        globalRule.setCount(10000); // 全局QPS阈值
         globalRule.setClusterMode(false);
         globalRule.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
         rules.add(globalRule);
@@ -123,7 +123,7 @@ public class SentinelGlobalFilter implements GlobalFilter, Ordered {
         FlowRule ipRule = new FlowRule();
         ipRule.setResource(ipResource);
         ipRule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        ipRule.setCount(1); // 每个IP的QPS阈值
+        ipRule.setCount(50); // 每个IP的QPS阈值
         ipRule.setClusterMode(false);
         ipRule.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
         
