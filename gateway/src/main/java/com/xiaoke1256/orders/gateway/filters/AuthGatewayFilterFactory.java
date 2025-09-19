@@ -1,17 +1,23 @@
 package com.xiaoke1256.orders.gateway.filters;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xiaoke1256.orders.auth.encrypt.HMAC256;
 import com.xiaoke1256.orders.common.RespCode;
+import com.xiaoke1256.orders.gateway.config.RestTemplateConfig;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
@@ -27,6 +33,8 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Objec
     @Resource(name = "loginTokenGenerator")
     private HMAC256 loginTokenGenerator;
 
+    private final WebClient webClient = WebClient.builder().build();
+
     @Override
     public List<String> shortcutFieldOrder() {
         return new ArrayList<>();
@@ -34,31 +42,66 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Objec
 
     @Override
     public GatewayFilter apply(Object config) {
+
         return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
-            LOG.info("RequestURI:"+request.getURI());
-            String path = request.getURI().getPath();
-            if(path.substring(path.indexOf("/",1)).startsWith("/login")){
-                return chain.filter(exchange);
-            }
-            String token = request.getHeaders().getFirst("Authorization");
-            if(StringUtils.isEmpty(token)){
-                response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'尚未登录'}").getBytes(StandardCharsets.UTF_8));
+            LOG.info("RequestURI:" + request.getURI());
+            try {
+                String path = request.getURI().getPath();
+                if (path.substring(path.indexOf("/", 1)).startsWith("/login")) {
+                    return chain.filter(exchange);
+                }
+                String token = request.getHeaders().getFirst("Authorization");
+                System.out.println("token:"+token);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.set("Authorization", token);
+                HttpEntity<String> entity = new HttpEntity<>(headers);
+
+                return webClient.get().uri("http://127.0.0.1:8763/product/storeMember/byAccountNo?accountNo=admin")
+                        .header("ContentType",MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", token)
+                        .retrieve()
+                        .onStatus(HttpStatus::is4xxClientError,resp -> Mono.error(new RuntimeException("客户端错误")))
+                        .onStatus(HttpStatus::is5xxServerError,resp -> Mono.error(new RuntimeException("服务端错误")))
+                        .bodyToMono(String.class)
+                        .flatMap((responseBody)->{
+                            System.out.println("responseBody:"+ JSON.toJSONString(responseBody));
+                            if (StringUtils.isEmpty(token)) {
+                                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'尚未登录'}").getBytes(StandardCharsets.UTF_8));
+                                return response.writeWith(Mono.just(bodyDataBuffer));
+                            }
+
+                            if (!loginTokenGenerator.verify(token)) {
+                                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'token失效'}").getBytes(StandardCharsets.UTF_8));
+                                return response.writeWith(Mono.just(bodyDataBuffer));
+                            }
+
+                            return chain.filter(exchange);
+                        });
+
+
+//                System.out.println("result:" + result.getBody());
+//                if (result.getStatusCode()!=HttpStatus.OK){
+//                    throw new RuntimeException("鉴权异常");
+//                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                response.setStatusCode(HttpStatus.BAD_GATEWAY);
+                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.OTHER_ERROR.getCode() + "',msg:'网关发生未知异常'}").getBytes(StandardCharsets.UTF_8));
                 return response.writeWith(Mono.just(bodyDataBuffer));
             }
-
-            if(!loginTokenGenerator.verify(token)){
-                response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'"+ RespCode.LOGIN_ERROR.getCode()+"',msg:'token失效'}").getBytes(StandardCharsets.UTF_8));
-                return response.writeWith(Mono.just(bodyDataBuffer));
-            }
-
-            return chain.filter(exchange);
         });
+
     }
 
 }
