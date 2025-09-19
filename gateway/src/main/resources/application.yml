@@ -21,7 +21,6 @@ spring:
             - Path=/product/**
           filters:
             - StripPrefix=1
-            - Auth
         - id: orders
           uri: ${remote.serviceUri.orders-api}
           predicates:

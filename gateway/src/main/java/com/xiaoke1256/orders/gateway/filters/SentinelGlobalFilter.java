@@ -59,7 +59,6 @@ public class SentinelGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("进入 Sentinel Filter.");
         try {
             // 1. 执行全局限流检查
             Entry globalEntry = SphU.entry(GLOBAL_RESOURCE_NAME);
@@ -138,7 +137,7 @@ public class SentinelGlobalFilter implements GlobalFilter, Ordered {
             newRules.add(ipRule);
             // 更新规则
             FlowRuleManager.loadRules(newRules);
-            //System.out.println("已为IP资源创建限流规则：" + ipResource);
+            System.out.println("已为IP资源创建限流规则：" + ipResource);
         }
     }
 
