@@ -38,26 +38,34 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Objec
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
             LOG.info("RequestURI:"+request.getURI());
-            String path = request.getURI().getPath();
-            if(path.substring(path.indexOf("/",1)).startsWith("/login")){
+            try {
+                String path = request.getURI().getPath();
+                if(path.substring(path.indexOf("/",1)).startsWith("/login")){
+                    return chain.filter(exchange);
+                }
+                String token = request.getHeaders().getFirst("Authorization");
+                if(StringUtils.isEmpty(token)){
+                    response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
+                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'尚未登录'}").getBytes(StandardCharsets.UTF_8));
+                    return response.writeWith(Mono.just(bodyDataBuffer));
+                }
+
+                if(!loginTokenGenerator.verify(token)){
+                    response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
+                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'"+ RespCode.LOGIN_ERROR.getCode()+"',msg:'token失效'}").getBytes(StandardCharsets.UTF_8));
+                    return response.writeWith(Mono.just(bodyDataBuffer));
+                }
+
                 return chain.filter(exchange);
-            }
-            String token = request.getHeaders().getFirst("Authorization");
-            if(StringUtils.isEmpty(token)){
-                response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'尚未登录'}").getBytes(StandardCharsets.UTF_8));
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                response.setStatusCode(HttpStatus.BAD_GATEWAY);
+                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.OTHER_ERROR.getCode() + "',msg:'网关发生未知异常'}").getBytes(StandardCharsets.UTF_8));
                 return response.writeWith(Mono.just(bodyDataBuffer));
             }
-
-            if(!loginTokenGenerator.verify(token)){
-                response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'"+ RespCode.LOGIN_ERROR.getCode()+"',msg:'token失效'}").getBytes(StandardCharsets.UTF_8));
-                return response.writeWith(Mono.just(bodyDataBuffer));
-            }
-
-            return chain.filter(exchange);
         });
     }
 
