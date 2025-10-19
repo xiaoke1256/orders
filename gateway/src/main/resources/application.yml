@@ -45,6 +45,18 @@ spring:
       gateway:
       # 启用Nacos数据源，实现限流规则持久化
 
+management:
+  health:
+    sentinel:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: 'health'
+  endpoint:
+    health:
+      show-details: always
+
 hystrix:
   command:
     default:
