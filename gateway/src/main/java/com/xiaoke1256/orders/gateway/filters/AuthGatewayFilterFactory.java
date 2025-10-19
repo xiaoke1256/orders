@@ -35,6 +35,9 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Objec
 
     private final WebClient webClient = WebClient.builder().build();
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Override
     public List<String> shortcutFieldOrder() {
         return new ArrayList<>();
@@ -60,38 +63,25 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Objec
                 headers.set("Authorization", token);
                 HttpEntity<String> entity = new HttpEntity<>(headers);
 
-                return webClient.get().uri("http://127.0.0.1:8763/product/storeMember/byAccountNo?accountNo=admin")
-                        .header("ContentType",MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization", token)
-                        .retrieve()
-                        .onStatus(HttpStatus::is4xxClientError,resp -> Mono.error(new RuntimeException("客户端错误")))
-                        .onStatus(HttpStatus::is5xxServerError,resp -> Mono.error(new RuntimeException("服务端错误")))
-                        .bodyToMono(String.class)
-                        .flatMap((responseBody)->{
-                            System.out.println("responseBody:"+ JSON.toJSONString(responseBody));
-                            if (StringUtils.isEmpty(token)) {
-                                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-                                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'尚未登录'}").getBytes(StandardCharsets.UTF_8));
-                                return response.writeWith(Mono.just(bodyDataBuffer));
-                            }
+                ResponseEntity<String> responseEntity = restTemplate.exchange("http://127.0.0.1:8763/product/storeMember/byAccountNo?accountNo=admin", HttpMethod.GET, entity, String.class);
+                String responseBody = responseEntity.getBody();
+                System.out.println("responseBody:"+ JSON.toJSONString(responseBody));
 
-                            if (!loginTokenGenerator.verify(token)) {
-                                response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-                                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                                DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'token失效'}").getBytes(StandardCharsets.UTF_8));
-                                return response.writeWith(Mono.just(bodyDataBuffer));
-                            }
+                if (StringUtils.isEmpty(token)) {
+                    response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'尚未登录'}").getBytes(StandardCharsets.UTF_8));
+                    return response.writeWith(Mono.just(bodyDataBuffer));
+                }
 
-                            return chain.filter(exchange);
-                        });
+                if (!loginTokenGenerator.verify(token)) {
+                    response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    DataBuffer bodyDataBuffer = response.bufferFactory().wrap(("{code:'" + RespCode.LOGIN_ERROR.getCode() + "',msg:'token失效'}").getBytes(StandardCharsets.UTF_8));
+                    return response.writeWith(Mono.just(bodyDataBuffer));
+                }
 
-
-//                System.out.println("result:" + result.getBody());
-//                if (result.getStatusCode()!=HttpStatus.OK){
-//                    throw new RuntimeException("鉴权异常");
-//                }
-
+                return chain.filter(exchange);
 
             } catch (Exception e) {
                 e.printStackTrace();
