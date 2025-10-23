@@ -19,12 +19,11 @@ import org.junit.jupiter.api.BeforeAll;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import com.xiaoke1256.orders.SpringbootApplication;
+import com.xiaoke1256.orders.OrdersApplication;
 import com.xiaoke1256.orders.core.service.OrederService;
 
-@SpringBootTest(classes=SpringbootApplication.class)
+@SpringBootTest(classes= OrdersApplication.class)
 public class OrederServiceTest {
 	private ExecutorService pool = Executors.newFixedThreadPool(100);
 	

@@ -15,17 +15,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.xiaoke1256.orders.SpringbootApplication;
+import com.xiaoke1256.orders.OrdersApplication;
 import com.xiaoke1256.orders.common.dao.BaseDao;
 import com.xiaoke1256.orders.core.bo.OStorage;
 import com.xiaoke1256.orders.product.dto.Product;
 import com.xiaoke1256.orders.product.dto.ProductQueryResult;
 
-@SpringBootTest(classes=SpringbootApplication.class)
+@SpringBootTest(classes= OrdersApplication.class)
 @ActiveProfiles("test")
 public class InitProduct {
 	
