@@ -1,6 +1,8 @@
 package com.xiaoke1256.orders.store.intra.common.utils;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.xiaoke1256.orders.auth.encrypt.HMAC256;
+import com.xiaoke1256.orders.common.exception.InvalidAuthorizationException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +15,12 @@ public class RequestUtil {
             loginTokenGenerator = (HMAC256)ApplicationContextUtil.getBean("loginTokenGenerator");
         }
         String token = request.getHeader("Authorization");
-        String loginName = loginTokenGenerator.getContent(token);
-        return loginName;
+        try {
+            String loginName = loginTokenGenerator.getContent(token);
+            return loginName;
+        } catch (TokenExpiredException e) {
+            e.printStackTrace();
+            throw new InvalidAuthorizationException("登录已过期，请重新登录");
+        }
     }
 }

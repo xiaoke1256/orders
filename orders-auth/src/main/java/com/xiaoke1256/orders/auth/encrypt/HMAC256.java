@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
@@ -120,6 +121,8 @@ public class HMAC256 {
             @SuppressWarnings("unused")
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getClaim("content").asString();
+        } catch (TokenExpiredException e){
+            throw e;
         } catch (JWTDecodeException e){
             e.printStackTrace();
             return null;
