@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(name="api-product",url="${remote.api.product.uri}",
 		fallbackFactory=ProductQueryFallbackFactory.class,
-		contextId="MemberQuery",
-		path="product")
+		contextId="MemberQuery")
 public interface MemberQueryClient extends MemberQueryService {
 	
 	@GetMapping("/members")

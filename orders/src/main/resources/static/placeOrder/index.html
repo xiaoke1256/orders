@@ -50,6 +50,7 @@
 		  type:"GET",
 		  async: false,
 		  success:function(result){
+		      console.log("member result:"+result);
 			  for(var i in result){
 			      //alert(Math.random());
 				  if(Math.random()*5<1){//只有5分之一的accoutNo可以被选中

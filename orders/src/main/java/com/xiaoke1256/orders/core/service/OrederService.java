@@ -79,11 +79,10 @@ public class OrederService {
 		for(Entry<String,Integer> enty:orderMap.entrySet()){
 			String productId = enty.getKey();
 			Integer num = enty.getValue();
-			String hql = "update OStorage set stockNum = (stockNum- ?) where productCode = ? and stockNum>= ? ";
+			String hql = "update OStorage set stockNum = (stockNum- :num) where productCode = :productCode and stockNum>= :num ";
 			int excResult = entityManager.createQuery(hql)
-					.setParameter(1, num.longValue())
-					.setParameter(2, productId)
-					.setParameter(3, num.longValue())
+					.setParameter("num", num.longValue())
+					.setParameter("productCode", productId)
 					.executeUpdate();
 			if(excResult<=0)
 				throw new RuntimeException("库存不足");
@@ -129,6 +128,7 @@ public class OrederService {
 		//创建支付单
 		PayOrder payOrder = createPayOrder(payerNo, subOrders);
 		entityManager.persist(payOrder);
+		entityManager.flush();
 
 		//保存子订单
 		for(SubOrder subOrder:subOrders){

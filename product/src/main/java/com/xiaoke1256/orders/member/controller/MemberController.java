@@ -27,7 +27,7 @@ public class MemberController {
 		BeanUtils.copyProperties(domain, dto);
 		return dto;
 	}
-	
+
 	@GetMapping("/members")
 	public List<Member> findAll() {
 		List<com.xiaoke1256.orders.member.domain.Member> bos = memberService.findAll();
