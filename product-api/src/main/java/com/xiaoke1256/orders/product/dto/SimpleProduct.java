@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -37,9 +39,11 @@ public class SimpleProduct implements Serializable {
 	private String productIntro;
 	
 	private String brand;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
 	private Date insertTime;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
 	private Date updateTime;
 
 	public String getProductCode() {

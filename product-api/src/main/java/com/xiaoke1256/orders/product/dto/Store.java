@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,7 +16,9 @@ public class Store implements Serializable {
 	private String storeIntro;
 	private String payType;
 	private String payAccountNo;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
 	private Date insertTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
 	private Date updateTime;
 	public String getStoreNo() {
 		return storeNo;

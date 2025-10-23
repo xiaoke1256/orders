@@ -3,9 +3,9 @@ package com.xiaoke1256.orders.store.intra.product.client;
 import com.xiaoke1256.orders.product.dto.ProductCondition;
 import com.xiaoke1256.orders.product.dto.SimpleProduct;
 import com.xiaoke1256.orders.product.dto.SimpleProductQueryResultResp;
-import feign.hystrix.FallbackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 
 public class ProductQueryFallbackFactory implements FallbackFactory<ProductQueryClient> {
 

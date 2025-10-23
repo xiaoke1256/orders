@@ -1,9 +1,10 @@
 package com.xiaoke1256.orders.store.intra.store.client;
 
 import com.xiaoke1256.orders.product.dto.StoreMember;
-import feign.hystrix.FallbackFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 
 import java.util.List;
 

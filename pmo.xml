@@ -28,7 +28,7 @@
     </parent>
 
     <modules>
-<!--        <module>orders_store_intra</module>-->
+        <module>orders_store_intra</module>
         <module>common</module>
 <!--        <module>common-zookeeper</module>-->
         <module>product</module>

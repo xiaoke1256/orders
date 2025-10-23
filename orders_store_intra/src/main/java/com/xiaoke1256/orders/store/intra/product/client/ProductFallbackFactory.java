@@ -1,8 +1,8 @@
 package com.xiaoke1256.orders.store.intra.product.client;
 
-import feign.hystrix.FallbackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 
 public class ProductFallbackFactory implements FallbackFactory<ProductClient> {
 

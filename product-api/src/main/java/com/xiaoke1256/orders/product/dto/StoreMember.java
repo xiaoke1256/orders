@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 
 public class StoreMember {
@@ -7,7 +9,9 @@ public class StoreMember {
     private String accountNo;
     private String role;
     private String isDefaultStore;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
     private Timestamp insertTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
     private Timestamp updateTime;
     private Store store;
 

@@ -14,6 +14,7 @@ spring:
             - Path=/store_intra/**
           filters:
             - Auth
+            - StripPrefix=2
         - id: product
           uri: ${remote.serviceUri.product-api}
           #order: 0
@@ -105,7 +106,7 @@ spring:
 #bus-api
 remote:
   serviceUri:
-    product: http://localhost:8083/store_intra
+    product: http://localhost:8083
     product-api: lb://api-product
     orders-api: lb://api-orders
 

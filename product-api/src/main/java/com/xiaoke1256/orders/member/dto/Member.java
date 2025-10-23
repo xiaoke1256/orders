@@ -1,5 +1,7 @@
 package com.xiaoke1256.orders.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -30,9 +32,12 @@ public class Member implements Serializable {
 	private String mobilePhone;
 
 	private String password;
-	
+
+
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
 	private Date insertTime;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
 	private Date updateTime;
 
 	public Long getMemberId() {
