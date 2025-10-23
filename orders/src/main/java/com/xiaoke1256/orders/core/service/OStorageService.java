@@ -85,6 +85,9 @@ public class OStorageService {
 			storage.setStockNum(storage.getStockNum() + incNum);
 			entityManager.merge(storage);
 		}else {
+			if (incNum < 0) {
+				throw new BusinessException("库存不可降至0以下");
+			}
 			storage = new OStorage();
 			storage.setProductCode(productCode);
 			storage.setOptionCode(optionCode);
