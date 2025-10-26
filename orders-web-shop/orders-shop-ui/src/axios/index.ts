@@ -175,7 +175,7 @@ axiosInst.interceptors.response.use(
 )
 
 const getRefreshToken: (refreshToken: string) => Promise<{ token: string; refreshToken: string }> = (refreshToken) => {
-  return axiosInst.post(`/login/refresh?refreshToken=${refreshToken}`).then((resp) => resp.data);
+  return axiosInst.post(`/api/login/refresh?refreshToken=${refreshToken}`).then((resp) => resp.data);
 }
 
 export default axiosInst;
