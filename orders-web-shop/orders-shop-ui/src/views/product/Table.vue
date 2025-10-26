@@ -31,7 +31,7 @@
         </Switch>
       </template>
     </Table>
-    <Page :total="totalCount" :page-size="pageSize" @on-change="onPageChange" show-sizer show-total transfer />
+    <Page :total="totalCount" :page-size="pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange" show-sizer show-total transfer />
   </div>
 </template>
 <script lang="ts" >
