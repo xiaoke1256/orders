@@ -60,6 +60,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.xiaoke_1256.orders</groupId>
+            <artifactId>orders-common</artifactId>
+            <version>1.2.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
