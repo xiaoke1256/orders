@@ -94,7 +94,7 @@ public class PayController {
 	
 	/**
 	 * 接收到通知。
-	 * @param isSuccess
+	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="/ack",method={RequestMethod.POST})

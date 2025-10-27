@@ -90,7 +90,7 @@ public class ThirdPayService {
 	/**
 	 * 生成订单号
 	 * 订单号规则:年月日时分秒+6位流水号。
-	 * @param subOrder
+	 * @param
 	 * @return
 	 */
 	private String genOrderNo() {
