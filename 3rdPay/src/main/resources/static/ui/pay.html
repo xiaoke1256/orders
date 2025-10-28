@@ -5,6 +5,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
     <body style="background-color:#f8f8f9" >
-        这是里是3rdPay支付平台。
+        <div style="text-align:center;" >
+            <div style="text-align:center;font-size:25pt">
+                ￥<span id="payMoney" style="font-size:44pt;font-weight:bold">00</span>
+            </div>
+            <div style="width:300px;text-align:center;display:flex;justify-content:space-between;margin-left:auto;margin-right:auto;">
+                <div style="text-align:left;color:#80848f">付款账号：</div><div id="payerNo" style="text-align:right;color:#80848f">00</div>
+            </div>
+            <div style="text-align:center;margin-top:30px">
+                <div>请输入支付密码</div>
+                <div id="payPassword">
+                    <label for="payPwd"></label><input type="password" maxlength="6" id="payPwd" style="width: 100px;height: 30px;">
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:50px">
+                <button id="payBtn" style="width: 100px;height: 40px;background-color:#2d8cf0;color:white;border:0">支付</button>
+            </div>
+        </div>
     </body>
 </html>
