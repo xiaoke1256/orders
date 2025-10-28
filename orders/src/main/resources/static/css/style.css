@@ -9,3 +9,5 @@ div.content {margin:10px auto;width:80%}
 .buttonDiv {text-align:center;margin: 20px auto}
 
 table.listTable {width:100%}
+
+.dialog {background-color:#f8f8f9;z-index:1000;position: absolute; border: 1px solid #dddee1;border-radius: 10px;}

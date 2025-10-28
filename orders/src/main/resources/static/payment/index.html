@@ -7,7 +7,7 @@
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/date_format.js" ></script>
   <script type="text/javascript" src="js/jq_page.js" ></script>
-  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" title="default" href="../css/style.css" />
   <script type="text/javascript">
   
   var payingNum = 0;//正在处理的支付单数量。
@@ -37,9 +37,6 @@
 	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
 	  
 	  $('#content').on('click','a.payBtn',function(){
-		  
-		  if(!window.confirm("是否确定要支付？"))
-			  return false;
 		  payingNum++;
 		  var payOrderNo = $(this).attr('payOrderNo');
 		  //调用第三方支付接口
@@ -82,6 +79,10 @@
 		  var remark = payOrderNo;//把支付单号作为备注
 		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark};
 		  var url= paySiteUrl;
+
+		  //$("#payIframe").attr('src','http://www.3rdpay.com:8085')
+		  showIframe('http://www.3rdpay.com:8085/ui/pay.html')
+		  /*
 		  $.ajax({
 			  url:url,
 			  type:"POST",
@@ -110,10 +111,34 @@
 		    	  
 		      }
 	     });
-		  $("#console").append("支付提交成功。<br>");
+	     */
+		 $("#console").append("支付提交成功。<br>");
 	  }
+
+	  $('#payDialog').hide();
 	  
   });
+
+  function showIframe(url){
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+	var dialogWidth = windowWidth*0.8;
+	var dialogHeight = windowHeight*0.6;
+	$("#payDialog").css({
+		"width":dialogWidth,
+		"height":dialogHeight,
+		"left":(windowWidth-dialogWidth)/2,
+		"top":(windowHeight-dialogHeight)/2
+	});
+  	$("#payDialog").show();
+  	$("#payIframe").attr('src',url);
+  }
+
+  function closeIframe(){
+  	if(window.confirm("放弃支付？")){
+  		$("#payDialog").hide();
+  	}
+  }
 	  
   function notice(verifyCode,orderNo,payOrderNo,payType){
 	  //alert("verifyCode:"+verifyCode+"  orderNo:"+orderNo+" payOrderNo:"+payOrderNo+" payType:"+payType);
@@ -246,6 +271,14 @@
 		
 		<br>
 		<div id="console" style="width:100%"></div>
+	</div>
+	<div id="payDialog" class="dialog" >
+		<div style="height:100%">
+			<iframe id="payIframe" src="" frameborder="0" width="100%" height="100%" ></iframe>
+		</div>
+		<div style="width:100%;position:relative;top:-30px" class="center">
+		    <button type="button" style="height:25px" onclick="closeIframe()">关闭</button>
+		</div>
 	</div>
 	
 </body>
