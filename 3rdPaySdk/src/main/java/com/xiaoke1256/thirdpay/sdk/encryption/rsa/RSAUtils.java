@@ -22,6 +22,13 @@ public class RSAUtils {
         return new String(decryptedBytes); // 将解密后的字节转换为字符串
     }
 
+    public static byte[] signData(byte[] data,String algorithm , PrivateKey privateKey) throws Exception {
+        Signature signer = Signature.getInstance(algorithm);
+        signer.initSign(privateKey);
+        signer.update(data);
+        return signer.sign();
+    }
+
     public static byte[] signData(byte[] data, PrivateKey privateKey) throws Exception {
         Signature signer = Signature.getInstance("SHA256withRSA");
         signer.initSign(privateKey);

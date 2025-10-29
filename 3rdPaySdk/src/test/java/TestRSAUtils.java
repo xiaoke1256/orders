@@ -49,4 +49,25 @@ public class TestRSAUtils {
         System.out.println("签名验证结果: " + isValid);
         assert isValid;
     }
+
+    @Test
+    public void testSign() throws Exception {
+        String message = "Hello, World! "+ System.currentTimeMillis();
+        System.out.println("原始消息: " + message);
+        byte[] signature = RSAUtils.signData(message.getBytes(),"SHA256withRSA", privateKey);
+        System.out.println("SHA256withRSAwithDSA签名: " + Base64.getEncoder().encodeToString(signature));
+
+        signature = RSAUtils.signData(message.getBytes(),"MD2withRSA", privateKey);
+        System.out.println("MD2withRSA签名: " + Base64.getEncoder().encodeToString(signature));
+        signature = RSAUtils.signData(message.getBytes(),"MD5withRSA", privateKey);
+        System.out.println("MD5withRSA签名: " + Base64.getEncoder().encodeToString(signature));
+        signature = RSAUtils.signData(message.getBytes(),"SHA384withRSA", privateKey);
+        System.out.println("SHA384withRSA签名: " + Base64.getEncoder().encodeToString(signature));
+        signature = RSAUtils.signData(message.getBytes(),"SHA512withRSA", privateKey);
+        System.out.println("SHA512withRSA签名: " + Base64.getEncoder().encodeToString(signature));
+
+
+//        signature = RSAUtils.signData(message.getBytes(),"SHA1withDSA", privateKey);
+//        System.out.println("SHA1withDSA签名: " + Base64.getEncoder().encodeToString(signature));
+    }
 }

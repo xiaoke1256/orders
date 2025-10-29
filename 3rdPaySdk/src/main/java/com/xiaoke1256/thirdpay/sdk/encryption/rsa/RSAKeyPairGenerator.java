@@ -140,4 +140,18 @@ public class RSAKeyPairGenerator {
         return loadPublicKey(sb.toString());
     }
 
+    public static PublicKey loadPublicKeyFromSt(InputStream publicKeyFileStream) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        InputStreamReader isr = new InputStreamReader(publicKeyFileStream ); // 指定字符编码
+        BufferedReader br = new BufferedReader(isr);
+        String line;
+        while ((line = br.readLine()) != null) {
+            if(sb.length()>0){
+                sb.append("\n");
+            }
+            sb.append(line);
+        }
+        return loadPublicKey(sb.toString());
+    }
+
 }
