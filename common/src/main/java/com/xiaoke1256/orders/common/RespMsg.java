@@ -32,12 +32,20 @@ public class RespMsg implements java.io.Serializable {
 		this.msg = msg;
 	}
 
+	public RespMsg(RespCode errorCode, String msg, Object data) {
+		super();
+		this.code = errorCode.getCode();
+		this.msg = msg;
+		this.data = data;
+	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String msg;
+	private Object data;
 	public String getCode() {
 		return code;
 	}
@@ -50,7 +58,14 @@ public class RespMsg implements java.io.Serializable {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+
 	public static final RespMsg SUCCESS = new RespMsg(RespCode.SUCCESS);
 	
 	public RespMsg(Exception ex) {

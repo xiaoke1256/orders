@@ -10,6 +10,7 @@ public class RSAUtils {
     public static String encrypt(String plainText, PublicKey publicKey) throws Exception {
         Cipher encryptCipher = Cipher.getInstance("RSA");
         encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        System.out.println("plainText:"+plainText);
         byte[] encryptedBytes = encryptCipher.doFinal(plainText.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes); // 将加密后的字节转换为Base64编码的字符串
     }

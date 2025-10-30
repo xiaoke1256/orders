@@ -52,7 +52,7 @@ public class PaymentTxn {
 	private String businessNo;
 	
 	@Column(name = "reverse_flg")
-	private String reverseFlg;
+	private String reverseFlg="0";
 	
 	@Column(name = "incident")
 	private String incident;

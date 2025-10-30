@@ -27,6 +27,9 @@ import java.lang.reflect.InvocationTargetException;
 @RestController
 @RequestMapping("/pay")
 public class PayController {
+
+	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(PayController.class);
+
 	@Autowired
 	private ThirdPaymentClient thirdPaymentClient;
 	@Autowired
@@ -36,14 +39,20 @@ public class PayController {
 
 	@RequestMapping(value="/getPayFormStr",method= {RequestMethod.POST})
 	public RespMsg getPayFormStr(@RequestBody ThirdPayOrderDto order) throws Exception {
-		//保存订单信息
-		paymentService.savePayment(order);
-		OrderInfo orderInfo = new OrderInfo();
-		PropertyUtils.copyProperties(orderInfo, order);
-		try( InputStream is = PayClient.class.getResourceAsStream("/keys/private_key.pem")){
-			String payFormStr = PayClient.generateOrderFormString(orderInfo, RSAKeyPairGenerator.loadPrivateKeyFromStream(is));
-			 return new RespMsg(RespCode.SUCCESS,payFormStr);
+		try {
+			//保存订单信息
+			paymentService.savePayment(order);
+			OrderInfo orderInfo = new OrderInfo();
+			PropertyUtils.copyProperties(orderInfo, order);
+			try( InputStream is = PayClient.class.getResourceAsStream("/keys/private_key.pem")){
+				String payFormStr = PayClient.generateOrderFormString(orderInfo, RSAKeyPairGenerator.loadPrivateKeyFromStream(is));
+				return new RespMsg(RespCode.SUCCESS,"success",payFormStr);
+			}
+		} catch (AppException e) {
+			LOGGER.error(e.getMessage(), e);
+			return new RespMsg(e);
 		}
+
 	}
 	
 	/**

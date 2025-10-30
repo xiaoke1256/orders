@@ -104,9 +104,9 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		if(payOrder==null){
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order not exist","该订单不存在。");
 		}
-		String ql = "select count(t) from PaymentTxn t where payOrderNo = :payOrderNo and thirdOrderNo is null";
-		Integer count = (Integer)entityManager.createQuery(ql).setParameter("payOrderNo", payOrder.getPayerNo()).getSingleResult();
-		if(count>0){
+		String ql = "select count(t) from PaymentTxn t where payOrderNo = :payOrderNo and thirdOrderNo is not null";
+		Number count = (Number)entityManager.createQuery(ql).setParameter("payOrderNo", payOrder.getPayOrderNo()).getSingleResult();
+		if( count!=null && count.intValue()>0){
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {

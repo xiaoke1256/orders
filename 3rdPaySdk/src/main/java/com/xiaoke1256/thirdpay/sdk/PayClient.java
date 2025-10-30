@@ -2,6 +2,7 @@ package com.xiaoke1256.thirdpay.sdk;
 
 import com.alibaba.fastjson.JSON;
 import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
+import com.xiaoke1256.thirdpay.sdk.encryption.aes.AESUtils;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAUtils;
 import com.xiaoke1256.thirdpay.sdk.exception.BussinessException;
@@ -29,10 +30,13 @@ public class PayClient {
         orderInfo.setRandom(UUID.randomUUID().toString().replace("-", ""));
         orderInfo.setExpiredTime(System.currentTimeMillis() + 1000 * 60 * 5);//5分钟后过期
         OrderFormInfo orderFormInfo = new OrderFormInfo();
-        orderFormInfo.setOrderInfo(orderInfo);
+        String orderInfoJson = JSON.toJSONString(orderInfo);
+        String key = AESUtils.generateAESKey();
+        orderFormInfo.setOrderInfo(AESUtils.encrypt(orderInfoJson, AESUtils.loadAESKey(key)));
+        orderFormInfo.setKey(RSAUtils.encrypt(key,encryptKey) );
         orderFormInfo.setSign(Base64.getEncoder().encodeToString(RSAUtils.signData(JSON.toJSONString(orderInfo).getBytes(StandardCharsets.UTF_8), signKey)));
         orderFormInfo.setExpiredTime(orderInfo.getExpiredTime());
-        return RSAUtils.encrypt(JSON.toJSONString(orderFormInfo),encryptKey);
+        return Base64.getEncoder().encodeToString(JSON.toJSONString(orderFormInfo).getBytes(StandardCharsets.UTF_8));
     }
 
     /**

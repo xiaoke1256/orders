@@ -26,7 +26,7 @@
 			if(ret.code!='00'){
 				alert("本页面无法支付:"+ret.code+":"+ret.msg);
 			}
-			payeeNo = ret.pateformPayAccount
+			payeeNo = '000000000000000000'//ret.pateformPayAccount
 			paySiteUrl = ret.thirdpaySiteUrl;
 	     }
 	  });
@@ -39,9 +39,9 @@
 	  $('#content').on('click','a.payBtn',function(){
 		  payingNum++;
 		  var payOrderNo = $(this).attr('payOrderNo');
+		  var payerNo = $(this).attr('payerNo');
 		  //调用第三方支付接口
-		  
-		  var payerNo = "3RDPAY"+Math.floor(Math.random()*1000000000000);//支付方账号，随机生成一个
+		  //TODO 实际上只需要传一个订单号，其他参数从订单表中获取
 		  //var payeeNo = "";//收款方账号，获取系统配置的账号。
 		  if(!payeeNo){
 			  alert("初始化失败，无法支付。");
@@ -77,11 +77,36 @@
 	  function pay(payOrderNo,payerNo,amt){
 		  var orderType = "01";//01表示消费
 		  var remark = payOrderNo;//把支付单号作为备注
-		  var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark};
-		  var url= paySiteUrl;
+		  var orderInfo = {
+		  	payerNo:payerNo,
+			payeeNo:payeeNo,
+			orderType:orderType,
+			payType:'003',/*支付保还是微信*/
+			amt:amt,
+			merchantNo:"orders",
+			merchantOrderNo:payOrderNo,
+			remark:remark
+		  };
+		  $.ajax({
+		  	url:'pay/getPayFormStr',
+		  	type:"POST",
+		  	data:JSON.stringify(orderInfo),
+		  	contentType: "application/json; charset=utf-8",
+		  	headers: {'Content-Type': 'application/json'},
+		  	success: function (ret) {
+		  		if (ret.code!='00'){
+		  			alert("支付失败:"+ret.code+":"+ret.msg);
+		  			return;
+		  		}
+		  		console.log("ret of pay/getPayFormStr:",ret);
+		  		showIframe('http://www.3rdpay.com:8085/ui/pay.html?payFormStr='+ret.data)
+		  	}
+		  });
+		  //var data = {payerNo:payerNo,payeeNo:payeeNo,amt:amt,orderType:orderType,palteform:'orders',remark:remark};
+		  //var url= paySiteUrl;
 
 		  //$("#payIframe").attr('src','http://www.3rdpay.com:8085')
-		  showIframe('http://www.3rdpay.com:8085/ui/pay.html')
+		  //showIframe('http://www.3rdpay.com:8085/ui/pay.html')
 		  /*
 		  $.ajax({
 			  url:url,
@@ -201,7 +226,7 @@
 				  innerHtml+='<td>'+order.payerNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+order.totalAmt+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
+				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+order.totalAmt+'" payerNo="'+order.payerNo+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);
