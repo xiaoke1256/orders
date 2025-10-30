@@ -13,6 +13,7 @@ public class OrderInfo {
     private String payerNo;
     private String payeeNo;
     private String orderType;
+    private String payType;
     private BigDecimal amt;
     private String merchantNo;
     private String merchantOrderNo;

@@ -42,7 +42,6 @@
         <module>orders-auth</module>
 <!--        <module>orders-task</module>-->
         <module>3rdPay</module>
-        <module>3rdPay</module>
         <module>3rdPaySdk</module>
         <!--        <module>search</module>-->
 <!--        <module>bigData</module>-->
@@ -69,6 +68,12 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.25</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.32</version> <!-- 请检查最新版本 -->
             </dependency>
 
             <dependency>

@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "PAYMENT_TXN")
+@Table( name = "payment_txn")
 public class PaymentTxn {
 	/**
 	 * 处理状态：待处理
@@ -23,7 +23,7 @@ public class PaymentTxn {
 	 */
 	public static final String DEAL_STATUS_HOUSEHOLD = "1";
 	@Id
-	@Column(name = "PAYMENT_ID", nullable = false)
+	@Column(name = "payment_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long paymentId;
 	
@@ -51,7 +51,7 @@ public class PaymentTxn {
 	@Column(name = "business_no")
 	private String businessNo;
 	
-	@Column(name = "REVERSE_FLG")
+	@Column(name = "reverse_flg")
 	private String reverseFlg;
 	
 	@Column(name = "incident")
@@ -63,10 +63,10 @@ public class PaymentTxn {
 	@Column(name = "deal_status")
 	private String dealStatus="0";
 	
-	@Column(name = "INSERT_TIME")
+	@Column(name = "insert_time")
 	private Timestamp insertTime;
 	
-	@Column(name = "UPDATE_TIME")
+	@Column(name = "update_time")
 	private Timestamp updateTime;
 
 	public Long getPaymentId() {

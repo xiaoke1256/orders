@@ -3,19 +3,19 @@ create table payment_txn
   payment_id BIGINT primary key not null auto_increment comment '支付流水主键',
   payer_no VARCHAR(18) not null comment '付款方会员号(18个‘0’表示平台方)',
   payee_no VARCHAR(18) not null comment '收款方会员号(18个‘0’表示平台方)',
-  pay_type char(3) not null comment '支付方式(001:支付宝等,002:微信,003:3rdPay)',
+  pay_type char(3) not null comment '支付方式(001:支付宝,002:微信,003:3rdPay)',
   amt    DECIMAL(22) not null comment '支付额',
   pay_order_no VARCHAR(18) comment '支付单号',
   sub_order_no VARCHAR(20) comment '订单号',
   business_no VARCHAR(25) comment '其他业务号',
-  THIRD_ORDER_NO VARCHAR(20) comment '第三方平台的订单号',
-  REVERSE_FLG char(1) not null default '0' comment '冲正标记：“0:未冲正;1:已冲正”',
+  third_order_no VARCHAR(20) comment '第三方平台的订单号',
+  reverse_flg char(1) not null default '0' comment '冲正标记：“0:未冲正;1:已冲正”',
   incident VARCHAR(256) comment '事由',
   remark VARCHAR(256) comment '备注',
   deal_status char(1) comment '处理状态：“0:待处理;1:已处理分户账”',
   insert_time TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null DEFAULT NOW() comment '修改时间'
-) comment='支付流水表';
+) comment='支付流水表；本表不处理订单状态，订单状态态由订单表处理';
 
 create table household_acc_txn
 (

@@ -41,7 +41,21 @@ public class PayController {
 	/**与第三方支付平台约定的秘钥*/
 	@Value("${third_pay_platform.key}")
 	private String key;
-	
+
+	/**
+	 * 预支付 (校验支付信息，校验支付信息)
+	 * @param payRequest
+	 * @return
+	 */
+
+	@RequestMapping(value="/prePay",method={RequestMethod.POST})
+	public PayResp prePay(@RequestBody PayRequest payRequest) {
+		//TODO 从orderStr 中解析出订单信息（用3rdPay的私钥解密）。
+		//TODO 验证签名（用商户的公钥验签）。
+		//TODO 吊起支付页面（让用户输入支付密码）
+		return new PayResp();
+	}
+
 	/**
 	 * 支付
 	 * @return
@@ -59,6 +73,7 @@ public class PayController {
 			BigDecimal amt = payRequest.getAmt();
 			String remark = payRequest.getRemark();
 			String palteform = payRequest.getPalteform();
+			//TODO 检查付款码是否正确。
 			ThirdPayOrder order = thirdPayService.pay(payerNo, payeeNo, amt, orderType,palteform, remark);
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<5) {
