@@ -226,7 +226,7 @@
 				  innerHtml+='<td>'+order.payerNo+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+order.totalAmt+'" payerNo="'+order.payerNo+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
+				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+(order.totalAmt/1000)+'" payerNo="'+order.payerNo+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);
