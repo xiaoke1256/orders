@@ -23,11 +23,7 @@ public class MerchantService {
      */
     @Transactional(readOnly = true)
     public String getPublicKey(String merchantNo) {
-        //TODO 先从缓存中获取商户公钥
-
-        LambdaQueryWrapper<Merchant> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Merchant::getMerchantNo,merchantNo);
-        Merchant merchant = merchantDao.getOne(wrapper);
+        Merchant merchant = merchantDao.getByMerchantNo(merchantNo);
         if(merchant != null)
             return merchant.getPublicKey();
         return null;
@@ -40,11 +36,7 @@ public class MerchantService {
      */
     @Transactional(readOnly = true)
     public String getAccNo(String merchantNo) {
-        //TODO 先从缓存中获取商户公钥
-
-        LambdaQueryWrapper<Merchant> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Merchant::getMerchantNo,merchantNo);
-        Merchant merchant = merchantDao.getOne(wrapper);
+        Merchant merchant = merchantDao.getByMerchantNo(merchantNo);
         if(merchant != null)
             return merchant.getDefaultAccNo();
         return null;

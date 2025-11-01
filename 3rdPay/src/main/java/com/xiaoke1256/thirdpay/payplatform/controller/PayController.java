@@ -71,7 +71,7 @@ public class PayController {
 			return new PayResp(RespCode.BUSSNESS_ERROR,"支付超时。");
 		}
 		//平台方私钥
-		PrivateKey privateKey = RSAKeyPairGenerator.loadPrivateKeyFromStream(getClass().getClassLoader().getResourceAsStream("/3rdPay/cryptionkeys/private_key.pem"));
+		PrivateKey privateKey = RSAKeyPairGenerator.loadPrivateKeyFromStream(getClass().getResourceAsStream("/3rdPay/cryptionkeys/private_key.pem"));
 		String key = RSAUtils.decrypt(orderFormInfo.getKey() , privateKey) ;
 		String orderInfoJson = AESUtils.decrypt(orderFormInfo.getOrderInfo(), AESUtils.loadAESKey(key));
 		OrderInfo orderInfo = JSON.parseObject(orderInfoJson, OrderInfo.class);
@@ -92,6 +92,9 @@ public class PayController {
 		//从账号表中选取账户名一样的账号。找不到就随机选一个。
 		HouseholdAcc account = thirdPayService.findAccountByName(orderInfo.getPayerNo());
 		orderInfo.setMerchantPayerNo(account.getAccNo());
+		orderInfo.setPayerNo(account.getAccName());
+		orderInfo.setRandom(null);//去掉随机码
+		//TODO 用token防止重复支付。
 		// 吊起支付页面（让用户输入支付密码）
 		return new RespMsg(RespCode.SUCCESS, "成功吊起订单信息",orderInfo);
 	}

@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MerchantDao extends IService<Merchant> {
 
+    Merchant getByMerchantNo(String merchantNo);
+
 }

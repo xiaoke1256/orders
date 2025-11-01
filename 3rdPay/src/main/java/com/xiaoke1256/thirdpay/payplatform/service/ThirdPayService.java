@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
-import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
+import com.xiaoke1256.thirdpay.payplatform.mapper.ThirdPayOrderDao;
 import com.xiaoke1256.thirdpay.payplatform.dto.PaymentCancelRequest;
 
 @Service

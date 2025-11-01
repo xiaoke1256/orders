@@ -14,7 +14,7 @@
                 var payFormStr = getUrlParam("payFormStr");
                 console.log("payFormStr:",payFormStr);
 
-                if(!payFormStr || payFormStr = ""){
+                if(!payFormStr){
                     alert("订单信息有误");
                     return;
                 }
@@ -22,14 +22,16 @@
                 //访问后台解析订单信息
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/pay/prePay",
-                    data: {payFormStr:payFormStr},
+                    contentType: "application/json; charset=utf-8",
+		            headers: {'Content-Type': 'application/json'},
+                    url: "../pay/prePay",
+                    data: JSON.stringify({payFormStr:payFormStr}),
                     dataType: "json",
                     success: function(data) {
                         console.log("parsePayForm:",data);
                         if(data.code == 0){
-                            $("#payMoney").text(data.amt);
-                            $("#payerNo").text(data.payerNo);
+                            $("#payMoney").text(data.data.amt.toFixed(2));
+                            $("#payerNo").text(data.data.payerNo);
                         }
                     }
                 })
@@ -47,7 +49,7 @@
                 ￥<span id="payMoney" style="font-size:44pt;font-weight:bold">00</span>
             </div>
             <div style="width:300px;text-align:center;display:flex;justify-content:space-between;margin-left:auto;margin-right:auto;">
-                <div style="text-align:left;color:#80848f">付款账号：</div><div id="payerNo" style="text-align:right;color:#80848f">00</div>
+                <div style="text-align:left;color:#80848f">付款账号：</div><div id="payerNo" style="text-align:right;color:#80848f">***</div>
             </div>
             <div style="text-align:center;margin-top:30px">
                 <div>请输入支付密码</div>
@@ -56,7 +58,7 @@
                 </div>
             </div>
             <div style="text-align:center;margin-top:50px">
-                <button id="payBtn" style="width: 100px;height: 40px;background-color:#2d8cf0;color:white;border:0">支付</button>
+                <button id="payBtn" style="width: 80%;height:40px;background-color:#2d8cf0;color:white;border:0;border-radius:10px;font-weight:bold">支付</button>
             </div>
         </div>
     </body>
