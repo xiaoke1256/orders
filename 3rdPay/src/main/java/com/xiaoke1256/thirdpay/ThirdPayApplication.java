@@ -1,4 +1,4 @@
-package com.xiaoke1256.thirdpay.payplatform;
+package com.xiaoke1256.thirdpay;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +15,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication(exclude={HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class})
 @EnableAutoConfiguration
-@MapperScan({"com.xiaoke1256.thirdpay.payplatform.dao","mapper"})
+@MapperScan({"com.xiaoke1256.thirdpay.payplatform.dao","com.xiaoke1256.thirdpay.payplatform.mapper","mapper"})
 public class ThirdPayApplication {
 
 	public static void main(String[] args) {
