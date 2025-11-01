@@ -95,7 +95,7 @@
 		  	headers: {'Content-Type': 'application/json'},
 		  	success: function (ret) {
 		  		if (ret.code!='00'){
-		  			alert("支付失败:"+ret.code+":"+ret.msg);
+		  			$("#console").append("<font color=\"red\">支付失败:"+ret.code+":"+ret.msg+"</font><br>");
 		  			return;
 		  		}
 		  		console.log("ret of pay/getPayFormStr:",ret);
@@ -136,8 +136,8 @@
 		    	  
 		      }
 	     });
+	     $("#console").append("支付提交成功。<br>");
 	     */
-		 $("#console").append("支付提交成功。<br>");
 	  }
 
 	  $('#payDialog').hide();
@@ -154,6 +154,9 @@
 		"height":dialogHeight,
 		"left":(windowWidth-dialogWidth)/2,
 		"top":(windowHeight-dialogHeight)/2
+	});
+	$('#payDialog div.close-div').css({
+		"top":-dialogHeight
 	});
   	$("#payDialog").show();
   	$("#payIframe").attr('src',url);
@@ -301,8 +304,8 @@
 		<div style="height:100%">
 			<iframe id="payIframe" src="" frameborder="0" width="100%" height="100%" ></iframe>
 		</div>
-		<div style="width:100%;position:relative;top:-30px" class="center">
-		    <button type="button" style="height:25px" onclick="closeIframe()">关闭</button>
+		<div style="width:100%;position:relative;top:-30px" class="close-div right">
+			<img width="30" height="30" src="image/close.svg" onclick="closeIframe()"/>
 		</div>
 	</div>
 	

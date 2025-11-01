@@ -5,6 +5,9 @@ dl dt {float:left}
 div.content {margin:10px auto;width:80%}
 
 .center {text-align:center;margin: 0 auto}
+.right {text-align:right}
+
+.close-div img{position:relative;top:-7px;left:7px}
 
 .buttonDiv {text-align:center;margin: 20px auto}
 
