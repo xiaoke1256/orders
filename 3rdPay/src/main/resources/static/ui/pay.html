@@ -20,6 +20,19 @@
                 }
 
                 //访问后台解析订单信息
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/pay/prePay",
+                    data: {payFormStr:payFormStr},
+                    dataType: "json",
+                    success: function(data) {
+                        console.log("parsePayForm:",data);
+                        if(data.code == 0){
+                            $("#payMoney").text(data.amt);
+                            $("#payerNo").text(data.payerNo);
+                        }
+                    }
+                })
 
 
                 $("#payBtn").click(function() {

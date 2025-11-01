@@ -10,6 +10,7 @@ import java.util.Base64;
 import java.util.Random;
 
 import com.alibaba.fastjson.JSON;
+import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
 import com.xiaoke1256.thirdpay.payplatform.dto.*;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
 import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
@@ -89,7 +90,8 @@ public class PayController {
 		orderInfo.setMerchantPayeeNo(merchantAccNo);
 		//填充付款方支付账号。（正式环境应该从session中获取，现在随机获取）
 		//从账号表中选取账户名一样的账号。找不到就随机选一个。
-		orderInfo.setMerchantPayerNo(merchantAccNo);
+		HouseholdAcc account = thirdPayService.findAccountByName(orderInfo.getPayerNo());
+		orderInfo.setMerchantPayerNo(account.getAccNo());
 		// 吊起支付页面（让用户输入支付密码）
 		return new RespMsg(RespCode.SUCCESS, "成功吊起订单信息",orderInfo);
 	}

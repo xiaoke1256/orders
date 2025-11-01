@@ -42,7 +42,7 @@ public class CodeGenerator {
                     .controller("controller")
                     .pathInfo(Collections.singletonMap(OutputFile.xml, finalModulePath + "/src/main/resources/mapper"));
         }).strategyConfig(builder -> {
-            builder.addInclude("merchant") // 设置需要生成的表名
+            builder.addInclude("household_acc") // 设置需要生成的表名
                     .addTablePrefix("t_", "sys_") // 设置过滤表前缀
                     // 实体策略配置
                     .entityBuilder()

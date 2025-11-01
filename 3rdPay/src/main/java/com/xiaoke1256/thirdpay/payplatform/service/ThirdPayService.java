@@ -5,6 +5,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
+import com.xiaoke1256.thirdpay.payplatform.dao.HouseholdAccDao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
@@ -29,6 +32,9 @@ public class ThirdPayService {
 	
 	@Autowired
 	private ThirdPayOrderDao thirdPayOrderDao ;
+
+	@Autowired
+	private HouseholdAccDao householdAccDao;
 	
 	@Value("${third_pay_platform.notice.uri}")
 	private String noticeUri;//反馈接口
@@ -166,5 +172,19 @@ public class ThirdPayService {
 //		entityManager.merge(order);
 		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_NEED_MANNUAL, null, now);
 		logger.error("Remote notice fail for 10 times.");
+	}
+
+	public HouseholdAcc findAccountByName(String accountName) {
+		LambdaQueryWrapper<HouseholdAcc> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(HouseholdAcc::getAccName,accountName);
+		HouseholdAcc account = householdAccDao.getOne(wrapper);
+		if(account!=null){
+			return account;
+		}
+		List<HouseholdAcc> allAccounts = householdAccDao.list();
+		if(allAccounts!=null && allAccounts.size()>0 ) {
+			return allAccounts.get((int)Math.floor (Math.random() * allAccounts.size()));
+		}
+		return null;
 	}
 }
