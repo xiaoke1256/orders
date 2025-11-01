@@ -3,6 +3,30 @@
     <head>
         <title>3rdPay</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="../js/jquery.min.js"></script>
+        <script type="text/javascript" >
+            function getUrlParam(name) {
+                var searchParams = new URLSearchParams(window.location.search);
+                return searchParams.get(name);
+            }
+            $(function() {
+                //加载订单信息
+                var payFormStr = getUrlParam("payFormStr");
+                console.log("payFormStr:",payFormStr);
+
+                if(!payFormStr || payFormStr = ""){
+                    alert("订单信息有误");
+                    return;
+                }
+
+                //访问后台解析订单信息
+
+
+                $("#payBtn").click(function() {
+                    console.log("开始支付")
+                })
+            });
+        </script>
     </head>
     <body style="background-color:#f8f8f9" >
         <div style="text-align:center;" >

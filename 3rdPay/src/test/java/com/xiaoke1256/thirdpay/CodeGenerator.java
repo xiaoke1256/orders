@@ -27,8 +27,6 @@ public class CodeGenerator {
         FastAutoGenerator.create("jdbc:mysql://192.168.249.101:3306/thirdpay?characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true",
                 "thirdpayUser", "xiaoke_1256").globalConfig(builder -> {
 
-
-
                     builder.outputDir( finalModulePath + "/src/main/java")
                             .fileOverride()
                             .author("xiaoke_1256")

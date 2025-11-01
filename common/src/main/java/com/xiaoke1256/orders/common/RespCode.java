@@ -95,6 +95,9 @@ public class RespCode implements Serializable {
 	/**错误代码:权限异常 */
 	public static final RespCode AUTH_ERROR = new RespCode("42","Auth exception!");
 
+	/** 错误代码:安全异常 */
+	public static final RespCode SECURE_ERROR = new RespCode("43","Secure exception!");
+
 	/**错误代码:其他未知异常 */
 	public static final RespCode OTHER_ERROR = new RespCode("99","Not described exception!");
 	

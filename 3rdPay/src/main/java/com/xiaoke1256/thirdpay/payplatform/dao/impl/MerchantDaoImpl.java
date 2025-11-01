@@ -4,7 +4,7 @@ import com.xiaoke1256.thirdpay.payplatform.bo.Merchant;
 import com.xiaoke1256.thirdpay.payplatform.mapper.MerchantMapper;
 import com.xiaoke1256.thirdpay.payplatform.dao.MerchantDao;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author xiaoke_1256
  * @since 2025-10-31
  */
-@Service
+@Repository
 public class MerchantDaoImpl extends ServiceImpl<MerchantMapper, Merchant> implements MerchantDao {
 
 }

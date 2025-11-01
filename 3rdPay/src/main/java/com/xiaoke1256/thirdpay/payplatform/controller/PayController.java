@@ -1,9 +1,22 @@
 package com.xiaoke1256.thirdpay.payplatform.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.PrivateKey;
+import java.util.Base64;
 import java.util.Random;
 
+import com.alibaba.fastjson.JSON;
+import com.xiaoke1256.thirdpay.payplatform.dto.*;
+import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
+import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
+import com.xiaoke1256.thirdpay.sdk.encryption.aes.AESUtils;
+import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
+import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAUtils;
+import com.xiaoke1256.thirdpay.sdk.vo.OrderFormInfo;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
@@ -22,11 +35,6 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
-import com.xiaoke1256.thirdpay.payplatform.dto.AckRequest;
-import com.xiaoke1256.thirdpay.payplatform.dto.OrderResp;
-import com.xiaoke1256.thirdpay.payplatform.dto.PayRequest;
-import com.xiaoke1256.thirdpay.payplatform.dto.PayResp;
-import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 
 @RestController
@@ -38,22 +46,52 @@ public class PayController {
 	@Autowired
 	private ThirdPayService thirdPayService;
 	
+	@Autowired
+	private MerchantService merchantService;
+	
 	/**与第三方支付平台约定的秘钥*/
 	@Value("${third_pay_platform.key}")
 	private String key;
 
 	/**
 	 * 预支付 (校验支付信息，校验支付信息)
-	 * @param payRequest
+	 * @param prePayRequest
 	 * @return
 	 */
 
 	@RequestMapping(value="/prePay",method={RequestMethod.POST})
-	public PayResp prePay(@RequestBody PayRequest payRequest) {
-		//TODO 从orderStr 中解析出订单信息（用3rdPay的私钥解密）。
-		//TODO 验证签名（用商户的公钥验签）。
-		//TODO 吊起支付页面（让用户输入支付密码）
-		return new PayResp();
+	public RespMsg prePay(@RequestBody PrePayRequest prePayRequest) throws Exception {
+		//从orderStr 中解析出订单信息。
+		String payFormStr = prePayRequest.getPayFormStr();
+		String orderFormJson = new String(Base64.getDecoder().decode(payFormStr), StandardCharsets.UTF_8);
+		OrderFormInfo orderFormInfo = JSON.parseObject(orderFormJson, OrderFormInfo.class);
+		Long expiredTime = orderFormInfo.getExpiredTime();
+		if(expiredTime<System.currentTimeMillis()) {
+			return new PayResp(RespCode.BUSSNESS_ERROR,"支付超时。");
+		}
+		//平台方私钥
+		PrivateKey privateKey = RSAKeyPairGenerator.loadPrivateKeyFromStream(getClass().getClassLoader().getResourceAsStream("/3rdPay/cryptionkeys/private_key.pem"));
+		String key = RSAUtils.decrypt(orderFormInfo.getKey() , privateKey) ;
+		String orderInfoJson = AESUtils.decrypt(orderFormInfo.getOrderInfo(), AESUtils.loadAESKey(key));
+		OrderInfo orderInfo = JSON.parseObject(orderInfoJson, OrderInfo.class);
+		if(!orderInfo.getExpiredTime().equals(orderFormInfo.getExpiredTime())) {
+			return new PayResp(RespCode.SECURE_ERROR,"过期时间被人篡改过。");
+		}
+		//验证签名（用商户的公钥验签）。
+		//先获取商户的公钥
+		String publicKey = merchantService.getPublicKey(orderInfo.getMerchantNo());
+		if(!RSAUtils.verifySignature(orderInfoJson.getBytes(StandardCharsets.UTF_8), Base64.getDecoder().decode(orderFormInfo.getSign()), RSAKeyPairGenerator.loadPublicKey(publicKey))) {
+			return new PayResp(RespCode.BUSSNESS_ERROR,"签名验证失败。");
+		}
+
+		//填充收款方支付账号。
+		String merchantAccNo = merchantService.getAccNo(orderInfo.getMerchantNo());
+		orderInfo.setMerchantPayeeNo(merchantAccNo);
+		//填充付款方支付账号。（正式环境应该从session中获取，现在随机获取）
+		//从账号表中选取账户名一样的账号。找不到就随机选一个。
+		orderInfo.setMerchantPayerNo(merchantAccNo);
+		// 吊起支付页面（让用户输入支付密码）
+		return new RespMsg(RespCode.SUCCESS, "成功吊起订单信息",orderInfo);
 	}
 
 	/**

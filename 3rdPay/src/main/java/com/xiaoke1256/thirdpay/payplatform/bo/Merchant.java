@@ -48,6 +48,9 @@ public class Merchant implements Serializable {
     @TableField("default_acc_no")
     private String defaultAccNo;
 
+    @TableField("public_key")
+    private String publicKey;
+
     /**
      * 插入时间
      */

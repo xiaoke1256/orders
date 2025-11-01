@@ -14,7 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication(exclude={HibernateJpaAutoConfiguration.class})
 @EnableAutoConfiguration
-@MapperScan("com.xiaoke1256.thirdpay.payplatform.dao")
+@MapperScan({"com.xiaoke1256.thirdpay.payplatform.dao","mapper"})
 public class ThirdPayApplication {
 
 	public static void main(String[] args) {

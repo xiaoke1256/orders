@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 public class OrderInfo {
     private String payerNo;
     private String payeeNo;
+
+    private String merchantPayerNo;
+    private String merchantPayeeNo;
     private String orderType;
     private String payType;
     private BigDecimal amt;
