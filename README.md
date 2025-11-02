@@ -22,6 +22,8 @@ orders
 3. Order circulation in high throughput capacity.
 4. Use docker.
 
+[![](https://raw.githubusercontent.com/xiaoke1256/orders/master/doc/images/test_pay.png)]]
+
 ## 二、流程图
 
 ### 购物流程
