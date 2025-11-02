@@ -6,6 +6,9 @@ import com.xiaoke1256.thirdpay.payplatform.dao.HouseholdAccDao;
 import com.xiaoke1256.thirdpay.payplatform.mapper.HouseholdAccMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <p>
  * 分户账 服务实现类
@@ -16,5 +19,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class HouseholdAccDaoImpl extends ServiceImpl<HouseholdAccMapper, HouseholdAcc> implements HouseholdAccDao {
-
+    public List<HouseholdAcc> findAll(){
+        return new ArrayList<>();
+    }
 }

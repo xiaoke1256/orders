@@ -3,6 +3,8 @@ package com.xiaoke1256.thirdpay.payplatform.dao;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 分户账 服务类
@@ -12,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-11-01
  */
 public interface HouseholdAccDao extends IService<HouseholdAcc> {
-
+    List<HouseholdAcc> findAll();
 }

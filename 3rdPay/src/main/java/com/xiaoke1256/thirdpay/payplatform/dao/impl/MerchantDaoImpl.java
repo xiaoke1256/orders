@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author xiaoke_1256
  * @since 2025-10-31
  */
-@Service
+@Repository
 public class MerchantDaoImpl extends ServiceImpl<MerchantMapper, Merchant> implements MerchantDao {
 
     @Override
