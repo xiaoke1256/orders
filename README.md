@@ -22,7 +22,7 @@ orders
 3. Order circulation in high throughput capacity.
 4. Use docker.
 
-![截图](./orders/docs/images/test_pay.png?raw=true)
+![截图](./docs/images/pay_test.png)
 
 ## 二、流程图
 
