@@ -22,7 +22,7 @@ orders
 3. Order circulation in high throughput capacity.
 4. Use docker.
 
-![](https://raw.githubusercontent.com/xiaoke1256/orders/master/docs/images/test_pay.png)
+![](docs/images/test_pay.png)
 
 ## 二、流程图
 
