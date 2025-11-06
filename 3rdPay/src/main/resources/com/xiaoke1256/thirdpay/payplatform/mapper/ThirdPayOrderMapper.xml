@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoke1256.thirdpay.payplatform.mapper.ThirdPayOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder">
+        <id column="order_id" property="orderId" />
+        <result column="order_no" property="orderNo" />
+        <result column="third_payer_no" property="thirdPayerNo" />
+        <result column="third_payee_no" property="thirdPayeeNo" />
+        <result column="merchant_payer_no" property="merchantPayerNo" />
+        <result column="merchant_payee_no" property="merchantPayeeNo" />
+        <result column="order_type" property="orderType" />
+        <result column="order_status" property="orderStatus" />
+        <result column="amt" property="amt" />
+        <result column="merchant_no" property="merchantNo" />
+        <result column="merchant_order_no" property="merchantOrderNo" />
+        <result column="bussiness_no" property="bussinessNo" />
+        <result column="incident" property="incident" />
+        <result column="remark" property="remark" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="finish_time" property="finishTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        order_id, order_no, third_payer_no, third_payee_no, merchant_payer_no, merchant_payee_no, order_type, order_status, amt, merchant_no, merchant_order_no, bussiness_no, incident, remark, insert_time, update_time, finish_time
+    </sql>
+
+</mapper>
