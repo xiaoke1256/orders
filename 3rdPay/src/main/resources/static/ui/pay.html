@@ -55,7 +55,7 @@
                         console.log("parsePayForm:",data);
                         if(data.code == 0){
                             $("#payMoney").text(data.data.amt.toFixed(2));
-                            $("#payerNo").text(data.data.payerNo);
+                            $("#payerName").text(data.data.payerName);
                         }
                     }
                 })
@@ -78,7 +78,7 @@
                 ￥<span id="payMoney" style="font-size:44pt;font-weight:bold;font-family:Helvetica">00</span>
             </div>
             <div style="width:300px;text-align:center;display:flex;justify-content:space-between;margin-left:auto;margin-right:auto;">
-                <div style="text-align:left;color:#80848f">付款账号：</div><div id="payerNo" style="text-align:right;color:#80848f">***</div>
+                <div style="text-align:left;color:#80848f">付款账号：</div><div id="payerName" style="text-align:right;color:#80848f">***</div>
             </div>
             <div style="width:84%;text-align:left;margin:10px auto 0 auto;border:1px solid #5cadff;color:#80848f;border-radius:5px">
                 <div style="margin:0 5px;border-bottom:1px solid #e9eaec;font-weight:bold">

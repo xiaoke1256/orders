@@ -67,10 +67,10 @@ public class PayClient {
     }
 
     private static void validateOrderInfo(OrderInfo orderInfo) {
-        if (StringUtils.isBlank(orderInfo.getPayerNo())){
+        if (StringUtils.isBlank(orderInfo.getMerchantPayerNo())){
             throw new BussinessException("error:payerNo can not be null.");
         }
-        if (StringUtils.isBlank(orderInfo.getPayeeNo())){
+        if (StringUtils.isBlank(orderInfo.getMerchantPayeeNo())){
             throw new BussinessException("error:payeeNo can not be null.");
         }
         if (StringUtils.isBlank(orderInfo.getOrderType())){

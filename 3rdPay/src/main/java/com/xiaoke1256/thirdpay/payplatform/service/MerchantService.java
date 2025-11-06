@@ -41,4 +41,8 @@ public class MerchantService {
             return merchant.getDefaultAccNo();
         return null;
     }
+
+    public Merchant getByMerchantNo(String merchantNo) {
+        return merchantDao.getByMerchantNo(merchantNo);
+    }
 }

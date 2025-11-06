@@ -87,14 +87,16 @@ public class PayController {
 
 		//填充收款方支付账号。
 		String merchantAccNo = merchantService.getAccNo(orderInfo.getMerchantNo());
-		orderInfo.setMerchantPayeeNo(merchantAccNo);
+		HouseholdAcc merchantAccount = thirdPayService.findAccountByAccNo(merchantAccNo);
+		orderInfo.setPayeeNo(merchantAccNo);
+		orderInfo.setPayeeName(merchantAccount.getAccName());
 		//填充付款方支付账号。（正式环境应该从session中获取，现在随机获取）
 		//从账号表中选取账户名一样的账号。找不到就随机选一个。
 		HouseholdAcc account = thirdPayService.findAccountByName(orderInfo.getPayerNo());
-		orderInfo.setMerchantPayerNo(account.getAccNo());
-		orderInfo.setPayerNo(account.getAccName());
+		orderInfo.setPayerNo(account.getAccNo());
+		orderInfo.setPayerName(account.getAccName());
 		orderInfo.setRandom(null);//去掉随机码
-		//TODO 用token防止重复支付。
+		//TODO 生成token防止重复支付。
 		// 吊起支付页面（让用户输入支付密码）
 		return new RespMsg(RespCode.SUCCESS, "成功吊起订单信息",orderInfo);
 	}
@@ -106,23 +108,26 @@ public class PayController {
 	@RequestMapping(value="/pay",method={RequestMethod.POST})
 	public PayResp pay(@RequestBody PayRequest payRequest) {
 		try {
+			//TODO 校验token防止重复支付。
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<5) {
 				throw new IOException("支付失败。");//模拟5%的失败概率。
 			}
-			String payerNo = payRequest.getPayerNo();
-			String payeeNo = payRequest.getPayeeNo();
+			String thirdPayerNo = payRequest.getPayerNo();
+			String thirdPayeeNo = payRequest.getPayeeNo();
 			String orderType = payRequest.getOrderType();
 			BigDecimal amt = payRequest.getAmt();
 			String remark = payRequest.getRemark();
-			String palteform = payRequest.getPalteform();
-			//TODO 检查付款码是否正确。
-			ThirdPayOrder order = thirdPayService.pay(payerNo, payeeNo, amt, orderType,palteform, remark);
+			String merchantNo = payRequest.getMerchantNo();
+			String bussinessNo = payRequest.getBussinessNo();
+			//TODO 校验支付方支付密码。
+			ThirdPayOrder order = thirdPayService.pay(thirdPayerNo, thirdPayeeNo, amt, orderType,merchantNo, remark);
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<5) {
 				throw new IOException("支付失败。");//模拟5%的失败概率。
 			}
 			String verifyCode = makeVerifyCode(order.getOrderNo(),remark);
+			//TODO 保存支付记录成功，删除token。
 			return new PayResp(RespCode.SUCCESS,verifyCode,order.getOrderNo());
 		}catch (Exception e) {
 			logger.error(e.getMessage(), e);

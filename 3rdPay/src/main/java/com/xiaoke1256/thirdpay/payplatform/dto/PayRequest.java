@@ -1,57 +1,28 @@
 package com.xiaoke1256.thirdpay.payplatform.dto;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+@Data
 public class PayRequest implements java.io.Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private String payerNo;
-	private String payeeNo;
+
+	private String payerNo;//付款方账号
+	private String payeeNo;//收款方账号
+
+	private String merchantPayerNo;
+	private String merchantPayeeNo;
+	private String orderType;
 	private BigDecimal amt;
-	private String orderType; 
-	private String palteform;
+	private String merchantNo;
+	private String merchantOrderNo;
+	private String bussinessNo;
+	private String incident;
 	private String remark;
-	public String getPayerNo() {
-		return payerNo;
-	}
-	public void setPayerNo(String payerNo) {
-		this.payerNo = payerNo;
-	}
-	public String getPayeeNo() {
-		return payeeNo;
-	}
-	public void setPayeeNo(String payeeNo) {
-		this.payeeNo = payeeNo;
-	}
-	public BigDecimal getAmt() {
-		return amt;
-	}
-	public void setAmt(BigDecimal amt) {
-		this.amt = amt;
-	}
-	public String getOrderType() {
-		return orderType;
-	}
-	public void setOrderType(String orderType) {
-		this.orderType = orderType;
-	}
-	public String getPalteform() {
-		return palteform;
-	}
-	public void setPalteform(String palteform) {
-		this.palteform = palteform;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	
-	
 
 }

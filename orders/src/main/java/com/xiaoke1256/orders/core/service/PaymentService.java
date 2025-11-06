@@ -128,8 +128,8 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		}
 
 		PaymentTxn payment = new PaymentTxn();
-		payment.setPayerNo(orderInfo.getPayerNo());
-		payment.setPayeeNo(orderInfo.getPayeeNo());
+		payment.setPayerNo(orderInfo.getMerchantPayerNo());
+		payment.setPayeeNo(orderInfo.getMerchantPayeeNo());
 		payment.setPayType(orderInfo.getPayType());
 		payment.setPayType(orderInfo.getOrderType());
 		payment.setPayOrderNo(orderInfo.getMerchantOrderNo());

@@ -20,6 +20,8 @@ public class ThirdPayOrderDto implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String payerNo;
 	private String payeeNo;
+	private String merchantPayerNo;
+	private String merchantPayeeNo;
 	private String orderType;
 	private String payType;
 	private BigDecimal amt;

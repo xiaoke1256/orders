@@ -187,4 +187,11 @@ public class ThirdPayService {
 		}
 		return null;
 	}
+
+	public HouseholdAcc findAccountByAccNo(String accNo) {
+		LambdaQueryWrapper<HouseholdAcc> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(HouseholdAcc::getAccNo,accNo);
+		HouseholdAcc account = householdAccDao.getOne(wrapper);
+		return account;
+	}
 }

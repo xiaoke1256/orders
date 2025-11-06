@@ -10,8 +10,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderInfo {
-    private String payerNo;
-    private String payeeNo;
+    private String payerNo;//付款方账号
+    private String payeeNo;//收款方账号
+    private String payerName;//付款方名
+    private String payeeName;//收款方名
 
     private String merchantPayerNo;
     private String merchantPayeeNo;
