@@ -38,6 +38,8 @@
                 var payFormStr = getUrlParam("payFormStr");
                 console.log("payFormStr:",payFormStr);
 
+                var payInfo = {};
+
                 if(!payFormStr){
                     alert("订单信息有误");
                     return;
@@ -54,6 +56,7 @@
                     success: function(data) {
                         console.log("parsePayForm:",data);
                         if(data.code == 0){
+                            payInfo = data.data;
                             $("#payMoney").text(data.data.amt.toFixed(2));
                             $("#payerName").text(data.data.payerName);
                         }
@@ -62,8 +65,34 @@
 
 
                 $("#payBtn").click(function() {
-                    console.log("开始支付")
-                })
+                    console.log("开始支付");
+                    if(!$("#payPwd").val()){
+                        alert("请输入支付密码");
+                        return;
+                    }
+                    if($("#payPwd").val().length != 6){
+                        alert("请输入6位支付密码");
+                        return;
+                    }
+                    payInfo.payPwd = $("#payPwd").val();
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+		                headers: {'Content-Type': 'application/json'},
+                        url: "../pay/pay",
+                        data: JSON.stringify(payInfo),
+                        dataType: "json",
+                        success: function(data) {
+                            console.log("pay:",data);
+                            if(data.code == 0){
+                                //跳转到回调地址
+                            }else{
+                                console.log(data.code+":"+data.msg);
+                                //跳转到错误页面
+                            }
+                        }
+                    });
+                });
             });
         </script>
     </head>

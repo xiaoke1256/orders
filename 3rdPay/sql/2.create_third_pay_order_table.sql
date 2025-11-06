@@ -18,7 +18,7 @@ create table third_pay_order
   remark VARCHAR(256) comment '备注',
   insert_time TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null DEFAULT NOW() comment '修改时间',
-  finish_time TIMESTAMP null DEFAULT NOW() comment '订单处理完成的（含成功和失败）'
+  finish_time TIMESTAMP null comment '订单处理完成的（含成功和失败）'
 ) comment='第三方支付记录表';
 
 -- /* 商户表 */

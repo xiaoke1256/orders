@@ -2,14 +2,20 @@ package com.xiaoke1256.thirdpay.payplatform.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xiaoke1256.orders.common.RespCode;
+import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
 import com.xiaoke1256.thirdpay.payplatform.dao.HouseholdAccDao;
+import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.util.DateUtil;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
-import com.xiaoke1256.thirdpay.payplatform.mapper.ThirdPayOrderDao;
+
 import com.xiaoke1256.thirdpay.payplatform.dto.PaymentCancelRequest;
 
 @Service
@@ -35,6 +41,9 @@ public class ThirdPayService {
 
 	@Autowired
 	private HouseholdAccDao householdAccDao;
+
+	@Autowired
+	private RocketMQTemplate rocketMQTemplate;
 	
 	@Value("${third_pay_platform.notice.uri}")
 	private String noticeUri;//反馈接口
@@ -43,25 +52,49 @@ public class ThirdPayService {
 	
 	/**
 	 * 支付
-	 * @param payerNo
-	 * @param payeeNo
+	 * @param thirdPayerNo
+	 * @param thirdPayeeNo
 	 * @param amt
 	 * @param orderType
 	 * @param remark
 	 * @return
 	 */
-	public ThirdPayOrder pay(String payerNo,String payeeNo,BigDecimal amt,String orderType,String palteform, String remark) {
+	public ThirdPayOrder pay(String thirdPayerNo,
+							 String thirdPayeeNo,
+							 String merchantPayerNo,
+							 String merchantPayeeNo,
+							 String merchantOrderNo,
+							 String bussinessNo,
+							 BigDecimal amt,
+							 String orderType,
+							 String merchantNo,
+							 String incident,
+							 String remark) {
+
+		//检查支付方的余额
+		HouseholdAcc payerAcc = this.findAccountByAccNo(thirdPayerNo);
+		if(payerAcc.getBalance().compareTo(amt) < 0) {
+			throw new BusinessException("余额不足。", RespCode.BUSSNESS_ERROR.getCode(), "余额不足。");
+		}
 		ThirdPayOrder order = new ThirdPayOrder();
 		order.setOrderNo(genOrderNo());
-		order.setPayerNo(payerNo);
-		order.setPayeeNo(payeeNo);
-		order.setOrderType(orderType);
+		order.setThirdPayerNo(thirdPayerNo);
+		order.setThirdPayeeNo(thirdPayeeNo);
+		order.setMerchantPayerNo(merchantPayerNo);
+		order.setMerchantPayeeNo(merchantPayeeNo);
+		order.setMerchantOrderNo(merchantOrderNo);
+		order.setBussinessNo(bussinessNo);
 		order.setAmt(amt);
-		order.setPalteform(palteform);
+		order.setOrderType(orderType);
+		order.setMerchantNo(merchantNo);
+		order.setIncident(incident);
 		order.setRemark(remark);
-		order.setInsertTime(new Timestamp(System.currentTimeMillis()));
-		order.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+		order.setInsertTime(LocalDateTime.now());
+		order.setUpdateTime(LocalDateTime.now());
 		thirdPayOrderDao.save(order);
+		logger.info("订单生成成功:"+order.getOrderNo());
+		//发消息后续处理
+		rocketMQTemplate.syncSend("3rdPay_post_payment",order.getOrderNo());
 		return order;
 	}
 	

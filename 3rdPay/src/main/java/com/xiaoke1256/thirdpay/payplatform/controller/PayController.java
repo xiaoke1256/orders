@@ -11,6 +11,7 @@ import java.util.Random;
 
 import com.alibaba.fastjson.JSON;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
+import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.dto.*;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
 import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
@@ -35,7 +36,7 @@ import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.orders.common.security.ThreeDESUtil;
-import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
+//import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 
 @RestController
@@ -115,13 +116,17 @@ public class PayController {
 			}
 			String thirdPayerNo = payRequest.getPayerNo();
 			String thirdPayeeNo = payRequest.getPayeeNo();
+			String merchantPayerNo = payRequest.getMerchantPayerNo();
+			String merchantPayeeNo = payRequest.getMerchantPayeeNo();
+			String merchantOrderNo = payRequest.getMerchantOrderNo();
 			String orderType = payRequest.getOrderType();
 			BigDecimal amt = payRequest.getAmt();
 			String remark = payRequest.getRemark();
 			String merchantNo = payRequest.getMerchantNo();
+			String incident = payRequest.getIncident();
 			String bussinessNo = payRequest.getBussinessNo();
 			//TODO 校验支付方支付密码。
-			ThirdPayOrder order = thirdPayService.pay(thirdPayerNo, thirdPayeeNo, amt, orderType,merchantNo, remark);
+			ThirdPayOrder order = thirdPayService.pay(thirdPayerNo, thirdPayeeNo, merchantPayerNo, merchantPayeeNo, merchantOrderNo, bussinessNo, amt, orderType, merchantNo, incident, remark);
 			Thread.sleep(50+RandomUtils.nextInt(50));//模拟网络不稳定
 			if(RandomUtils.nextInt(100)<5) {
 				throw new IOException("支付失败。");//模拟5%的失败概率。
@@ -145,9 +150,9 @@ public class PayController {
 		try {
 			//TODO 校验调用方的身份，权限。
 			//TODO 校验订单是否是是调用方建立的。
-			ThirdPayOrder order = thirdPayService.getByOrderNo(orderNo);
+			//ThirdPayOrder order = thirdPayService.getByOrderNo(orderNo);
 			ThirdPayOrderDto orderDto = new ThirdPayOrderDto();
-			BeanUtils.copyProperties(orderDto, order);
+			//BeanUtils.copyProperties(orderDto, order);
 			return new OrderResp(orderDto);
 		}catch(Exception ex) {
 			logger.error(ex.getMessage(),ex);
@@ -195,13 +200,17 @@ public class PayController {
 	
 	/**
 	 * 生成校验码
-	 * 先Md5算法，然后用实现约定的算法(3DES)加密。
-	 * 注意：如果用于生产环境应考虑不对称加密。
+	 * 先Md5算法，然后用不对称算法签名。
 	 * @return
 	 * @throws Exception 
 	 */
 	private String makeVerifyCode(String orderNo ,String remark) throws Exception {
 		String randomNum = Integer.toHexString(new Random().nextInt());//随机值，用于混淆加密过程。
-		return ThreeDESUtil.encryptThreeDESECB(randomNum+MD5Util.getMD5(orderNo+"-"+remark), key) ;
+		return Base64.getEncoder().encodeToString(
+				RSAUtils.signData(
+						(randomNum+MD5Util.getMD5(orderNo+"-"+remark)).getBytes(),
+						RSAKeyPairGenerator.loadPrivateKeyFromStream(getClass().getResourceAsStream("/3rdPay/cryptionkeys/private_key.pem"))
+				)
+		);
 	}
 }

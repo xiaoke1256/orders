@@ -24,5 +24,6 @@ public class PayRequest implements java.io.Serializable {
 	private String bussinessNo;
 	private String incident;
 	private String remark;
+	private String payPwd;
 
 }
