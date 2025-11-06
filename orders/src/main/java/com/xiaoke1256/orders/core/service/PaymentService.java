@@ -8,9 +8,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.apache.rocketmq.spring.support.RocketMQHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +38,17 @@ import com.xiaoke1256.orders.pay.service.PayBusinessService;
 @Service
 @Transactional
 public class PaymentService extends AbstractPayBusinessService implements PayBusinessService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(PaymentService.class);
+
 	@PersistenceContext(unitName="default")
 	private EntityManager entityManager ;
 	
 	@Autowired
 	private OrederService orederService;
+
+	@Autowired
+	private RocketMQTemplate rocketMQTemplate;
 	
 	/**
 	 * 处理支付(收到第三方平台的支付看反馈后)
@@ -95,7 +109,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	}
 
 	public void savePayment(ThirdPayOrderDto orderInfo) {
-		//TODO 检查token
+		//TODO 检查token，防止重复提交
 		if (StringUtils.isBlank(orderInfo.getOrderType())) {
 			// 默认为消费
 			orderInfo.setOrderType(ThirdPayOrderDto.ORDER_TYPE_CONSUME);
@@ -128,7 +142,10 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		payment.setDealStatus(PaymentTxn.DEAL_STATUS_INIT);
 		entityManager.persist(payment);
 
-		//TODO 发延迟消息，清理未支付的订单
+		//发延迟消息，清理未支付的订单
+		Message<String> strMessage = MessageBuilder.withPayload(JSON.toJSONString(payment) ).setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build();
+		SendResult sendResult = rocketMQTemplate.syncSendDelayTimeSeconds("clear_expired_order", strMessage,9);//9对应的常量是 5m;5分钟后未支付则清理
+		LOG.info("同步发送字符串{}, 发送结果{}", payment, sendResult);
 	}
 
 }

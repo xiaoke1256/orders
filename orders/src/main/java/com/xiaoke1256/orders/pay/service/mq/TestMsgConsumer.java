@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 /** 测试消费者 */
 @Service
-@RocketMQMessageListener(topic = "test1", consumerGroup = "consumerGroup")
+@RocketMQMessageListener(topic = "test1", consumerGroup = "testConsumerGroup")
 public class TestMsgConsumer implements RocketMQListener<String> {
     @Override
     public void onMessage(String s) {

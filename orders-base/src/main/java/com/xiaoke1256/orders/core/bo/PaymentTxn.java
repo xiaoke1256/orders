@@ -22,6 +22,20 @@ public class PaymentTxn {
 	 * 处理状态：已记录分户账
 	 */
 	public static final String DEAL_STATUS_HOUSEHOLD = "1";
+
+
+	/**
+	 * 支付状态：未支付
+	 */
+	public static final String PAY_STATUS_INIT = "0";
+
+	/**
+	 * 支付状态：支付超时
+	 */
+	public static final String PAY_STATUS_EXPIRED = "4";
+
+
+
 	@Id
 	@Column(name = "payment_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +76,9 @@ public class PaymentTxn {
 	
 	@Column(name = "deal_status")
 	private String dealStatus="0";
+
+	@Column(name = "pay_status")
+	private String payStatus="0";
 	
 	@Column(name = "insert_time")
 	private Timestamp insertTime;
@@ -163,6 +180,14 @@ public class PaymentTxn {
 
 	public void setDealStatus(String dealStatus) {
 		this.dealStatus = dealStatus;
+	}
+
+	public String getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(String payStatus) {
+		this.payStatus = payStatus;
 	}
 
 	public Timestamp getInsertTime() {
