@@ -42,6 +42,8 @@ public class PayController {
 			paymentService.savePayment(order);
 			OrderInfo orderInfo = new OrderInfo();
 			PropertyUtils.copyProperties(orderInfo, order);
+			orderInfo.setPayeeNo("000000000000000000");//消费支付的订单收款方默认都是orders平台
+			orderInfo.setMerchantPayeeNo("orders");
 			try( InputStream is = PayClient.class.getResourceAsStream("/keys/private_key.pem")){
 				String payFormStr = PayClient.generateOrderFormString(orderInfo, RSAKeyPairGenerator.loadPrivateKeyFromStream(is));
 				return new RespMsg(RespCode.SUCCESS,"success",payFormStr);
