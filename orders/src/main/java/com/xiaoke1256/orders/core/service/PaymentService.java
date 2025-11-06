@@ -143,8 +143,9 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		entityManager.persist(payment);
 
 		//发延迟消息，清理未支付的订单
-		Message<String> strMessage = MessageBuilder.withPayload(JSON.toJSONString(payment) ).setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build();
-		SendResult sendResult = rocketMQTemplate.syncSendDelayTimeSeconds("clear_expired_order", strMessage,9);//9对应的常量是 5m;5分钟后未支付则清理
+		Message<String> strMessage = MessageBuilder.withPayload(JSON.toJSONString(payment) )
+				.setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build();
+		SendResult sendResult = rocketMQTemplate.syncSend("clear_expired_order", strMessage,2000,9);//9对应的常量是 5m;5分钟后未支付则清理
 		LOG.info("同步发送字符串{}, 发送结果{}", payment, sendResult);
 	}
 
