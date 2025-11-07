@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -65,10 +66,12 @@ public class PayController {
 	 * @return
 	 */
 	@RequestMapping(value="/callback_success",method= {RequestMethod.GET})
-	public void callbackSuccess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ModelAndView callbackSuccess() throws ServletException, IOException {
 		System.out.println("callback_success!");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/payment/callback_success.html");
-		dispatcher.forward(request, response);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("order_id", "TestOrderId");
+		modelAndView.setViewName("/payment/callback_success.html"); // 注意路径的正确性
+		return modelAndView;
 		//return "forward:/static/payment/callback_success.html";
 	}
 	
