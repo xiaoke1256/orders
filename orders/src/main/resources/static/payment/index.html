@@ -144,6 +144,7 @@
 	  
   });
 
+  var isCallBacked = false;
   function showIframe(url){
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
@@ -159,12 +160,22 @@
 		"top":-dialogHeight
 	});
   	$("#payDialog").show();
+  	isCallBacked = false;
   	$("#payIframe").attr('src',url);
   }
 
+  function setIsCallBacked(){
+    isCallBacked = true;
+  }
   function closeIframe(){
-  	if(window.confirm("放弃支付？")){
+    console.log("isCallBacked:"+isCallBacked);
+    if (!isCallBacked){
+  	  if(window.confirm("放弃支付？")){
   		$("#payDialog").hide();
+  	  }
+  	} else{
+  	  $('#payIframe').attr('src','');
+  	  $("#payDialog").hide();
   	}
   }
 	  
