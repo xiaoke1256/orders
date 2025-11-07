@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
@@ -53,6 +58,18 @@ public class PayController {
 			return new RespMsg(e);
 		}
 
+	}
+
+	/**
+	 * 支付平台处理成功，回调我们
+	 * @return
+	 */
+	@RequestMapping(value="/callback_success",method= {RequestMethod.GET})
+	public void callbackSuccess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("callback_success!");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/payment/callback_success.html");
+		dispatcher.forward(request, response);
+		//return "forward:/static/payment/callback_success.html";
 	}
 	
 	/**
