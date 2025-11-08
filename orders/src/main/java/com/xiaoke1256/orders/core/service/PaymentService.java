@@ -130,6 +130,9 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		if( count!=null && count.intValue()>0){
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
+		if(PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已支付，请等待订单处理结果。");
+		}
 		if(!PayOrder.ORDER_STATUS_INIT.equals(payOrder.getStatus())) {
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
