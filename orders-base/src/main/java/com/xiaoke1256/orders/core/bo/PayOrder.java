@@ -16,34 +16,36 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table( name = "PAY_ORDER")
+@Table( name = "pay_order")
 public class PayOrder {
 	
 	/**订单状态：待支付*/
-	public static final String ORDER_STATUS_PAYING = "0";
+	public static final String ORDER_STATUS_INIT = "0";
+	/**订单状态：支付中*/
+	public static final String ORDER_STATUS_PAYING = "1";
 	/**订单状态：已支付*/
-	public static final String ORDER_STATUS_PAYED = "1";
+	public static final String ORDER_STATUS_PAYED = "2";
 	
 	@Id
 	@Column(name = "pay_order_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long payOrderId;
 	
-	@Column(name = "PAY_ORDER_NO")
+	@Column(name = "pay_order_no")
 	private String payOrderNo;
-	@Column(name = "TOTAL_AMT")
+	@Column(name = "total_amt")
 	private BigDecimal totalAmt;
-	@Column(name = "CARRIAGE_AMT")
+	@Column(name = "carriage_amt")
 	private BigDecimal  carriageAmt;
-	@Column(name = "PAYER_NO")
+	@Column(name = "payer_no")
 	private String payerNo;
 	@OneToMany(mappedBy = "payOrder",cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Set<SubOrder> subOrders;
-	@Column(name = "INSERT_TIME")
+	@Column(name = "insert_time")
 	private Timestamp insertTime;
-	@Column(name = "UPDATE_TIME")
+	@Column(name = "update_time")
 	private Timestamp updateTime;
-	@Column(name = "STATUS")
+	@Column(name = "status")
 	private String status="0";
 
 	

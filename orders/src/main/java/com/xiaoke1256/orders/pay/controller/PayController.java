@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.pay.controller;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
 import com.xiaoke1256.orders.core.service.PaymentService;
@@ -15,10 +16,7 @@ import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.RequestDispatcher;
@@ -45,11 +43,12 @@ public class PayController {
 	public RespMsg getPayFormStr(@RequestBody ThirdPayOrderDto order) throws Exception {
 		try {
 			//保存订单信息
-			paymentService.savePayment(order);
+			PaymentTxn paymentTxn = paymentService.savePayment(order);
 			OrderInfo orderInfo = new OrderInfo();
 			PropertyUtils.copyProperties(orderInfo, order);
 			orderInfo.setPayeeNo("000000000000000000");//消费支付的订单收款方默认都是orders平台
 			orderInfo.setMerchantPayeeNo("orders");
+			orderInfo.setBussinessNo(paymentTxn.getPaymentId()+"");
 			try( InputStream is = PayClient.class.getResourceAsStream("/keys/private_key.pem")){
 				String payFormStr = PayClient.generateOrderFormString(orderInfo, RSAKeyPairGenerator.loadPrivateKeyFromStream(is));
 				return new RespMsg(RespCode.SUCCESS,"success",payFormStr);
@@ -66,13 +65,15 @@ public class PayController {
 	 * @return
 	 */
 	@RequestMapping(value="/callback_success",method= {RequestMethod.GET})
-	public ModelAndView callbackSuccess() throws ServletException, IOException {
-		System.out.println("callback_success!");
+	public ModelAndView callbackSuccess(@RequestParam("orderNo") String thirdPayOrderNo,
+										@RequestParam("merchantOrderNo") String merchantOrderNo,
+										@RequestParam("bussinessNo") String bussinessNo) throws ServletException, IOException {
+		//改掉订单状态
+		paymentService.payed(thirdPayOrderNo,Long.parseLong(bussinessNo));
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("order_id", "TestOrderId");
 		modelAndView.setViewName("/payment/callback_success.html"); // 注意路径的正确性
 		return modelAndView;
-		//return "forward:/static/payment/callback_success.html";
 	}
 	
 	/**

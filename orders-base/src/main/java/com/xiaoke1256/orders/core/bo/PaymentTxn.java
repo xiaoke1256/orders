@@ -30,6 +30,11 @@ public class PaymentTxn {
 	public static final String PAY_STATUS_INIT = "0";
 
 	/**
+	 * 支付状态：支付处理中
+	 */
+	public static final String PAY_STATUS_PAYING = "1";
+
+	/**
 	 * 支付状态：支付超时
 	 */
 	public static final String PAY_STATUS_EXPIRED = "4";

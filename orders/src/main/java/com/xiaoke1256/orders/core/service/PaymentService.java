@@ -1,12 +1,12 @@
 package com.xiaoke1256.orders.core.service;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -52,6 +52,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	
 	/**
 	 * 处理支付(收到第三方平台的支付看反馈后)
+	 * @deprecated
 	 * @param payOrderNo 支付单号
 	 * @param thirdOrderNo 第三方支付平台的订单号
 	 * @param payType 支付类型
@@ -60,7 +61,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		
 		entityManager.refresh(payOrder, LockModeType.PESSIMISTIC_WRITE);
-		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {
+		if(!PayOrder.ORDER_STATUS_INIT.equals(payOrder.getStatus())) {
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 		
@@ -80,6 +81,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	}
 	
 	/**
+	 * @deprecated
 	 * 取消支付
 	 * @param orgTxn
 	 * @param reason
@@ -87,7 +89,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	public void cancel(PaymentTxn orgTxn,String reason) {
 		String payOrderNo = orgTxn.getPayOrderNo();
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
-		payOrder.setStatus(PayOrder.ORDER_STATUS_PAYING);
+		payOrder.setStatus(PayOrder.ORDER_STATUS_INIT);
 		payOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		entityManager.merge(payOrder);
 		for(SubOrder subOrder:payOrder.getSubOrders()) {
@@ -98,6 +100,11 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		//TODO 推送mq，通知其他系统。
 	}
 
+	/**
+	 * @deprecated
+	 * @param payOrderNo
+	 * @return
+	 */
 	@Override
 	protected PaymentTxn getPaymentByBusiness(String payOrderNo) {
 		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
@@ -108,7 +115,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		return null;
 	}
 
-	public void savePayment(ThirdPayOrderDto orderInfo) {
+	public PaymentTxn savePayment(ThirdPayOrderDto orderInfo) {
 		//TODO 检查token，防止重复提交
 		if (StringUtils.isBlank(orderInfo.getOrderType())) {
 			// 默认为消费
@@ -123,7 +130,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		if( count!=null && count.intValue()>0){
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
-		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())) {
+		if(!PayOrder.ORDER_STATUS_INIT.equals(payOrder.getStatus())) {
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 
@@ -147,6 +154,37 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 				.setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build();
 		SendResult sendResult = rocketMQTemplate.syncSend("clear_expired_order", strMessage,2000,9);//9对应的常量是 5m;5分钟后未支付则清理
 		LOG.info("同步发送字符串{}, 发送结果{}", payment, sendResult);
+		return payment;
 	}
+
+	/**
+	 * 第三方支付机构已受理，等待支付结果
+	 * @param
+	 */
+	public void payed(String thirdPayOrderNo,Long paymentId) {
+		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
+		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus , t.thirdOrderNo = :thirdOrderNo ,t.updateTime = :updateTime" +
+				"where t.paymentId = :paymentId and t.payStatus='" + PaymentTxn.PAY_STATUS_INIT + "'");
+		int resultCount = updateQuery.setParameter("payStatus", PaymentTxn.PAY_STATUS_PAYING)
+				.setParameter("thirdOrderNo", thirdPayOrderNo)
+				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+				.setParameter("paymentId", paymentId).executeUpdate();
+		if(resultCount==0){
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
+		}
+		//处理payOrder状态
+		PayOrder payOrder = orederService.getPayOrder(payment.getPayOrderNo());
+		Query updatePayOrderQuery = entityManager.createQuery("update PayOrder t set t.status = :status ,t.updateTime = :updateTime" +
+				"where t.payOrderNo=:payOrderNo and t.status = '"+PayOrder.ORDER_STATUS_INIT+"'");
+		int payOrderResultCount = updatePayOrderQuery.setParameter("status", PayOrder.ORDER_STATUS_PAYING)
+				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+				.setParameter("payOrderNo", payment.getPayOrderNo()).executeUpdate();
+		if(payOrderResultCount==0){
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
+		}
+
+	}
+
+
 
 }

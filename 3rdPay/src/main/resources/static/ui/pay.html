@@ -86,7 +86,11 @@
                             console.log("pay:",data);
                             if(data.code == 0){
                                 //跳转到回调地址
-                                window.open('http://www.orders.com:8081/pay/callback_success','_self');
+                                var orderNo= data.data;
+                                var merchantOrderNo = payInfo.merchantOrderNo
+                                var bussinessNo = payInfo.bussinessNo
+                                var params = "?orderNo="+orderNo+"&merchantOrderNo="+merchantOrderNo+"&bussinessNo="+bussinessNo;
+                                window.open('http://www.orders.com:8081/pay/callback_success'+params,'_self');
                             }else{
                                 console.log(data.code+":"+data.msg);
                                 //跳转到错误页面

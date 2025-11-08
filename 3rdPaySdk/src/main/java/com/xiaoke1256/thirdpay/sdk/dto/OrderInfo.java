@@ -24,6 +24,7 @@ public class OrderInfo {
     private String merchantOrderNo;
     private String incident;
     private String remark;
+    private String bussinessNo;
     /** 随机码 */
     private String random;
     /** 过期时间 */
