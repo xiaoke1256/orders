@@ -68,12 +68,18 @@ public class PayController {
 	public ModelAndView callbackSuccess(@RequestParam("orderNo") String thirdPayOrderNo,
 										@RequestParam("merchantOrderNo") String merchantOrderNo,
 										@RequestParam("bussinessNo") String bussinessNo) throws ServletException, IOException {
-		//改掉订单状态
-		paymentService.payed(thirdPayOrderNo,Long.parseLong(bussinessNo));
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("order_id", "TestOrderId");
-		modelAndView.setViewName("/payment/callback_success.html"); // 注意路径的正确性
-		return modelAndView;
+		try{
+			//改掉订单状态
+			paymentService.payed(thirdPayOrderNo,Long.parseLong(bussinessNo));
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("order_id", "TestOrderId");
+			modelAndView.setViewName("/payment/callback_success.html"); // 注意路径的正确性
+			return modelAndView;
+		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
+			//TODO 跳转向异常页面
+			return null;
+		}
 	}
 	
 	/**

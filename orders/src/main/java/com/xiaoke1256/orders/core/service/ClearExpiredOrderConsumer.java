@@ -49,6 +49,7 @@ public class ClearExpiredOrderConsumer implements RocketMQListener<String> {
                         .setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build(), 2000, 9);
                 return;
             }
+            //TODO 有可能是第三方支付平台支付了，但是没有通知我们，这里需要处理。
             paymentEntity.setPayStatus(PaymentTxn.PAY_STATUS_EXPIRED);
             paymentEntity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
             entityManager.merge(paymentEntity);

@@ -167,7 +167,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	public void payed(String thirdPayOrderNo,Long paymentId) {
 		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
 		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus , t.thirdOrderNo = :thirdOrderNo ,t.updateTime = :updateTime" +
-				"where t.paymentId = :paymentId and t.payStatus='" + PaymentTxn.PAY_STATUS_INIT + "'");
+				" where t.paymentId = :paymentId and t.payStatus='" + PaymentTxn.PAY_STATUS_INIT + "'");
 		int resultCount = updateQuery.setParameter("payStatus", PaymentTxn.PAY_STATUS_PAYING)
 				.setParameter("thirdOrderNo", thirdPayOrderNo)
 				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
@@ -178,7 +178,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		//处理payOrder状态
 		PayOrder payOrder = orederService.getPayOrder(payment.getPayOrderNo());
 		Query updatePayOrderQuery = entityManager.createQuery("update PayOrder t set t.status = :status ,t.updateTime = :updateTime" +
-				"where t.payOrderNo=:payOrderNo and t.status = '"+PayOrder.ORDER_STATUS_INIT+"'");
+				" where t.payOrderNo=:payOrderNo and t.status = '"+PayOrder.ORDER_STATUS_INIT+"'");
 		int payOrderResultCount = updatePayOrderQuery.setParameter("status", PayOrder.ORDER_STATUS_PAYING)
 				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
 				.setParameter("payOrderNo", payment.getPayOrderNo()).executeUpdate();
