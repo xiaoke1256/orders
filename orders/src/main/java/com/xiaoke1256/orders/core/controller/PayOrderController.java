@@ -1,9 +1,6 @@
 package com.xiaoke1256.orders.core.controller;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +79,8 @@ public class PayOrderController {
 	@RequestMapping(value="/search",method={RequestMethod.GET})
 	@ResponseBody
 	public PayOrderQueryResultResp searchOrders(PayOrderCondition condition) {
-		condition.setStatus(PayOrder.ORDER_STATUS_INIT);//0是待支付
+		//condition.setStatus(PayOrder.ORDER_STATUS_INIT);//0是待支付
+		condition.setStatuses(Arrays.asList(PayOrder.ORDER_STATUS_INIT,PayOrder.ORDER_STATUS_PAYING));
 		QueryResult<PayOrder> queryResult = orederService.searchPayOrderByCondition(condition);
 		List<com.xiaoke1256.orders.core.dto.PayOrder> voList = new ArrayList<com.xiaoke1256.orders.core.dto.PayOrder>();
 		for(PayOrder payOrder:queryResult.getResultList()) {

@@ -2,6 +2,8 @@ package com.xiaoke1256.orders.core.dto;
 
 import com.xiaoke1256.orders.common.page.BaseCondition;
 
+import java.util.List;
+
 public class PayOrderCondition extends BaseCondition {
 
 	/**
@@ -14,6 +16,8 @@ public class PayOrderCondition extends BaseCondition {
 	private String payerNo;
 	
 	private String status;
+
+	private List<String> statuses;
 
 	public String getPayOrderNo() {
 		return payOrderNo;
@@ -38,6 +42,12 @@ public class PayOrderCondition extends BaseCondition {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+
+	public List<String> getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(List<String> statuses) {
+		this.statuses = statuses;
+	}
 }

@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
@@ -313,6 +314,10 @@ public class OrederService {
 		if(!StringUtils.isEmpty(condition.getStatus())) {
 			hqlSb.append(" and status = :status");
 			paramMap.put("status", condition.getStatus());
+		}
+		if(condition.getStatuses()!=null && condition.getStatuses().size()>0){
+			hqlSb.append(" and status in (:statuses)");
+			paramMap.put("statuses", condition.getStatuses());
 		}
 		countQl= "select count(o) "+hqlSb.toString();
 		hqlSb.append(" order by insertTime ");
