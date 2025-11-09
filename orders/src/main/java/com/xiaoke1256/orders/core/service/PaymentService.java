@@ -167,6 +167,10 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	 */
 	public void payed(String thirdPayOrderNo,Long paymentId) {
 		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
+		if(PaymentTxn.PAY_STATUS_SUCCESS.equals( payment.getPayStatus())||PaymentTxn.PAY_STATUS_FAIL.equals( payment.getPayStatus())){
+			LOG.info("订单已处理，忽略");
+			return;
+		}
 		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus , t.thirdOrderNo = :thirdOrderNo ,t.updateTime = :updateTime" +
 				" where t.paymentId = :paymentId and t.payStatus='" + PaymentTxn.PAY_STATUS_INIT + "'");
 		int resultCount = updateQuery.setParameter("payStatus", PaymentTxn.PAY_STATUS_PAYING)

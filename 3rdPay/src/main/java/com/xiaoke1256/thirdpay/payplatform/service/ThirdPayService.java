@@ -1,5 +1,6 @@
 package com.xiaoke1256.thirdpay.payplatform.service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -233,7 +234,12 @@ public class ThirdPayService {
 	}
 
 	@Transactional(noRollbackFor = AppException.class)
-	public void doPostPayment(String orderNo) {
+	public void doPostPayment(String orderNo) throws InterruptedException {
+		Thread.sleep(50*1000+ RandomUtils.nextInt(50*1000));//模拟网络不稳定
+		if(RandomUtils.nextInt(100)<5) {
+			throw new AppException("支付失败。");//模拟5%的失败概率。
+		}
+
 		ThirdPayOrder thirdPayOrder = thirdPayOrderDao.lockByOrderNo(orderNo);
 		if (!ThirdPayOrder.STATUS_ACCEPT.equals(thirdPayOrder.getOrderStatus())) {
 			throw new AppException("订单状态不是待处理");
@@ -257,5 +263,9 @@ public class ThirdPayService {
 
 		//修改订单状态
 		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_SUCCESS, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+
+		if(RandomUtils.nextInt(100)<5) {
+			throw new AppException("支付失败。");//模拟5%的失败概率。
+		}
 	}
 }

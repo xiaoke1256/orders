@@ -8,6 +8,7 @@ import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
 import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 import com.xiaoke1256.thirdpay.sdk.dto.NotifyInfo;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +58,10 @@ public class PostPaymentConsumer implements RocketMQListener<String> {
             }else{
                 //TODO 记录异常信息
             }
+        } catch (Exception e) {
+            //其他异常就算消息没有消费掉。
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
