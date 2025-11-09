@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
@@ -16,10 +17,12 @@ import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -94,7 +97,8 @@ public class ThirdPayService {
 		thirdPayOrderDao.save(order);
 		logger.info("订单生成成功:"+order.getOrderNo());
 		//发消息后续处理
-		rocketMQTemplate.syncSend("3rdPay_post_payment",order.getOrderNo());
+		rocketMQTemplate.syncSend("3rdPay_post_payment", MessageBuilder.withPayload(JSON.toJSONString(order) )
+				.setHeader(RocketMQHeaders.MESSAGE_ID, order.getOrderId()).build() );
 		return order;
 	}
 	
@@ -226,5 +230,32 @@ public class ThirdPayService {
 		wrapper.eq(HouseholdAcc::getAccNo,accNo);
 		HouseholdAcc account = householdAccDao.getOne(wrapper);
 		return account;
+	}
+
+	@Transactional(noRollbackFor = AppException.class)
+	public void doPostPayment(String orderNo) {
+		ThirdPayOrder thirdPayOrder = thirdPayOrderDao.lockByOrderNo(orderNo);
+		if (!ThirdPayOrder.STATUS_ACCEPT.equals(thirdPayOrder.getOrderStatus())) {
+			throw new AppException("订单状态不是待处理");
+		}
+
+		String payerAccNo = thirdPayOrder.getThirdPayerNo();
+		String payeeAccNo = thirdPayOrder.getThirdPayeeNo();
+
+		//找到支付方账号，检查余额，减去支付金额
+		HouseholdAcc payerHousehold = householdAccDao.lockByAccNo(payerAccNo);
+		if(payerHousehold.getBalance().compareTo(thirdPayOrder.getAmt())<0){
+			//改订单状态 TODO 要将处理失败原因，记录到订单中
+			thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_FAIL, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+			throw new BusinessException("支付方余额不足");
+		}
+		householdAccDao.updateBalance(payerAccNo,payerHousehold.getBalance().subtract(thirdPayOrder.getAmt()));
+
+		//找到收款人账号，加上收款金额
+		HouseholdAcc payeeHousehold = householdAccDao.lockByAccNo(payeeAccNo);
+		householdAccDao.updateBalance(payeeAccNo,payeeHousehold.getBalance().add(thirdPayOrder.getAmt()));
+
+		//修改订单状态
+		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_SUCCESS, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
 	}
 }

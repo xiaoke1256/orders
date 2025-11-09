@@ -39,6 +39,16 @@ public class PaymentTxn {
 	 */
 	public static final String PAY_STATUS_EXPIRED = "4";
 
+	/**
+	 * 支付状态：支付成功
+	 */
+	public static final String PAY_STATUS_FAIL = "8";
+
+	/**
+	 * 支付状态：支付成功
+	 */
+	public static final String PAY_STATUS_SUCCESS = "9";
+
 
 
 	@Id

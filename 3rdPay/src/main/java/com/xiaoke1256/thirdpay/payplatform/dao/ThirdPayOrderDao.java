@@ -17,9 +17,11 @@ import java.util.List;
  */
 public interface ThirdPayOrderDao extends IService<ThirdPayOrder> {
 
-    void updateStatus(String orderNo, String statusSuccess, Timestamp now, Timestamp now1);
+    void updateStatus(String orderNo, String statusSuccess, Timestamp updateTime, Timestamp finishTime);
 
     ThirdPayOrder findByOrderNo(String orderNo);
+
+    ThirdPayOrder lockByOrderNo(String orderNo);
 
     List<String> findOrderNosByLimitTime(String statusAccept, Date expiredTime);
 }

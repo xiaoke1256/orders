@@ -28,7 +28,6 @@ public class CodeGenerator {
                 "thirdpayUser", "xiaoke_1256").globalConfig(builder -> {
 
                     builder.outputDir( finalModulePath + "/src/main/java")
-                            .fileOverride()
                             .author("xiaoke_1256")
                             .dateType(DateType.TIME_PACK)
                             .commentDate("yyyy-MM-dd");
@@ -40,12 +39,12 @@ public class CodeGenerator {
                     .service("dao")
                     .serviceImpl("dao.impl")
                     .controller("controller")
-                    .pathInfo(Collections.singletonMap(OutputFile.xml, finalModulePath + "/src/main/resources/mapper"));
+                    .pathInfo(Collections.singletonMap(OutputFile.xml, finalModulePath + "/src/main/resources/com/xiaoke1256/thirdpay/payplatform/mapper"));
         }).strategyConfig(builder -> {
-            builder.addInclude("third_pay_order") // 设置需要生成的表名
+            builder.addInclude("merchant") // 设置需要生成的表名
                     .addTablePrefix("t_", "sys_") // 设置过滤表前缀
                     // 实体策略配置
-                    .entityBuilder()
+                    .entityBuilder().fileOverride()
                     .enableLombok() // 开启 Lombok
                     .naming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略
                     .columnNaming(NamingStrategy.underline_to_camel) // 数据库表字段映射到实体的命名策略
@@ -59,7 +58,7 @@ public class CodeGenerator {
                     .formatServiceFileName("%sDao") // 格式化 service 接口文件名称
                     .formatServiceImplFileName("%sDaoImpl") // 格式化 service 实现类文件名称
                     // Mapper 策略配置
-                    .mapperBuilder()
+                    .mapperBuilder().fileOverride()
                     .enableBaseResultMap() // 启用 BaseResultMap 生成
                     .enableBaseColumnList(); // 启用 BaseColumnList 生成
         }).templateEngine(new VelocityTemplateEngine())

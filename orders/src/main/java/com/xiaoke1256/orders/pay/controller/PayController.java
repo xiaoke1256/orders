@@ -11,6 +11,7 @@ import com.xiaoke1256.orders.pay.service.PayBusinessConfig;
 import com.xiaoke1256.orders.pay.service.PayBusinessService;
 import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 import com.xiaoke1256.thirdpay.sdk.PayClient;
+import com.xiaoke1256.thirdpay.sdk.dto.NotifyInfo;
 import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -81,7 +82,32 @@ public class PayController {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * 支付平台处理失败，回调我们
+	 * @return
+	 */
+	@RequestMapping(value="/callback_fail",method= {RequestMethod.GET})
+	public ModelAndView callbackFail(){
+		return null;
+	}
+
+	/**
+	 * 支付平台处理完成通知我们
+	 * @param notifyInfo
+	 * @return
+	 */
+	@RequestMapping(value="/notify",method= {RequestMethod.POST})
+	public RespMsg notify(@RequestBody NotifyInfo notifyInfo) throws ServletException, IOException {
+		if(RespMsg.SUCCESS.getCode().equals(notifyInfo.getResultCode())) {
+			paymentService.notifyPaySuccess(notifyInfo.getMerchantOrderNo(), notifyInfo.getOrderNo(), Long.parseLong(notifyInfo.getBussinessNo()));
+		}else {
+			paymentService.notifyPayFail(notifyInfo.getMerchantOrderNo(), notifyInfo.getOrderNo(), Long.parseLong(notifyInfo.getBussinessNo()), notifyInfo.getResultCode(), notifyInfo.getMsg());
+		}
+		return RespMsg.SUCCESS;
+	}
+
+
 	/**
 	 * 第三方支付平台通知我们，取消支付
 	 * @param request

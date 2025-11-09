@@ -2,7 +2,6 @@ package com.xiaoke1256.thirdpay.payplatform.mapper;
 
 import com.xiaoke1256.thirdpay.payplatform.bo.Merchant;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -10,9 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author xiaoke_1256
- * @since 2025-10-31
+ * @since 2025-11-09
  */
-@Mapper
 public interface MerchantMapper extends BaseMapper<Merchant> {
 
 }

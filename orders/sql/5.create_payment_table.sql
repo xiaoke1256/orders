@@ -13,7 +13,7 @@ create table payment_txn
   incident VARCHAR(256) comment '事由',
   remark VARCHAR(256) comment '备注',
   deal_status char(1) comment '处理状态：“0:待处理;1:已处理分户账”',
-  pay_status char(1) comment '支付状态：0:未支付;1:支付处理中;2:已支付;3:支付取消;4:支付超时;8:支付失败;9:结束',
+  pay_status char(1) comment '支付状态：0:未支付;1:支付处理中;2:已支付;3:支付取消;4:支付超时;8:支付失败;9:成功结束',
   insert_time TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null DEFAULT NOW() comment '修改时间'
 ) comment='支付流水表；本表不处理订单状态，订单状态态由订单表处理';

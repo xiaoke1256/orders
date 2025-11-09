@@ -8,14 +8,17 @@
         <result column="merchant_no" property="merchantNo" />
         <result column="merchant_name" property="merchantName" />
         <result column="default_acc_no" property="defaultAccNo" />
-        <result column="public_key" property="publicKey"/>
+        <result column="public_key" property="publicKey" />
         <result column="insert_time" property="insertTime" />
         <result column="update_time" property="updateTime" />
+        <result column="success_return_url" property="successReturnUrl" />
+        <result column="fail_return_url" property="failReturnUrl" />
+        <result column="notify_url" property="notifyUrl" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        merchant_id, merchant_no, merchant_name, default_acc_no, public_key, insert_time, update_time
+        merchant_id, merchant_no, merchant_name, default_acc_no, public_key, insert_time, update_time, success_return_url, fail_return_url, notify_url
     </sql>
 
 </mapper>

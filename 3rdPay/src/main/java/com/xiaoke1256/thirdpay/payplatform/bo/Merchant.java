@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author xiaoke_1256
- * @since 2025-10-31
+ * @since 2025-11-09
  */
 @Getter
 @Setter
@@ -48,6 +48,9 @@ public class Merchant implements Serializable {
     @TableField("default_acc_no")
     private String defaultAccNo;
 
+    /**
+     * 商户公钥
+     */
     @TableField("public_key")
     private String publicKey;
 
@@ -62,4 +65,22 @@ public class Merchant implements Serializable {
      */
     @TableField("update_time")
     private LocalDateTime updateTime;
+
+    /**
+     * 支付受理成功回调页面
+     */
+    @TableField("success_return_url")
+    private String successReturnUrl;
+
+    /**
+     * 支付受理失败回调页面
+     */
+    @TableField("fail_return_url")
+    private String failReturnUrl;
+
+    /**
+     * 订单处理结果回调接口（既可以处理成功也可以处理失败）
+     */
+    @TableField("notify_url")
+    private String notifyUrl;
 }

@@ -1,5 +1,7 @@
 package com.xiaoke1256.thirdpay.payplatform.dao.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.mapper.ThirdPayOrderMapper;
 import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
@@ -23,13 +25,27 @@ import java.util.List;
 public class ThirdPayOrderDaoImpl extends ServiceImpl<ThirdPayOrderMapper, ThirdPayOrder> implements ThirdPayOrderDao {
 
     @Override
-    public void updateStatus(String orderNo, String statusSuccess, Timestamp now, Timestamp now1) {
+    public void updateStatus(String orderNo, String status, Timestamp updateTime, Timestamp finishTime) {
         //do nothing
+        LambdaUpdateWrapper<ThirdPayOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(ThirdPayOrder::getOrderNo,orderNo)
+                .set(ThirdPayOrder::getOrderStatus,status)
+                .set(ThirdPayOrder::getUpdateTime,updateTime)
+                .set(ThirdPayOrder::getFinishTime,finishTime);
     }
 
     @Override
     public ThirdPayOrder findByOrderNo(String orderNo) {
-        return null;
+        LambdaQueryWrapper<ThirdPayOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ThirdPayOrder::getOrderNo,orderNo);
+        return this.baseMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public ThirdPayOrder lockByOrderNo(String orderNo) {
+        LambdaQueryWrapper<ThirdPayOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ThirdPayOrder::getOrderNo,orderNo).last("for update");
+        return this.baseMapper.selectOne(wrapper);
     }
 
     @Override
