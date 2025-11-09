@@ -78,8 +78,10 @@ public class PayController {
 			return modelAndView;
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			//TODO 跳转向异常页面
-			return null;
+			//跳转向异常页面
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("/payment/callback_error.html"); // 注意路径的正确性
+			return modelAndView;
 		}
 	}
 
@@ -89,7 +91,9 @@ public class PayController {
 	 */
 	@RequestMapping(value="/callback_fail",method= {RequestMethod.GET})
 	public ModelAndView callbackFail(){
-		return null;
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/payment/callback_error.html"); // 注意路径的正确性
+		return modelAndView;
 	}
 
 	/**

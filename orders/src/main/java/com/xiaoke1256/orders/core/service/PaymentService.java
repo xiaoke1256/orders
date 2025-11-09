@@ -199,6 +199,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	 */
 	public void notifyPaySuccess(String payOrderNo,String thirdPayOrderNo,Long paymentId) {
 		//支付记录改掉
+		LOG.info("notify 支付成功 ,payOrderNo:"+payOrderNo+",thirdPayOrderNo:"+thirdPayOrderNo+",paymentId:"+paymentId);
 		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
 		/*
 		 * 状态只能是INIT,PAYING,EXPIRED
@@ -210,11 +211,15 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order has payed","该订单已经支付过了。");
 		}
 		//更改支付单
-		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus ,t.thirdOrderNo= :thirdOrderNo ,t.updateTime = :updateTime" +
+		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus ," +
+				"t.thirdOrderNo= :thirdOrderNo ,t.updateTime = :updateTime ," +
+				"t.resultCode= :resultCode ,t.resultMsg = :resultMsg" +
 				" where t.paymentId = :paymentId ");
 		updateQuery.setParameter("payStatus", PaymentTxn.PAY_STATUS_SUCCESS)
 				.setParameter("thirdOrderNo", thirdPayOrderNo)
 				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+				.setParameter("resultCode", RespCode.SUCCESS.getCode())
+				.setParameter("resultMsg", RespCode.SUCCESS.getMsg())
 				.setParameter("paymentId", paymentId).executeUpdate();
 		//处理payOrder状态
 		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
@@ -235,6 +240,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		if(subOrderResultCount==0) {
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "The order is not exists", "子订单不存在。");
 		}
+		LOG.info("notify success");
 	}
 
 	/**
@@ -243,6 +249,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	 * @param paymentId
 	 */
 	public void notifyPayFail(String payOrderNo,String thirdPayOrderNo,Long paymentId,String resultCode,String msg) {
+		LOG.info("notify 支付失败 ,payOrderNo:"+payOrderNo+",thirdPayOrderNo:"+thirdPayOrderNo+",paymentId:"+paymentId);
 		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
 
 		if(Arrays.asList(PaymentTxn.PAY_STATUS_SUCCESS,PaymentTxn.PAY_STATUS_FAIL).contains(payment.getPayStatus())  ){
@@ -250,12 +257,17 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		}
 		//TODO resultCode 和 msg 要写到 payment中
 		//更改支付单
-		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus ,t.thirdOrderNo= :thirdOrderNo ,t.updateTime = :updateTime" +
+		Query updateQuery = entityManager.createQuery("update PaymentTxn t set t.payStatus = :payStatus ," +
+				"t.thirdOrderNo= :thirdOrderNo ,t.updateTime = :updateTime ," +
+				"t.resultCode= :resultCode ,t.resultMsg = :resultMsg" +
 				" where t.paymentId = :paymentId ");
 		updateQuery.setParameter("payStatus", PaymentTxn.PAY_STATUS_FAIL)
 				.setParameter("thirdOrderNo", thirdPayOrderNo)
 				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+				.setParameter("resultCode", resultCode)
+				.setParameter("resultMsg", msg)
 				.setParameter("paymentId", paymentId).executeUpdate();
+		LOG.info("notify success");
 	}
 
 

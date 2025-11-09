@@ -32,6 +32,7 @@ public class ThirdPayOrderDaoImpl extends ServiceImpl<ThirdPayOrderMapper, Third
                 .set(ThirdPayOrder::getOrderStatus,status)
                 .set(ThirdPayOrder::getUpdateTime,updateTime)
                 .set(ThirdPayOrder::getFinishTime,finishTime);
+        this.baseMapper.update(wrapper);
     }
 
     @Override

@@ -101,6 +101,12 @@ public class PaymentTxn {
 	@Column(name = "update_time")
 	private Timestamp updateTime;
 
+	@Column(name = "result_code")
+	private String resultCode;
+
+	@Column(name = "result_msg")
+	private String resultMsg;
+
 	public Long getPaymentId() {
 		return paymentId;
 	}
@@ -228,6 +234,22 @@ public class PaymentTxn {
 
 	public void setReverseFlg(String reverseFlg) {
 		this.reverseFlg = reverseFlg;
+	}
+
+	public String getResultCode() {
+		return resultCode;
+	}
+
+	public void setResultCode(String resultCode) {
+		this.resultCode = resultCode;
+	}
+
+	public String getResultMsg() {
+		return resultMsg;
+	}
+
+	public void setResultMsg(String resultMsg) {
+		this.resultMsg = resultMsg;
 	}
 
 	@Override

@@ -93,7 +93,7 @@ public class PayController {
 		orderInfo.setPayeeName(merchantAccount.getAccName());
 		//填充付款方支付账号。（正式环境应该从session中获取，现在随机获取）
 		//从账号表中选取账户名一样的账号。找不到就随机选一个。
-		HouseholdAcc account = thirdPayService.findAccountByName(orderInfo.getPayerNo());
+		HouseholdAcc account = thirdPayService.findAccountByName(orderInfo.getMerchantPayerNo());
 		orderInfo.setPayerNo(account.getAccNo());
 		orderInfo.setPayerName(account.getAccName());
 		orderInfo.setRandom(null);//去掉随机码
