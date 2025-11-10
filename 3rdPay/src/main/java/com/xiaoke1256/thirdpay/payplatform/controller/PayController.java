@@ -10,6 +10,7 @@ import java.util.Base64;
 import java.util.Random;
 
 import com.alibaba.fastjson.JSON;
+import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.dto.*;
@@ -134,7 +135,10 @@ public class PayController {
 			String verifyCode = makeVerifyCode(order.getOrderNo(),remark);
 			//TODO 保存支付记录成功，删除token。
 			return new PayResp(RespCode.SUCCESS,verifyCode,order.getOrderNo());
-		}catch (Exception e) {
+		}catch (AppException e) {
+			logger.error(e.getMessage(), e);
+			return new PayResp(e);
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new PayResp(e);
 		}

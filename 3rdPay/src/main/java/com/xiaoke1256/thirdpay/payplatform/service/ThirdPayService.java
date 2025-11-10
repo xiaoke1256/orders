@@ -77,8 +77,11 @@ public class ThirdPayService {
 
 		//检查支付方的余额
 		HouseholdAcc payerAcc = this.findAccountByAccNo(thirdPayerNo);
+		if(payerAcc == null) {
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "支付方账号不存在。","支付方账号不存在。");
+		}
 		if(payerAcc.getBalance().compareTo(amt) < 0) {
-			throw new BusinessException("余额不足。", RespCode.BUSSNESS_ERROR.getCode(), "余额不足。");
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "余额不足。","余额不足。");
 		}
 		ThirdPayOrder order = new ThirdPayOrder();
 		order.setOrderNo(genOrderNo());

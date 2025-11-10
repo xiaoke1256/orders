@@ -26,6 +26,13 @@
               font-family:'MetropolitainesD';
               src: url('../font/MetropolitainesD.TTF');
             }
+            .dialog {
+                background-color:#f8f8f9;
+                z-index:1000;
+                position: absolute;
+                border: 1px solid #dddee1;
+                border-radius: 10px;
+            }
         </style>
         <script src="../js/jquery.min.js"></script>
         <script type="text/javascript" >
@@ -59,6 +66,9 @@
                             payInfo = data.data;
                             $("#payMoney").text(data.data.amt.toFixed(2));
                             $("#payerName").text(data.data.payerName);
+                        }else {
+                            var params = "?code="+data.code+"&msg="+data.msg;
+                            window.open('http://www.orders.com:8081/pay/callback_fail'+params,'_self');
                         }
                     }
                 })
@@ -94,7 +104,8 @@
                                 window.open('http://www.orders.com:8081/pay/callback_success'+params,'_self');
                             }else{
                                 console.log(data.code+":"+data.msg);
-                                //跳转到错误页面
+                                var params = "?orderNo="+orderNo+"&merchantOrderNo="+merchantOrderNo+"&bussinessNo="+bussinessNo+"&code="+data.code+"&msg="+data.msg;
+                                window.open('http://www.orders.com:8081/pay/callback_fail'+params,'_self');
                             }
                         }
                     });

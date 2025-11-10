@@ -96,6 +96,11 @@ public class PayController {
 			LOGGER.error(e.getMessage(), e);
 			//跳转向异常页面
 			ModelAndView modelAndView = new ModelAndView();
+			if(e instanceof AppException){
+				AppException ae = (AppException) e;
+				String errorMsg = ae.getErrorCode() + ":" + ae.getErrorMsg();
+				modelAndView.addObject("errorMsg", errorMsg);
+			}
 			modelAndView.setViewName("/payment/callback_error.html"); // 注意路径的正确性
 			return modelAndView;
 		}
@@ -106,8 +111,10 @@ public class PayController {
 	 * @return
 	 */
 	@RequestMapping(value="/callback_fail",method= {RequestMethod.GET})
-	public ModelAndView callbackFail(){
+	public ModelAndView callbackFail(@RequestParam(value = "code",required = false) String code,
+									 @RequestParam(value = "msg",required = false)String msg){
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("errorMsg", code+":"+msg);
 		modelAndView.setViewName("/payment/callback_error.html"); // 注意路径的正确性
 		return modelAndView;
 	}

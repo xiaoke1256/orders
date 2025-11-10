@@ -1,33 +1,76 @@
-<html>
-  <head>
-    <base href="../">
-    <title>orders welcome!</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/date_format.js" ></script>
-    <link rel="stylesheet" type="text/css" title="default" href="../../static/css/style.css" />
-  </head>
-  <body>
-    <div id="container">
-      <div id="content">
-        <div id="error">
-          <div id="error-message">
-            <div id="error-title">
-              <div id="error-title-text">
-                Error
-              </div>
-            </div>
-            <div id="error-description">
-              <div id="error-description-text">
-                <div id="error-description-text-line">
-                  <div id="error-description-text-line-text">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <base href="../">
+  <title>orders welcome!</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/date_format.js" ></script>
+  <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
+  <style>
+    html,body{
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-color: #f8f8f9;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    .container {
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center
+    }
+    .imgContainer{
+      margin-top:80px
+    }
+    .imgContainer img{
+      width:100px;
+      height:100px;
+      color: #19be6b
+    }
+    #successText {
+      margin:10px;
+      color:#515a6e;
+      font-weight:bold;
+      font-size:12pt
+    }
+    .container button{
+      width:80%;
+      margin-bottom:40px;
+      height:40px;
+      background-color:#2d8cf0;
+      color:white;
+      border:0;
+      border-radius:10px;
+      font-size:12pt;
+      font-weight:bold
+    }
+  </style>
+  <script type="text/javascript">
+    function getUrlParam(name) {
+        var searchParams = new URLSearchParams(window.location.search);
+        return searchParams.get(name);
+    }
+    $(function() {
+      $('#closeBtn').click(function() {
+        window.parent.closeIframe();
+      });
+      //加载完成向父窗口发送一个hansCallback消息
+      window.parent.setIsCallBacked();
+    });
+  </script>
+</head>
+<body>
+<div class="center container">
+  <div class="imgContainer" >
+    <img src="image/error.svg" alt="">
+    <div style="" id="failText" >支付失败</div>
+    <div style="color:red;font-size:12pt" th:text="${errorMsg}" ></div>
+  </div>
+  <button id="closeBtn">关闭</button>
+</div>
+</body>
 </html>
