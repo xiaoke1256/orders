@@ -26,6 +26,9 @@ public class PayOrder {
 	
 	private String productCodes;
 
+	private String status;
+
+
 	public Long getPayOrderId() {
 		return payOrderId;
 	}
@@ -97,5 +100,12 @@ public class PayOrder {
 	public void setProductCodes(String productCodes) {
 		this.productCodes = productCodes;
 	}
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

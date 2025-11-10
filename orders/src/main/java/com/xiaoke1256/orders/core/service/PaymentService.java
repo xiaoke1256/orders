@@ -116,13 +116,9 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		return null;
 	}
 
-	public PaymentTxn savePayment(ThirdPayOrderDto orderInfo) {
+	public PaymentTxn savePayment(String payOrderNo,String payType, String remark) {
 		//TODO 检查token，防止重复提交
-		if (StringUtils.isBlank(orderInfo.getOrderType())) {
-			// 默认为消费
-			orderInfo.setOrderType(ThirdPayOrderDto.ORDER_TYPE_CONSUME);
-		}
-		PayOrder payOrder = orederService.getPayOrder(orderInfo.getMerchantOrderNo());
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
 		if(payOrder==null){
 			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(),"The order not exist","该订单不存在。");
 		}
@@ -139,15 +135,15 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		}
 
 		PaymentTxn payment = new PaymentTxn();
-		payment.setPayerNo(orderInfo.getMerchantPayerNo());
-		payment.setPayeeNo(orderInfo.getMerchantPayeeNo());
-		payment.setPayType(orderInfo.getPayType());
-		payment.setPayType(orderInfo.getOrderType());
-		payment.setPayOrderNo(orderInfo.getMerchantOrderNo());
-		payment.setAmt(orderInfo.getAmt());
-		payment.setBusinessNo(orderInfo.getMerchantOrderNo());
-		payment.setIncident(orderInfo.getIncident());
-		payment.setRemark(orderInfo.getRemark());
+		payment.setPayerNo(payOrder.getPayerNo());
+		payment.setPayeeNo("000000000000000000");
+		payment.setPayType(payType);
+		//payment.setOrderType(orderType);
+		payment.setPayOrderNo(payOrderNo);
+		payment.setAmt(payOrder.getTotalAmt());
+		payment.setBusinessNo(payOrder.getPayOrderNo());
+		payment.setIncident(null);
+		payment.setRemark(remark);
 		payment.setInsertTime(new Timestamp(System.currentTimeMillis()));
 		payment.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		payment.setDealStatus(PaymentTxn.DEAL_STATUS_INIT);

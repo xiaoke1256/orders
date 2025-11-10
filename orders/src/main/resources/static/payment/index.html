@@ -40,16 +40,9 @@
 		  payingNum++;
 		  var payOrderNo = $(this).attr('payOrderNo');
 		  var payerNo = $(this).attr('payerNo');
-		  //调用第三方支付接口
-		  //TODO 实际上只需要传一个订单号，其他参数从订单表中获取
-		  //var payeeNo = "";//收款方账号，获取系统配置的账号。
-		  if(!payeeNo){
-			  alert("初始化失败，无法支付。");
-			  return;
-		  }
 		  var amt = $(this).attr('amt');//金额,从页面上获取。
 		  
-		  pay(payOrderNo,payerNo,amt);
+		  pay(payOrderNo);
 	  });
 	  
 	  /**批量支付*/
@@ -78,12 +71,7 @@
 		  var orderType = "01";//01表示消费
 		  var remark = payOrderNo;//把支付单号作为备注
 		  var orderInfo = {
-		  	merchantPayerNo:payerNo,
-			merchantPayeeNo:payeeNo,
-			orderType:orderType,
-			payType:'003',/*支付保还是微信*/
-			amt:amt,
-			merchantNo:"orders",
+		    payType:'003',
 			merchantOrderNo:payOrderNo,
 			remark:remark
 		  };
@@ -238,9 +226,14 @@
 				  innerHtml+='<td>'+order.productCodes+'</td>';
 				  innerHtml+='<td>￥'+(order.totalAmt/1000)+'</td>';
 				  innerHtml+='<td>'+order.payerNo+'</td>';
+				  innerHtml+='<td>'+{'0':'待支付','1':'支付处理中'}[order.status]+'</td>';
 				  innerHtml+='<td></td>';
 				  innerHtml+='<td>';
-				  innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+(order.totalAmt/1000)+'" payerNo="'+order.payerNo+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
+				  if (order.status=='0') {
+				  	innerHtml+='<a href="javascript:void(0);" class="payBtn" amt="'+(order.totalAmt/1000)+'" payerNo="'+order.payerNo+'" payOrderNo="'+order.payOrderNo+'">PAY</a>';
+				  } else {
+				  	innerHtml+='<a href="javascript:void(0);" class="detailBtn" amt="'+(order.totalAmt/1000)+'" payerNo="'+order.payerNo+'" payOrderNo="'+order.payOrderNo+'">RETAIL</a>';
+				  }
 				  innerHtml+='</td>';
 				  innerHtml+='</tr>';
 				  $tbody.append(innerHtml);
@@ -290,6 +283,7 @@
 					<th>PRODUCTS</th>
 					<th>TOTAL AMT</th>
 					<th>PAYER NO</th>
+					<th>STATUS</th>
 					<th>MEMO</th>
 					<th>OPER</th>
 				</tr>

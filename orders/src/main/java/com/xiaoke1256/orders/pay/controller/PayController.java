@@ -3,9 +3,12 @@ package com.xiaoke1256.orders.pay.controller;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.core.bo.PayOrder;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
 import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
+import com.xiaoke1256.orders.core.dto.GetPayFormStrRequest;
 import com.xiaoke1256.orders.core.dto.PaymentCancelRequest;
+import com.xiaoke1256.orders.core.service.OrederService;
 import com.xiaoke1256.orders.core.service.PaymentService;
 import com.xiaoke1256.orders.pay.service.PayBusinessConfig;
 import com.xiaoke1256.orders.pay.service.PayBusinessService;
@@ -26,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/pay")
@@ -39,16 +43,28 @@ public class PayController {
 	private PayBusinessConfig payBusinessConfig;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private OrederService orederService;
 
 	@RequestMapping(value="/getPayFormStr",method= {RequestMethod.POST})
-	public RespMsg getPayFormStr(@RequestBody ThirdPayOrderDto order) throws Exception {
+	public RespMsg getPayFormStr(@RequestBody GetPayFormStrRequest orderRequest) throws Exception {
 		try {
+			String orderNo = orderRequest.getMerchantOrderNo();
+			if(StringUtils.isEmpty(orderNo)) {
+				throw new AppException(RespCode.EMPTY_PARAMTER_ERROR.getCode(),"未提供足够的参数");
+			}
+
 			//保存订单信息
-			PaymentTxn paymentTxn = paymentService.savePayment(order);
+			PaymentTxn paymentTxn = paymentService.savePayment(orderNo, orderRequest.getPayType(), orderRequest.getRemark());
 			OrderInfo orderInfo = new OrderInfo();
-			PropertyUtils.copyProperties(orderInfo, order);
+			PropertyUtils.copyProperties(orderInfo, orderRequest);
+			orderInfo.setMerchantPayerNo(paymentTxn.getPayerNo());
 			orderInfo.setPayeeNo("000000000000000000");//消费支付的订单收款方默认都是orders平台
+			orderInfo.setMerchantNo("orders");
+			orderInfo.setMerchantOrderNo(orderNo);
 			orderInfo.setMerchantPayeeNo("orders");
+			orderInfo.setAmt(paymentTxn.getAmt().divide(BigDecimal.valueOf(1000)));
+			orderInfo.setOrderType(ThirdPayOrderDto.ORDER_TYPE_CONSUME);
 			orderInfo.setBussinessNo(paymentTxn.getPaymentId()+"");
 			try( InputStream is = PayClient.class.getResourceAsStream("/keys/private_key.pem")){
 				String payFormStr = PayClient.generateOrderFormString(orderInfo, RSAKeyPairGenerator.loadPrivateKeyFromStream(is));

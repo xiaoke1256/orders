@@ -45,6 +45,7 @@ public class PayOrderController {
 			orderVo.setTotalAmt(order.getTotalAmt());
 			orderVo.setUpdateTime(order.getUpdateTime());
 			orderVo.setPayOrderNo(order.getPayOrderNo());
+			orderVo.setStatus(order.getStatus());
 			if(order.getSubOrders()!=null){
 				Set<com.xiaoke1256.orders.core.dto.SubOrder> subOrderSet = new LinkedHashSet<com.xiaoke1256.orders.core.dto.SubOrder>();
 				for(SubOrder subOrder:order.getSubOrders()){
