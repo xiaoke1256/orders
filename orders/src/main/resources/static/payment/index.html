@@ -129,6 +129,7 @@
 	  }
 
 	  $('#payDialog').hide();
+	  $('#detailDialog').hide();
 	  
   });
 
@@ -312,6 +313,13 @@
 		<div style="width:100%;position:relative;top:-30px" class="close-div right">
 			<img width="30" height="30" src="image/close.svg" onclick="closeIframe()"/>
 		</div>
+	</div>
+
+	<div id="detailDialog" class="dialog" >
+		<div style="height:100%">
+			<iframe id="detailIframe" src="" frameborder="0" width="100%" height="100%" ></iframe>
+		</div>
+
 	</div>
 	
 </body>

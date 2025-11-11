@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>3rdPay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        @font-face {
+          font-family:'Lucida Calligraphy Italic';
+          src: url('../font/Lucida_Calligraphy_Italic.TTF');
+        }
+
+        @font-face {
+          font-family:'Acadian';
+          src: url('../font/Acadian.TTF');
+        }
+        /* 备选字体 */
+        @font-face {
+          font-family:'GoodfonT';
+          src: url('../font/GoodfonT.NET XS18.TTF');
+        }
+        @font-face {
+          font-family:'GothicE';
+          src: url('../font/GothicE.ttf');
+        }
+        @font-face {
+          font-family:'MetropolitainesD';
+          src: url('../font/MetropolitainesD.TTF');
+        }
+        .dialog {
+            background-color:#f8f8f9;
+            z-index:1000;
+            position: absolute;
+            border: 1px solid #dddee1;
+            border-radius: 10px;
+        }
+    </style>
+    <script src="../js/jquery.min.js"></script>
+    <script type="text/javascript" >
+        function getUrlParam(name) {
+            var searchParams = new URLSearchParams(window.location.search);
+            return searchParams.get(name);
+        }
+        $(function() {
+            //加载异常信息
+            var code = getUrlParam("code");
+            if(code){
+                $('#errorCode').text(code);
+            }
+        });
+    </script>
+</head>
+<body style="background-color:#f8f8f9" >
+<div style="text-align:center;margin-top:27px" >
+    <div style="margin:0 auto;text-align:center;width:40%;height:60px;border-radius:5px;background-image: url('../image/card_bg.jpg');background-position: 0 -15px;">
+        <div style="padding-top:12px;color:white;font-size:25pt;font-weight:bold;font-style: italic;font-family:GoodfonT;">
+            3rdPay
+        </div>
+    </div>
+    <div style="align-items:center;margin:0 auto;text-align:center;width:70%;border-radius:5px;background-color:#f8f8f9;margin-top:70px;" >
+        <div style="color:#80848f">
+            CODE:<span id="errorCode" ></span>
+        </div>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;margin:0 auto;text-align:center;width:70%;height:60px;border-radius:5px;background-color:#f8f8f9;margin-top:5px;" >
+        <div>
+            <img src="../image/error.svg" style="width:50px;height:50px" ></img>
+        </div>
+        <div style="font-weight:bold;color:#8B0000" >
+            支付异常,请稍后再试
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

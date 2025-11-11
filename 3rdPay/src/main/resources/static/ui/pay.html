@@ -68,7 +68,7 @@
                             $("#payerName").text(data.data.payerName);
                         }else {
                             var params = "?code="+data.code+"&msg="+data.msg;
-                            window.open('http://www.orders.com:8081/pay/callback_fail'+params,'_self');
+                            window.open('error.html'+params,'_self');
                         }
                     }
                 })
