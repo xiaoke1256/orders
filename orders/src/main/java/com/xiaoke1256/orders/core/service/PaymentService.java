@@ -263,6 +263,16 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 				.setParameter("resultCode", resultCode)
 				.setParameter("resultMsg", msg)
 				.setParameter("paymentId", paymentId).executeUpdate();
+		//payOrder应该改成待支付状态
+		Query updatePayOrderQuery = entityManager.createQuery("update PayOrder t set t.status = :status ,t.updateTime = :updateTime" +
+				" where t.payOrderNo=:payOrderNo");
+		int payOrderResultCount = updatePayOrderQuery.setParameter("status", PayOrder.ORDER_STATUS_INIT)
+				.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+				.setParameter("payOrderNo", payOrderNo).executeUpdate();
+		if(payOrderResultCount==0) {
+			throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "The order is not exists", "该支付单不存在。");
+		}
+
 		LOG.info("notify success");
 	}
 
