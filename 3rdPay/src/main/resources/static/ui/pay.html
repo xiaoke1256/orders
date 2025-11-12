@@ -101,11 +101,11 @@
                                 var bussinessNo = payInfo.bussinessNo
                                 //TODO 拼参数的过程应该放到后台，因为参数需要由平台方签名。
                                 var params = "?orderNo="+orderNo+"&merchantOrderNo="+merchantOrderNo+"&bussinessNo="+bussinessNo;
-                                window.open('http://www.orders.com:8081/pay/callback_success'+params,'_self');
+                                window.open(payInfo.successCallbackUrl+params,'_self');
                             }else{
                                 console.log(data.code+":"+data.msg);
                                 var params = "?orderNo="+orderNo+"&merchantOrderNo="+merchantOrderNo+"&bussinessNo="+bussinessNo+"&code="+data.code+"&msg="+data.msg;
-                                window.open('http://www.orders.com:8081/pay/callback_fail'+params,'_self');
+                                window.open(payInfo.failCallbackUrl+params,'_self');
                             }
                         }
                     });

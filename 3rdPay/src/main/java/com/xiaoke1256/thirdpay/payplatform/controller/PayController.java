@@ -12,6 +12,7 @@ import java.util.Random;
 import com.alibaba.fastjson.JSON;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
+import com.xiaoke1256.thirdpay.payplatform.bo.Merchant;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.dto.*;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
@@ -21,6 +22,7 @@ import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAUtils;
 import com.xiaoke1256.thirdpay.sdk.vo.OrderFormInfo;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,25 +84,34 @@ public class PayController {
 		}
 		//验证签名（用商户的公钥验签）。
 		//先获取商户的公钥
-		String publicKey = merchantService.getPublicKey(orderInfo.getMerchantNo());
+		Merchant merchant = merchantService.getByMerchantNo(orderInfo.getMerchantNo());
+		String publicKey = merchant.getPublicKey();
 		if(!RSAUtils.verifySignature(orderInfoJson.getBytes(StandardCharsets.UTF_8), Base64.getDecoder().decode(orderFormInfo.getSign()), RSAKeyPairGenerator.loadPublicKey(publicKey))) {
 			return new PayResp(RespCode.BUSSNESS_ERROR,"签名验证失败。");
 		}
 
+        PayFormInfo payFormInfo = new PayFormInfo();
+        PropertyUtils.copyProperties(payFormInfo, orderInfo);
+
 		//填充收款方支付账号。
-		String merchantAccNo = merchantService.getAccNo(orderInfo.getMerchantNo());
+		String merchantAccNo = merchant.getDefaultAccNo();
 		HouseholdAcc merchantAccount = thirdPayService.findAccountByAccNo(merchantAccNo);
-		orderInfo.setPayeeNo(merchantAccNo);
-		orderInfo.setPayeeName(merchantAccount.getAccName());
+        payFormInfo.setPayeeNo(merchantAccNo);
+        payFormInfo.setPayeeName(merchantAccount.getAccName());
 		//填充付款方支付账号。（正式环境应该从session中获取，现在随机获取）
 		//从账号表中选取账户名一样的账号。找不到就随机选一个。
 		HouseholdAcc account = thirdPayService.findAccountByName(orderInfo.getMerchantPayerNo());
-		orderInfo.setPayerNo(account.getAccNo());
-		orderInfo.setPayerName(account.getAccName());
-		orderInfo.setRandom(null);//去掉随机码
+        payFormInfo.setPayerNo(account.getAccNo());
+        payFormInfo.setPayerName(account.getAccName());
+
+        //回调地址
+		payFormInfo.setSuccessCallbackUrl(merchant.getSuccessReturnUrl());
+		payFormInfo.setFailCallbackUrl(merchant.getFailReturnUrl());
+
+
 		//TODO 生成token防止重复支付。
 		// 吊起支付页面（让用户输入支付密码）
-		return new RespMsg(RespCode.SUCCESS, "成功吊起订单信息",orderInfo);
+		return new RespMsg(RespCode.SUCCESS, "成功吊起订单信息",payFormInfo);
 	}
 
 	/**
