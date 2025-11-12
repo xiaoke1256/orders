@@ -266,7 +266,7 @@ public class ThirdPayService {
 		//修改订单状态
 		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_SUCCESS, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
 
-		Thread.sleep(20*1000+ RandomUtils.nextInt(20*1000));//模拟网络不稳定
+		Thread.sleep(10*1000+ RandomUtils.nextInt(30*1000));//模拟网络不稳定
 		if(RandomUtils.nextInt(100)<5) {
 			throw new PayFailException("支付失败。");//模拟5%的失败概率。
 		}

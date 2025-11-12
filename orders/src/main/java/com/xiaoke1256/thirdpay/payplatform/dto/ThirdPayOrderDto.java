@@ -30,4 +30,5 @@ public class ThirdPayOrderDto implements java.io.Serializable {
 	private String incident;
 	private String remark;
 	private Timestamp insertTime;
+	private String orderStatus;
 }

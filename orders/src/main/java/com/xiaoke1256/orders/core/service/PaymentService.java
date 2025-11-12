@@ -10,6 +10,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.alibaba.fastjson.JSON;
+import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import org.apache.commons.lang.StringUtils;
 import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -50,6 +52,9 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 
 	@Autowired
 	private RocketMQTemplate rocketMQTemplate;
+
+	@Autowired
+	private ThirdPaymentClient thirdPaymentClient;
 	
 	/**
 	 * 处理支付(收到第三方平台的支付看反馈后)
@@ -111,6 +116,22 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		String ql = "from PaymentTxn where payOrderNo = :payOrderNo";
 		@SuppressWarnings("unchecked")
 		List<PaymentTxn> list = entityManager.createQuery(ql).setParameter("payOrderNo", payOrderNo).getResultList();
+		if(list!=null && list.size()>0)
+			return list.get(0);
+		return null;
+	}
+
+	/**
+	 * 支付中的支付记录
+	 * @param payOrderNo
+	 * @return
+	 */
+	public PaymentTxn getPayingPaymentByPayOrderNo(String payOrderNo) {
+		String ql = "from PaymentTxn where payOrderNo = :payOrderNo and payStatus = :payStatus order by insertTime desc ";
+		@SuppressWarnings("unchecked")
+		List<PaymentTxn> list = entityManager.createQuery(ql)
+				.setParameter("payOrderNo", payOrderNo)
+				.setParameter("payStatus", PaymentTxn.PAY_STATUS_PAYING).getResultList();
 		if(list!=null && list.size()>0)
 			return list.get(0);
 		return null;
@@ -274,6 +295,120 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		}
 
 		LOG.info("notify success");
+	}
+
+	/**
+	 * 检查订单状态，PaymentTxn 与 PayOrder 是否一致
+	 * @param payOrderNo
+	 * @return 刷新后的订单状态
+	 */
+	@Transactional
+	public String checkOrderStatus(String payOrderNo) {
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);//TODO 加锁
+		if(payOrder==null) {
+			return null;
+		}
+		if(!payOrder.getStatus().equals(PayOrder.ORDER_STATUS_PAYING)) {
+			//无需检查状态
+			return payOrder.getStatus();
+		}
+		Query query = entityManager.createQuery("select t from PaymentTxn t where t.payOrderNo=:payOrderNo and t.payStatus!='"+PaymentTxn.PAY_STATUS_EXPIRED+"' order by insertTime desc");
+		List<PaymentTxn> result = query.setParameter("payOrderNo", payOrderNo).setMaxResults(1).getResultList();
+		if(result.size()==0) {
+			//payOrder 要改成待支付状态
+			Query updatePayOrderQuery = entityManager.createQuery("update PayOrder t set t.status = :status ,t.updateTime = :updateTime" +
+					" where payOrderNo=:payOrderNo");
+			int payOrderResultCount = updatePayOrderQuery.setParameter("status", PayOrder.ORDER_STATUS_INIT)
+					.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+					.setParameter("payOrderNo", payOrderNo).executeUpdate();
+			if(payOrderResultCount==0) {
+				throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "The order is not exists", "该支付单不存在。");
+			}
+			return PayOrder.ORDER_STATUS_INIT;
+		}
+
+		PaymentTxn paymentTxn = result.get(0);//TODO 加锁
+		if(paymentTxn.getPayStatus().equals(PaymentTxn.PAY_STATUS_PAYING)) {
+			//状态一致，无须处理
+			return payOrder.getStatus();
+		}
+		LOG.info("checkOrderStatus,payOrderNo:"+payOrderNo+",payOrderStatus:"+payOrder.getStatus()+",paymentTxnStatus:"+paymentTxn.getPayStatus());
+		if(paymentTxn.getPayStatus().equals(PaymentTxn.PAY_STATUS_SUCCESS)) {
+			Query updatePayOrderQuery = entityManager.createQuery("update PayOrder t set t.status = :status ,t.updateTime = :updateTime" +
+					" where payOrderNo=:payOrderNo");
+			int payOrderResultCount = updatePayOrderQuery.setParameter("status", PayOrder.ORDER_STATUS_PAYED)
+					.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+					.setParameter("payOrderNo", payOrderNo).executeUpdate() ;
+			if(payOrderResultCount==0) {
+				throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "The order is not exists", "该支付单不存在。");
+			}
+			return PayOrder.ORDER_STATUS_PAYED;
+		}
+
+		if(paymentTxn.getPayStatus().equals(PaymentTxn.PAY_STATUS_FAIL)) {
+			Query updatePayOrderQuery = entityManager.createQuery("update PayOrder t set t.status = :status ,t.updateTime = :updateTime" +
+					" where payOrderNo=:payOrderNo");
+			int payOrderResultCount = updatePayOrderQuery.setParameter("status", PayOrder.ORDER_STATUS_INIT)
+					.setParameter("updateTime", new Timestamp(System.currentTimeMillis()))
+					.setParameter("payOrderNo", payOrderNo).executeUpdate();
+
+			if (payOrderResultCount == 0) {
+				throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "The order is not exists", "该支付单不存在。");
+			}
+			return PayOrder.ORDER_STATUS_INIT;
+		}
+
+		throw new BusinessException(RespCode.BUSSNESS_ERROR.getCode(), "The order status error", "订单状态异常。");
+
+	}
+
+	/**
+	 * 从第三方支付系统检查订单状态
+	 * @param paymentId
+	 * @return
+	 */
+	public String checkOrderStatusFromThirdPay(Long paymentId) {
+		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
+		if(!payment.getPayStatus().equals(PaymentTxn.PAY_STATUS_PAYING)) {
+			//无需检查状态
+			throw new AppException(RespCode.BUSSNESS_ERROR.getCode(), "此时无须检查状态。");
+		}
+
+		if(StringUtils.isEmpty(payment.getThirdOrderNo()) ) {
+			//第三方订单不存在
+			LOG.info("checkOrderStatusFromThirdPay,thirdPayNo:"+payment.getThirdOrderNo()+",paymentId:"+paymentId+",paymentStatus:"+payment.getPayStatus()+", 订单不存在。");
+			return PayOrder.ORDER_STATUS_MANUAL ;
+		}
+
+		ThirdPayOrderDto thirdOrder = thirdPaymentClient.getOrder(payment.getThirdOrderNo());
+		String orderStatus = thirdOrder.getOrderStatus();
+
+		/** 第三方状态：刚刚接受到订单*/
+		final String STATUS_ACCEPT = "00";
+		/** 第三方状态：订单处理成功*/
+		final String STATUS_SUCCESS = "90";
+		/**第三方状态：订单处理失败*/
+		final String STATUS_FAIL = "99";
+		if (STATUS_SUCCESS.equals(orderStatus)){
+			notifyPaySuccess(payment.getPayOrderNo(),payment.getThirdOrderNo(),payment.getPaymentId());
+			return PayOrder.ORDER_STATUS_PAYED;
+		}else if(STATUS_FAIL.equals(orderStatus)){
+			notifyPayFail(payment.getPayOrderNo(),payment.getThirdOrderNo(),payment.getPaymentId(),"99","第三方平台订单处理失败");
+			return PayOrder.ORDER_STATUS_INIT;
+		}else if(STATUS_ACCEPT.equals(orderStatus)){
+			//距离订单受理已超过10分钟
+			if(System.currentTimeMillis()-thirdOrder.getInsertTime().getTime()>10*60*1000) {
+				//建议人工处理
+				LOG.info("checkOrderStatusFromThirdPay,paymentId:"+paymentId+",paymentStatus:"+payment.getPayStatus()+", 订单处理时间超时。");
+				return PayOrder.ORDER_STATUS_MANUAL;
+			}else{
+				//无须处理。
+				return PayOrder.ORDER_STATUS_PAYING;
+			}
+		}else{
+			//其他状态建议人工处理
+			return PayOrder.ORDER_STATUS_MANUAL ;
+		}
 	}
 
 

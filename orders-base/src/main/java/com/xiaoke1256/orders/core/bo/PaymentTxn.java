@@ -40,7 +40,7 @@ public class PaymentTxn {
 	public static final String PAY_STATUS_EXPIRED = "4";
 
 	/**
-	 * 支付状态：支付成功
+	 * 支付状态：支付失败
 	 */
 	public static final String PAY_STATUS_FAIL = "8";
 

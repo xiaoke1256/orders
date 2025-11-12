@@ -35,7 +35,8 @@
 	  refreshPage();
 	  
 	  $('#searchBtn').click(function(){$('[name=pageNo]').val(1);refreshPage();});
-	  
+
+	  //支付按钮
 	  $('#content').on('click','a.payBtn',function(){
 		  payingNum++;
 		  var payOrderNo = $(this).attr('payOrderNo');
@@ -44,6 +45,13 @@
 		  
 		  pay(payOrderNo);
 	  });
+
+	  //详情按钮
+	  $('#content').on('click','a.detailBtn',function(){
+		 var payOrderNo = $(this).attr('payOrderNo');
+		 showDetail(payOrderNo);
+	  });
+
 	  
 	  /**批量支付*/
 	  $('#bathPayBtn').click(function(){
@@ -128,6 +136,21 @@
 	     */
 	  }
 
+	  function showDetail(payOrderNo) {
+	    var windowWidth = $(window).width();
+		var windowHeight = $(window).height();
+		var dialogWidth = 400;
+		var dialogHeight = 320;
+		$("#detailDialog").css({
+			"width":dialogWidth,
+			"height":dialogHeight,
+			"left":(windowWidth-dialogWidth)/2,
+			"top":(windowHeight-dialogHeight)/2
+		});
+	    $('#detailIframe').attr('src','payment/detail.html?payOrderNo='+payOrderNo);
+	    $('#detailDialog').show();
+	  }
+
 	  $('#payDialog').hide();
 	  $('#detailDialog').hide();
 	  
@@ -167,6 +190,12 @@
   	  $("#payDialog").hide();
   	  refreshPage();
   	}
+  }
+
+  function closeDetailIframe(){
+    $('#detailIframe').attr('src','');
+    $('#detailDialog').hide();
+    refreshPage();
   }
 	  
   function notice(verifyCode,orderNo,payOrderNo,payType){

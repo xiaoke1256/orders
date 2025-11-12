@@ -1,7 +1,10 @@
 package com.xiaoke1256.thirdpay.payplatform.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class ThirdPayOrderDto implements java.io.Serializable {
 	
@@ -23,7 +26,8 @@ public class ThirdPayOrderDto implements java.io.Serializable {
 	private String palteform;
 	private String incident;
 	private String remark;
-	private Timestamp insertTime;
+	private Date insertTime;
+	private String orderStatus;
 	public String getOrderNo() {
 		return orderNo;
 	}
@@ -72,12 +76,18 @@ public class ThirdPayOrderDto implements java.io.Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public Timestamp getInsertTime() {
+	public Date getInsertTime() {
 		return insertTime;
 	}
-	public void setInsertTime(Timestamp insertTime) {
+	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
-	
-	
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
 }

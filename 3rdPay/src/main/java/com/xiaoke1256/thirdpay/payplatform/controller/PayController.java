@@ -1,46 +1,38 @@
 package com.xiaoke1256.thirdpay.payplatform.controller;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.PrivateKey;
-import java.util.Base64;
-import java.util.Random;
-
 import com.alibaba.fastjson.JSON;
+import com.xiaoke1256.orders.common.RespCode;
+import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
 import com.xiaoke1256.thirdpay.payplatform.bo.Merchant;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
 import com.xiaoke1256.thirdpay.payplatform.dto.*;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
+import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
 import com.xiaoke1256.thirdpay.sdk.encryption.aes.AESUtils;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAUtils;
 import com.xiaoke1256.thirdpay.sdk.vo.OrderFormInfo;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.xiaoke1256.orders.common.RespCode;
-import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.security.MD5Util;
-import com.xiaoke1256.orders.common.security.ThreeDESUtil;
-//import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
-import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.PrivateKey;
+import java.time.ZoneId;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/pay")
@@ -165,9 +157,14 @@ public class PayController {
 		try {
 			//TODO 校验调用方的身份，权限。
 			//TODO 校验订单是否是是调用方建立的。
-			//ThirdPayOrder order = thirdPayService.getByOrderNo(orderNo);
+			ThirdPayOrder order = thirdPayService.getByOrderNo(orderNo);
+			if(order==null) {
+				logger.error("订单不存在:"+orderNo);
+				return new OrderResp(RespCode.BUSSNESS_ERROR.getCode(),"订单不存在。");
+			}
 			ThirdPayOrderDto orderDto = new ThirdPayOrderDto();
-			//BeanUtils.copyProperties(orderDto, order);
+			BeanUtils.copyProperties(order,orderDto);
+			orderDto.setInsertTime(java.util.Date.from(order.getInsertTime().atZone(ZoneId.systemDefault()).toInstant()));
 			return new OrderResp(orderDto);
 		}catch(Exception ex) {
 			logger.error(ex.getMessage(),ex);

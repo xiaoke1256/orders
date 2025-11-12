@@ -96,7 +96,7 @@
                             console.log("pay:",data);
                             if(data.code == 0){
                                 //跳转到回调地址
-                                var orderNo= data.data;
+                                var orderNo= data.orderNo;
                                 var merchantOrderNo = payInfo.merchantOrderNo
                                 var bussinessNo = payInfo.bussinessNo
                                 //TODO 拼参数的过程应该放到后台，因为参数需要由平台方签名。

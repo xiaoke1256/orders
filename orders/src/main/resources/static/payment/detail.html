@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="../">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>orders welcome!</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/date_format.js" ></script>
+    <script type="text/javascript" src="js/jq_page.js" ></script>
+    <link rel="stylesheet" type="text/css" title="default" href="css/style.css" />
+    <style type="text/css">
+        #refreshBtn{
+            margin-left: 10px;
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+    <script type="text/javascript">
+        function getUrlParam(name) {
+            var searchParams = new URLSearchParams(window.location.search);
+            return searchParams.get(name);
+        }
+        $(function(){
+            $.get("pay/orderDetail?payOrderNo="+getUrlParam("payOrderNo"),function(data){
+                console.log("data:",data);
+                if(data.code != 0){
+                    alert(data.msg);
+                    return;
+                }
+                var order = data.data
+                $("#order_no").text(order.payOrderNo);
+                $("#order_amt").text(order.totalAmt/1000);
+                $("#order_status").text({'0':'待支付','1':'支付处理中','2':'支付成功','3':'支付失败'}[order.status]);
+            });
+
+            $("#closeBtn").click(function(){
+                window.parent.closeDetailIframe();
+            });
+
+            $("#refreshBtn").click(function(){
+                // 刷新
+                $.post("pay/refreshOrder?payOrderNo="+getUrlParam("payOrderNo"),function(data){
+                    console.log("data:",data);
+                    if(data.code != 0){
+                        alert(data.msg);
+                        return;
+                    }
+                    var status = data.data
+                    $("#order_status").text({'0':'待支付','1':'支付处理中','2':'支付成功','3':'支付失败','M':'建议人工处理'}[status]);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+  <div>
+      <div class="title">
+          订单详情
+      </div>
+      <div class="content">
+          <div class="order_detail">
+              <div class="order_detail_title">
+                  订单编号：<span id="order_no"></span>
+              </div>
+              <div class="order_detail_title">
+                  订单金额：<span id="order_amt"></span>
+              </div>
+              <div class="order_detail_title">
+                  订单状态：<span id="order_status"></span><span id="refreshBtn">刷新</span>
+              </div>
+              <div class="order_detail_title"></div>
+          </div>
+      </div>
+      <div class="footer center">
+          <button id="closeBtn">关闭</button>
+      </div>
+  </div>
+</body>
+</html>

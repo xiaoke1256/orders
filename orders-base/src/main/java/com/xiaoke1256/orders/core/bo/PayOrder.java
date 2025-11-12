@@ -25,6 +25,9 @@ public class PayOrder {
 	public static final String ORDER_STATUS_PAYING = "1";
 	/**订单状态：已支付*/
 	public static final String ORDER_STATUS_PAYED = "2";
+
+	/**订单状态：建议人工处理*/
+	public static final String ORDER_STATUS_MANUAL = "M";
 	
 	@Id
 	@Column(name = "pay_order_id", nullable = false)

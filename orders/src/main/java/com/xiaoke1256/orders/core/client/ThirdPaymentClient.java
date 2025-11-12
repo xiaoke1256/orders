@@ -1,16 +1,13 @@
 package com.xiaoke1256.orders.core.client;
 
+import com.xiaoke1256.orders.common.RespMsg;
+import com.xiaoke1256.orders.common.exception.AppException;
+import com.xiaoke1256.thirdpay.payplatform.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import com.xiaoke1256.orders.common.RespMsg;
-import com.xiaoke1256.orders.common.exception.AppException;
-import com.xiaoke1256.thirdpay.payplatform.dto.AckRequest;
-import com.xiaoke1256.thirdpay.payplatform.dto.OrderResp;
-import com.xiaoke1256.thirdpay.payplatform.dto.PayRequest;
-import com.xiaoke1256.thirdpay.payplatform.dto.PayResp;
-import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 
 /**
  * 第三方支付的客户端
@@ -19,6 +16,8 @@ import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
  */
 @Component
 public class ThirdPaymentClient {
+	private static final Logger LOG = LoggerFactory.getLogger(ThirdPaymentClient.class);
+
 	@Value("${payment.remote.ack.uri}")
 	private String ackUri;
 	
@@ -46,6 +45,7 @@ public class ThirdPaymentClient {
 		if(RespMsg.SUCCESS.getCode().equals(resp.getCode())) {
 			return resp.getOrder();
 		}else {
+			LOG.error("getOrder failed. orderNo:"+orderNo);
 			throw new AppException(resp.getCode(),resp.getMsg());
 		}
 	}

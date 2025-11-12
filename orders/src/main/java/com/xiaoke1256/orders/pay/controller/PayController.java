@@ -23,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -119,6 +116,13 @@ public class PayController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value="/orderDetail",method= {RequestMethod.GET})
+	public RespMsg orderDetail(@RequestParam("payOrderNo") String payOrderNo) {
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
+		payOrder.setSubOrders(null);//订单详情不需要返回子订单
+		return new RespMsg(RespCode.SUCCESS,"success",payOrder);
+	}
+
 	/**
 	 * 支付平台处理完成通知我们
 	 * @param notifyInfo
@@ -134,6 +138,29 @@ public class PayController {
 		return RespMsg.SUCCESS;
 	}
 
+	/**
+	 * 刷新订单状态
+	 * @param payOrderNo
+	 * @return
+	 */
+	@RequestMapping(value="/refreshOrder",method= {RequestMethod.POST})
+	public RespMsg refreshOrder(String payOrderNo) {
+		PayOrder payOrder = orederService.getPayOrder(payOrderNo);
+		if(!PayOrder.ORDER_STATUS_PAYING.equals(payOrder.getStatus())){
+			LOGGER.info("状态刷新只针对支付中的订单");
+			return new RespMsg(RespCode.SUCCESS,"success",payOrder.getStatus());
+		}
+
+		PaymentTxn payment = paymentService.getPayingPaymentByPayOrderNo(payOrderNo);
+		if (payment==null){
+			LOGGER.info("payment 不处于");
+			String newStatus = paymentService.checkOrderStatus(payOrderNo);
+			return new RespMsg(RespCode.SUCCESS,"success",newStatus);
+		}
+		//第三方支付平台的订单状态
+		String newStatus = paymentService.checkOrderStatusFromThirdPay(payment.getPaymentId());
+		return new RespMsg(RespCode.SUCCESS,"success",newStatus);
+	}
 
 	/**
 	 * 第三方支付平台通知我们，取消支付
