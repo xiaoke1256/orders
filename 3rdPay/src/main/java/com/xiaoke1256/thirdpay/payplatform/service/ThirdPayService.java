@@ -13,6 +13,7 @@ import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.common.exception.BusinessException;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
+import com.xiaoke1256.thirdpay.payplatform.common.exception.PayFailException;
 import com.xiaoke1256.thirdpay.payplatform.dao.HouseholdAccDao;
 import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
 import org.apache.commons.lang.StringUtils;
@@ -236,9 +237,9 @@ public class ThirdPayService {
 		return account;
 	}
 
-	@Transactional(noRollbackFor = AppException.class)
+	@Transactional
 	public void doPostPayment(String orderNo) throws InterruptedException {
-		Thread.sleep(50*1000+ RandomUtils.nextInt(50*1000));//模拟网络不稳定
+		Thread.sleep(20*1000+ RandomUtils.nextInt(20*1000));//模拟网络不稳定
 		if(RandomUtils.nextInt(100)<5) {
 			throw new AppException("支付失败。");//模拟5%的失败概率。
 		}
@@ -254,9 +255,7 @@ public class ThirdPayService {
 		//找到支付方账号，检查余额，减去支付金额
 		HouseholdAcc payerHousehold = householdAccDao.lockByAccNo(payerAccNo);
 		if(payerHousehold.getBalance().compareTo(thirdPayOrder.getAmt())<0){
-			//改订单状态 TODO 要将处理失败原因，记录到订单中
-			thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_FAIL, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
-			throw new BusinessException("支付方余额不足");
+			throw new PayFailException("支付方余额不足");
 		}
 		householdAccDao.updateBalance(payerAccNo,payerHousehold.getBalance().subtract(thirdPayOrder.getAmt()));
 
@@ -267,8 +266,17 @@ public class ThirdPayService {
 		//修改订单状态
 		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_SUCCESS, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
 
+		Thread.sleep(20*1000+ RandomUtils.nextInt(20*1000));//模拟网络不稳定
 		if(RandomUtils.nextInt(100)<5) {
-			throw new AppException("支付失败。");//模拟5%的失败概率。
+			throw new PayFailException("支付失败。");//模拟5%的失败概率。
 		}
+	}
+
+	/**
+	 * 修改订单状态为失败 TODO 要将处理失败原因，记录到订单中
+	 * @param orderNo
+	 */
+	public void updateStatusToFail(String orderNo, String failReason){
+		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_FAIL, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
 	}
 }

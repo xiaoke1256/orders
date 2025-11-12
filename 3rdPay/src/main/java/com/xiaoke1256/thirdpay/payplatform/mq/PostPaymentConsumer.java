@@ -5,6 +5,7 @@ import com.xiaoke1256.orders.common.RespMsg;
 import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.thirdpay.payplatform.bo.Merchant;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
+import com.xiaoke1256.thirdpay.payplatform.common.exception.PayFailException;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
 import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
 import com.xiaoke1256.thirdpay.sdk.dto.NotifyInfo;
@@ -52,6 +53,10 @@ public class PostPaymentConsumer implements RocketMQListener<String> {
             ThirdPayService.doPostPayment(order.getOrderNo());
             sentNotify(order, notifyUrl,null);
         } catch (AppException e) {
+            if (e instanceof PayFailException){
+                PayFailException payFailException = (PayFailException) e;
+                ThirdPayService.updateStatusToFail(order.getOrderNo(), payFailException.getErrorMsg());
+            }
             logger.error(e.getMessage(), e);
             if (notifyUrl!=null && order!=null) {
                 sentNotify(order, notifyUrl, e);
