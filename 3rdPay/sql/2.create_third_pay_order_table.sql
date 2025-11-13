@@ -21,6 +21,7 @@ create table third_pay_order
   finish_time TIMESTAMP null comment '订单处理完成的（含成功和失败）'
 ) comment='第三方支付记录表';
 
+CREATE UNIQUE INDEX idx_third_pay_order_no ON third_pay_order(order_no);
 -- /* 商户表 */
 create table merchant
 (
@@ -49,8 +50,6 @@ create table household_acc
   insert_time TIMESTAMP not null DEFAULT NOW() comment '插入时间',
   update_time TIMESTAMP not null DEFAULT NOW() comment '修改时间'
 ) comment='分户账';
-
-CREATE UNIQUE INDEX idx_third_pay_order_no ON third_pay_order(order_no);
 
 
 insert into merchant
