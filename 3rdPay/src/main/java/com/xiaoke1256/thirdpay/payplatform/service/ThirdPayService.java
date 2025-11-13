@@ -237,7 +237,7 @@ public class ThirdPayService {
 		return account;
 	}
 
-	@Transactional
+	@Transactional()
 	public void doPostPayment(String orderNo) throws InterruptedException {
 		Thread.sleep(20*1000+ RandomUtils.nextInt(20*1000));//模拟网络不稳定
 		if(RandomUtils.nextInt(100)<5) {

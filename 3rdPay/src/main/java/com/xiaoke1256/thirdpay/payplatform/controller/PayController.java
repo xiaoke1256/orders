@@ -8,9 +8,11 @@ import com.xiaoke1256.orders.common.security.MD5Util;
 import com.xiaoke1256.thirdpay.payplatform.bo.HouseholdAcc;
 import com.xiaoke1256.thirdpay.payplatform.bo.Merchant;
 import com.xiaoke1256.thirdpay.payplatform.bo.ThirdPayOrder;
+import com.xiaoke1256.thirdpay.payplatform.common.exception.PayFailException;
 import com.xiaoke1256.thirdpay.payplatform.dto.*;
 import com.xiaoke1256.thirdpay.payplatform.service.MerchantService;
 import com.xiaoke1256.thirdpay.payplatform.service.ThirdPayService;
+import com.xiaoke1256.thirdpay.payplatform.util.NotifyUtils;
 import com.xiaoke1256.thirdpay.sdk.dto.OrderInfo;
 import com.xiaoke1256.thirdpay.sdk.encryption.aes.AESUtils;
 import com.xiaoke1256.thirdpay.sdk.encryption.rsa.RSAKeyPairGenerator;
@@ -171,7 +173,41 @@ public class PayController {
 			return new OrderResp(ex);
 		}
 	}
-	
+
+	/**
+	 * 手动触发 post Payment
+	 */
+	@RequestMapping(value="/orders/{orderNo}/postPayment",method={RequestMethod.POST})
+	public RespMsg postPayment(@PathVariable("orderNo") String orderNo) {
+		String notifyUrl = null;
+		ThirdPayOrder order = null;
+		try {
+			//TODO 鉴权，本接口只有管理方才能调用。
+			order = thirdPayService.getByOrderNo(orderNo);
+			Merchant merchant = merchantService.getByMerchantNo(order.getMerchantNo());
+			notifyUrl = merchant.getNotifyUrl();
+
+			thirdPayService.doPostPayment(orderNo);
+			NotifyUtils.sentNotify(order, notifyUrl,null);
+			return new RespMsg(RespCode.SUCCESS);
+		}catch(AppException ex) {
+			if (ex instanceof PayFailException){
+				PayFailException payFailException = (PayFailException) ex;
+				thirdPayService.updateStatusToFail(order.getOrderNo(), payFailException.getErrorMsg());
+			}
+			logger.error(ex.getMessage(), ex);
+			if (notifyUrl!=null && order!=null) {
+				NotifyUtils.sentNotify(order, notifyUrl, ex);
+			}else{
+				//TODO 记录异常信息
+			}
+			return new RespMsg(ex);
+		}catch(Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			return new RespMsg(ex);
+		}
+	}
+
 	/**
 	 * 接收到通知。
 	 * @param request
