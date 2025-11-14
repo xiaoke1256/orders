@@ -27,7 +27,7 @@ import java.util.Map;
  * 支付后续处理的消费者
  */
 @Service
-@RocketMQMessageListener(topic = "3rdPay_post_payment", consumerGroup = "3rdPayPostPaymentGroup")
+@RocketMQMessageListener(topic = "3rdPay_post_payment", consumerGroup = "3rdPayPostPaymentGroup",enableMsgTrace=true)
 public class PostPaymentConsumer implements RocketMQListener<String> {
 
     private static final Logger logger = LoggerFactory.getLogger(PostPaymentConsumer.class);

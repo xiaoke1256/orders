@@ -103,7 +103,7 @@ public class ThirdPayService {
 		logger.info("订单生成成功:"+order.getOrderNo());
 		//发消息后续处理
 		rocketMQTemplate.syncSend("3rdPay_post_payment", MessageBuilder.withPayload(JSON.toJSONString(order) )
-				.setHeader(RocketMQHeaders.MESSAGE_ID, order.getOrderId()).build() );
+				.setHeader(RocketMQHeaders.KEYS, order.getOrderNo()).build() );
 		return order;
 	}
 	
@@ -239,7 +239,7 @@ public class ThirdPayService {
 
 	@Transactional()
 	public void doPostPayment(String orderNo) throws InterruptedException {
-		Thread.sleep(20*1000+ RandomUtils.nextInt(20*1000));//模拟网络不稳定
+		Thread.sleep(5*1000+ RandomUtils.nextInt(5*1000));//模拟网络不稳定
 		if(RandomUtils.nextInt(100)<5) {
 			throw new AppException("支付失败。");//模拟5%的失败概率。
 		}
@@ -266,7 +266,7 @@ public class ThirdPayService {
 		//修改订单状态
 		thirdPayOrderDao.updateStatus(orderNo, ThirdPayOrder.STATUS_SUCCESS, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
 
-		Thread.sleep(10*1000+ RandomUtils.nextInt(30*1000));//模拟网络不稳定
+		Thread.sleep(5*1000+ RandomUtils.nextInt(10*1000));//模拟网络不稳定
 		if(RandomUtils.nextInt(100)<5) {
 			throw new PayFailException("支付失败。");//模拟5%的失败概率。
 		}
