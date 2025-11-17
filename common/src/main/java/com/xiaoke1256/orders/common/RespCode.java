@@ -67,7 +67,8 @@ public class RespCode implements Serializable {
 
 	/**错误代码:操作成功 */
 	public static final RespCode SUCCESS = new RespCode("00","Success!");
-	
+
+	public static final RespCode SERVER_ERROR = new RespCode("90","Server error!");
 	/**错误代码:业务异常 */
 	public static final RespCode BUSSNESS_ERROR = new RespCode("80","Bussness exception!");
 	

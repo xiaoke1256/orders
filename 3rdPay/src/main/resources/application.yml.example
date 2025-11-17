@@ -1,0 +1,69 @@
+# 第三方支付模块配置示例
+# 请将此文件复制为application.yml并根据实际环境修改配置
+
+server:
+  port: 8080
+  servlet:
+    context-path: /thirdpay
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/thirdpay?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+# 第三方支付配置
+thirdpay:
+  # 支付超时时间（分钟）
+  paymentTimeoutMinutes: 30
+  # 异步通知配置
+  asyncNotifyEnabled: true
+  notifyRetryCount: 3
+  notifyRetryIntervalSeconds: 60
+  # 回调地址配置
+  successCallbackUrl: http://your-domain.com/api/v1/notify/success
+  failCallbackUrl: http://your-domain.com/api/v1/notify/fail
+  
+  # 微信支付配置
+  wechatPay:
+    appId: your-wechat-app-id
+    mchId: your-wechat-mch-id
+    key: your-wechat-api-key
+    certPath: /path/to/wechat/cert.p12
+    apiUrl: https://api.mch.weixin.qq.com
+  
+  # 支付宝配置
+  alipay:
+    appId: your-alipay-app-id
+    merchantPrivateKey: your-merchant-private-key
+    alipayPublicKey: alipay-public-key
+    charset: UTF-8
+    signType: RSA2
+    gatewayUrl: https://openapi.alipay.com/gateway.do
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.xiaoke1256.thirdpay: DEBUG
+  file:
+    name: logs/thirdpay.log
+
+# 安全配置
+security:
+  # API签名验证配置
+  api:
+    signatureEnabled: true
+    appKeyHeader: X-App-Key
+    signatureHeader: X-Signature
+    timestampHeader: X-Timestamp
+    # 签名过期时间（秒）
+    signatureExpireSeconds: 300
