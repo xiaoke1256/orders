@@ -18,6 +18,8 @@ import com.xiaoke1256.thirdpay.payplatform.dao.HouseholdAccDao;
 import com.xiaoke1256.thirdpay.payplatform.dao.ThirdPayOrderDao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.slf4j.Logger;
@@ -102,8 +104,12 @@ public class ThirdPayService {
 		thirdPayOrderDao.save(order);
 		logger.info("订单生成成功:"+order.getOrderNo());
 		//发消息后续处理
-		rocketMQTemplate.syncSend("3rdPay_post_payment", MessageBuilder.withPayload(JSON.toJSONString(order) )
-				.setHeader(RocketMQHeaders.KEYS, order.getOrderNo()).build() );
+		SendResult sendResult = rocketMQTemplate.syncSend("3rdPay_post_payment", MessageBuilder.withPayload(JSON.toJSONString(order))
+				.setHeader(RocketMQHeaders.KEYS, order.getOrderNo()).build());
+		if(!SendStatus.SEND_OK.equals(sendResult.getSendStatus())){
+			logger.error("消息发送失败:"+order.getOrderNo()+" sendStatus: "+sendResult.getSendStatus());
+			throw new AppException(RespCode.MESSAGE_SEND_ERROR.getCode(), "消息发送失败。");
+		}
 		return order;
 	}
 	

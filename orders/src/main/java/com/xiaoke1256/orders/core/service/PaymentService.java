@@ -15,6 +15,7 @@ import com.xiaoke1256.orders.core.client.ThirdPaymentClient;
 import org.apache.commons.lang.StringUtils;
 import com.xiaoke1256.thirdpay.payplatform.dto.ThirdPayOrderDto;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.slf4j.Logger;
@@ -174,7 +175,12 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 		Message<String> strMessage = MessageBuilder.withPayload(JSON.toJSONString(payment) )
 				.setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build();
 		SendResult sendResult = rocketMQTemplate.syncSend("clear_expired_order", strMessage,2000,9);//9对应的常量是 5m;5分钟后未支付则清理
+		if(!SendStatus.SEND_OK.equals(sendResult.getSendStatus())){
+			LOG.error("消息发送失败:"+payOrder.getPayerNo()+" sendStatus: "+sendResult.getSendStatus());
+			throw new AppException(RespCode.MESSAGE_SEND_ERROR.getCode(), "消息发送失败。");
+		}
 		LOG.info("同步发送字符串{}, 发送结果{}", payment, sendResult);
+
 		return payment;
 	}
 
@@ -182,6 +188,7 @@ public class PaymentService extends AbstractPayBusinessService implements PayBus
 	 * 第三方支付机构已受理，等待支付结果
 	 * @param
 	 */
+	@Transactional
 	public void payed(String thirdPayOrderNo,Long paymentId) {
 		PaymentTxn payment = entityManager.find(PaymentTxn.class, paymentId, LockModeType.PESSIMISTIC_WRITE);
 		if(PaymentTxn.PAY_STATUS_SUCCESS.equals( payment.getPayStatus())||PaymentTxn.PAY_STATUS_FAIL.equals( payment.getPayStatus())){

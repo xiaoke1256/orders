@@ -1,7 +1,11 @@
 package com.xiaoke1256.orders.core.service;
 
 import com.alibaba.fastjson.JSON;
+import com.xiaoke1256.orders.common.RespCode;
+import com.xiaoke1256.orders.common.exception.AppException;
 import com.xiaoke1256.orders.core.bo.PaymentTxn;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -45,8 +49,12 @@ public class ClearExpiredOrderConsumer implements RocketMQListener<String> {
             //如果延迟时间未到，重新发送消息
             if(paymentEntity.getInsertTime().getTime() + 5 * 60 * 1000 > System.currentTimeMillis()){
                 LOG.info("重新发送延迟消息：{}",paymentJson);
-                rocketMQTemplate.syncSend("clear_expired_order", MessageBuilder.withPayload(JSON.toJSONString(payment) )
+                SendResult sendResult = rocketMQTemplate.syncSend("clear_expired_order", MessageBuilder.withPayload(JSON.toJSONString(payment))
                         .setHeader(RocketMQHeaders.MESSAGE_ID, payment.getPaymentId()).build(), 2000, 9);
+                if(!SendStatus.SEND_OK.equals(sendResult.getSendStatus())){
+                    LOG.error("消息发送失败:"+paymentEntity.getPayOrderNo()+" sendStatus: "+sendResult.getSendStatus());
+                    throw new AppException(RespCode.MESSAGE_SEND_ERROR.getCode(), "消息发送失败。");
+                }
                 return;
             }
             //TODO 有可能是第三方支付平台支付了，但是没有通知我们，这里需要处理。

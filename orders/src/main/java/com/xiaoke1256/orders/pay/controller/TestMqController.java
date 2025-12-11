@@ -3,6 +3,7 @@ package com.xiaoke1256.orders.pay.controller;
 import com.xiaoke1256.orders.common.RespCode;
 import com.xiaoke1256.orders.common.RespMsg;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class TestMqController {
     public RespMsg payNotice() {
         Message<String> strMessage = MessageBuilder.withPayload("test" ).setHeader(RocketMQHeaders.KEYS, "testId").build();
         SendResult result = rocketMQTemplate.syncSend("test1", "test");
+        SendStatus sendStatus = result.getSendStatus();
+        if(!SendStatus.SEND_OK.equals(sendStatus)){
+            //TODO 做回滚处理
+        }
         return new RespMsg(RespCode.SUCCESS);
     }
 

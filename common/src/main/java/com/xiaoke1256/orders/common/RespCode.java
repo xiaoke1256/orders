@@ -73,6 +73,9 @@ public class RespCode implements Serializable {
 	
 	/**错误代码:网络连接异常 */
 	public static final RespCode CONNECT_ERROR = new RespCode("11","Net connect error!");
+
+	/**错误代码:消息发送异常 */
+	public static final RespCode MESSAGE_SEND_ERROR = new RespCode("12","Net connect error!");
 	
 	/**错误代码:空参数错误 */
 	public static final RespCode EMPTY_PARAMTER_ERROR = new RespCode("21","Some input paramter can not be null!");
@@ -83,7 +86,7 @@ public class RespCode implements Serializable {
 	/**错误代码:并发异常 */
 	public static final RespCode CONCURRENCY_ERROR = new RespCode("23","Concurrency error!");
 	
-	/**错误代码:并发异常 */
+	/**错误代码:状态异常 */
 	public static final RespCode STATUS_ERROR = new RespCode("24","Business object status error!");
 	
 	/**错误代码:格式错误 */
