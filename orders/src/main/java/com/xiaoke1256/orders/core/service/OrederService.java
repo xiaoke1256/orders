@@ -320,7 +320,7 @@ public class OrederService {
 			paramMap.put("statuses", condition.getStatuses());
 		}
 		countQl= "select count(o) "+hqlSb.toString();
-		hqlSb.append(" order by insertTime ");
+		hqlSb.append(" order by payOrderId ");
 		
 		Query countQuery = entityManager.createQuery(countQl);
 		for(String key:paramMap.keySet()) {
