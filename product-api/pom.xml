@@ -19,6 +19,7 @@
 	<maven.compiler.source>1.8</maven.compiler.source>  
     <maven.compiler.target>1.8</maven.compiler.target>  
 	<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    <os.detected.classifier>windows-x86_64</os.detected.classifier>
   </properties>
   
   <dependencies>
@@ -48,7 +49,25 @@
        <artifactId>orders-common</artifactId>
        <version>1.2.1</version>
     </dependency>
-    
+
+
+      <dependency>
+          <groupId>net.devh</groupId>
+          <artifactId>grpc-spring-boot-starter</artifactId>
+          <version>2.15.0.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>io.grpc</groupId>
+          <artifactId>grpc-protobuf</artifactId>
+          <version>1.52.0</version>
+      </dependency>
+      <dependency>
+          <groupId>io.grpc</groupId>
+          <artifactId>grpc-stub</artifactId>
+          <version>1.52.0</version>
+      </dependency>
+
+
   </dependencies>
   
   <dependencyManagement>
@@ -77,6 +96,24 @@
                    <exclude>**/Es*.java</exclude>
                </excludes>
             </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.5.0</version>
+            <configuration>
+                <protocArtifact>com.google.protobuf:protoc:3.19.1:exe:${os.detected.classifier}</protocArtifact>
+                <pluginId>grpc-java</pluginId>
+                <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.43.1:exe:${os.detected.classifier}</pluginArtifact>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>compile</goal>
+                        <goal>compile-custom</goal>
+                    </goals>
+                </execution>
+            </executions>
         </plugin>
   	</plugins>
   </build>
