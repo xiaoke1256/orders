@@ -6,6 +6,9 @@ import com.xiaoke1256.orders.product.HelloRequest;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Component;
 
+/**
+ * gRpc 测试用
+ */
 @Component
 public class GrpcClientService {
     @GrpcClient("api-product")

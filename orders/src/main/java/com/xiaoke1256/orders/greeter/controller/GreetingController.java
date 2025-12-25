@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * gRpc 测试用
+ */
 @RestController
 @RequestMapping("/greet")
 public class GreetingController {
