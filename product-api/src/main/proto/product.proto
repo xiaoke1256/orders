@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.xiaoke1256.orders.product.grpc";
+option java_outer_classname = "ProductProto";
+
+package com.xiaoke1256.orders.product.grpc;
+
+service ProductServer {
+  // public SimpleProduct getSimpleProductByCode(@PathVariable("productCode") String productCode);
+  rpc GetSimpleProductByCode (ProductCodeRequest) returns (SimpleProduct) {}
+}
+
+message ProductCodeRequest {
+  string productCode = 1;
+}
+
+message SimpleProduct {
+  string productCode = 1;
+
+  string productName = 2;
+
+  string productPrice = 3;
+
+  string fullProductTypeName = 4;
+
+  string storeName = 5;
+
+  string storeNo = 6;
+
+  int64 stockNum = 7;
+
+  string inSeckill = 8;
+
+  string productStatus = 9;
+
+  string productIntro = 10;
+
+  string brand = 11;
+
+  google.protobuf.Timestamp insertTime = 12;
+
+  google.protobuf.Timestamp updateTime = 13;
+}
