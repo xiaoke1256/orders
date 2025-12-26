@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.xiaoke1256.orders.core.client.ProductQueryGrpcClient;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -49,6 +50,9 @@ public class OrederService {
 	
 	@Autowired
 	private ProductQueryClient productQueryClient;
+
+	@Autowired
+	private ProductQueryGrpcClient productQueryGrpcClient;
 	
 	@Value("${remote.api.product.uri}")
 	private String productApiUri;
@@ -69,7 +73,8 @@ public class OrederService {
 		List<SimpleProduct> products = new ArrayList<SimpleProduct>();
 		for(Map.Entry<String,Integer> enty:orderMap.entrySet()) {
 			String productCode = enty.getKey();
-			SimpleProduct product = productQueryClient.getSimpleProductByCode(productCode);
+			SimpleProduct product = productQueryGrpcClient.getSimpleProductByCode(productCode);
+			//SimpleProduct product = productQueryClient.getSimpleProductByCode(productCode);
 			if(!"1".equals(product.getProductStatus())) {
 				throw new RuntimeException("商品未上线。");
 			}

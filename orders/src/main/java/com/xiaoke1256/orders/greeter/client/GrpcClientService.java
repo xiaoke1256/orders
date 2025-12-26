@@ -1,4 +1,4 @@
-package com.xiaoke1256.orders.greeter.service;
+package com.xiaoke1256.orders.greeter.client;
 
 import com.xiaoke1256.orders.product.GreeterGrpc;
 import com.xiaoke1256.orders.product.HelloReply;

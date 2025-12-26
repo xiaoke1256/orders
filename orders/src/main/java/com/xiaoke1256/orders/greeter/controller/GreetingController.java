@@ -1,6 +1,6 @@
 package com.xiaoke1256.orders.greeter.controller;
 
-import com.xiaoke1256.orders.greeter.service.GrpcClientService;
+import com.xiaoke1256.orders.greeter.client.GrpcClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

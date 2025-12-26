@@ -46,6 +46,7 @@ public class OrderController {
 	@ResponseBody
 	public RespMsg placeOrder(@RequestBody OrderPlaceRequest request){
 		try {
+			logger.info("开始下单，请求参数："+request);
 			PayOrder order = orederService.place(request.getPayerNo(), request.getProductMap());
 			OrderPlaceResponse response = new OrderPlaceResponse();
 			PropertyUtils.copyProperties(response, order);
