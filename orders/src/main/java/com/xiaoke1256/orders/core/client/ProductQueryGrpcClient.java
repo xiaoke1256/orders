@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Component
 public class ProductQueryGrpcClient {
@@ -24,6 +25,12 @@ public class ProductQueryGrpcClient {
         BeanUtils.copyProperties(productReply,simpleProduct);
         if(StringUtils.isNotBlank(productReply.getProductPrice())){
             simpleProduct.setProductPrice(new BigDecimal(productReply.getProductPrice()));
+        }
+        if(productReply.getInsertTime()>0){
+            simpleProduct.setInsertTime(new Timestamp(productReply.getInsertTime()));
+        }
+        if(productReply.getUpdateTime()>0){
+            simpleProduct.setUpdateTime(new Timestamp(productReply.getUpdateTime()));
         }
 
         return simpleProduct;

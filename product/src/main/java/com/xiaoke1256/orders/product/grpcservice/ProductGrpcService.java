@@ -40,13 +40,9 @@ public class ProductGrpcService extends ProductServerGrpc.ProductServerImplBase 
                     .setProductIntro(StringUtils.trimToEmpty(product.getProductIntro()))
                     .setBrand(StringUtils.trimToEmpty(product.getBrand()))
                     .setInsertTime(
-                            product.getInsertTime() != null ?
-                                    Timestamp.newBuilder().setSeconds(product.getInsertTime().getTime() / 1000).setNanos((int) (product.getInsertTime().getTime() % 1000) * 1000).build()
-                                    : null
+                            product.getInsertTime() != null ? product.getInsertTime().getTime() : null
                     ).setUpdateTime(
-                            product.getUpdateTime() != null ?
-                                    Timestamp.newBuilder().setSeconds(product.getUpdateTime().getTime() / 1000).setNanos((int) (product.getUpdateTime().getTime() % 1000) * 1000).build()
-                                    : null
+                            product.getUpdateTime() != null ? product.getUpdateTime().getTime() : null
                     )
                     .build();
         }

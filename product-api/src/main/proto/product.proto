@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
+//import "google/protobuf/timestamp.proto";
 
 option java_multiple_files = true;
 option java_package = "com.xiaoke1256.orders.product.grpc";
@@ -40,7 +40,7 @@ message SimpleProduct {
 
   string brand = 11;
 
-  google.protobuf.Timestamp insertTime = 12;
+  int64 insertTime = 12;
 
-  google.protobuf.Timestamp updateTime = 13;
+  int64 updateTime = 13;
 }
