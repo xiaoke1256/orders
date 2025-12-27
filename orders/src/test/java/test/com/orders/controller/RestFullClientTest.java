@@ -2,9 +2,7 @@ package test.com.orders.controller;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import com.xiaoke1256.orders.common.QueryResultResp;
 import com.xiaoke1256.orders.core.dto.ProductWithStorage;
@@ -19,9 +17,11 @@ public class RestFullClientTest {
 	
 	private static RestTemplate restTemplate = new RestTemplate();
 	
-	private static ExecutorService pool = Executors.newFixedThreadPool(100);
-	
+	private static ThreadPoolExecutor pool = new ThreadPoolExecutor(200, 200, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+	//private static ExecutorService pool = Executors.newFixedThreadPool(100);
 	public static void main(String[] args) throws Exception{
+		System.out.println("核心数 :"+Runtime.getRuntime().availableProcessors());
+		pool.prestartCoreThread();
 //		System.out.println("start time :"+System.currentTimeMillis());
 //		OrderPlaceRequest request = new OrderPlaceRequest();
 //		request.setCarriageAmt(new BigDecimal(13.4));
@@ -119,7 +119,7 @@ public class RestFullClientTest {
 		System.out.println("sum_time:"+(sumTime)+"ms");
 		System.out.println("total_time:"+(totalTime)+"ms");
 		System.out.println("avg_time:"+((double)sumTime/ressults.size())+"ms");
-		System.out.println("tps:"+(ressults.size()*ressults.size()/((double)sumTime*.001*totalTime*.001)));
+		System.out.println("tps:"+(ressults.size()/(double)(totalTime*.001)));
 	}
 	
 	static class StatResult{
