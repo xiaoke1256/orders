@@ -1,0 +1,31 @@
+# 用于测试k8s集群是否好用
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-pod
+  labels:
+    name: nginx-pod-service
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+      nodePort: 30001
+  selector:
+    name: nginx-pod
+  type: NodePort
+status:
+  loadBalancer: {}
