@@ -1,5 +1,5 @@
 
-具体安装过程请参考： [这里](https://blog.csdn.net/weixin_37518151/article/details/123104835)
+具体安装过程请参考： [这里](https://blog.csdn.net/weixin_39555954/article/details/124783111)
 
 ip变掉后重置请看 [这里](https://blog.csdn.net/shuxinghe/article/details/115370189)
 
