@@ -319,6 +319,31 @@ kubectl get nodes
 
 &emsp;&emsp;下载 kube-flannel.yml 插件
 
-&emsp;&emsp; 下载地址：https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&emsp;&emsp; 下载地址：[https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml](https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml)
 
-或者
+&emsp;&emsp;或者：[kube-flannel.yml](docker-images/k8s/kube-flannel.yml)
+
+将该文件上传到master服务器 执行如下命令：
+```shell
+kubectl apply -f kube-flannel.yml
+```
+注意上传完文件之后 使用如下命令检查一下文件:
+```shell
+vi -b kube-flannel.yml
+```
+
+如果显示^M等样式的文件 执行以下命令
+
+```shell
+sed -i 's/\r//g' kube-flannel.yml 
+```
+
+查看插件是否安装成功:
+```shell
+kubectl get pods -n kube-system |grep flannel
+```
+
+12. 查看节点状态（等待1分钟 左右）
+```shell
+kubectl get nodes
+```

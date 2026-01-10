@@ -1,3 +1,4 @@
+# 对象手动指定地址（不推荐），适用于非 K8s 管理的外部服务。
 apiVersion: v1
 kind: Endpoints
 metadata:
