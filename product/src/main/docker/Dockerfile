@@ -3,7 +3,7 @@ FROM openanolis/openjdk:8-8.6
 
 MAINTAINER xiaoke_1256
 
-# ubuntu 系统有效
+# ubuntu 系统有效，现在是Anolis OS系统
 # # 修改源
 # RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
 #
