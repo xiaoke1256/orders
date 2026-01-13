@@ -62,3 +62,22 @@ spec:
           configMap:
             defaultMode: 420
             name: filebeat-conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  labels:
+    name: product-service
+spec:
+  ports:
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
+      nodePort: 30082
+  selector:
+    name: product
+  type: NodePort
+status:
+  loadBalancer: {}
