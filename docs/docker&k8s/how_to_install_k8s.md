@@ -80,7 +80,6 @@ vi /etc/fstab
 
 7. 允许 iptables 检查桥接流量和地址转发（每个节点上都要执行）
 ```shell
-
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
