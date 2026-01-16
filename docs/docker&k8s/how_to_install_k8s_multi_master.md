@@ -1,3 +1,27 @@
+如何安装Kubernetes高可用集群
+=======
+
+## 部署规划
+
+| IP | 主机名 |
+|----|----|----|
+| 192.168.249.131 | k8s-master |
+| 192.168.249.132 | k8s-master02 |
+| 192.168.249.133 | k8s-master03 |
+
+## 1. 环境准备
+
+修改三台机器上的主机名
+```shell
+hostnamectl set-hostname k8s-master
+```
+```shell
+hostnamectl set-hostname k8s-master02
+```
+```shell
+hostnamectl set-hostname k8s-master03
+```
+
 k8s-master:
 ```shell
 cat <<EOF > /etc/keepalived/keepalived.conf
