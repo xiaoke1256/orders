@@ -144,3 +144,107 @@ backend apiserver
 systemctl enable haproxy --now
 systemctl enable keepalived --now
 ```
+
+k8s-master 节点上生成 kubeadm-config.yml 文件
+```shell
+[root@k8s-master ~]# kubeadm  config print init-defaults >kubeadm-config.yml
+```
+
+修改 kubeadm-config.yml 文件
+
+```
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.249.131 #改成k8s-master节点的ip
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  imagePullPolicy: IfNotPresent
+  name: k8s-master #改成k8s-master节点的主机名
+  taints: null
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controlPlaneEndpoint: "192.168.249.10:8443" #改成haproxy的vip和端口
+controllerManager: {}
+dns: {}
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: k8s.gcr.io
+kind: ClusterConfiguration
+kubernetesVersion: 1.23.6
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/12
+scheduler: {}
+
+```
+k8s-master 节点上执行初始化集群命令：
+```shell
+[root@k8s-master ~]# kubeadm  init --config kubeadm-config.yml 
+```
+
+配置API所需的配置文件
+
+```shell
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+安装集群网络组件flannel
+```shell
+kubectl apply -f kube-flannel.yml
+```
+
+master02 master03加入集群
+```shell
+[root@k8s-master03 kubernetes]# mkdir  -p /etc/kubernetes/pki/etc
+# 主节点上把证书文件拷贝到从节点上
+[root@k8s-master ~]# vi cpkey.sh
+
+USER=root # 账号
+CONTROL_PLANE_IPS="192.168.249.132 192.168.249.133" #节点IP
+dir=/etc/kubernetes/pki/
+for host in ${CONTROL_PLANE_IPS}; do
+    scp /etc/kubernetes/pki/ca.crt "${USER}"@$host:${dir}
+    scp /etc/kubernetes/pki/ca.key "${USER}"@$host:${dir}
+    scp /etc/kubernetes/pki/sa.key "${USER}"@$host:${dir}
+    scp /etc/kubernetes/pki/sa.pub "${USER}"@$host:${dir}
+    scp /etc/kubernetes/pki/front-proxy-ca.crt "${USER}"@$host:${dir}
+    scp /etc/kubernetes/pki/front-proxy-ca.key "${USER}"@$host:${dir}
+    scp /etc/kubernetes/pki/etcd/ca.crt "${USER}"@$host:${dir}etcd      
+    #如果您使用的是外部etcd，请引用此行
+    scp /etc/kubernetes/pki/etcd/ca.key "${USER}"@$host:${dir}etcd
+done
+
+[root@k8s-master ~]# ./cpkey.sh
+
+# 加入集群
+[root@k8s-master03 kubernetes]#   kubeadm join 192.168.249.10:8443 --token s6a40e.4fyob3lury5mydby \
+        --discovery-token-ca-cert-hash sha256:0afe17cd028666174d3b9a5c48ba9878d5bc2fe1022a08d1145e12fcdde0cd2b \
+        --control-plane
+        
+ # 配置API所需的配置文件
+ 
+[root@k8s-master03 kubernetes]# mkdir -p $HOME/.kube
+[root@k8s-master03 kubernetes]# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+[root@k8s-master03 kubernetes]# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+最后查看集群状态
+```shell
+[root@k8s-master ~]# kubectl get nodes
+```
