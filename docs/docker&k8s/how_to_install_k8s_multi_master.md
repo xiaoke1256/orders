@@ -9,7 +9,7 @@
 | 192.168.249.132 | k8s-master02 |
 | 192.168.249.133 | k8s-master03 |
 
-### 1. 环境准备
+### 一. 环境准备
 
 修改三台机器上的主机名
 ```shell
@@ -30,12 +30,12 @@ hostnamectl set-hostname k8s-master03
 192.168.249.133 k8s-master03
 ```
 
-### 2. 安装 docker 和 Kubernetes
+### 二. 安装 docker 和 Kubernetes
 
 请参考[这里](./how_to_install_k8s.md).
 
 
-### 3. 安装keepalived和haproxy（所有节点）
+### 三. 安装keepalived和haproxy（所有节点上执行）
 
 1. 安装软件包
 ```shell
@@ -192,7 +192,7 @@ backend apiserver
 systemctl enable haproxy --now
 systemctl enable keepalived --now
 ```
-
+### 四. 启动kubernetes集群
 k8s-master 节点上生成 kubeadm-config.yml 文件
 ```shell
 [root@k8s-master ~]# kubeadm  config print init-defaults >kubeadm-config.yml
