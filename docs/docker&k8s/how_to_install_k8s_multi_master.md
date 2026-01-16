@@ -1,15 +1,15 @@
 如何安装Kubernetes高可用集群
 =======
 
-## 部署规划
+### 部署规划
 
 | IP | 主机名 |
-|----|----|----|
+|----|----|
 | 192.168.249.131 | k8s-master |
 | 192.168.249.132 | k8s-master02 |
 | 192.168.249.133 | k8s-master03 |
 
-## 1. 环境准备
+### 1. 环境准备
 
 修改三台机器上的主机名
 ```shell
@@ -22,7 +22,28 @@ hostnamectl set-hostname k8s-master02
 hostnamectl set-hostname k8s-master03
 ```
 
-k8s-master:
+在三台机器上修改hosts文件
+```
+192.168.249.10  k8svip
+192.168.249.131 k8s-master
+192.168.249.132 k8s-master02
+192.168.249.133 k8s-master03
+```
+
+### 2. 安装 docker 和 Kubernetes
+
+请参考[这里](./how_to_install_k8s.md).
+
+
+### 3. 安装keepalived和haproxy（所有节点）
+
+1. 安装软件包
+```shell
+yum install -y keepalived haproxy
+```
+2. 配置keepalived
+
+k8s-master 节点上如下配置:
 ```shell
 cat <<EOF > /etc/keepalived/keepalived.conf
 ! /etc/keepalived/keepalived.conf
@@ -57,8 +78,9 @@ vrrp_instance VI_1 {
 
 EOF
 ```
+其中 192.168.249.10 是 vip
 
-k8s-master02和k8s-master03:
+k8s-master02和k8s-master03 节点上如下配置:
 ```shell
 cat <<EOF > /etc/keepalived/keepalived.conf
 ! /etc/keepalived/keepalived.conf
@@ -94,6 +116,7 @@ vrrp_instance VI_1 {
 EOF
 ```
 
+创建健康检查脚本
 ```shell
 vi /etc/keepalived/check_apiserver.sh
 ### 添加内容
@@ -109,7 +132,8 @@ if ip addr | grep -q 192.168.249.10; then
     curl --silent --max-time 2 --insecure https://192.168.249.10:8443/ -o /dev/null || errorExit "Error GET https://192.168.249.10:8443/"
 fi
 ```
-配置haproxy
+
+3. 配置haproxy
 ```
 # /etc/haproxy/haproxy.cfg
 #---------------------------------------------------------------------
