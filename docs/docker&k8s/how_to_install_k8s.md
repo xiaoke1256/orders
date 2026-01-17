@@ -320,7 +320,7 @@ kubectl get nodes
 
 &emsp;&emsp; 下载地址：[https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml](https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml)
 
-&emsp;&emsp;或者：[kube-flannel.yml](docker-images/k8s/kube-flannel.yml)
+&emsp;&emsp;或者：[kube-flannel.yml](/docker-images/k8s/kube-flannel.yml)
 
 将该文件上传到master服务器 执行如下命令：
 ```shell
