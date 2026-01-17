@@ -296,3 +296,10 @@ done
 ```shell
 [root@k8s-master ~]# kubectl get nodes
 ```
+
+### 遇到的问题
+1. kubeadm join 时在“Checking that the etcd cluster is healthy”卡住
+
+请参考[这里](https://blog.csdn.net/hunheidaode/article/details/118341102)
+
+或[这里](https://blog.csdn.net/weixin_44946147/article/details/124944268)
