@@ -1,5 +1,6 @@
 如何安装Kubernetes高可用集群
 =======
+*注：此方案未成功*
 
 ### 部署规划
 
@@ -259,7 +260,7 @@ kubectl apply -f kube-flannel.yml
 
 master02 master03加入集群
 ```shell
-[root@k8s-master03 kubernetes]# mkdir  -p /etc/kubernetes/pki/etc
+[root@k8s-master03 kubernetes]# mkdir  -p /etc/kubernetes/pki/etcd
 # 主节点上把证书文件拷贝到从节点上
 [root@k8s-master ~]# vi cpkey.sh
 
