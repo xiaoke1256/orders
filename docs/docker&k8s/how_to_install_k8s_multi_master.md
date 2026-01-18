@@ -253,7 +253,7 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
-安装集群网络组件flannel
+安装集群网络组件flannel（flannel似乎不行，请尝试用calico）
 ```shell
 kubectl apply -f kube-flannel.yml
 ```
