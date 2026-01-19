@@ -78,7 +78,7 @@ vrrp_instance VI_1 {
 
 EOF
 ```
-其中 192.168.249.10 是 vip
+其中 ens33 是网卡;“priority 100”是优先级；192.168.249.10 是 vip
 
 k8s-master02和k8s-master03 节点上如下配置:
 ```shell
@@ -115,6 +115,8 @@ vrrp_instance VI_1 {
 
 EOF
 ```
+
+其中 ens33 是网卡;“priority 100”是优先级；192.168.249.10 是 vip
 
 创建健康检查脚本
 ```shell
@@ -193,9 +195,9 @@ systemctl enable haproxy --now
 systemctl enable keepalived --now
 ```
 ### 四. 启动kubernetes集群
-k8s-master 节点上生成 kubeadm-config.yml 文件
+在 k8s-master 节点上执行，生成 kubeadm-config.yml 文件
 ```shell
-[root@k8s-master ~]# kubeadm  config print init-defaults >kubeadm-config.yml
+kubeadm  config print init-defaults >kubeadm-config.yml
 ```
 
 修改 kubeadm-config.yml 文件
@@ -240,12 +242,12 @@ networking:
 scheduler: {}
 
 ```
-k8s-master 节点上执行初始化集群命令：
+k8s-master 节点上执行，初始化集群命令：
 ```shell
-[root@k8s-master ~]# kubeadm  init --config kubeadm-config.yml 
+kubeadm  init --config kubeadm-config.yml 
 ```
 
-配置API所需的配置文件
+然后配置API所需的配置文件
 
 ```shell
 mkdir -p $HOME/.kube
@@ -257,11 +259,13 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl apply -f calico.yaml
 ```
 
-master02 master03加入集群
+在 master02 和 master03上执行，创建证书目录
 ```shell
-[root@k8s-master03 kubernetes]# mkdir  -p /etc/kubernetes/pki/etcd
-# 主节点上把证书文件拷贝到从节点上
-[root@k8s-master ~]# vi cpkey.sh
+mkdir  -p /etc/kubernetes/pki/etcd
+```
+在master点上执行， 把master节点上把证书文件拷贝到master02 和 master03节点上
+```shell
+vi cpkey.sh
 
 USER=root # 账号
 CONTROL_PLANE_IPS="192.168.249.132 192.168.249.133" #节点IP
@@ -278,23 +282,24 @@ for host in ${CONTROL_PLANE_IPS}; do
     scp /etc/kubernetes/pki/etcd/ca.key "${USER}"@$host:${dir}etcd
 done
 
-[root@k8s-master ~]# ./cpkey.sh
-
+./cpkey.sh
+```
+master02 和 master03节点 加入集群
+```shell
 # 加入集群
-[root@k8s-master03 kubernetes]#   kubeadm join 192.168.249.10:8443 --token s6a40e.4fyob3lury5mydby \
+kubeadm join 192.168.249.10:8443 --token s6a40e.4fyob3lury5mydby \
         --discovery-token-ca-cert-hash sha256:0afe17cd028666174d3b9a5c48ba9878d5bc2fe1022a08d1145e12fcdde0cd2b \
         --control-plane
         
  # 配置API所需的配置文件
- 
-[root@k8s-master03 kubernetes]# mkdir -p $HOME/.kube
-[root@k8s-master03 kubernetes]# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-[root@k8s-master03 kubernetes]# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+ mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 最后查看集群状态
 ```shell
-[root@k8s-master ~]# kubectl get nodes
+kubectl get nodes
 ```
 
 ### 遇到的问题
