@@ -1,6 +1,5 @@
 如何安装Kubernetes高可用集群
 =======
-*注：此方案未成功*
 
 ### 部署规划
 
@@ -253,9 +252,9 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
-安装集群网络组件flannel（flannel似乎不行，请尝试用calico）
+安装集群网络组件calico（flannel不行，请直接用calico）
 ```shell
-kubectl apply -f kube-flannel.yml
+kubectl apply -f calico.yaml
 ```
 
 master02 master03加入集群
@@ -304,3 +303,24 @@ done
 请参考[这里](https://blog.csdn.net/hunheidaode/article/details/118341102)
 
 或[这里](https://blog.csdn.net/weixin_44946147/article/details/124944268)
+
+2. coredns-xxxxxxxxx-xxxxx 一直处于 ContainerCreating 状态
+
+   需要在对应的work节点创建/run/flannel/subnet.env文件，内容如下：
+```
+FLANNEL_NETWORK=10.244.0.0/16
+FLANNEL_SUBNET=10.244.1.1/24
+FLANNEL_MTU=1450
+FLANNEL_IPMASQ=true
+```
+
+3. calico-kube-controllers-xxxxxxxxx-xxxxx pod 一直处于 CrashLoopBackOff 状态
+    
+ 往往是 calico-node pod 没有创建成功。请想办法解决 calico-node 的创建问题。
+
+4. calico-node-xxxxx 拉取镜像失败,报 ImagePullBackOff 错误
+
+在容器外执行一下拉取镜像操作：
+```shell
+docker pull docker.io/calico/kube-controllers:v3.25.0
+```
