@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-store-intra
+  labels:
+    name: orders-store-intra
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: orders-store-intra
+  template:
+    metadata:
+      labels:
+        name: orders-store-intra
+    spec:
+      dnsConfig:
+        nameservers:
+          - 192.168.249.2
+          - 114.114.114.114
+          - 8.8.8.8
+        searches:
+          - demo.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "2"
+          - name: edns0
+      containers:
+        - name: orders-store-intra
+          image: repo.orders.com:5000/orders/orders-store-intra
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SPRING_DATASOURCE_HOST
+              value: 'mysql-service.default.svc.cluster.local'
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://discovery-eureka-0.eureka-hl:8761/discovery/eureka/,http://discovery-eureka-1.eureka-hl:8761/discovery/eureka/
+          ports:
+            - containerPort: 8082
+          volumeMounts:
+            - name: logs
+              mountPath: /logs
+        - name: filebeat
+          image: elastic/filebeat:7.10.1
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: logs
+              mountPath: /logs
+            - name: config
+              mountPath: /usr/share/filebeat/filebeat.yml
+              readOnly: true
+              subPath: filebeat.yml
+
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: config
+          configMap:
+            defaultMode: 420
+            name: filebeat-conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  labels:
+    name: product-service
+spec:
+  ports:
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
+      nodePort: 30082
+  selector:
+    name: product
+  type: NodePort
+status:
+  loadBalancer: {}
