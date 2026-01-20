@@ -39,8 +39,10 @@ spec:
               value: 'mysql-service.default.svc.cluster.local'
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: http://discovery-eureka-0.eureka-hl:8761/discovery/eureka/,http://discovery-eureka-1.eureka-hl:8761/discovery/eureka/
+            - name: REMOTE_API_PRODUCT_URI
+              value: http://product-service.default.svc.cluster.local:8082/api/v1/products
           ports:
-            - containerPort: 8082
+            - containerPort: 8083
           volumeMounts:
             - name: logs
               mountPath: /logs
@@ -67,15 +69,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: product-service
+  name: orders-store-intra-service
   labels:
-    name: product-service
+    name: orders-store-intra-service
 spec:
   ports:
-    - name: "8082"
-      port: 8082
-      targetPort: 8082
-      nodePort: 30082
+    - name: "8083"
+      port: 8083
+      targetPort: 8083
+      nodePort: 30083
   selector:
     name: product
   type: NodePort
