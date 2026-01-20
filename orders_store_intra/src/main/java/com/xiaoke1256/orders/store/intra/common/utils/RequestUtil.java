@@ -15,6 +15,9 @@ public class RequestUtil {
             loginTokenGenerator = (HMAC256)ApplicationContextUtil.getBean("loginTokenGenerator");
         }
         String token = request.getHeader("Authorization");
+        if(token==null){
+            throw new InvalidAuthorizationException("未登录，请先登录");
+        }
         try {
             String loginName = loginTokenGenerator.getContent(token);
             return loginName;

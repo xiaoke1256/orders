@@ -118,7 +118,6 @@ public class HMAC256 {
         try {
             Algorithm algorithm = Algorithm.HMAC256(tokenSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
-            @SuppressWarnings("unused")
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getClaim("content").asString();
         } catch (TokenExpiredException e){
