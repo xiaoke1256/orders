@@ -26,4 +26,4 @@ ADD orders_store_intra*.jar /orders_store_intra.jar
 EXPOSE 8083
 ENV JAVA_OPTS='-server -Xms64m -Xmx512m $EXT_JAVA_OPTS'
 ENV EXT_JAVA_OPTS=''
-ENTRYPOINT java -jar /orders_store_intra.war
+ENTRYPOINT java -jar /orders_store_intra.jar
