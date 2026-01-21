@@ -6,7 +6,7 @@
     <artifactId>orders-gateway</artifactId>
     <name>orders-gateway</name>
     <version>1.0.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>com.xiaoke_1256.orders</groupId>
@@ -120,7 +120,7 @@
                         <resource>
                             <targetPath>/</targetPath>
                             <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.war</include>
+                            <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
                     <forceTags>true</forceTags>

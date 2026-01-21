@@ -78,7 +78,9 @@ spring:
 
 remote:
   serviceUri:
-    product: lb://orders-store-intra
+    product: http://orders-store-intra-service.default.svc.cluster.local:8083
+    product-api: http://product-service.default.svc.cluster.local:8082
+    orders-api: http://orders-service.default.svc.cluster.local:8081
 
 #eureka:
 #  client:
