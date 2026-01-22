@@ -8,4 +8,9 @@ kubectl apply -f filebeat-conf.yaml
 
 # 商品微服务
 kubectl apply -f product.yml
+# 商户端微服务
+kubectl apply -f orders-store-intra.yaml
+
+# gateway 微服务
+kubectl apply -f gateway.yaml
 ```
